@@ -1,5 +1,5 @@
-node_modules/
-docs/.vitepress/cache/
-docs/.vitepress/dist/
+.venv/
+publishing/work/
+site/node_modules/
+site/docs/.vitepress/dist/
 .DS_Store
-*.log

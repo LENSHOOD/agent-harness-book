@@ -1,0 +1,20 @@
+{
+  "version": "3.0.0",
+  "query": "体系化研究 Agent Harness 的历史、现状、设计、案例、四层自我进化与未来，重点比较 Claude Code、OpenAI Codex、Cursor、DeepSeek Harness/DSH 及一个证据筛选的第五案例，并形成企业级下一代 Harness 参考架构",
+  "mode": "ultradeep",
+  "started_at": "2026-08-22T01:49:51.060318+00:00",
+  "finished_at": null,
+  "assumptions": [],
+  "provider_config": {
+    "primary": "search-cli",
+    "scholarly": null
+  },
+  "report_dir": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822",
+  "artifact_paths": {
+    "sources": "sources.jsonl",
+    "evidence": "evidence.jsonl",
+    "claims": "claims.jsonl",
+    "report": "report.md"
+  },
+  "continuation": null
+}

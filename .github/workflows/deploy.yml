@@ -23,12 +23,15 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: site/package-lock.json
       - uses: actions/configure-pages@v5
-      - run: npm ci
-      - run: npm run docs:build
+      - name: Sync manuscript into the website
+        run: python publishing/scripts/prepare_site.py
+      - run: npm --prefix site ci
+      - run: npm --prefix site run docs:build
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: docs/.vitepress/dist
+          path: site/docs/.vitepress/dist
 
   deploy:
     environment:
