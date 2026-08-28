@@ -14,12 +14,14 @@ from pathlib import Path
 from urllib.parse import urlsplit
 import json
 import markdown
+import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 EVIDENCE_DIR = ROOT / "research" / "evidence"
 REPORT = ROOT / "research" / "audits" / "claim_ledger_report.md"
 CLAIMS_PATH = EVIDENCE_DIR / "claims_v2.jsonl"
+EVIDENCE_README = EVIDENCE_DIR / "README.md"
 
 STRICT_TYPES = {"historical_fact", "factual", "vendor_claim", "research_result"}
 ALLOWED_TYPES = STRICT_TYPES | {"inference", "recommendation", "forecast"}
@@ -101,6 +103,33 @@ def validate() -> tuple[list[str], list[str], list[dict], dict]:
     )
     if invalid_source_types:
         errors.append(f"sources.jsonl contains uncontrolled source_type values: {invalid_source_types}")
+
+    invalid_metadata_statuses = sorted(
+        {row.get("metadata_status") for row in sources if row.get("metadata_status") not in {"verified", "unverified"}}
+    )
+    if invalid_metadata_statuses:
+        errors.append(f"sources.jsonl contains invalid metadata_status values: {invalid_metadata_statuses}")
+
+    for source in sources:
+        if source.get("metadata_status") == "verified":
+            if not source.get("accessed_at"):
+                errors.append(f"verified source {source['source_id']} has no accessed_at")
+            if not source.get("version_or_commit"):
+                errors.append(f"verified source {source['source_id']} has no version_or_commit")
+
+    source_statuses = Counter(row.get("metadata_status") for row in sources)
+    marker = re.search(
+        r"<!-- registry-status: total=(\d+) verified=(\d+) unverified=(\d+) -->",
+        EVIDENCE_README.read_text(),
+    )
+    actual_registry_status = (len(sources), source_statuses["verified"], source_statuses["unverified"])
+    if marker is None:
+        errors.append("research/evidence/README.md has no registry-status marker")
+    elif tuple(map(int, marker.groups())) != actual_registry_status:
+        errors.append(
+            "research/evidence/README.md registry-status marker is stale: "
+            f"documented={marker.groups()} actual={actual_registry_status}"
+        )
 
     for item in evidence:
         if item.get("source_id") not in source_by_id:
@@ -185,6 +214,7 @@ def validate() -> tuple[list[str], list[str], list[dict], dict]:
             }
         ),
         "source_types": Counter(row.get("source_type") for row in sources),
+        "source_statuses": source_statuses,
     }
     return errors, warnings, claims, stats
 
@@ -200,6 +230,7 @@ def write_report(errors: list[str], warnings: list[str], claims: list[dict], sta
         f"- 证据记录：{stats['evidence']}",
         f"- 原子承重 claim：{stats['claims']}",
         f"- 已核验承重来源：{stats['verified_claim_sources']}",
+        "- Registry 状态：" + ", ".join(f"{k}={v}" for k, v in sorted(stats["source_statuses"].items())),
         f"- 正文外部链接：{stats['manuscript_links']}",
         "- 来源类型：" + ", ".join(f"{k}={v}" for k, v in sorted(stats["source_types"].items())),
         "- Claim 类型：" + ", ".join(f"{k}={v}" for k, v in sorted(stats["types"].items())),
@@ -240,6 +271,7 @@ def main() -> int:
             "unregistered_links": [],
             "verified_claim_sources": 0,
             "source_types": {},
+            "source_statuses": {},
         }
     write_report(errors, warnings, claims, stats)
     after = digest(CLAIMS_PATH)

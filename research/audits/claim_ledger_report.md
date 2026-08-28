@@ -7,6 +7,7 @@
 - 证据记录：71
 - 原子承重 claim：25
 - 已核验承重来源：28
+- Registry 状态：unverified=47, verified=37
 - 正文外部链接：69
 - 来源类型：academic_paper=29, official_article=17, official_documentation=26, official_repository=8, platform_metadata=4
 - Claim 类型：historical_fact=2, research_result=11, vendor_claim=12

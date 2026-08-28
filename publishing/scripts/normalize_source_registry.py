@@ -1,7 +1,8 @@
-"""One-time deterministic normalization of source registry metadata.
+"""Deterministic normalization of source registry metadata.
 
 The script preserves stable source IDs, normalizes the type vocabulary, and
-marks only sources used by claims_v2 as verified. Re-running it is idempotent.
+marks sources used by claims_v2 as verified. Existing verified sources receive
+reconstructable access/version metadata. Re-running it is idempotent.
 """
 
 from __future__ import annotations
@@ -71,6 +72,15 @@ VERSIONS = {
     "6ddb79c39a2b95ad": "arXiv:2605.21384v1",
     "a3afc1e8c7c23916": "web snapshot 2026-08-28",
     "97416d4ba88591c5": "git 4e494929998d6bc4fccf75e0a233f727db4b70ee",
+    "3b35aaf641d0719e": "web snapshot 2026-08-28",
+    "e843f93261f074d9": "web snapshot 2026-08-28",
+    "dac58ff4358a3416": "web snapshot 2026-08-28",
+    "215600ceed9ac849": "web snapshot 2026-08-28",
+    "b1f6985403c6eaa1": "web snapshot 2026-08-28",
+    "3135ab19b861dcfc": "git cd5ef8148158c3a752a658978873241fdf8e2bbc",
+    "d839cdae36dc69de": "git 89c02c828ee8510fe9a84ee6675608193aa13b02",
+    "22e7d71eefcd7859": "specification 2025-11-25",
+    "b7b1ed310bb71fac": "web snapshot 2026-08-28",
 }
 
 
@@ -99,9 +109,13 @@ def main() -> None:
             source["year"] = "2026"
 
         if source["source_id"] in used:
+            source["metadata_status"] = "verified"
+
+        if source.get("metadata_status") == "verified":
+            if source["source_id"] not in VERSIONS:
+                raise ValueError(f"Verified source has no pinned version: {source['source_id']}")
             source["accessed_at"] = "2026-08-28"
             source["version_or_commit"] = VERSIONS[source["source_id"]]
-            source["metadata_status"] = "verified"
 
     text = "\n".join(json.dumps(source, ensure_ascii=False, separators=(",", ":")) for source in sources)
     SOURCES.write_text(text + "\n")

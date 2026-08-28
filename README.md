@@ -20,7 +20,7 @@
 - `chapters/`：序章及第 1—30 章 Markdown 源稿。
 - `parts/`：五篇的篇级导言，说明章节依赖与本篇产出。
 - `appendices/`：附录源稿。
-- `assets/`：正文引用的图片、图表等静态资源；目前为空。
+- `assets/`：正文引用的图片、图表及其可再生源文件。
 
 ### `research/`
 
@@ -28,6 +28,7 @@
 - `notes/`：分轮次的检索与综合笔记。
 - `evidence/`：`sources.jsonl`、`evidence.jsonl`、人工标注的 `claims_v2.jsonl` 和运行清单，构成可机读证据链；`claims.jsonl` 是旧版段落级账本，仅作迁移参考。
 - `audits/`：进度记录与质量审计结果。
+- `maintenance/`：产品事实巡检、版本发布和外部盲审的维护制度。
 
 ### `publishing/`
 
@@ -62,4 +63,4 @@ npm --prefix site run docs:build
 
 ## 审查状态
 
-2026-08-23 与 2026-08-27 的两轮审查推动了系统修订：当前版本仍是研究修订稿，但已重写产品、进化和实践篇，迁移到原子 claim 只读校验，并重建 PDF/站点流水线。审查原文、裁决表和机器校验报告位于 `research/audits/`；正式发布前仍应完成外部复审。
+截至 2026-08-28，四轮独立审阅已确认研究版发布门无阻塞项：产品、进化和实践篇完成系统性重写，证据账本迁移到原子 claim 只读校验，PDF/站点流水线可复现。审查原文、裁决表和机器校验报告位于 `research/audits/`；正式 1.0 前的外部盲审与产品事实巡检要求见 `research/maintenance/`。
