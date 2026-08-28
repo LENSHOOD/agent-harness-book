@@ -43,7 +43,7 @@
 
 ## 5. Peer review 处置
 
-前两轮逐条判断见 `peer_review_disposition_20260828.md`，第三轮判断与修复见 `peer_review_disposition_round3_20260828.md`，第四轮验收与建议处置见 `peer_review_disposition_round4_20260828.md`。第四轮确认上一轮 17 项验收判据全部通过且无新增 P0/P1；其五项非阻塞建议已采纳、制度化或说明暂缓理由。旧处置报告的 D-1 至 D-5 失实/漏报已在原报告文末公开勘误，未静默改写历史记录。
+前两轮逐条判断见 `peer_review_disposition_20260828.md`，第三轮判断与修复见 `peer_review_disposition_round3_20260828.md`，第四轮验收与建议处置见 `peer_review_disposition_round4_20260828.md`。第五份独立记录 `审阅记录_第五轮闭环_20260828.md` 已复测第四轮全部处置，确认研究版无 P0/P1/P2 遗留，并接受对第四轮审阅自身两处偏差的更正；评审系列至此关闭。旧处置报告的 D-1 至 D-5 失实/漏报已在原报告文末公开勘误，未静默改写历史记录。
 
 ## 6. 已知边界
 
