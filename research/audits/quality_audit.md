@@ -2,15 +2,15 @@
 
 审计日期：2026-08-28
 
-适用版本：`codex/peer-review-revision` 分支本轮修订稿
+适用内容版本：git `09d9f1b5a64a8ba4e52008942330530b0277afe3`
 
 结论：**通过研究版发布门禁；不等同于同行评议学术出版。**
 
 ## 1. 交付完整性
 
 - 1 篇序、30 章正文、5 个篇导言、5 个附录、研究方法与完整参考文献均已纳入统一构建。
-- 去除 fenced code 后，`manuscript/chapters + parts + appendices` 共 64,677 个中文正文字符，达到研究章程 6–10 万字下限。
-- 第 19–24 章“进化篇”共 13,558 个中文正文字符，占上述口径 20.963%，超过 20.8% 的评审缓冲要求，不再贴线达标。
+- 去除 fenced code 后，`manuscript/chapters + parts + appendices` 共 64,719 个中文正文字符，达到研究章程 6–10 万字下限。
+- 第 19–24 章“进化篇”共 13,558 个中文正文字符，占上述口径 20.949%，超过 20.8% 的评审缓冲要求，不再贴线达标。
 - 产品篇覆盖 Claude Code、Codex、Cursor、DeepSeek Harness/Cordis、OpenHands，并使用统一六轴比较与企业接入风险分析。
 - 实践篇包含三个端到端案例、完整合同/证据包实例、失败演练、企业 SLO、SDD、成熟度自评与迁移退出判据。
 - 附录 A–E 分别提供安全核心契约、可判定检查表、冻结术语本体、概念索引与机器可读 schema。
@@ -18,9 +18,9 @@
 ## 2. 事实与证据
 
 - 来源 registry：84 条；持久化 evidence：71 条；`claims_v2.jsonl`：25 条人工定义的原子承重 claim；正文外部链接：69 条。
-- 25 条承重 claim 使用的 28 个来源已全部填写访问日期、版本或 commit，并标记为 `verified`；来源类型收敛为 academic paper、official documentation、official article、official repository、platform metadata 五类。其余未核验来源明确作为历史存量，不冒充承重证据。
+- Registry 中 37 条 `verified` 来源已全部填写访问日期、版本、网页快照或 commit；其中 28 个被 25 条承重 claim 使用。其余 47 条为显式 `unverified` 的检索 backlog，不冒充承重证据；来源类型收敛为 academic paper、official documentation、official article、official repository、platform metadata 五类。
 - 原子 claim 分为 `historical_fact`、`research_result`、`vendor_claim`，全部绑定具体 source/evidence；厂商数字标出供应商口径，2026 年演化研究标出预印本边界。
-- `audit_claim_ledger.py` 已改为只读校验：不再根据 URL 自动推断事实类型，也不写回账本；同时校验 claim/source/evidence 引用完整性、严格类型支撑状态、正文链接登记与含括号 DOI 解析。
+- `audit_claim_ledger.py` 已改为只读校验：不再根据 URL 自动推断事实类型，也不写回账本；同时校验 claim/source/evidence 引用完整性、严格类型支撑状态、正文链接登记、含括号 DOI 解析、verified 元数据完整性及 README registry 数量声明。
 - 本轮运行结果：`PASS`，25/25 原子承重 claim 为 `supported`，无未登记正文链接。
 - 旧 `claims.jsonl` 保留为迁移审计材料，不再作为发布门禁的事实账本。
 
@@ -34,7 +34,7 @@
 
 ## 4. PDF 验收
 
-- 完整版：135 页，A4，1,012,021 bytes；文本可提取 257,525 字符，无替换字符或空白页。
+- 完整版：135 页，A4，1,012,257 bytes；文本可提取 257,594 字符，无替换字符或空白页。
 - 管理层版：14 页，A4，67,652 bytes。
 - PDF 书签含 5 个篇节点和 30 个章节点；篇层级为 0，所有章层级为 1，章节已正确嵌套。
 - 第 5、19、25 章三张 Graphviz 关系图已进入网页与 PDF；JSON/YAML 中的引号以最终 PDF 抽查确认未被渲染为 HTML 实体。
@@ -43,15 +43,15 @@
 
 ## 5. Peer review 处置
 
-前两轮逐条判断见 `peer_review_disposition_20260828.md`，第三轮判断与修复见 `peer_review_disposition_round3_20260828.md`。第三轮 12 项均有可复现依据并已落实；旧处置报告的 D-1 至 D-5 失实/漏报已在原报告文末公开勘误，未静默改写历史记录。
+前两轮逐条判断见 `peer_review_disposition_20260828.md`，第三轮判断与修复见 `peer_review_disposition_round3_20260828.md`，第四轮验收与建议处置见 `peer_review_disposition_round4_20260828.md`。第四轮确认上一轮 17 项验收判据全部通过且无新增 P0/P1；其五项非阻塞建议已采纳、制度化或说明暂缓理由。旧处置报告的 D-1 至 D-5 失实/漏报已在原报告文末公开勘误，未静默改写历史记录。
 
 ## 6. 已知边界
 
 - 25 条原子 claim 是承重主张子集，不代表逐句学术事实核查；设计推导、规范性建议与非承重背景材料仍依赖正文限定和内联来源。
-- 产品能力以 2026-08-28 为资料截面，供应商功能、协议与安全边界会继续变化。
+- 产品章节以 2026-08-27 为资料截面，部分来源在 2026-08-28 复核；供应商功能、协议与安全边界会继续变化。
 - Self-Harness、GSME、Living-Harness、HSI 等 2026 年材料在本截面仍以预印本为主，缺少长期生产复现。
 - 厂商内部指标不外推为行业总体；未公开实现只作为推断或集成假设表达。
-- 对外发布后仍建议邀请独立领域专家做一次盲审，尤其核查安全、训练数据治理和产品版本更新。
+- 正式 1.0 前仍须按 `research/maintenance/release_and_product_review_policy.md` 完成外部盲审，并持续巡检安全、训练数据治理和产品版本更新。
 
 ## 7. 最终判定
 
