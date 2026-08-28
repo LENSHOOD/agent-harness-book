@@ -22,13 +22,19 @@ for src in sorted((manuscript / 'parts').glob('*.md')):
 for src in sorted((manuscript / 'appendices').glob('*.md')):
     shutil.copy2(src, site / 'appendices' / src.name)
 
+assets_target = site / 'assets'
+if assets_target.exists():
+    shutil.rmtree(assets_target)
+if (manuscript / 'assets').exists():
+    shutil.copytree(manuscript / 'assets', assets_target)
+
 brief = (artifacts / 'executive_brief.md').read_text()
 brief = re.sub(r'^---\n.*?\n---\n', '# 企业决策者精简版\n\n', brief, count=1, flags=re.S)
 brief = brief.replace('[TOC]\n', '')
 (site / 'executive-brief.md').write_text(brief)
 
 sources = [json.loads(x) for x in (evidence / 'sources.jsonl').read_text().splitlines() if x.strip()]
-refs = ['# 完整参考文献', '', f'本书共登记 {len(sources)} 个主要来源。产品事实以 2026-08-22 为时间截面。', '']
+refs = ['# 完整参考文献', '', f'本书共登记 {len(sources)} 个主要来源。全书资料维护至 2026-08-28；快速变化的产品事实以各章章首声明为准。', '']
 for i, s in enumerate(sources, 1):
     authors = s.get('authors') or '机构/作者未登记'
     year = s.get('year') or 'n.d.'

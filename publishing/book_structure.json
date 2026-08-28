@@ -1,0 +1,75 @@
+{
+  "bookTitle": "Agent Harness：从执行脚手架到自我进化系统",
+  "subtitle": "企业 Agent 平台架构与工程实践",
+  "preface": {
+    "slug": "00_preface",
+    "title": "序：为什么现在需要一本 Harness 小书"
+  },
+  "parts": [
+    {
+      "number": 1,
+      "title": "第一篇 历史：Agent 如何从会回答变成会行动",
+      "intro": "01_history",
+      "chapters": [
+        {"number": 1, "slug": "01_from_control_loop_to_agent_runtime", "title": "第一章 从控制循环到 Agent Runtime"},
+        {"number": 2, "slug": "02_the_autonomous_agent_boom", "title": "第二章 2023：自主 Agent 爆发与第一次祛魅"},
+        {"number": 3, "slug": "03_interface_is_part_of_intelligence", "title": "第三章 接口也是智能：Aider、SWE-agent 与 OpenHands"},
+        {"number": 4, "slug": "04_the_coding_agent_turn", "title": "第四章 Coding Agent 转折：从实验接口到产品运行时"}
+      ]
+    },
+    {
+      "number": 2,
+      "title": "第二篇 原理：生产级 Harness 的构成",
+      "intro": "02_principles",
+      "chapters": [
+        {"number": 5, "slug": "05_system_model_and_responsibility_boundaries", "title": "第五章 Agent = Model × Harness × Environment × Feedback"},
+        {"number": 6, "slug": "06_agent_loop_as_a_durable_state_machine", "title": "第六章 Agent Loop：从 while 循环到持久状态机"},
+        {"number": 7, "slug": "07_context_cache_compaction_and_memory", "title": "第七章 上下文、缓存、压缩与记忆"},
+        {"number": 8, "slug": "08_tools_aci_mcp_and_code_mode", "title": "第八章 工具、ACI、MCP 与 Code Mode"},
+        {"number": 9, "slug": "09_permissions_sandbox_credentials_and_supply_chain", "title": "第九章 权限、沙箱、凭证与供应链"},
+        {"number": 10, "slug": "10_verification_completion_contracts_and_evidence_packages", "title": "第十章 验证、完成契约与证据包"},
+        {"number": 11, "slug": "11_multi_agent_delegation_and_collaboration_topologies", "title": "第十一章 多 Agent、委派与协作拓扑"},
+        {"number": 12, "slug": "12_observability_traces_and_eval_operations", "title": "第十二章 可观测性、轨迹与评测运营"}
+      ]
+    },
+    {
+      "number": 3,
+      "title": "第三篇 产品：当代主流 Harness 的不同答案",
+      "intro": "03_products",
+      "chapters": [
+        {"number": 13, "slug": "13_claude_code_thin_loop_thick_runtime", "title": "第十三章 Claude Code：薄循环、厚运行时"},
+        {"number": 14, "slug": "14_openai_codex_protocolized_agent_core", "title": "第十四章 OpenAI Codex：协议化的 Agent Core"},
+        {"number": 15, "slug": "15_cursor_ide_native_context_and_cloud_agents", "title": "第十五章 Cursor：IDE 原生上下文与云端 Agent"},
+        {"number": 16, "slug": "16_deepseek_harness_composable_runtime", "title": "第十六章 DeepSeek Harness：可组合、可逆的运行时"},
+        {"number": 17, "slug": "17_openhands_agent_runtime_separation", "title": "第十七章 OpenHands：Agent 与执行 Runtime 分离"},
+        {"number": 18, "slug": "18_product_comparison_and_architecture_spectrum", "title": "第十八章 产品比较：不要用一张总分表掩盖架构差异"}
+      ]
+    },
+    {
+      "number": 4,
+      "title": "第四篇 进化：Agent 如何从轨迹中变得更好",
+      "intro": "04_evolution",
+      "chapters": [
+        {"number": 19, "slug": "19_evolution_is_an_engineering_control_loop", "title": "第十九章 进化不是自我修改：目标函数、证据与边界"},
+        {"number": 20, "slug": "20_within_task_evolution_search_reflection_and_repair", "title": "第二十章 任务内进化：搜索、反思与验证—修复"},
+        {"number": 21, "slug": "21_cross_task_memory_skills_and_experience", "title": "第二十一章 跨任务经验化：Memory、Skill 与策略库"},
+        {"number": 22, "slug": "22_harness_evolution_prompts_tools_context_and_workflows", "title": "第二十二章 Harness 进化：从失败病理到版本化变更"},
+        {"number": 23, "slug": "23_model_evolution_from_trajectories", "title": "第二十三章 模型进化：从轨迹到参数更新"},
+        {"number": 24, "slug": "24_governed_evolution_loop", "title": "第二十四章 受控进化闭环：门禁、灰度、回滚与反投机"}
+      ]
+    },
+    {
+      "number": 5,
+      "title": "第五篇 实践：下一代企业 Harness",
+      "intro": "05_practice",
+      "chapters": [
+        {"number": 25, "slug": "25_three_end_to_end_cases", "title": "第二十五章 三个贯穿案例：从意图到可验证结果"},
+        {"number": 26, "slug": "26_next_generation_enterprise_harness_architecture", "title": "第二十六章 下一代企业 Harness 参考架构"},
+        {"number": 27, "slug": "27_agent_sdd_specification_driven_delivery", "title": "第二十七章 Agent SDD：规范驱动的任务与发布"},
+        {"number": 28, "slug": "28_maturity_model_and_build_vs_buy", "title": "第二十八章 成熟度模型与 Build-vs-Buy"},
+        {"number": 29, "slug": "29_from_vendor_agents_to_owned_runtime", "title": "第二十九章 从接入现有 Agent 到拥有运行时主动权"},
+        {"number": 30, "slug": "30_outlook_harness_os_and_evolving_agent_organizations", "title": "第三十章 展望：Harness OS、Agent 组织与持续进化"}
+      ]
+    }
+  ]
+}

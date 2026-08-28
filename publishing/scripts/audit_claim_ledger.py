@@ -24,6 +24,13 @@ CLAIMS_PATH = EVIDENCE_DIR / "claims_v2.jsonl"
 STRICT_TYPES = {"historical_fact", "factual", "vendor_claim", "research_result"}
 ALLOWED_TYPES = STRICT_TYPES | {"inference", "recommendation", "forecast"}
 ALLOWED_STATUS = {"supported", "partial", "unsupported", "needs_review"}
+ALLOWED_SOURCE_TYPES = {
+    "academic_paper",
+    "official_documentation",
+    "official_article",
+    "official_repository",
+    "platform_metadata",
+}
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -89,6 +96,12 @@ def validate() -> tuple[list[str], list[str], list[dict], dict]:
     if len({row.get("claim_id") for row in claims}) != len(claims):
         errors.append("claims_v2.jsonl contains duplicate claim_id values")
 
+    invalid_source_types = sorted(
+        {row.get("source_type") for row in sources if row.get("source_type") not in ALLOWED_SOURCE_TYPES}
+    )
+    if invalid_source_types:
+        errors.append(f"sources.jsonl contains uncontrolled source_type values: {invalid_source_types}")
+
     for item in evidence:
         if item.get("source_id") not in source_by_id:
             errors.append(
@@ -110,6 +123,14 @@ def validate() -> tuple[list[str], list[str], list[dict], dict]:
         for source_id in source_ids:
             if source_id not in source_by_id:
                 errors.append(f"{claim_id}: unknown source_id {source_id}")
+                continue
+            source = source_by_id[source_id]
+            if source.get("metadata_status") != "verified":
+                errors.append(f"{claim_id}: source {source_id} metadata is not verified")
+            if not source.get("accessed_at"):
+                errors.append(f"{claim_id}: source {source_id} has no accessed_at")
+            if not source.get("version_or_commit"):
+                errors.append(f"{claim_id}: source {source_id} has no version_or_commit")
         for evidence_id in evidence_ids:
             item = evidence_by_id.get(evidence_id)
             if item is None:
@@ -155,6 +176,15 @@ def validate() -> tuple[list[str], list[str], list[dict], dict]:
         "statuses": Counter(row.get("support_status") for row in claims),
         "manuscript_links": len(manuscript_links),
         "unregistered_links": unregistered,
+        "verified_claim_sources": len(
+            {
+                source_id
+                for claim in claims
+                for source_id in claim.get("cited_source_ids", [])
+                if source_by_id.get(source_id, {}).get("metadata_status") == "verified"
+            }
+        ),
+        "source_types": Counter(row.get("source_type") for row in sources),
     }
     return errors, warnings, claims, stats
 
@@ -169,7 +199,9 @@ def write_report(errors: list[str], warnings: list[str], claims: list[dict], sta
         f"- 登记来源：{stats['sources']}",
         f"- 证据记录：{stats['evidence']}",
         f"- 原子承重 claim：{stats['claims']}",
+        f"- 已核验承重来源：{stats['verified_claim_sources']}",
         f"- 正文外部链接：{stats['manuscript_links']}",
+        "- 来源类型：" + ", ".join(f"{k}={v}" for k, v in sorted(stats["source_types"].items())),
         "- Claim 类型：" + ", ".join(f"{k}={v}" for k, v in sorted(stats["types"].items())),
         "- 支撑状态：" + ", ".join(f"{k}={v}" for k, v in sorted(stats["statuses"].items())),
         "",
@@ -206,6 +238,8 @@ def main() -> int:
             "statuses": {},
             "manuscript_links": 0,
             "unregistered_links": [],
+            "verified_claim_sources": 0,
+            "source_types": {},
         }
     write_report(errors, warnings, claims, stats)
     after = digest(CLAIMS_PATH)

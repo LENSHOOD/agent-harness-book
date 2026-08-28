@@ -11,6 +11,8 @@ Agent System Capability
 
 乘号表达的不是精确数学关系，而是互相制约：任何一项接近零，系统能力都会大幅下降。优秀模型放进贫乏工具和错误权限中无法完成任务；优秀 Harness 不能让模型解决超出其理解边界的问题；不可复现的环境会让正确计划执行失败；没有外部反馈的系统无法区分“生成了结果”和“结果真的有效”。
 
+![图 5-1 Agent System 的责任边界与反馈方向](../assets/diagrams/system-responsibility-boundary.png)
+
 ## 1. Model：概率性策略与生成器
 
 模型接收有限上下文，输出文本、结构化动作或代码。它擅长：
@@ -164,7 +166,7 @@ User ───────→ Harness Data Plane ───────→ Model
 
 ## 9. Harness 的厚与薄
 
-现代产品存在明显分歧。DSH 主张一切皆插件，Codex 建立丰富核心与协议服务器，Cursor进行模型特定调优；Pi 则刻意保持四工具核心，不内置 MCP、subagent、plan mode、permission popup 和 background bash，把这些交给容器、tmux、技能或扩展。
+现代产品存在明显分歧。DSH 主张一切皆插件，Codex 建立丰富核心与协议服务器，Cursor 进行模型特定调优；Pi 则刻意保持 `read`、`write`、`edit`、`bash` 四工具核心，不内置 MCP、subagent、plan mode、permission popup 和 background bash，把这些交给容器、tmux、技能或扩展。[Pi coding agent README](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md)
 
 “厚 Harness”通常提供一致体验、治理和开箱能力，却增加核心复杂度、模型耦合和升级风险。“薄 Harness”更透明、更容易理解和组合，却把安全与运维责任交给部署者。
 

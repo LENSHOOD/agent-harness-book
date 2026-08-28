@@ -153,7 +153,7 @@ Claude Code 把消息、工具调用和结果写入 JSONL，从而支持 resume�
 
 ## 9. Compaction 是有损状态迁移
 
-上下文接近上限时，Claude SDK 与 Codex 都会压缩历史。Codex强调缓存依赖精确前缀匹配，并尽量通过追加消息表达中途配置变化；其服务端 compaction 以较短 items 替代旧 input。[Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/)
+上下文接近上限时，Claude SDK 与 Codex 都会压缩历史。Codex 强调缓存依赖精确前缀匹配，并尽量通过追加消息表达中途配置变化；其服务端 compaction 以较短 items 替代旧 input。[Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/)
 
 压缩不是普通摘要，而是一次有损状态迁移。至少要保护：
 

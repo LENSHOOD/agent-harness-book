@@ -59,3 +59,22 @@
 ## 5. 剩余风险
 
 本轮不能把“研究版可发布”夸大为“所有陈述已经过学术同行评议”。24 条原子 claim 是承重子集；产品章节会随版本变化；2026 年自进化研究仍主要是预印本；厂商内部指标缺少统一第三方复现。下一轮对外维护的优先级应是版本更新、外部专家盲审和将新增承重事实纳入 `claims_v2.jsonl`，而不是继续增加篇幅。
+
+## 6. 第三轮勘误（针对 git `25edbc0`）
+
+第三轮独立复测指出，本报告对 `25edbc0` 的若干陈述不准确或不完整。以下保留原文作为历史记录，并以本节显式更正，不静默改写当时的判断。
+
+| 编号 | 原报告问题 | 勘误与后续处置 |
+|---|---|---|
+| D-1 | 把“下载链接改为 base-aware 路径”列为完成；验收表未单列并隐含为 PASS | **在 `25edbc0` 上应判 FAIL。** 构建产物仍是 `/downloads/*.pdf`，GitHub Pages 项目站点会 404。本轮把 nav 与 hero 改为 `/agent-harness-book/downloads/agent_harness_book.pdf`，并在 CI 对最终 dist 同时设置负向与正向 grep 门禁；新构建验证通过后才能记为当前 PASS。 |
+| D-2 | 数字证据处置只列 84%、95%、80%、4×、15×，漏报第 11 章“10 倍级” | 漏报属实。该数字没有独立来源。本轮删除固定倍数，改为“不一定覆盖额外推理、验证与运维成本”，并明确这是作者的定性工程判断。 |
+| D-3 | 未披露 Pi 在第 13、18 章删除、在第 5、8 章保留，且保留处缺引用 | 删除产品比较中的边缘 Pi 对照是有意收窄案例范围，但报告应披露。保留的两处现已链接当前官方 README；证据账本新增“四个默认工具”和“不内置 MCP/subagent/permission popup/plan mode/background bash”的 quote 级记录，并新增原子 claim。 |
+| D-4 | 声称章节标题、侧边栏与构建入口已统一 | 在 `25edbc0` 上属于过度陈述。第 5、19 章仍有标题漂移。本轮建立 `publishing/book_structure.json` 作为 30 章唯一标题源，构建脚本和 VitePress 侧边栏共同读取；`check_book_structure.py` 校验源文件 H1。历史 outline 已标明不再是当前权威。 |
+| D-5 | 声称 25 个载体包括 Python、Mermaid | 25 个非 text 机器可读/命令块的总数属实，但 Python 与 Mermaid 均为 0，载体清单虚列。准确表述应为 JSON、YAML、SQL 与 Bash 等语言中立或运维载体。本轮另新增 3 张由 Graphviz 源文件生成的关系图；它们不是 Mermaid，也不改变先前统计的事实。 |
+
+### 下载入口状态修正
+
+| 验收对象 | 状态 | 证据 |
+|---|---|---|
+| `25edbc0` 的下载链接 | **FAIL** | dist 含 `href="/downloads/`，缺 GitHub Pages base |
+| 本轮修订后的下载链接 | **PASS** | 2026-08-28 最终构建中错误 `/downloads/` href 为 0；45 处完整版入口均为 `/agent-harness-book/downloads/agent_harness_book.pdf` |

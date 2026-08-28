@@ -2,7 +2,7 @@
 
 
 
-本书共登记 84 个主要来源。产品事实以 2026-08-22 为时间截面。
+本书共登记 84 个主要来源。全书资料维护至 2026-08-28；快速变化的产品事实以各章章首声明为准。
 
 
 
@@ -48,7 +48,7 @@
 
 21. 机构/作者未登记 (n.d.). [OpenCode official repository](https://github.com/sst/opencode)
 
-22. 机构/作者未登记 (n.d.). [Pi coding agent official repository](https://github.com/badlogic/pi-mono)
+22. Earendil Works / Mario Zechner (2026). [Pi coding agent official README](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md)
 
 23. 机构/作者未登记 (n.d.). [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
 

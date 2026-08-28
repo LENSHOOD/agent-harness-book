@@ -4,6 +4,8 @@
 
 ## 1. 核心对象
 
+这组对象用于确定跨 Runtime 的最小语义边界：平台可以增添字段，但不得把 Task、Attempt、Action、Effect 和 Evidence 混成一条聊天记录。常见误用是只保存模型消息，事后从自然语言猜测权限、输入版本和实际副作用；那样既不能安全恢复，也不能证明完成。
+
 ```text
 Task {
   id, tenant, contract_version, input_refs[], risk, budget,
@@ -45,6 +47,8 @@ EvidencePackage {
 
 ## 2. Run loop：proposal 不直接变成 effect
 
+这段循环用于实现平台拥有的决策—授权—执行—验证骨架，供应商 Agent 可以占据 `model.decide`，却不能绕过策略与完成门。常见误用是把 `final answer` 当作成功，或让模型直接调用 executor；两者都会把“提出候选”与“获得外部提交权”混为一谈。
+
 ```text
 while attempt.active:
     canonical_state = state_store.load(attempt.id)
@@ -82,6 +86,8 @@ while attempt.active:
 
 ## 3. 副作用提交：先记 intent，再执行
 
+凡是会改变外部权威状态且可能超时的动作，都应使用这一模式，例如发送、部署、支付和工单更新。它不是数据库事务的万能替代：目标系统若不支持幂等查询，就必须提供业务唯一键、对账 API 或人工 reconciliation，不能在 timeout 后盲目重试。
+
 ```text
 commit_effect_safely(action, constraints):
     effect = EffectIntent(
@@ -114,6 +120,8 @@ commit_effect_safely(action, constraints):
 
 ## 4. 恢复、取消与对账
 
+长任务、子任务和外部副作用并存时，恢复与取消必须作为持久状态转换实现，而不是进程控制的附注。常见误用是恢复旧 credential、重复执行未知 effect，或在 UI 标记 cancelled 后留下子进程继续运行；这些都会制造越权或重复提交。
+
 ```text
 recover(attempt_id):
     lease = coordinator.acquire_single_owner(attempt_id)
@@ -140,6 +148,8 @@ cancel(attempt_id, reason):
 恢复时不复用过期 credential，也不把 checkpoint 中旧授权当成当前授权。取消是一个需要收敛的状态，不是向 worker 发一条尽力而为的信号。
 
 ## 5. Adapter 的能力协商
+
+CapabilitySet 用于调度前比较任务风险需求与 Runtime 的真实能力，尤其适合同时接入 Claude Code、Codex 与自研 Runtime 的平台。它不是一张营销功能表；`no` 或未知能力必须导致替代 Runtime、收缩自治范围或人工升级，不能靠空字段伪装兼容。
 
 ```text
 CapabilitySet {

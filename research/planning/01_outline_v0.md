@@ -1,5 +1,7 @@
 # 《Agent Harness：从执行脚手架到自我进化系统》目录 v0
 
+> 历史规划快照：本文件保留最初目录演化过程，不再作为当前标题来源。当前书名、篇名、章名和 slug 的唯一权威源是 `publishing/book_structure.json`；构建脚本与 VitePress 侧边栏均从该文件派生。
+
 ## 序：为什么现在需要一本 Harness 小书
 
 定义读者、问题和全书主张：Agent 是模型、Harness、环境与反馈系统的乘积。

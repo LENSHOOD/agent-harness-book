@@ -158,7 +158,7 @@ Framework 主要回答“开发者怎样表达 Agent”；Runtime 还必须回�
 
 ## 7. 这一代系统留下了什么
 
-AutoGPT 和 BabyAGI 留下开放循环与任务外置；LangChain留下 Agent/Tool/Memory/Executor 词汇和集成生态；AutoGen 留下对话式多 Agent 编排；LangGraph 则代表从高层魔法回到显式状态和持久运行语义。
+AutoGPT 和 BabyAGI 留下开放循环与任务外置；LangChain 留下 Agent/Tool/Memory/Executor 词汇和集成生态；AutoGen 留下对话式多 Agent 编排；LangGraph 则代表从高层魔法回到显式状态和持久运行语义。
 
 它们共同证明：一个最小 Agent 的确可以很小，但一个可靠 Agent 系统不会很小。
 

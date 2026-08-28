@@ -1,5 +1,7 @@
 # 第二十二章 Harness 进化：从失败病理到版本化变更
 
+> 证据地位：本章综合公开研究与作者工程推导；2026 年演化研究以预印本为主，结论不等同于长期生产复现。
+
 Harness 进化直接修改模型所处的决策环境，通常比训练模型上线快，也最容易陷入“不断追加 prompt”。可变对象包括 system instruction、tool schema、context compiler、retriever、compactor、router、retry、workflow、sandbox profile 和 model profile。只有当变化被版本化、独立评价并可回滚时，才称得上 Harness 进化。
 
 ## 1. 本层的证据模板实例

@@ -16,6 +16,7 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     HRFlowable,
+    Image as RLImage,
     LongTable,
     PageBreak,
     Paragraph,
@@ -45,6 +46,7 @@ h1,h2,h3,h4 { color:#003d5c; line-height:1.25; }
 h1 { font-size:22pt; border-bottom:2px solid #003d5c; padding-bottom:7px; margin:36px 0 17px; }
 h2 { font-size:16pt; margin:27px 0 12px; border-bottom:1px solid #aebdc6; padding-bottom:5px; }
 h3 { font-size:12.5pt; margin:20px 0 8px; }
+img { display:block; max-width:100%; height:auto; margin:14px auto 6px; }
 p { margin:0 0 9px; }
 a { color:#005b82; text-decoration:none; overflow-wrap:anywhere; }
 blockquote { margin:12px 0; padding:8px 14px; border-left:4px solid #407f9b; background:#f3f6f7; color:#3d4a52; }
@@ -83,9 +85,9 @@ class BookDocTemplate(SimpleDocTemplate):
         if not isinstance(flowable, Paragraph):
             return
         style_name = flowable.style.name
-        if style_name not in {"Heading1", "Heading2", "Heading3"}:
+        if style_name not in {"Heading1", "Heading2", "Heading3", "Heading4"}:
             return
-        level = {"Heading1": 0, "Heading2": 1, "Heading3": 2}[style_name]
+        level = {"Heading1": 0, "Heading2": 1, "Heading3": 2, "Heading4": 3}[style_name]
         text = flowable.getPlainText()
         key = f"heading-{self.page}-{abs(hash((text, self.page)))}"
         self.canv.bookmarkPage(key)
@@ -150,12 +152,16 @@ def styles():
             spaceBefore=12, spaceAfter=12, keepWithNext=True, pageBreakBefore=False,
         ),
         "Heading2": ParagraphStyle(
-            "Heading2", parent=body, fontSize=14, leading=19, textColor=colors.HexColor("#075985"),
+            "Heading2", parent=body, fontSize=13, leading=18, textColor=colors.HexColor("#075985"),
             spaceBefore=14, spaceAfter=8, keepWithNext=True,
         ),
         "Heading3": ParagraphStyle(
             "Heading3", parent=body, fontSize=11.5, leading=16, textColor=colors.HexColor("#164e63"),
             spaceBefore=10, spaceAfter=6, keepWithNext=True,
+        ),
+        "Heading4": ParagraphStyle(
+            "Heading4", parent=body, fontSize=10.2, leading=15, textColor=colors.HexColor("#28566a"),
+            spaceBefore=8, spaceAfter=5, keepWithNext=True,
         ),
         "Quote": ParagraphStyle(
             "Quote", parent=body, leftIndent=10, rightIndent=8, borderColor=colors.HexColor("#407f9b"),
@@ -171,6 +177,10 @@ def styles():
         "CodeLabel": ParagraphStyle(
             "CodeLabel", parent=body, fontSize=6.5, leading=8, textColor=colors.HexColor("#65737e"),
             spaceBefore=4, spaceAfter=1,
+        ),
+        "FigureCaption": ParagraphStyle(
+            "FigureCaption", parent=body, fontSize=7.8, leading=11, alignment=TA_CENTER,
+            textColor=colors.HexColor("#52636d"), spaceBefore=2, spaceAfter=10,
         ),
         "TableCell": ParagraphStyle("TableCell", parent=body, fontSize=6.5, leading=8.5, spaceAfter=0),
         "TableHead": ParagraphStyle(
@@ -222,7 +232,7 @@ def markdown_table(lines: list[str], sheet: dict, available_width: float):
     return table
 
 
-def parse_markdown(text: str, sheet: dict, available_width: float) -> list:
+def parse_markdown(text: str, sheet: dict, available_width: float, base_dir: Path) -> list:
     text = re.sub(r"^---\n.*?\n---\n", "", text, count=1, flags=re.S)
     lines = text.splitlines()
     story = []
@@ -244,7 +254,10 @@ def parse_markdown(text: str, sheet: dict, available_width: float) -> list:
             if line.startswith("```"):
                 if code_language:
                     story.append(Paragraph(escape(code_language.upper()), sheet["CodeLabel"]))
-                story.append(Preformatted(escape("\n".join(code)), sheet["Code"], maxLineLength=92))
+                # Preformatted handles XML-sensitive characters, but ReportLab does not
+                # decode &quot;/&#x27; in this flowable. Keep quotes literal so JSON/YAML
+                # remains readable while still escaping angle brackets and ampersands.
+                story.append(Preformatted(escape("\n".join(code), quote=False), sheet["Code"], maxLineLength=92))
                 code.clear()
                 in_code = False
                 code_language = ""
@@ -270,7 +283,25 @@ def parse_markdown(text: str, sheet: dict, available_width: float) -> list:
             story.append(Spacer(1, 7))
             continue
 
-        heading = re.match(r"^(#{1,3})\s+(.+)$", line)
+        image_match = re.match(r"^!\[([^\]]*)\]\(([^)]+)\)$", line.strip())
+        if image_match:
+            flush_paragraph()
+            alt, href = image_match.groups()
+            image_path = (base_dir / href).resolve()
+            if not image_path.is_file():
+                raise FileNotFoundError(f"Markdown image not found: {image_path}")
+            figure = RLImage(str(image_path))
+            scale = min(available_width / figure.imageWidth, (105 * mm) / figure.imageHeight, 1.0)
+            figure.drawWidth = figure.imageWidth * scale
+            figure.drawHeight = figure.imageHeight * scale
+            figure.hAlign = "CENTER"
+            story.extend([Spacer(1, 7), figure])
+            if alt:
+                story.append(Paragraph(escape(alt), sheet["FigureCaption"]))
+            index += 1
+            continue
+
+        heading = re.match(r"^(#{1,4})\s+(.+)$", line)
         if heading:
             flush_paragraph()
             level = len(heading.group(1))
@@ -278,6 +309,8 @@ def parse_markdown(text: str, sheet: dict, available_width: float) -> list:
                 if seen_heading1:
                     story.append(PageBreak())
                 seen_heading1 = True
+            elif level == 2 and re.match(r"^(?:第[一二三四五六七八九十百]+章|附录)", heading.group(2)):
+                story.append(PageBreak())
             story.append(Paragraph(inline_markup(heading.group(2)), sheet[f"Heading{level}"]))
             index += 1
             continue
@@ -289,6 +322,7 @@ def parse_markdown(text: str, sheet: dict, available_width: float) -> list:
                 ParagraphStyle("TOC1", fontName="STSong-Light", fontSize=9, leading=14, leftIndent=0, firstLineIndent=0),
                 ParagraphStyle("TOC2", fontName="STSong-Light", fontSize=8, leading=12, leftIndent=12, firstLineIndent=0),
                 ParagraphStyle("TOC3", fontName="STSong-Light", fontSize=7, leading=10, leftIndent=24, firstLineIndent=0),
+                ParagraphStyle("TOC4", fontName="STSong-Light", fontSize=6.5, leading=9, leftIndent=36, firstLineIndent=0),
             ]
             story.append(toc)
             index += 1
@@ -337,7 +371,7 @@ def render_pdf(md_path: Path, pdf_path: Path, title: str, subtitle: str) -> None
         subject=subtitle,
     )
     cover = [PageBreak()]
-    story = cover + parse_markdown(md_path.read_text(), sheet, doc.width)
+    story = cover + parse_markdown(md_path.read_text(), sheet, doc.width, md_path.parent)
     doc.multiBuild(story, onFirstPage=cover_page, onLaterPages=page_footer)
 
 

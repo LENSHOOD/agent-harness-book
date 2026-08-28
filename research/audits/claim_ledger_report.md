@@ -4,11 +4,13 @@
 
 - 结论：PASS
 - 登记来源：84
-- 证据记录：69
-- 原子承重 claim：24
-- 正文外部链接：68
-- Claim 类型：historical_fact=2, research_result=11, vendor_claim=11
-- 支撑状态：supported=24
+- 证据记录：71
+- 原子承重 claim：25
+- 已核验承重来源：28
+- 正文外部链接：69
+- 来源类型：academic_paper=29, official_article=17, official_documentation=26, official_repository=8, platform_metadata=4
+- Claim 类型：historical_fact=2, research_result=11, vendor_claim=12
+- 支撑状态：supported=25
 
 ## 错误
 
@@ -46,6 +48,7 @@
 | C022 | 23 | research_result | supported | 2 |
 | C023 | 24 | research_result | supported | 2 |
 | C024 | 11 | vendor_claim | supported | 1 |
+| C025 | 05,08 | vendor_claim | supported | 1 |
 
 ## 未登记的正文链接
 

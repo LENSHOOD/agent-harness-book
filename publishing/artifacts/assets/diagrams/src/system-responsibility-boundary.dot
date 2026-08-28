@@ -1,0 +1,30 @@
+digraph G {
+  graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.45, ranksep=0.55, fontname="PingFang SC"];
+  node [shape=box, style="rounded,filled", fontname="PingFang SC", fontsize=12, color="#8BA7B5", fillcolor="#F4F8FA", fontcolor="#17384A", margin="0.14,0.10"];
+  edge [fontname="PingFang SC", fontsize=10, color="#4F7487", fontcolor="#34596B", arrowsize=0.7];
+
+  goal [label="Task / CompletionContract", fillcolor="#E8F3F8"];
+  model [label="Model\n概率性提案"];
+  context [label="Context compiler\n状态投影"];
+  runtime [label="Agent Runtime\n循环、预算、恢复"];
+  policy [label="Policy & Control\n身份、授权、审批"];
+  execution [label="Execution Runtime\n沙箱、工具、外部效果"];
+  environment [label="Environment\n仓库、浏览器、数据库、SaaS"];
+  evidence [label="Evidence & Feedback\n验证、归因、评测"];
+  commit [label="Commit authority\n业务副作用生效", fillcolor="#EAF5ED"];
+
+  { rank=same; context; model; runtime; }
+  { rank=same; policy; execution; }
+  { rank=same; environment; evidence; commit; }
+
+  goal -> context [label="目标与约束"];
+  context -> model [label="有限上下文"];
+  model -> runtime [label="proposal"];
+  runtime -> policy [label="normalized action"];
+  policy -> execution [label="scoped capability"];
+  execution -> environment [label="effect"];
+  environment -> evidence [label="observation"];
+  evidence -> context [label="diagnostic feedback", constraint=false];
+  evidence -> commit [label="verified candidate"];
+  policy -> commit [label="authority", constraint=false];
+}
