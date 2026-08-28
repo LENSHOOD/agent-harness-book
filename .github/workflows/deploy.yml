@@ -39,6 +39,11 @@ jobs:
         run: |
           python publishing/scripts/build_book.py
           python publishing/scripts/render_publications.py
+      - name: Verify deterministic PDF rendering
+        run: |
+          sha256sum publishing/artifacts/agent_harness_book.pdf publishing/artifacts/executive_brief.pdf > /tmp/publication-checksums
+          python publishing/scripts/render_publications.py
+          sha256sum --check /tmp/publication-checksums
       - name: Sync manuscript into the website
         run: python publishing/scripts/prepare_site.py
       - run: npm --prefix site ci

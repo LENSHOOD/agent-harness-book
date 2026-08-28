@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import hashlib
 from html import escape
 from pathlib import Path
 import re
 
 import markdown
 import reportlab
+from reportlab import rl_config
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.pagesizes import A4
@@ -32,6 +34,9 @@ OUT = ROOT / "publishing" / "artifacts"
 OUT.mkdir(exist_ok=True)
 
 SNAPSHOT = "2026-08-28"
+# ReportLab otherwise embeds the wall-clock build time and a random document ID.
+# Invariant mode makes identical inputs produce byte-identical publication files.
+rl_config.invariant = 1
 pdfmetrics.registerFont(UnicodeCIDFont("STSong-Light"))
 REPORTLAB_FONTS = Path(reportlab.__file__).resolve().parent / "fonts"
 pdfmetrics.registerFont(TTFont("VeraEmbedded", str(REPORTLAB_FONTS / "Vera.ttf")))
@@ -89,7 +94,7 @@ class BookDocTemplate(SimpleDocTemplate):
             return
         level = {"Heading1": 0, "Heading2": 1, "Heading3": 2, "Heading4": 3}[style_name]
         text = flowable.getPlainText()
-        key = f"heading-{self.page}-{abs(hash((text, self.page)))}"
+        key = flowable._bookmark_key
         self.canv.bookmarkPage(key)
         self.canv.addOutlineEntry(text, key, level=level, closed=level > 0)
         self.notify("TOCEntry", (level, text, self.page, key))
@@ -241,6 +246,7 @@ def parse_markdown(text: str, sheet: dict, available_width: float, base_dir: Pat
     code_language = ""
     in_code = False
     seen_heading1 = False
+    heading_serial = 0
 
     def flush_paragraph():
         if paragraph:
@@ -311,7 +317,14 @@ def parse_markdown(text: str, sheet: dict, available_width: float, base_dir: Pat
                 seen_heading1 = True
             elif level == 2 and re.match(r"^(?:第[一二三四五六七八九十百]+章|附录)", heading.group(2)):
                 story.append(PageBreak())
-            story.append(Paragraph(inline_markup(heading.group(2)), sheet[f"Heading{level}"]))
+            heading_serial += 1
+            heading_text = heading.group(2)
+            digest = hashlib.sha256(
+                f"{heading_serial}\0{level}\0{heading_text}".encode("utf-8")
+            ).hexdigest()[:16]
+            heading_paragraph = Paragraph(inline_markup(heading_text), sheet[f"Heading{level}"])
+            heading_paragraph._bookmark_key = f"heading-{heading_serial}-{digest}"
+            story.append(heading_paragraph)
             index += 1
             continue
 
