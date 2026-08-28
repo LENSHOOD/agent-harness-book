@@ -2,7 +2,7 @@
 
 审计日期：2026-08-28
 
-适用内容版本：git `09d9f1b5a64a8ba4e52008942330530b0277afe3`
+适用内容版本：git `34be37385ee792592a25ce758ab4b136d3a584b9`
 
 结论：**通过研究版发布门禁；不等同于同行评议学术出版。**
 
@@ -30,6 +30,7 @@
 - `prepare_site.py` 会先清理并重新同步 chapters、parts、appendices、assets 和下载文件，避免网页与 PDF 版本漂移。
 - `publishing/book_structure.json` 是 30 章标题的单一来源；构建脚本和 VitePress 侧边栏共同读取，CI 另以 `check_book_structure.py` 校验源稿 H1。
 - GitHub Actions 依次执行 claim audit、结构审计、合并书稿、生成 PDF、同步站点和 VitePress 构建；本地以同样顺序复现通过。
+- PDF 渲染启用 ReportLab invariant 模式并使用稳定书签键；CI 连续渲染两次并比较 SHA-256，拒绝时间戳、随机文档 ID 或书签键造成的字节漂移。
 - VitePress 构建完成；最终 dist 的错误 `/downloads/` 链接为 0，45 处完整版入口均为 `/agent-harness-book/downloads/agent_harness_book.pdf`。CI 在构建产物上设置正反双向门禁。
 
 ## 4. PDF 验收
@@ -40,6 +41,7 @@
 - 第 5、19、25 章三张 Graphviz 关系图已进入网页与 PDF；JSON/YAML 中的引号以最终 PDF 抽查确认未被渲染为 HTML 实体。
 - Latin 封面字体以 ReportLab 自带 TrueType 字体嵌入，避免默认未嵌入 Helvetica 在部分渲染器中不可见。
 - 抽查完整版封面、目录、表格/代码页、进化篇新增页、参考文献末页，以及管理层版首末页；未发现裁切、重叠、黑块、缺字或不可见标题。
+- 发布前在两个独立渲染进程中复测：完整版 SHA-256 均为 `177a984e55c355f719dfb40db854fa04fc1ee38ddc0af2b7fded8a4efc197604`，管理层版均为 `ecdb0b526f5a3a912dce0e983b08f828f2398ac7986f3015167862f74e2fcd06`。
 
 ## 5. Peer review 处置
 
