@@ -1,7 +1,5 @@
 # 第五章 Agent = Model × Harness × Environment × Feedback
 
-> 本章状态：正文初稿 v0.1。章节编号依照全书目录；第四章将在历史资料补齐后撰写。
-
 “Agent = Model + Harness”是一条有用的传播公式，但对企业架构仍然太粗。它容易让人把环境、验证与反馈也塞进 Harness，最终得到“除模型外一切都是 Harness”的不可操作定义。
 
 本书采用一个乘法式系统模型：

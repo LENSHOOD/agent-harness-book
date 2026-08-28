@@ -15,6 +15,14 @@ parts = [
     ("第五篇 实践：下一代企业 Harness", range(25, 31)),
 ]
 
+part_intros = {
+    1: MANUSCRIPT / "parts" / "01_history.md",
+    5: MANUSCRIPT / "parts" / "02_principles.md",
+    13: MANUSCRIPT / "parts" / "03_products.md",
+    19: MANUSCRIPT / "parts" / "04_evolution.md",
+    25: MANUSCRIPT / "parts" / "05_practice.md",
+}
+
 chapters = {}
 for path in sorted((MANUSCRIPT / "chapters").glob("*.md")):
     prefix = path.name.split("_", 1)[0]
@@ -29,13 +37,16 @@ def body(path):
 chunks = [
     "---\ntitle: 'Agent Harness：从执行脚手架到自我进化系统'\n"
     "subtitle: '企业 Agent 平台架构与工程实践'\n"
-    "author: '内部研究稿'\ndate: '2026-08-22'\nlang: zh-CN\n---\n",
+    "author: '研究修订稿'\ndate: '2026-08-28'\nlang: zh-CN\n---\n",
     body(chapters[0]),
     "# 目录\n\n[TOC]\n\nMarkdown 章节按下列五篇排列。",
 ]
 
 for title, nums in parts:
     chunks.append(f"# {title}")
+    first = min(nums)
+    if first in part_intros:
+        chunks.append(body(part_intros[first]))
     for n in nums:
         chunks.append(body(chapters[n]))
 
@@ -46,7 +57,7 @@ for path in sorted((MANUSCRIPT / "appendices").glob("*.md")):
 chunks.append("# 研究方法与局限\n\n"
               "本书采用官方文档、开源仓库、论文和社区材料的分层证据法。产品事实以 2026-08-22 为时间截面；"
               "无法验证的内部实现不作为事实。设计原则是作者基于多来源的综合推断。"
-              "研究资产包括 sources.jsonl、evidence.jsonl 与 claims.jsonl。"
+              "研究资产包括 sources.jsonl、evidence.jsonl 与人工标注的 claims_v2.jsonl；旧 claims.jsonl 仅作历史迁移参考。"
               "局限包括产品快速迭代、公开 benchmark 污染、厂商数据选择偏差，以及部分 2026 年进化论文尚缺长期生产复现。")
 
 bib = ["# 完整参考文献"]

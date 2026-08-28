@@ -7,8 +7,17 @@ evidence = root / 'research' / 'evidence'
 artifacts = root / 'publishing' / 'artifacts'
 site = root / 'site' / 'docs'
 
+for directory in ['chapters', 'parts', 'appendices']:
+    target = site / directory
+    if target.exists():
+        shutil.rmtree(target)
+    target.mkdir(parents=True)
+
 for src in sorted((manuscript / 'chapters').glob('*.md')):
     shutil.copy2(src, site / 'chapters' / src.name)
+
+for src in sorted((manuscript / 'parts').glob('*.md')):
+    shutil.copy2(src, site / 'parts' / src.name)
 
 for src in sorted((manuscript / 'appendices').glob('*.md')):
     shutil.copy2(src, site / 'appendices' / src.name)

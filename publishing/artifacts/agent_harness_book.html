@@ -1,37 +1,25 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Agent Harness</title><style>
-@page { size: A4; margin: 18mm 17mm 20mm 17mm;
-  @bottom-center { content: counter(page); color:#65737e; font-size:8pt; }
-}
-@page:first { @bottom-center { content: normal; } }
+@page { size: A4; margin: 18mm 17mm 20mm 17mm; }
 * { box-sizing:border-box; }
-body { font-family:"Sarasa Gothic SC","PingFang SC","Noto Sans CJK SC",sans-serif;
-  color:#18242c; font-size:10pt; line-height:1.68; max-width:1040px; margin:0 auto; padding:28px 42px; }
-h1,h2,h3,h4 { color:#003d5c; line-height:1.25; page-break-after:avoid; }
-h1 { font-size:22pt; border-bottom:2px solid #003d5c; padding-bottom:7px; margin:36px 0 17px; page-break-before:always; }
-h1:first-of-type { page-break-before:avoid; font-size:30pt; margin-top:80px; }
+body { font-family:"PingFang SC","Noto Sans CJK SC",sans-serif; color:#18242c;
+  font-size:10pt; line-height:1.68; max-width:1040px; margin:0 auto; padding:28px 42px; }
+h1,h2,h3,h4 { color:#003d5c; line-height:1.25; }
+h1 { font-size:22pt; border-bottom:2px solid #003d5c; padding-bottom:7px; margin:36px 0 17px; }
 h2 { font-size:16pt; margin:27px 0 12px; border-bottom:1px solid #aebdc6; padding-bottom:5px; }
 h3 { font-size:12.5pt; margin:20px 0 8px; }
-p { margin:0 0 9px; orphans:3; widows:3; }
+p { margin:0 0 9px; }
 a { color:#005b82; text-decoration:none; overflow-wrap:anywhere; }
 blockquote { margin:12px 0; padding:8px 14px; border-left:4px solid #407f9b; background:#f3f6f7; color:#3d4a52; }
-pre { white-space:pre-wrap; background:#f3f5f6; border-left:3px solid #315d72; padding:10px 12px; font:8.4pt/1.48 "Sarasa Mono SC",monospace; page-break-inside:avoid; }
-code { font-family:"Sarasa Mono SC",monospace; background:#f1f3f4; padding:1px 3px; }
-pre code { background:none; padding:0; }
-table { width:100%; border-collapse:collapse; margin:12px 0 17px; font-size:8.6pt; page-break-inside:avoid; }
+pre { white-space:pre-wrap; background:#f3f5f6; border-left:3px solid #315d72; padding:10px 12px; font:8.4pt/1.48 monospace; }
+code { background:#f1f3f4; padding:1px 3px; }
+table { width:100%; border-collapse:collapse; margin:12px 0 17px; font-size:8.6pt; }
 th { background:#003d5c; color:white; text-align:left; }
 th,td { border:1px solid #ccd5da; padding:6px 7px; vertical-align:top; }
-tr:nth-child(even) td { background:#f6f8f9; }
-li { margin:3px 0; }
-hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
-.toc { background:#f4f7f8; border-top:3px solid #003d5c; padding:16px 22px; margin:24px 0; }
-.toc ul { list-style:none; padding-left:15px; }
-.toc > ul { padding-left:0; }
 .title-block { background:#003d5c; color:white; padding:58px 48px; margin:-28px -42px 35px; min-height:260px; }
-.title-block h1 { color:white; border:0; page-break-before:avoid; margin:0 0 14px; }
+.title-block h1 { color:white; border:0; margin:0 0 14px; }
 .title-block .subtitle { font-size:15pt; color:#cce0ea; }
 .title-block .meta { margin-top:70px; color:#c1d5df; }
-@media print { body { padding:0; max-width:none; } .title-block { margin:0; min-height:240mm; page-break-after:always; } }
-</style></head><body><div class="title-block"><h1>Agent Harness</h1><div class="subtitle">从执行脚手架到自我进化系统</div><div class="meta">内部研究稿<br>资料截面：2026-08-22</div></div><hr />
+</style></head><body><div class="title-block"><h1>Agent Harness</h1><div class="subtitle">从执行脚手架到自我进化系统</div><div class="meta">研究修订稿<br>资料截面：2026-08-28</div></div><hr />
 <h1 id="harness">序：为什么现在需要一本 Harness 小书</h1>
 <p>同一个模型放进不同 Agent 产品，表现可能像两个不同的系统。差异来自模型之外的上下文、工具、环境、权限、反馈、恢复和验证。本书把这组能力统称为 Agent Harness。</p>
 <p>Harness 不是一个框架品牌，也不只是 <code>while model calls tools</code>。它是模型与真实世界之间的运行时和治理层：把人的意图编译成任务，把环境状态编译成上下文，把模型动作变成受控副作用，再把外部结果编译成证据。</p>
@@ -46,7 +34,10 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 <div class="toc"><span class="toctitle">自动目录</span><ul>
 <li><a href="#harness">序：为什么现在需要一本 Harness 小书</a></li>
 <li><a href="#_1">目录</a></li>
-<li><a href="#agent">第一篇 历史：Agent 如何从会回答变成会行动</a></li>
+<li><a href="#agent">第一篇 历史：Agent 如何从会回答变成会行动</a><ul>
+<li><a href="#harness_1">本篇导言：Harness 从哪里来</a></li>
+</ul>
+</li>
 <li><a href="#agent-runtime">第一章 从控制循环到 Agent Runtime</a><ul>
 <li><a href="#1">1. 规划：把目标翻译成动作序列</a></li>
 <li><a href="#2-bdi">2. 反应与承诺：BDI 的长期遗产</a></li>
@@ -86,22 +77,25 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 <li><a href="#8">8. 从接口工程得到的七条原则</a></li>
 </ul>
 </li>
-<li><a href="#coding-agent">第四章 Coding Agent 转折：真实仓库成为反馈环境</a><ul>
-<li><a href="#1_1">1. 从聊天记录到工作树</a></li>
-<li><a href="#2_1">2. 可执行反馈改变了规划</a></li>
-<li><a href="#3-codeact">3. CodeAct 与统一动作空间</a></li>
-<li><a href="#4-openhands">4. OpenHands 的分离</a></li>
-<li><a href="#5-benchmark">5. Benchmark 的双重作用</a></li>
-<li><a href="#6-harness">6. 现代 Harness 的形成</a></li>
+<li><a href="#coding-agent">第四章 Coding Agent 转折：从实验接口到产品运行时</a><ul>
+<li><a href="#1_1">1. 为什么软件工程成为关键试验场</a></li>
+<li><a href="#2-20242026">2. 2024—2026 的产品化转向</a></li>
+<li><a href="#3-swe-bench">3. 从 SWE-bench 到可执行系统评测</a></li>
+<li><a href="#4-benchmark-rot">4. Benchmark rot 的四种来源</a></li>
+<li><a href="#5">5. 排行榜为何不能直接指导企业选型</a></li>
+<li><a href="#6-coding-agent">6. Coding Agent 留下的架构遗产</a></li>
 </ul>
 </li>
-<li><a href="#harness_1">第二篇 原理：生产级 Harness 的构成</a></li>
+<li><a href="#harness_2">第二篇 原理：生产级 Harness 的构成</a><ul>
+<li><a href="#_2">本篇导言：把概率决策装进确定性边界</a></li>
+</ul>
+</li>
 <li><a href="#agent-model-harness-environment-feedback">第五章 Agent = Model × Harness × Environment × Feedback</a><ul>
 <li><a href="#1-model">1. Model：概率性策略与生成器</a></li>
 <li><a href="#2-harness">2. Harness：运行时中介与控制系统</a></li>
 <li><a href="#3-environment-shell">3. Environment：不是一个 shell，而是任务世界</a></li>
 <li><a href="#4-feedback">4. Feedback：观测不等于评价</a></li>
-<li><a href="#5">5. 为什么使用乘法而不是加法</a></li>
+<li><a href="#5_1">5. 为什么使用乘法而不是加法</a></li>
 <li><a href="#6-workflowagent-harness">6. Workflow、Agent 与 Harness 的关系</a></li>
 <li><a href="#7_1">7. 控制面、数据面与执行面</a><ul>
 <li><a href="#71">7.1 控制面</a></li>
@@ -117,10 +111,10 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 </li>
 <li><a href="#agent-loop-while">第六章 Agent Loop：从 while 循环到持久状态机</a><ul>
 <li><a href="#1-threadturnstep-attempt">1. Thread、Turn、Step 与 Attempt</a></li>
-<li><a href="#2_2">2. 最小状态机</a></li>
+<li><a href="#2_1">2. 最小状态机</a></li>
 <li><a href="#3">3. 模型停止不等于任务完成</a></li>
 <li><a href="#4-streaming">4. Streaming 是事件协议，不只是打字动画</a></li>
-<li><a href="#5_1">5. 取消必须贯穿调用链</a></li>
+<li><a href="#5_2">5. 取消必须贯穿调用链</a></li>
 <li><a href="#6-timeoutretryresume">6. Timeout、Retry、Resume 不是一回事</a></li>
 <li><a href="#7_2">7. 副作用账本与不确定提交</a></li>
 <li><a href="#8-checkpoint">8. Checkpoint 应保存什么</a></li>
@@ -131,7 +125,7 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 <li><a href="#13">13. 最小可靠性测试集</a></li>
 </ul>
 </li>
-<li><a href="#_2">第七章 上下文、缓存、压缩与记忆</a><ul>
+<li><a href="#_3">第七章 上下文、缓存、压缩与记忆</a><ul>
 <li><a href="#1_2">1. 五种必须分开的信息</a></li>
 <li><a href="#2-context-assembly">2. Context Assembly 是一次编译</a></li>
 <li><a href="#3_1">3. 长窗口不是无限注意力</a></li>
@@ -150,7 +144,7 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 </li>
 <li><a href="#acimcp-code-mode">第八章 工具、ACI、MCP 与 Code Mode</a><ul>
 <li><a href="#1-tool-definition">1. Tool Definition 只是起点</a></li>
-<li><a href="#2_3">2. 好工具的十个条件</a></li>
+<li><a href="#2_2">2. 好工具的十个条件</a></li>
 <li><a href="#3-aci">3. 错误协议是 ACI 的一部分</a></li>
 <li><a href="#4-tool-result">4. Tool Result 不应只有字符串</a></li>
 <li><a href="#5-mcp-harness">5. MCP 解决的是互操作，不是全部 Harness 问题</a></li>
@@ -166,7 +160,7 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 <li><a href="#15">15. 最小工具契约伪代码</a></li>
 </ul>
 </li>
-<li><a href="#_3">第九章 权限、沙箱、凭证与供应链</a><ul>
+<li><a href="#_4">第九章 权限、沙箱、凭证与供应链</a><ul>
 <li><a href="#1_3">1. 四个不同问题</a></li>
 <li><a href="#2-prompt">2. Prompt 不是安全边界</a></li>
 <li><a href="#3_2">3. 从逐次批准到受控自治</a></li>
@@ -184,9 +178,9 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 <li><a href="#15_1">15. 安全参考边界</a></li>
 </ul>
 </li>
-<li><a href="#_4">第十章 验证、完成契约与证据包</a><ul>
+<li><a href="#_5">第十章 验证、完成契约与证据包</a><ul>
 <li><a href="#1-stopanswersuccess-commit">1. Stop、Answer、Success 与 Commit 是四件事</a></li>
-<li><a href="#2_4">2. 完成契约从任务入口开始</a></li>
+<li><a href="#2_3">2. 完成契约从任务入口开始</a></li>
 <li><a href="#3_3">3. 验证金字塔</a><ul>
 <li><a href="#31">3.1 确定性检查</a></li>
 <li><a href="#32">3.2 环境与结果检查</a></li>
@@ -195,7 +189,7 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 </ul>
 </li>
 <li><a href="#4-benchmark">4. Benchmark 也是会腐化的软件</a></li>
-<li><a href="#5_2">5. 非确定性系统不能只跑一次</a></li>
+<li><a href="#5_3">5. 非确定性系统不能只跑一次</a></li>
 <li><a href="#6-verifier">6. 防止测试投机与 verifier 篡改</a></li>
 <li><a href="#7_3">7. 证据包是交付协议</a></li>
 <li><a href="#8_3">8. 完成门的参考状态机</a></li>
@@ -228,7 +222,7 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 <li><a href="#44-blackboard-event-graph">4.4 Blackboard / Event Graph</a></li>
 </ul>
 </li>
-<li><a href="#5_3">5. 委派是一份受限合同</a></li>
+<li><a href="#5_4">5. 委派是一份受限合同</a></li>
 <li><a href="#6-artifact">6. 结果必须是 artifact，不是意见</a></li>
 <li><a href="#7_4">7. 共享状态与并发写入</a></li>
 <li><a href="#8_4">8. 错误如何在团队中传播</a></li>
@@ -246,194 +240,284 @@ hr { border:0; border-top:1px solid #d2dade; margin:24px 0; }
 <li><a href="#15_2">15. 设计原则总结</a></li>
 </ul>
 </li>
-<li><a href="#_5">第十二章 可观测性、轨迹与评测运营</a><ul>
+<li><a href="#_6">第十二章 可观测性、轨迹与评测运营</a><ul>
 <li><a href="#1_5">1. 轨迹是事件图</a></li>
-<li><a href="#2_5">2. 指标分四层</a></li>
+<li><a href="#2_4">2. 指标分四层</a></li>
 <li><a href="#3_4">3. 失败分类先于优化</a></li>
 <li><a href="#4-eval">4. Eval 是持续运营系统</a></li>
-<li><a href="#5_4">5. 在线监控与离线评测闭环</a></li>
+<li><a href="#5_5">5. 在线监控与离线评测闭环</a></li>
 <li><a href="#6-trace-replay">6. Trace replay 的边界</a></li>
 <li><a href="#7_5">7. 运营仪表盘</a></li>
+<li><a href="#8_5">8. 一条可关联的真实事件</a></li>
+<li><a href="#9-trace">9. Trace 完整性与采样</a></li>
+<li><a href="#10-eval">10. Eval 生命周期与污染控制</a></li>
+<li><a href="#11_5">11. 从指标到行动</a></li>
+<li><a href="#12_3">12. 可观测性的边界</a></li>
 </ul>
 </li>
-<li><a href="#harness_2">第三篇 产品：当代主流 Harness 的不同答案</a></li>
-<li><a href="#claude-code">第十三章 Claude Code：薄决策环与厚运行时</a><ul>
-<li><a href="#1_6">1. 环境优先</a></li>
-<li><a href="#2_6">2. 工具与扩展</a></li>
-<li><a href="#3_5">3. 权限与沙箱</a></li>
-<li><a href="#4_4">4. 产品取舍</a></li>
-<li><a href="#5_5">5. 企业集成方式</a></li>
+<li><a href="#harness_3">第三篇 产品：当代主流 Harness 的不同答案</a><ul>
+<li><a href="#_7">本篇导言：五种产品，五种架构重心</a></li>
 </ul>
 </li>
-<li><a href="#openai-codex-agent">第十四章 OpenAI Codex：协议化 Agent 核心与工程控制面</a><ul>
-<li><a href="#1-app-server">1. App Server 是关键边界</a></li>
-<li><a href="#2_7">2. 工作树与并行</a></li>
-<li><a href="#3_6">3. 策略层</a></li>
-<li><a href="#4-harness-engineering">4. Harness Engineering</a></li>
-<li><a href="#5_6">5. 取舍与借鉴</a></li>
+<li><a href="#claude-code">第十三章 Claude Code：薄循环、厚运行时</a><ul>
+<li><a href="#1_6">1. 可观察的系统分层</a></li>
+<li><a href="#2_5">2. 上下文不是一段无限增长的聊天</a></li>
+<li><a href="#3-hook">3. Hook 是可编程生命周期，不是万能策略层</a></li>
+<li><a href="#4-permissionsandbox">4. Permission、sandbox 与凭证必须拆开</a></li>
+<li><a href="#5_6">5. 企业集成剖面</a></li>
+<li><a href="#6_1">6. 设计判断</a></li>
 </ul>
 </li>
-<li><a href="#cursoride-agent">第十五章 Cursor：IDE 原生上下文与云 Agent</a><ul>
+<li><a href="#openai-codex-agent-core">第十四章 OpenAI Codex：协议化的 Agent Core</a><ul>
+<li><a href="#1-ui">1. 从 UI 内核到可嵌入服务</a></li>
+<li><a href="#2_6">2. 三种集成面不是同一抽象</a></li>
+<li><a href="#3-loopcontext">3. Loop、context 与执行边界</a></li>
+<li><a href="#4_4">4. 并行工作不是共享目录里多开几个进程</a></li>
+<li><a href="#5-adapter">5. 企业 adapter 的状态模型</a></li>
+<li><a href="#6_2">6. 设计判断</a></li>
+</ul>
+</li>
+<li><a href="#cursoride-agent">第十五章 Cursor：IDE 原生上下文与云端 Agent</a><ul>
 <li><a href="#1_7">1. 动态上下文发现</a></li>
-<li><a href="#2-harness_1">2. Harness 与模型共同适配</a></li>
-<li><a href="#3-agent_1">3. 云 Agent 的环境工程</a></li>
-<li><a href="#4-ide">4. IDE 人机协作的优势与风险</a></li>
-<li><a href="#5_7">5. 架构启示</a></li>
+<li><a href="#2-model-specific-harness">2. Model-specific Harness</a></li>
+<li><a href="#3_5">3. 在线信号与离线评测</a></li>
+<li><a href="#4_5">4. 从前台审批到云端自治</a></li>
+<li><a href="#5-hooks">5. Hooks 与企业控制点</a></li>
+<li><a href="#6_3">6. 设计判断</a></li>
 </ul>
 </li>
-<li><a href="#deepseek-harness">第十六章 DeepSeek Harness：可组合运行时与进化载体</a><ul>
-<li><a href="#1-cordis">1. Cordis 插件树</a></li>
-<li><a href="#2-scope">2. 分层配置与 scope</a></li>
-<li><a href="#3-tool-runtime-code-mode">3. Tool Runtime 与 Code Mode</a></li>
-<li><a href="#4_5">4. 可变不等于会进化</a></li>
-<li><a href="#5_8">5. 企业取舍</a></li>
+<li><a href="#deepseek-harness">第十六章 DeepSeek Harness：可组合、可逆的运行时</a><ul>
+<li><a href="#1_8">1. 空间与时间上的组合</a></li>
+<li><a href="#2-profilebundle">2. Profile、bundle 与分层配置</a></li>
+<li><a href="#3-code-mode">3. Code Mode 作为工具压缩</a></li>
+<li><a href="#4_6">4. “一切皆插件”的边界</a></li>
+<li><a href="#5_7">5. 企业集成策略</a></li>
+<li><a href="#6_4">6. 设计判断</a></li>
 </ul>
 </li>
-<li><a href="#openhandsagent-runtime">第十七章 OpenHands：Agent 与 Runtime 分离的开放架构</a><ul>
-<li><a href="#1-actionobservationevent">1. Action—Observation—Event</a></li>
-<li><a href="#2-runtime">2. Runtime 生命周期</a></li>
-<li><a href="#3_7">3. 开放平台的价值</a></li>
-<li><a href="#4_6">4. 与其他案例的互补</a></li>
-<li><a href="#5_9">5. 企业采用方式</a></li>
+<li><a href="#openhandsagent-runtime">第十七章 OpenHands：Agent 与执行 Runtime 分离</a><ul>
+<li><a href="#1-actionobservation">1. Action—Observation 作为系统脊柱</a></li>
+<li><a href="#2-runtime-docker">2. Runtime 是能力边界，不只是 Docker 名称</a></li>
+<li><a href="#3_6">3. 开放平台的可替换性</a></li>
+<li><a href="#4_7">4. 失败模式与运营负担</a></li>
+<li><a href="#5_8">5. 与其他产品的互补关系</a></li>
+<li><a href="#6_5">6. 设计判断</a></li>
 </ul>
 </li>
-<li><a href="#harness_3">第十八章 横向比较：不同 Harness 的答案</a><ul>
-<li><a href="#1_8">1. 薄与厚不是优劣</a></li>
-<li><a href="#2_8">2. 本地与云</a></li>
-<li><a href="#3_8">3. 开放与闭源</a></li>
-<li><a href="#4_7">4. 共同收敛</a></li>
-<li><a href="#5_10">5. 选择原则</a></li>
+<li><a href="#_8">第十八章 产品比较：不要用一张总分表掩盖架构差异</a><ul>
+<li><a href="#1_9">1. 五种代表性重心</a></li>
+<li><a href="#2_7">2. 统一评价坐标</a></li>
+<li><a href="#3_7">3. 协议统一的限度</a></li>
+<li><a href="#4_8">4. 常见失效比较</a></li>
+<li><a href="#5_9">5. 组合战略</a></li>
 </ul>
 </li>
-<li><a href="#agent_2">第四篇 进化：Agent 如何从轨迹中变得更好</a></li>
-<li><a href="#_6">第十九章 进化不是自我修改：目标函数、数据与治理</a><ul>
-<li><a href="#1_9">1. 四个层次</a></li>
-<li><a href="#2_9">2. 优化对象与根信任</a></li>
-<li><a href="#3_9">3. 数据不是天然经验</a></li>
-<li><a href="#4_8">4. 多目标而非单分数</a></li>
-<li><a href="#5_11">5. 最小可信闭环</a></li>
-<li><a href="#6_1">6. 能力边界</a></li>
+<li><a href="#agent_2">第四篇 进化：Agent 如何从轨迹中变得更好</a><ul>
+<li><a href="#_9">本篇导言：从“能改自己”到“能证明改得更好”</a></li>
 </ul>
 </li>
-<li><a href="#_7">第二十章 任务内进化：搜索、反思与验证—修复</a><ul>
-<li><a href="#1-reflexion">1. Reflexion 的贡献与边界</a></li>
-<li><a href="#2_10">2. 搜索不是无限重试</a></li>
-<li><a href="#3_10">3. 验证—修复循环</a></li>
-<li><a href="#4_9">4. 动态工作流</a></li>
-<li><a href="#5_12">5. 三类案例</a></li>
+<li><a href="#_10">第十九章 进化不是自我修改：目标函数、证据与边界</a><ul>
+<li><a href="#1_10">1. 四层进化模型</a></li>
+<li><a href="#2_8">2. 统一证据模板</a></li>
+<li><a href="#3_8">3. 根信任与可变表面</a></li>
+<li><a href="#4_9">4. 数据不是天然经验</a></li>
+<li><a href="#5_10">5. 多目标与硬约束</a></li>
+<li><a href="#6_6">6. 当前研究证据的强弱</a></li>
+<li><a href="#7_6">7. 最小可信闭环</a></li>
+<li><a href="#8_6">8. 四层不是线性升级阶梯</a></li>
+<li><a href="#9_1">9. 从失败样本到可检验假设</a></li>
+<li><a href="#10_5">10. 进化预算也是治理工具</a></li>
+<li><a href="#11_6">11. 先决定是否值得进化</a></li>
+</ul>
+</li>
+<li><a href="#_11">第二十章 任务内进化：搜索、反思与验证—修复</a><ul>
+<li><a href="#1_11">1. 本层的证据模板实例</a></li>
+<li><a href="#2-reflexion">2. Reflexion 的贡献与限制</a></li>
+<li><a href="#3_9">3. 搜索不是重复采样</a></li>
+<li><a href="#4_10">4. 验证—修复循环</a></li>
+<li><a href="#5_11">5. 副作用与并行分支</a></li>
+<li><a href="#6_7">6. 何时不使用任务内进化</a></li>
+<li><a href="#7_7">7. 候选选择器的三种强度</a></li>
+<li><a href="#8_7">8. 计划修复与状态修复要分开</a></li>
+<li><a href="#9_2">9. 一个有界修复策略</a></li>
+<li><a href="#10_6">10. 任务内学习如何退出当前任务</a></li>
+<li><a href="#11_7">11. 搜索预算要按信息增益分配</a></li>
 </ul>
 </li>
 <li><a href="#memoryskill">第二十一章 跨任务经验化：Memory、Skill 与策略库</a><ul>
-<li><a href="#1_10">1. 四类持久对象</a></li>
-<li><a href="#2_11">2. 写入门比检索更重要</a></li>
-<li><a href="#3_11">3. 检索与适用条件</a></li>
-<li><a href="#4-skill">4. Skill 供应链</a></li>
-<li><a href="#5_13">5. 遗忘与纠错</a></li>
+<li><a href="#1_12">1. 本层的证据模板实例</a></li>
+<li><a href="#2_9">2. 四类持久对象不能共用一种生命周期</a></li>
+<li><a href="#3_10">3. 写入门比检索算法更重要</a></li>
+<li><a href="#4_11">4. 检索是策略决策</a></li>
+<li><a href="#5-skill">5. Skill 是供应链包</a></li>
+<li><a href="#6_8">6. 遗忘、纠错与派生影响</a></li>
+<li><a href="#7-memory">7. Memory 的状态机</a></li>
+<li><a href="#8_8">8. 冲突不是“取最新”</a></li>
+<li><a href="#9_3">9. 复用实验与负迁移</a></li>
+<li><a href="#10_7">10. 经验库的容量与注意力预算</a></li>
+<li><a href="#11_8">11. 记忆收益必须扣除维护债务</a></li>
 </ul>
 </li>
-<li><a href="#harness-prompt">第二十二章 Harness 进化：Prompt、工具、上下文与工作流</a><ul>
-<li><a href="#1_11">1. 先归因再变异</a></li>
-<li><a href="#2_12">2. 最小变更原则</a></li>
-<li><a href="#3_12">3. 质量多样性</a></li>
-<li><a href="#4_10">4. 四组门禁</a></li>
-<li><a href="#5_14">5. 发布</a></li>
+<li><a href="#harness_4">第二十二章 Harness 进化：从失败病理到版本化变更</a><ul>
+<li><a href="#1_13">1. 本层的证据模板实例</a></li>
+<li><a href="#2_10">2. 先诊断失败病理</a></li>
+<li><a href="#3_11">3. 研究系统提供了什么证据</a></li>
+<li><a href="#4_12">4. 四组门禁</a></li>
+<li><a href="#5-profile">5. Profile 而非全局最优</a></li>
+<li><a href="#6_9">6. 何时选择替代方案</a></li>
+<li><a href="#7_8">7. 可变表面的风险排序</a></li>
+<li><a href="#8_9">8. 组合爆炸与交互效应</a></li>
+<li><a href="#9-prompt-rule-accretion">9. 防止 Prompt Rule Accretion</a></li>
+<li><a href="#10_8">10. 从候选到可维护版本</a></li>
+<li><a href="#11_9">11. 用可逆性决定发布半径</a></li>
 </ul>
 </li>
-<li><a href="#_8">第二十三章 模型进化：轨迹蒸馏、偏好与强化学习</a><ul>
-<li><a href="#1_12">1. 轨迹不等于训练样本</a></li>
-<li><a href="#2-sft">2. SFT 与蒸馏</a></li>
-<li><a href="#3_13">3. 偏好优化</a></li>
-<li><a href="#4-rl">4. RL 与可验证奖励</a></li>
-<li><a href="#5-harness-22">5. 模型—Harness 2×2 归因</a></li>
+<li><a href="#_12">第二十三章 模型进化：从轨迹到参数更新</a><ul>
+<li><a href="#1_14">1. 本层的证据模板实例</a></li>
+<li><a href="#2_11">2. 轨迹不等于训练样本</a></li>
+<li><a href="#3_12">3. 四类训练路线</a></li>
+<li><a href="#4-modelharness-22">4. Model×Harness 2×2 归因</a></li>
+<li><a href="#5-lineage">5. 数据与模型 lineage</a></li>
+<li><a href="#6_10">6. 何时不训练</a></li>
+<li><a href="#7_9">7. 轨迹筛选的多阶段管线</a></li>
+<li><a href="#8_10">8. 错误与纠错都要学习</a></li>
+<li><a href="#9_4">9. 安全回归与能力回归同权</a></li>
+<li><a href="#10_9">10. 模型发布后的监测</a></li>
+<li><a href="#11_10">11. 训练前先证明问题属于模型</a></li>
 </ul>
 </li>
-<li><a href="#_9">第二十四章 受控进化闭环：门禁、灰度、回滚与反投机</a><ul>
-<li><a href="#1_13">1. 双平面架构</a></li>
-<li><a href="#2_13">2. 实验协议</a></li>
-<li><a href="#3-reward-hacking">3. 防 Reward Hacking</a></li>
-<li><a href="#4-canary">4. Canary 与回滚</a></li>
-<li><a href="#5_15">5. 组织责任</a></li>
-<li><a href="#6_2">6. 进化账本</a></li>
+<li><a href="#_13">第二十四章 受控进化闭环：门禁、灰度、回滚与反投机</a><ul>
+<li><a href="#1_15">1. 双平面架构</a></li>
+<li><a href="#2_12">2. 预注册实验协议</a></li>
+<li><a href="#3-reward-hacking">3. 防 Reward Hacking 与数据泄漏</a></li>
+<li><a href="#4-shadowcanary">4. Shadow、Canary 与发布原子性</a></li>
+<li><a href="#5_12">5. 进化账本与职责</a></li>
+<li><a href="#6_11">6. 何时允许自动晋级</a></li>
+<li><a href="#7_10">7. 完整性监控先于效用监控</a></li>
+<li><a href="#8-canary">8. Canary 不是缩小版离线评测</a></li>
+<li><a href="#9_5">9. 事故演练</a></li>
+<li><a href="#10_10">10. 人类批准也需要可评价</a></li>
+<li><a href="#11_11">11. 自动化阶梯</a></li>
+<li><a href="#12_4">12. 治理自身也要接受演化，但不能同轮自改</a></li>
 </ul>
 </li>
-<li><a href="#harness_4">第五篇 实践：下一代企业 Harness</a></li>
-<li><a href="#_10">第二十五章 三个贯穿案例的端到端设计</a><ul>
-<li><a href="#1_14">1. 仓库级软件工程</a></li>
-<li><a href="#2_14">2. 企业数据分析</a></li>
-<li><a href="#3-agent_2">3. 自我进化 Agent</a></li>
-<li><a href="#4_11">4. 共用骨架</a></li>
+<li><a href="#harness_5">第五篇 实践：下一代企业 Harness</a><ul>
+<li><a href="#_14">本篇导言：把原则落到企业控制面</a></li>
 </ul>
 </li>
-<li><a href="#harness_5">第二十六章 下一代企业 Harness 参考架构</a><ul>
-<li><a href="#1_15">1. 六层结构</a></li>
-<li><a href="#2-canonical-contracts">2. Canonical contracts</a></li>
-<li><a href="#3_14">3. 身份与租户</a></li>
-<li><a href="#4-durable-execution">4. Durable execution</a></li>
-<li><a href="#5-policy-sandbox">5. Policy 与 sandbox</a></li>
-<li><a href="#6-evidence-first-completion">6. Evidence-first completion</a></li>
-<li><a href="#7_6">7. 演进边界</a></li>
-<li><a href="#8_5">8. 非功能要求</a></li>
+<li><a href="#_15">第二十五章 三个贯穿案例：从意图到可验证结果</a><ul>
+<li><a href="#_16">案例一：仓库级软件修复</a><ul>
+<li><a href="#1_16">1. 任务与合同</a></li>
+<li><a href="#2_13">2. 执行与验证序列</a></li>
+<li><a href="#3-evidencepackage">3. EvidencePackage</a></li>
+<li><a href="#4-visible-test">4. 失败演练：visible test 投机</a></li>
+</ul>
+</li>
+<li><a href="#_17">案例二：企业经营分析</a><ul>
+<li><a href="#1_17">1. 任务与口径</a></li>
+<li><a href="#2_14">2. 双重验证</a></li>
+<li><a href="#3-evidencepackage_1">3. EvidencePackage</a></li>
+<li><a href="#4_13">4. 失败演练：快照漂移</a></li>
+</ul>
+</li>
+<li><a href="#harness_6">案例三：自我进化 Harness</a><ul>
+<li><a href="#1_18">1. 失败归因与实验合同</a></li>
+<li><a href="#2_15">2. 选择与发布</a></li>
+<li><a href="#3-evidencepackage-lineage">3. EvidencePackage 与 lineage</a></li>
+<li><a href="#4_14">4. 失败演练：通过修改分母“进步”</a></li>
+</ul>
+</li>
+<li><a href="#_18">三个案例的共用骨架</a></li>
+</ul>
+</li>
+<li><a href="#harness_7">第二十六章 下一代企业 Harness 参考架构</a><ul>
+<li><a href="#1_19">1. 六层结构与权威状态</a></li>
+<li><a href="#2-canonical-contracts">2. Canonical contracts 与能力协商</a></li>
+<li><a href="#3_13">3. 身份、租户与凭证</a></li>
+<li><a href="#4-durable-execution">4. Durable execution 与副作用</a></li>
+<li><a href="#5-evidence-first-completion">5. Evidence-first completion</a></li>
+<li><a href="#6-slo">6. 七类 SLO：定义、测量和博弈</a></li>
+<li><a href="#7-runtime">7. 多 runtime 数据流</a></li>
+<li><a href="#8_11">8. 构建顺序与替代方案</a></li>
 </ul>
 </li>
 <li><a href="#agent-sdd">第二十七章 Agent SDD：规范驱动的任务与发布</a><ul>
-<li><a href="#1_16">1. 规范层级</a></li>
-<li><a href="#2_15">2. 从意图到合同</a></li>
-<li><a href="#3-specification-as-environment">3. Specification as environment</a></li>
-<li><a href="#4_12">4. 发布门</a></li>
-<li><a href="#5_16">5. 规范债务</a></li>
+<li><a href="#1_20">1. 六类规范</a></li>
+<li><a href="#2_16">2. 从意图到合同</a></li>
+<li><a href="#3-amendment">3. 运行中的 Amendment</a></li>
+<li><a href="#4-specification-as-environment">4. Specification as environment</a></li>
+<li><a href="#5-waiver">5. 发布门与 Waiver</a></li>
+<li><a href="#6_12">6. 规范质量指标</a></li>
 </ul>
 </li>
 <li><a href="#build-vs-buy">第二十八章 成熟度模型与 Build-vs-Buy</a><ul>
-<li><a href="#1_17">1. 五级成熟度</a></li>
-<li><a href="#2_16">2. 买什么</a></li>
-<li><a href="#3_15">3. 自建什么</a></li>
-<li><a href="#4-runtime">4. 何时自研 runtime</a></li>
-<li><a href="#5_17">5. 决策矩阵</a></li>
+<li><a href="#1_21">1. 五级模型</a></li>
+<li><a href="#2_17">2. 二元自评方法</a></li>
+<li><a href="#3_14">3. 买什么，控制什么</a></li>
+<li><a href="#4-runtime">4. 何时自研 Runtime</a></li>
+<li><a href="#5-poc">5. 决策矩阵与 POC</a></li>
 </ul>
 </li>
-<li><a href="#agent_3">第二十九章 从接入现有 Agent 到自研运行时</a><ul>
-<li><a href="#_11">阶段一：封装而非散接</a></li>
-<li><a href="#_12">阶段二：外置完成与证据</a></li>
-<li><a href="#_13">阶段三：统一执行面</a></li>
-<li><a href="#_14">阶段四：建立评测基线</a></li>
-<li><a href="#_15">阶段五：逐层替换</a></li>
-<li><a href="#_16">阶段六：引入受控进化</a></li>
-<li><a href="#_17">迁移反模式</a></li>
+<li><a href="#agent_3">第二十九章 从接入现有 Agent 到拥有运行时主动权</a><ul>
+<li><a href="#_19">阶段一：封装而非散接</a></li>
+<li><a href="#_20">阶段二：外置完成与证据</a></li>
+<li><a href="#_21">阶段三：统一执行面</a></li>
+<li><a href="#_22">阶段四：建立评测与运营基线</a></li>
+<li><a href="#_23">阶段五：逐层替换</a></li>
+<li><a href="#_24">阶段六：引入受控进化</a></li>
+<li><a href="#_25">迁移治理</a></li>
 </ul>
 </li>
 <li><a href="#harness-osagent">第三十章 展望：Harness OS、Agent 组织与持续进化</a><ul>
 <li><a href="#1-harness">1. 模型与 Harness 共同设计</a></li>
-<li><a href="#2-agent_1">2. 从应用到 Agent 组织</a></li>
-<li><a href="#3_16">3. 环境成为主要护城河</a></li>
-<li><a href="#4_13">4. 持续进化的现实形态</a></li>
-<li><a href="#5_18">5. 新风险</a></li>
-<li><a href="#6_3">6. 最终判断</a></li>
+<li><a href="#2-agent-agent">2. 从 Agent 应用到 Agent 组织</a></li>
+<li><a href="#3_15">3. 环境成为长期资产</a></li>
+<li><a href="#4_15">4. 自我进化的近期现实</a></li>
+<li><a href="#5_13">5. 新风险与开放问题</a></li>
+<li><a href="#6_13">6. 三种可能未来</a></li>
+<li><a href="#7_11">7. 最终判断</a></li>
 </ul>
 </li>
-<li><a href="#_18">附录</a></li>
-<li><a href="#a">附录 A：语言无关核心接口</a></li>
-<li><a href="#bharness">附录 B：Harness 架构评审检查表</a><ul>
-<li><a href="#_19">任务与完成</a></li>
-<li><a href="#_20">上下文与记忆</a></li>
-<li><a href="#_21">工具与环境</a></li>
-<li><a href="#_22">权限与安全</a></li>
+<li><a href="#_26">附录</a></li>
+<li><a href="#a">附录 A：语言无关核心契约与安全伪代码</a><ul>
+<li><a href="#1_22">1. 核心对象</a></li>
+<li><a href="#2-run-loopproposal-effect">2. Run loop：proposal 不直接变成 effect</a></li>
+<li><a href="#3-intent">3. 副作用提交：先记 intent，再执行</a></li>
+<li><a href="#4_16">4. 恢复、取消与对账</a></li>
+<li><a href="#5-adapter_1">5. Adapter 的能力协商</a></li>
+</ul>
+</li>
+<li><a href="#b-harness">附录 B：可判定的 Harness 架构评审表</a><ul>
+<li><a href="#_27">任务与完成</a></li>
+<li><a href="#_28">上下文与记忆</a></li>
+<li><a href="#_29">工具、环境与副作用</a></li>
+<li><a href="#_30">权限与供应链</a></li>
 <li><a href="#durable-agent">Durable 与多 Agent</a></li>
-<li><a href="#eval">Eval 与进化</a></li>
+<li><a href="#eval">Eval、运营与进化</a></li>
+<li><a href="#_31">最终判定</a></li>
 </ul>
 </li>
-<li><a href="#c">附录 C：术语表</a></li>
-<li><a href="#_23">研究方法与局限</a></li>
-<li><a href="#_24">完整参考文献</a></li>
+<li><a href="#c">附录 C：术语与本体边界</a></li>
+<li><a href="#d">附录 D：概念首次定义与使用索引</a></li>
+<li><a href="#e">附录 E：最小机器可读契约</a><ul>
+<li><a href="#1-task-completioncontract">1. Task 与 CompletionContract</a></li>
+<li><a href="#2-actionpolicydecision-observation">2. Action、PolicyDecision 与 Observation</a></li>
+<li><a href="#3-evidencepackage_2">3. EvidencePackage 必填骨架</a></li>
+</ul>
+</li>
+<li><a href="#_32">研究方法与局限</a></li>
+<li><a href="#_33">完整参考文献</a></li>
 </ul>
 </div>
 <p>Markdown 章节按下列五篇排列。</p>
 <hr />
 <h1 id="agent">第一篇 历史：Agent 如何从会回答变成会行动</h1>
 <hr />
+<h2 id="harness_1">本篇导言：Harness 从哪里来</h2>
+<p>本篇回答“为什么模型之外还需要一套运行系统”。第一章追溯规划、控制循环和多 Agent 协商的前史；第二章分析 2023 年自主 Agent 热潮为何证明了可行性，却没有解决可靠性；第三章把 ACI 确立为能力的一部分；第四章说明真实仓库和可执行评测如何推动产品化。</p>
+<p>这段历史不是产品编年表。它要建立三个后文反复使用的判断：行动系统必须有外部状态与反馈；接口会改变模型可实现的策略；可演示的循环与可运营的 Runtime 之间隔着状态、权限、恢复和验证。读完本篇，读者应能解释为什么“换更强模型”不能自动补齐 Harness。</p>
+<hr />
 <h1 id="agent-runtime">第一章 从控制循环到 Agent Runtime</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1；事实和引用将在全书审计阶段再次核验。</p>
-</blockquote>
 <p>如果把 Claude Code、Codex 或 DeepSeek Harness 的界面全部拿掉，剩下来的核心似乎简单得令人失望：接收目标，调用模型，执行模型选择的动作，把结果送回模型，如此循环，直到完成或耗尽预算。</p>
 <pre><code class="language-text">目标 → 决策 → 动作 → 环境变化 → 新观察
         ↑                     ↓
@@ -578,9 +662,6 @@ Voyager：  成功行为进入可复用技能
 <p>下一章将进入 2023 年的“自主 Agent 爆发期”：AutoGPT、BabyAGI、LangChain 和 AutoGen 如何把循环、记忆、计划与多 Agent 编排带入大众开发实践，又为何很快暴露出失控循环、抽象泄漏、观测不足和生产基础设施缺失的问题。</p>
 <hr />
 <h1 id="2023-agent">第二章 2023：自主 Agent 爆发与第一次祛魅</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1。</p>
-</blockquote>
 <p>2023 年春天，GPT-4 与廉价 API、开源代码和社交媒体演示共同触发了一次“自主 Agent”爆发。AutoGPT、BabyAGI、AgentGPT 等项目让普通开发者第一次直观看见：只要给模型一个目标、少量工具、一段循环和某种记忆，它似乎就能自行拆解任务、搜索网络、写文件、运行代码，并不断决定下一步。</p>
 <p>从今天回看，这批系统并没有建立可靠的通用自治。但称它们只是“玩具”同样不准确。它们完成了一次重要的公共实验：把语言模型从单次问答移入持续执行循环，并在极短时间内暴露出 Harness 工程真正困难的部分。</p>
 <h2 id="1-babyagi">1. BabyAGI：任务队列就是最小外部认知</h2>
@@ -726,9 +807,6 @@ Prioritize ← New Tasks ←───────┘
 <p>下一章进入 coding agent 的工程化转折。Aider 的 repository map、SWE-agent 的 Agent-Computer Interface，以及 OpenHands 的动作—观察事件流，将证明一个后来反复出现的事实：同一个模型的表现，会被它所处的接口和环境大幅改变。模型能力并不等于系统能力。</p>
 <hr />
 <h1 id="aiderswe-agent-openhands">第三章 接口也是智能：Aider、SWE-agent 与 OpenHands</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1。</p>
-</blockquote>
 <p>2023 年的通用自主 Agent 证明模型可以循环调用工具，但没有证明它善于在大型代码仓库中工作。软件工程要求 Agent 定位相关文件、理解跨模块关系、生成能够可靠落盘的局部修改、运行测试并解释错误。模型可能知道如何写一个函数，却因看错文件、破坏补丁格式或忽略仓库约定而失败。</p>
 <p>这一阶段最重要的发现可以概括为：</p>
 <blockquote>
@@ -834,41 +912,52 @@ Agent/Controller ─────────→ Event Stream ──────�
 </ol>
 <p>这些原则解释了为什么后来的 Claude Code、Codex、Cursor 不只是“聊天框加 shell”。它们在上下文、编辑、命令、权限、会话和验证上各自选择了不同 ACI。下一篇将不再按时间讲故事，而是拆开现代 Harness 的核心责任，建立一套可用于产品分析和自研设计的统一模型。</p>
 <hr />
-<h1 id="coding-agent">第四章 Coding Agent 转折：真实仓库成为反馈环境</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1。</p>
-</blockquote>
-<p>2023 年的通用 Agent 热潮证明了模型可以循环调用工具，却没有证明它能稳定完成真实工作。Coding Agent 改变了问题形态：仓库提供持久状态，编译器、测试和版本控制提供外部反馈，patch 提供可审查的交付物。Harness 从“让模型继续思考”转向“让模型在环境里形成可验证闭环”。</p>
-<h2 id="1_1">1. 从聊天记录到工作树</h2>
-<p>早期框架倾向把任务状态放在消息、计划列表或向量记忆中。软件工程的权威状态却在文件系统、Git、依赖环境和测试结果里。模型不必在上下文复述全部代码，只需要能搜索、定位、修改、执行和回读。这一变化奠定了现代 Harness 的基本形态：薄决策循环，厚环境适配。</p>
-<p>Aider 的 repository map 用代码图和 token budget 选择相关符号，使模型在有限上下文中获得仓库结构，而不是粗暴注入所有文件。<a href="https://aider.chat/docs/repomap.html">Aider Repository Map</a> SWE-agent 进一步提出 ACI，即 Agent-Computer Interface：命令、观察格式和反馈设计会显著影响同一模型的解题能力。<a href="https://arxiv.org/abs/2405.15793">SWE-agent</a></p>
-<p>这说明接口不是模型之外的包装。一个返回数万行终端噪声的 shell，与一个保留退出码、截断策略、错误定位和可追溯 artifact 的 shell，对模型来说是两个不同环境。</p>
-<h2 id="2_1">2. 可执行反馈改变了规划</h2>
-<p>传统规划假设动作模型相对明确；真实仓库中的依赖、隐含约束和测试常常只有执行后才暴露。现代 coding loop 因而更像在线控制：观察局部状态，提出最小变更，运行检查，根据误差修正。</p>
-<pre><code class="language-text">issue → inspect → hypothesis → patch → test
-                    ↑              │
-                    └── diagnose ──┘
+<h1 id="coding-agent">第四章 Coding Agent 转折：从实验接口到产品运行时</h1>
+<p>第三章说明了为什么接口会改变同一模型的能力。本章讨论另一个转折：当 Agent 进入真实仓库，研究问题从“能否调用工具”变成“能否在有状态、可执行、多人协作的环境中持续交付”。这推动 Harness 从实验脚本演化为产品运行时，也迫使评测从文本答案走向可重建环境。</p>
+<h2 id="1_1">1. 为什么软件工程成为关键试验场</h2>
+<p>软件仓库同时提供了 Agent 研究稀缺的四样东西：持久、可差分的状态；大量可组合工具；编译器和测试形成的外部反馈；Git patch 形成的可审查 artifact。Agent 可以搜索、修改、执行、失败再修复，结果还能由另一进程复建。相比开放式知识工作，代码更容易形成“动作—观察—验证”闭环。</p>
+<pre><code class="language-text">issue / specification
+        ↓
+repository snapshot → inspect → patch → execute checks
+        ↑                         ↓
+        └──── diagnostic feedback ┘
+                                  ↓
+                     reviewable candidate artifact
 </code></pre>
-<p>成功不再取决于一次生成完整方案，而取决于 Harness 是否让失败变得可诊断。命令超时、测试失败、环境损坏和权限拒绝必须具有不同语义；否则模型会把基础设施问题误解为代码问题。</p>
-<h2 id="3-codeact">3. CodeAct 与统一动作空间</h2>
-<p>CodeAct 研究表明，让 Agent 通过可执行代码组织复杂工具交互，可以减少大量逐个 JSON tool call 的往返，并利用编程语言的循环、变量和组合能力。<a href="https://arxiv.org/abs/2402.01030">Executable Code Actions</a> 这条路线后来体现在 Code Mode、sandbox script 和“计算留在环境、只把结果带回上下文”等设计中。</p>
-<p>但统一 shell 或代码动作也扩大了权限面。表达力越强，越需要沙箱、网络策略、凭证代理和确定性审计。Coding Agent 的历史因此同时推动了自治与约束。</p>
-<h2 id="4-openhands">4. OpenHands 的分离</h2>
-<p>OpenHands 将 Agent 的决策与 Runtime 的执行显式分开，通过动作、观察和事件流连接；Runtime 可以是 Docker 或远程执行环境。<a href="https://docs.openhands.dev/openhands/usage/architecture/runtime">OpenHands Runtime Architecture</a> 这种分离使模型策略可以替换，环境生命周期、隔离和日志则由另一层负责。</p>
-<p>它对企业架构的启示不是必须采用其类结构，而是：不让模型循环直接持有宿主进程。Agent 产生规范化 action，Runtime 验证并执行，observation 再成为下一步输入。由此可以在协议边界插入策略、录制、重放和模拟器。</p>
-<h2 id="5-benchmark">5. Benchmark 的双重作用</h2>
-<p>SWE-bench 把真实 GitHub issue、仓库和测试组成可执行评测，使模型与 Harness 的组合成为测量对象，而非只测代码补全。<a href="https://arxiv.org/abs/2310.06770">SWE-bench</a> 它推动工具、搜索、编辑、上下文和验证快速演化，也暴露一个事实：排行榜分数同时包含模型、Harness、环境构建和评测质量，不能简单归因给模型。</p>
-<p>后来 SWE-bench Verified 的修订与退役进一步表明，环境反馈虽比文本 judge 更硬，也不是绝对真理。测试可能错误，公开样本可能污染，Agent 可能投机。Coding Agent 只是提供了更好的实验场，而不是自动解决验证问题。</p>
-<h2 id="6-harness">6. 现代 Harness 的形成</h2>
-<p>从 Aider、SWE-agent、CodeAct 和 OpenHands，可以看见五个后来成为主流的原则：上下文按需编译；工具接口针对模型优化；执行发生在可控环境；每个动作产生结构化观察；完成由外部证据决定。Claude Code、Codex、Cursor 等产品的差异主要发生在这些原则的工程取舍，而不是是否拥有一个 <code>while</code> 循环。</p>
-<p>Coding Agent 转折的真正意义，是把 Agent 从语言产品变成运行时问题。模型仍负责提出高熵决策，但文件、进程、权限、测试、状态和提交由软件系统承载。Harness 由此成为模型与真实世界之间的责任边界。</p>
+<p>这并不表示软件任务天然简单。依赖、隐藏约束、并发、外部服务和不完整测试让环境仍然部分可观察。区别在于失败通常留下机器可读痕迹，使 Harness 能把高熵推理放在可重复的反馈回路里。</p>
+<h2 id="2-20242026">2. 2024—2026 的产品化转向</h2>
+<p>2024 年的 SWE-agent 工作把 Agent-Computer Interface 作为独立设计轴，并展示仓库导航、编辑与测试接口会显著影响结果。<a href="https://arxiv.org/abs/2405.15793">SWE-agent</a> OpenHands 同期把 Agent、EventStream 与执行 Runtime 明确分开，形成可替换模型与沙箱环境的开放平台。<a href="https://arxiv.org/abs/2407.16741">OpenHands paper</a></p>
+<p>随后产品重心从单一终端会话扩展到多个表面和更长生命周期：Claude Code 把 hooks、skills、subagents 和 MCP 挂入 loop；Codex 把 core 通过 App Server 提供给 CLI、IDE、桌面与云端；Cursor 将 IDE 状态、动态上下文和云端异步 Agent 结合；DeepSeek Harness 把运行时组织为可替换插件图。第三篇将逐一分析这些系统。这里要强调的是共同变化：运行时开始拥有 session、权限、sandbox、压缩、版本和事件协议，而不再只是十几行 ReAct 循环。</p>
+<p>产品化还改变了完成语义。实验脚本通常在模型输出 final answer 时结束，真实产品必须区分 turn 结束、candidate 产生、测试通过、PR 创建、人工合并和生产部署。第十章把这种区别形式化为 CompletionContract 与 EvidencePackage。</p>
+<h2 id="3-swe-bench">3. 从 SWE-bench 到可执行系统评测</h2>
+<p>SWE-bench 将真实 GitHub issue、仓库 revision 和测试组合成环境，评价系统是否产生可通过检查的 patch。<a href="https://arxiv.org/abs/2310.06770">SWE-bench</a> 它的贡献不仅是一张排行榜，而是把评测对象从“模型生成代码片段”推进为“模型 + Harness + 环境”的完整系统。</p>
+<p>这也意味着分数不能简单归因于模型。检索、编辑动作、上下文预算、重试、环境构建、测试 patch 和失败处理都会改变结果。两个系统即使使用同一模型，也可能因 Harness 不同得到不同分数；两个模型若使用不同 Harness，比较的是系统，不是受控模型实验。</p>
+<p>2024 年推出的 SWE-bench Verified 对人工筛选的任务进行验证，试图减少问题描述、测试和环境质量缺陷。<a href="https://openai.com/index/introducing-swe-bench-verified/">SWE-bench Verified</a> 到 2026 年，OpenAI 又公开说明不再用该集合评价前沿 coding 能力，理由包括污染、测试缺陷和领先系统接近饱和，并建议转向更难、持续维护的评测。<a href="https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/">退役说明</a> 这段演化说明：可执行测试比文本 judge 更硬，但 benchmark 本身也会老化。</p>
+<h2 id="4-benchmark-rot">4. Benchmark rot 的四种来源</h2>
+<p>第一是污染：公开 issue、patch 和讨论进入训练或检索数据。第二是饱和：任务已无法区分前沿系统。第三是基础设施腐烂：依赖、镜像或外部资源不再可重建。第四是规格缺陷：测试只覆盖部分目标，Agent 可以通过 visible check 却偏离真实需求。</p>
+<p>一个具体反例是测试只检查函数返回值，却没检查性能或权限边界。Agent 通过硬编码或扩大读取范围获得高分，排行榜把投机计为成功。修复方法不是仅增加隐藏测试，而是版本化 completion contract、记录环境和 effect，并对样本持续做人工与事故回审（见第十、十二章）。</p>
+<p>评测退役不是失败，而是健康治理。每个 task 应有来源、版本、可见性、环境 hash、已知缺陷和退役理由。分数报告必须固定日期与版本，不能把 2024 年旧榜单当作 2026 年产品能力。</p>
+<h2 id="5">5. 排行榜为何不能直接指导企业选型</h2>
+<p>企业任务的损失函数通常不同于 benchmark。公开集合偏代码修复，组织可能更关心内部框架、合规约束、长时部署、人工复核和错误提交成本。排行榜的预算、权限、模型调用次数和网络条件也未必与生产一致。</p>
+<p>选型 POC 至少固定：代表性任务合同、仓库和依赖 snapshot、模型/Harness 版本、最大成本与时长、权限、网络、trial 数和 verifier。报告可信完成率、稳定性、P95 时延、单位成功成本、人工接管、错误完成和安全事件，并按任务族切片。一次“做出来”的演示只证明可达性，不证明稳定运营。</p>
+<pre><code class="language-yaml">evaluation_claim:
+  scope: enterprise-repo-maintenance-v3
+  system: model+harness+tools+sandbox
+  trials_per_task: 5
+  fixed: [task, revision, permissions, verifier, budget]
+  reports: [verified_success, reliability, cost, latency, human_load, safety]
+</code></pre>
+<h2 id="6-coding-agent">6. Coding Agent 留下的架构遗产</h2>
+<p>这一阶段形成了现代 Harness 的五个共同原则：把仓库和环境视为权威状态；按需编译上下文；为模型设计可诊断动作接口；在隔离环境提交副作用；由外部证据判定完成。产品间差异主要在这些原则的边界和工程实现，而不是是否拥有一个循环。</p>
+<p>Coding Agent 的历史意义，是把 Agent 从语言产品变成运行系统问题。模型仍负责提出高熵决策，文件、进程、权限、测试、状态和提交则由确定性软件承载。下一篇将把这种分工展开为系统模型、耐久循环、上下文、工具、安全、验证、多 Agent 与评测运营。</p>
 <hr />
-<h1 id="harness_1">第二篇 原理：生产级 Harness 的构成</h1>
+<h1 id="harness_2">第二篇 原理：生产级 Harness 的构成</h1>
+<hr />
+<h2 id="_2">本篇导言：把概率决策装进确定性边界</h2>
+<p>本篇给出全书的设计本体。第五章定义 Model、Harness、Environment、Feedback 的责任；第六至十二章依次展开耐久循环、上下文、工具、安全、完成证据、多 Agent 和评测运营。</p>
+<p>核心方法是把系统分成两类机制：模型负责无法可靠编码的高熵判断，软件负责身份、状态、预算、副作用、验证和审计等不变量。章节之间不是功能清单，而是一条因果链：没有权威任务状态就无法恢复，没有稳定 Action/Observation 就无法授权和观测，没有独立 CompletionContract 就无法评价，更无法在第四篇谈可信进化。</p>
 <hr />
 <h1 id="agent-model-harness-environment-feedback">第五章 Agent = Model × Harness × Environment × Feedback</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1。章节编号依照全书目录；第四章将在历史资料补齐后撰写。</p>
-</blockquote>
 <p>“Agent = Model + Harness”是一条有用的传播公式，但对企业架构仍然太粗。它容易让人把环境、验证与反馈也塞进 Harness，最终得到“除模型外一切都是 Harness”的不可操作定义。</p>
 <p>本书采用一个乘法式系统模型：</p>
 <pre><code class="language-text">Agent System Capability
@@ -953,7 +1042,7 @@ Agent/Controller ─────────→ Event Stream ──────�
 </tbody>
 </table>
 <p>反馈必须尽可能靠近真实目标。单元测试通过可能仍破坏用户流程；人工点“接受”可能只是没时间审查；模型 judge 的高分可能来自提示泄漏。可信系统需要多信号组合，并记录每个信号的来源和局限。</p>
-<h2 id="5">5. 为什么使用乘法而不是加法</h2>
+<h2 id="5_1">5. 为什么使用乘法而不是加法</h2>
 <p>假设两个团队使用同一模型。团队 A 提供快速但不稳定的环境、数十个含糊工具和“模型说完成即完成”；团队 B 提供小而清晰的工具集、可复现 workspace、外部测试和失败恢复。二者不是在相同 Agent 上增加少量功能，而是在构建不同能力的系统。</p>
 <p>乘法视角带来三项决策变化。</p>
 <p>第一，模型升级不能跳过系统回归。更强模型可能更频繁使用工具、生成更长命令或绕过旧 guardrail，导致安全和成本退化。</p>
@@ -1043,9 +1132,6 @@ L1 Model Gateway   provider / routing / cache / quota
 <p>本章得到的核心结论是：Harness 不是提示词集合，也不只是 while loop。它是模型与环境之间负责运行语义、信任边界和证据闭环的控制系统。下一章将把最核心的 agent loop 展开为状态机，讨论 turn、step、stream、cancel、retry、compaction 和 crash recovery 如何共同决定长任务是否真正可运行。</p>
 <hr />
 <h1 id="agent-loop-while">第六章 Agent Loop：从 while 循环到持久状态机</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1。</p>
-</blockquote>
 <p>几乎所有工具型 Agent 都能用十几行伪代码表达，但生产故障很少发生在那十几行的正常路径。真正困难的是：并行工具只完成一半怎么办？用户在命令运行期间取消怎么办？模型返回 final answer 是否意味着任务完成？进程在外部副作用提交后、结果落库前崩溃怎么办？</p>
 <p>因此，企业 Harness 不应把 loop 只实现为内存中的 <code>while</code>，而应把它设计成有持久身份、明确状态、可恢复转移和副作用账本的状态机。</p>
 <h2 id="1-threadturnstep-attempt">1. Thread、Turn、Step 与 Attempt</h2>
@@ -1057,7 +1143,7 @@ L1 Model Gateway   provider / routing / cache / quota
 </code></pre>
 <p>Codex 将用户输入到最终 assistant message 的过程称为 turn，其中可以包含多次模型推理与工具调用。<a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Codex Agent Loop</a> Claude Agent SDK 也循环执行“评估—工具—结果”，直到模型输出不含工具调用的响应，并另外返回包含 token、成本和 session id 的结果消息。<a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">Claude Agent Loop</a></p>
 <p>区分 Step 与 Attempt 是为了安全重试。网络超时后再次调用同一工具，是同一个逻辑 Step 的新 Attempt；模型看到错误后改用另一种方案，则通常是新 Step。如果两者混淆，成本、归因和幂等判断都会失真。</p>
-<h2 id="2_2">2. 最小状态机</h2>
+<h2 id="2_1">2. 最小状态机</h2>
 <p>一个可运行的 turn 至少包含这些状态：</p>
 <pre><code class="language-text">CREATED
   ↓
@@ -1108,7 +1194,7 @@ schema_version
 visibility_class
 </code></pre>
 <p>客户端用 cursor 重连，服务端重放缺失事件；大 payload 存对象存储，只在事件中保留 hash、类型和访问引用；同一原始事件可以投影为模型 observation、用户 UI 和审计记录，但必须遵循不同脱敏策略。</p>
-<h2 id="5_1">5. 取消必须贯穿调用链</h2>
+<h2 id="5_2">5. 取消必须贯穿调用链</h2>
 <p>用户点击停止后，仅停止下一次模型调用是不够的。正在运行的 shell、浏览器任务、subagent 和远程 job 仍可能继续产生副作用。</p>
 <p>取消应沿所有权树传播：</p>
 <pre><code class="language-text">Turn cancellation
@@ -1279,10 +1365,7 @@ persist OUTCOME
 <p>如果平台只通过正常路径 demo，而没有这些故障注入，它拥有的是可演示 loop，不是持久运行时。</p>
 <p>本章的结论是：Agent turn 必须拥有独立于模型上下文和进程生命周期的持久身份；副作用必须有可查询账本；停止必须经过外部完成契约。下一章将专门讨论上下文系统，因为长任务的另一个核心难题不是“存下所有历史”，而是让模型在正确时刻看到正确、可信且足够少的信息。</p>
 <hr />
-<h1 id="_2">第七章 上下文、缓存、压缩与记忆</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1。</p>
-</blockquote>
+<h1 id="_3">第七章 上下文、缓存、压缩与记忆</h1>
 <p>模型在一次推理中只能依据当前上下文行动。对 Harness 而言，“记住一切”并不是目标；目标是在正确时刻，把可信、相关、足够且成本可接受的信息放到模型可见位置，同时保留原始事实以供重新发现。</p>
 <p>上下文系统最常见的设计错误，是把对话历史、任务状态、知识检索、用户偏好、长期经验和可执行技能都塞进一个名为 memory 的容器。它们的信任等级、生命周期和更新权限完全不同。</p>
 <h2 id="1_2">1. 五种必须分开的信息</h2>
@@ -1527,9 +1610,6 @@ Large payloads → Artifact Store ← pointers in model view
 <p>本章的核心结论是：上下文窗口是模型的工作集，不是系统数据库；Memory 是经过治理的跨时复用机制，不是聊天历史的别名。下一章将进入工具层，讨论 Action schema、错误协议、MCP、CLI、Code Mode 与能力发现如何共同构成 Agent 的“可行动世界”。</p>
 <hr />
 <h1 id="acimcp-code-mode">第八章 工具、ACI、MCP 与 Code Mode</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1。</p>
-</blockquote>
 <p>工具决定 Agent 可以对世界提出哪些动作。一个模型即使理解了任务，如果只有模糊、冗余或危险的工具，也会表现得像能力不足；反过来，一个设计良好的 ACI 可以把复杂环境转化成模型容易观察、操作和修复的界面。</p>
 <p>企业平台不应从“接入多少工具”衡量成熟度，而应从动作语义是否稳定、权限是否清晰、结果是否可验证、失败是否可恢复来衡量。</p>
 <h2 id="1-tool-definition">1. Tool Definition 只是起点</h2>
@@ -1549,7 +1629,7 @@ version
 Canonical Action Contract 平台内部稳定的动作类型、语义和治理元数据
 </code></pre>
 <p>模型表面可以因模型族而变化，内部 contract 保持稳定。这样既避免最低公分母接口，也保留统一审计、权限和评估。</p>
-<h2 id="2_3">2. 好工具的十个条件</h2>
+<h2 id="2_2">2. 好工具的十个条件</h2>
 <ol>
 <li>名称能表达动作和对象；</li>
 <li>描述说明何时使用，也说明何时不要使用；</li>
@@ -1725,9 +1805,9 @@ L0 Execution Control policy、credential、sandbox、ledger
 <p>这个 contract 可以由 MCP、CLI wrapper 或内部 SDK 实现。协议可以多样，运行语义必须统一。</p>
 <p>本章结论是：工具不是模型函数列表，而是从概率性意图到真实副作用的受治理动作协议。MCP 提供互操作，CLI 提供组合性，Code Mode 提供程序化编排；Harness 必须在它们之下统一身份、策略、执行、账本和验证。下一章将专门讨论这个信任边界：权限、审批、沙箱、凭证与供应链。</p>
 <hr />
-<h1 id="_3">第九章 权限、沙箱、凭证与供应链</h1>
+<h1 id="_4">第九章 权限、沙箱、凭证与供应链</h1>
 <blockquote>
-<p>本章状态：正文初稿 v0.1，不替代组织安全评审或合规意见。</p>
+<p>适用性声明：本章讨论的是 Harness 工程控制，不替代组织的安全评审、隐私评估或法律合规意见。</p>
 </blockquote>
 <p>Agent 安全的根本难题不是模型偶尔犯错，而是错误决定可以通过工具变成真实副作用。Prompt injection、目标漂移、工具误用和记忆污染无法仅靠“更强系统提示”消除。因此安全架构必须假设模型会被误导，并限制被误导后的能力与爆炸半径。</p>
 <h2 id="1_3">1. 四个不同问题</h2>
@@ -1966,9 +2046,9 @@ External verification + audit
 </code></pre>
 <p>本章结论是：自治来自预先定义的安全自由空间，而不是跳过权限。提示用于指导，策略用于授权，沙箱用于限制，凭证代理用于缩权，审计与验证用于证明发生了什么。下一章将讨论最后一个经常被忽略的边界：Agent 怎样证明任务完成，而不是只生成一个令人信服的完成声明。</p>
 <hr />
-<h1 id="_4">第十章 验证、完成契约与证据包</h1>
+<h1 id="_5">第十章 验证、完成契约与证据包</h1>
 <blockquote>
-<p>本章状态：正文初稿 v0.1。产品与 benchmark 事实截至 2026-08-22；设计结论是作者综合推断。</p>
+<p>证据声明：产品与 benchmark 事实以 2026-08-22 为资料截面；设计结论是作者基于公开材料的综合推断。</p>
 </blockquote>
 <p>Agent 最危险的一句话往往不是一条错误命令，而是“已经完成”。命令失败通常可见，过早宣布完成却可能把半成品送进代码库、把错误数字写进管理报告，或让外部工作流继续执行。语言模型擅长生成语义上像结论的文本，但任务完成是环境中的事实。Harness 必须把二者分开：模型可以<strong>提出完成</strong>，只有独立完成门可以<strong>确认完成</strong>。</p>
 <p>本章的核心结论是：可靠 Agent 的最终产物不是一段回答，而是“交付物 + 可重放证据 + 未决风险”。验证不是循环结束时附带运行一次测试，而是从任务受理开始就参与计划、权限、工具、状态和停止条件设计的控制面。</p>
@@ -1981,7 +2061,7 @@ EFFECT_COMMITTED   经策略门允许，副作用对目标系统生效
 </code></pre>
 <p>四者不能用一个 <code>done=true</code> 表示。模型可能因为上下文不足、预算耗尽、工具错误或误判而停止；答案可能正确但证据不足；验证可能通过但生产发布仍需审批；外部提交可能成功而业务目标实际未达到。状态机应保留这些差异，否则恢复、重试和审计都会变得含糊。</p>
 <p>一个常见反模式是让模型同时扮演实施者、证人和法官：它修改代码，选择要运行的测试，解释测试结果，再自行决定是否完成。此结构把所有系统性偏差放在同一条因果链中。更稳健的 Harness 让模型负责提出候选，让环境和独立 verifier 负责约束事实，让 policy 决定是否提交。</p>
-<h2 id="2_4">2. 完成契约从任务入口开始</h2>
+<h2 id="2_3">2. 完成契约从任务入口开始</h2>
 <p>自然语言目标通常没有足够精度直接驱动执行。Harness 在任务受理阶段应把它编译成一个可版本化的完成契约（completion contract）：</p>
 <pre><code class="language-text">CompletionContract {
   goal                 // 用户真正想改变什么
@@ -2021,7 +2101,7 @@ EFFECT_COMMITTED   经策略门允许，副作用对目标系统生效
 <p>但这不是终点。OpenAI 在 2026 年宣布不再用它衡量前沿 coding 能力：对 138 个不稳定失败样本的审计中，至少 59.4% 存在实质性的测试或问题描述缺陷；同时，前沿模型表现出接触过部分题目或答案的迹象。<a href="https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/">Why SWE-bench Verified no longer measures frontier coding capabilities</a></p>
 <p>这个过程揭示了三条普遍规律。第一，验证器有版本，也会产生技术债。第二，模型能力越强，越容易触碰 rubric 的边界并发现漏洞。第三，公开 benchmark 会经历污染、饱和和选择性优化，排行榜分数不能直接外推到企业任务可靠性。</p>
 <p>企业 eval registry 因此应记录：任务版本、数据来源、创建时间、可见性、泄漏风险、reference solution、grader 版本、环境摘要、历史难度和退役原因。能力集与回归集也应分开。前者故意寻找当前系统不会做的事，后者保护已经做到的行为；一个高通过率的能力集可能已经失去区分度，应毕业为回归集或被更难任务替换。</p>
-<h2 id="5_2">5. 非确定性系统不能只跑一次</h2>
+<h2 id="5_3">5. 非确定性系统不能只跑一次</h2>
 <p>Agent 轨迹受采样、工具时序、外部状态和上下文装配影响。一次成功不能证明稳定，一次失败也未必证明不具备能力。Anthropic 将 task、trial、grader 和 transcript 分开，并建议按产品目标区分 <code>pass@k</code> 与 <code>pass^k</code>：前者衡量 k 次中至少一次成功，后者衡量 k 次全部成功。<a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Demystifying evals for AI agents</a></p>
 <p>若单次成功概率为 <code>p</code>，在独立近似下：</p>
 <pre><code class="language-text">pass@k = 1 - (1 - p)^k
@@ -2147,7 +2227,7 @@ COMMITTING
 <hr />
 <h1 id="agent_1">第十一章 多 Agent、委派与协作拓扑</h1>
 <blockquote>
-<p>本章状态：正文初稿 v0.1。产品事实截至 2026-08-22；架构原则为作者综合推断。</p>
+<p>证据声明：产品事实以 2026-08-22 为资料截面；架构原则为作者基于公开材料的综合推断。</p>
 </blockquote>
 <p>多 Agent 是一个容易被名字误导的概念。把同一个模型调用五次、给每次调用贴上“架构师”“开发者”“审查者”的标签，并不会自然产生一个团队。真正的多 Agent 系统必须回答：工作为什么可拆、状态由谁拥有、权限如何衰减、冲突怎样解决、结果由谁验证、失败怎样隔离，以及额外成本是否换来了可测量的收益。</p>
 <p>这一章的核心判断是：<strong>多 Agent 不是能力层的默认升级，而是一种并发、隔离和治理机制。</strong> 当任务可以并行探索、需要不同上下文或信任边界、单一上下文容不下全部材料时，它可能显著增加有效计算；当任务高度耦合、共享状态频繁变化、验收边界含糊时，它往往只会增加通信损耗和级联错误。</p>
@@ -2198,7 +2278,7 @@ user → manager ─────┼─ worker B → manager → verifier → res
 <h3 id="44-blackboard-event-graph">4.4 Blackboard / Event Graph</h3>
 <p>多个 Agent 不直接维护长对话，而是通过共享 artifact store、事件总线或任务图协作。AutoGen 早期以可对话 Agent 的组合为核心，后续 0.4 架构转向 actor model，以消息、运行时和分层 API 支持更强的模块性与扩展性。<a href="https://www.microsoft.com/en-us/research/project/autogen/publications/">AutoGen</a></p>
 <p>共享黑板适合异步、长时和跨语言执行，但必须处理 schema 演进、并发控制、重复消息、顺序、所有权和垃圾回收。把聊天历史当消息总线，只会得到一个难以恢复的分布式 prompt。</p>
-<h2 id="5_3">5. 委派是一份受限合同</h2>
+<h2 id="5_4">5. 委派是一份受限合同</h2>
 <p>好的 delegation packet 不是一句“研究一下这个主题”，而是可验证的局部合同：</p>
 <pre><code class="language-text">DelegationContract {
   parent_run_id
@@ -2349,10 +2429,7 @@ function integrate(parent, results):
 <p>第一，单 Agent 是默认值，多 Agent 需要证明增量价值。第二，按可验证 artifact 和依赖关系拆任务，不按拟人角色拆任务。第三，区分 subroutine、subagent 与 handoff，并显式记录责任所有权。第四，权限随委派衰减，状态与工作区默认隔离。第五，先独立探索，再比较和合并，避免过早共识。第六，所有子结果都携带 provenance、验证和未决项。第七，局部通过不等于组合通过，合并后必须重验。第八，预算覆盖整棵任务树并为验证预留。第九，用分布式系统方法处理取消、重试、背压和孤儿任务。第十，以同成本单 Agent 和多 trial baseline 证明多 Agent 的真实收益。</p>
 <p>多 Agent 的成熟标志不是屏幕上出现更多头像，而是组织能够精确回答：为什么要拆成这些执行者，每个执行者看到了什么、被允许做什么、产出了什么证据，冲突怎样处理，以及若其中一个犯错，系统为何仍可恢复。做到这些之后，“Agent 团队”才不再是 prompt theater，而成为可治理的计算拓扑。</p>
 <hr />
-<h1 id="_5">第十二章 可观测性、轨迹与评测运营</h1>
-<blockquote>
-<p>本章状态：正文初稿 v0.1。</p>
-</blockquote>
+<h1 id="_6">第十二章 可观测性、轨迹与评测运营</h1>
 <p>生产 Agent 不能只记录 prompt 与 final answer。真正决定结果的是一次跨模型、工具、环境、策略和人的分布式执行。可观测性的目标不是保存模型私有思维，而是重建可审计的因果链：系统当时看到了什么、采取了什么动作、依据哪个策略、改变了什么状态、用什么证据判断完成。</p>
 <h2 id="1_5">1. 轨迹是事件图</h2>
 <p>最小事件模型包括 model turn、tool request、policy decision、approval、execution、observation、artifact、checkpoint、delegation、verification 和 effect commit。事件使用稳定 ID、父子关系与 artifact 引用连接。长输出进入对象存储，trace 保存摘要、哈希和 locator。</p>
@@ -2365,7 +2442,7 @@ function integrate(parent, results):
 }
 </code></pre>
 <p>对多 Agent，trace 是部分有序图；对可恢复任务，checkpoint 与 effect ledger 比聊天文本更重要。日志、审计和模型上下文应分开保存：上下文可压缩，运维日志可采样，安全审计则遵循不可篡改和保留策略。</p>
-<h2 id="2_5">2. 指标分四层</h2>
+<h2 id="2_4">2. 指标分四层</h2>
 <p>业务层衡量任务价值、人工节省和错误损失；任务层衡量完成率、部分完成、升级率和稳定性；运行层衡量 tool call、重试、上下文、成本、关键路径时延；安全层衡量越权请求、审批、注入、数据流违规和恢复。</p>
 <p>平均成功率不足以运营。应按任务族、风险、模型、Harness 版本、工具、仓库规模和上下文长度切片，并同时观察 <code>pass@k</code> 与 <code>pass^k</code>。<a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic Agent Evals</a> 一次最佳表现适合探索能力，连续可靠性才接近生产体验。</p>
 <h2 id="3_4">3. 失败分类先于优化</h2>
@@ -2374,7 +2451,7 @@ function integrate(parent, results):
 <h2 id="4-eval">4. Eval 是持续运营系统</h2>
 <p>评测集由生产事故、人工升级、低置信度轨迹、能力边界和安全红队持续补充。Capability eval 探索不会做的任务，regression eval 保护已经会做的任务；高通过率能力题应转为回归题。<a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic Agent Evals</a></p>
 <p>每个 task 保存输入快照、reference solution、grader、环境摘要、可见性和退役原因。每次 Harness 变更都与稳定 baseline 做多 trial 对比，报告置信区间、成本和关键切片，而不是只看总分。</p>
-<h2 id="5_4">5. 在线监控与离线评测闭环</h2>
+<h2 id="5_5">5. 在线监控与离线评测闭环</h2>
 <pre><code class="language-text">production traces
   → privacy filtering
   → failure clustering
@@ -2391,300 +2468,856 @@ function integrate(parent, results):
 <h2 id="7_5">7. 运营仪表盘</h2>
 <p>一个有用的仪表盘回答：哪些任务失败最多；失败始于哪个层；哪个版本引入退化；自动完成是否真的减少人工总成本；成本上涨来自模型、上下文还是重试；哪些权限请求最常被拒；哪些 verifier 最不稳定。</p>
 <p>最终，可观测性不是为漂亮 trace UI 服务，而是为三个闭环服务：事故恢复、工程归因和受控进化。没有可用轨迹，Harness 只能靠 anecdote 进化；没有独立 eval，轨迹优化又容易变成对历史样本的过拟合。</p>
-<hr />
-<h1 id="harness_2">第三篇 产品：当代主流 Harness 的不同答案</h1>
-<hr />
-<h1 id="claude-code">第十三章 Claude Code：薄决策环与厚运行时</h1>
-<blockquote>
-<p>产品快照截至 2026-08-22。只陈述公开文档与可验证行为，不推断未公开内部实现。</p>
-</blockquote>
-<p>Claude Code 最值得借鉴的不是某个系统提示，而是职责布局：核心 loop 保持简单，把能力放在上下文发现、工具、权限、hooks、subagents、skills、MCP、沙箱和可恢复会话中。官方对 Agent SDK loop 的描述接近“收集上下文—采取行动—验证结果—重复”。<a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">Claude Agent Loop</a></p>
-<h2 id="1_6">1. 环境优先</h2>
-<p>Claude Code 在项目中搜索文件、读取指令、修改工作树并运行命令。项目记忆与路径规则把组织知识放回仓库，而不是永久塞进全局 prompt。<a href="https://code.claude.com/docs/en/memory">Claude Memory</a> Context window 文档还说明，压缩后不同类型启动上下文具有不同再注入行为，意味着“记忆”实际由多层生命周期组成。<a href="https://code.claude.com/docs/en/context-window">Claude Context Window</a></p>
-<p>设计启示是把上下文当编译产物：稳定前缀、项目规则、当前工作集、工具结果和压缩摘要分别管理。不能把所有内容都称为 memory。</p>
-<h2 id="2_6">2. 工具与扩展</h2>
-<p>Claude Code 通过内置工具、MCP、skills、hooks 和 subagents 扩展。Tool search 可不把全部工具 schema 预先注入上下文，而是在需要时检索相关定义，以额外发现回合换取持续的上下文节省。<a href="https://code.claude.com/docs/en/agent-sdk/tool-search">Claude Tool Search</a></p>
-<p>Hooks 适合确定性策略与集成，skills 适合按需加载过程知识，subagents 适合上下文隔离和并行。把三者混为 prompt 插件会失去权限与生命周期边界。</p>
-<h2 id="3_5">3. 权限与沙箱</h2>
-<p>Claude Code 的安全方向从高频逐命令确认转向安全边界内自治。Anthropic 报告其 sandbox 同时限制文件系统和网络，基于 macOS Seatbelt、Linux bubblewrap 与网络代理，并使内部 permission prompt 减少 84%。<a href="https://www.anthropic.com/engineering/claude-code-sandboxing">Claude Code Sandboxing</a></p>
-<p>关键原则是：批准精确 capability，而不是信任抽象 Agent。Prompt 负责解释意图，OS 与代理负责不可绕过的边界。外部 MCP、hook 和 skill 仍是供应链入口，沙箱不替代插件审查。</p>
-<h2 id="4_4">4. 产品取舍</h2>
-<p>Claude Code 的优势是终端环境贴近工程师真实工作、工具反馈直接、项目约定可版本化，并通过 Agent SDK 把 loop 能力开放给其他应用。它的风险是高度自治 shell 带来的权限面、长会话压缩的信息损失、扩展生态的信任传播，以及产品版本快速变化造成的行为漂移。</p>
-<p>Pi 等极简 coding agent 提醒我们：很多能力可以留给 shell 和文件，不必全部内置。Claude Code 的教学价值因此不在“功能越多越好”，而在扩展点如何围绕一个相对薄的循环组织。</p>
-<h2 id="5_5">5. 企业集成方式</h2>
-<p>企业不应把 Claude Code 的终端 UI 当平台 API。更合理的是将 Agent SDK/受控进程包装成可替换 runtime adapter，由企业控制面提供身份、任务契约、workspace、策略、凭证、trace 和完成门。</p>
-<pre><code class="language-text">enterprise control plane
-  → runtime adapter
-  → Claude agent session
-  → sandbox/tool gateway
-  → evidence package
+<h2 id="8_5">8. 一条可关联的真实事件</h2>
+<p>事件 schema 应允许大对象外置、敏感字段分级和供应商 payload 双轨保存。下面是工具调用完成事件的最小实例；它记录可观察结果，不保存模型私有思维链。</p>
+<pre><code class="language-json">{
+  &quot;event_id&quot;: &quot;evt_01J8Z7&quot;,
+  &quot;run_id&quot;: &quot;run_TASK2048_A3&quot;,
+  &quot;span_id&quot;: &quot;tool_017&quot;,
+  &quot;parent_span_id&quot;: &quot;turn_006&quot;,
+  &quot;type&quot;: &quot;tool.completed&quot;,
+  &quot;timestamp&quot;: &quot;2026-08-27T09:31:14.223Z&quot;,
+  &quot;actor&quot;: &quot;runtime:codex&quot;,
+  &quot;tool&quot;: {&quot;canonical&quot;: &quot;repo.test&quot;, &quot;provider&quot;: &quot;exec_command&quot;, &quot;version&quot;: &quot;4&quot;},
+  &quot;policy_decision&quot;: &quot;pd_8821&quot;,
+  &quot;input&quot;: {&quot;ref&quot;: &quot;artifact:sha256:11ad...&quot;, &quot;classification&quot;: &quot;internal&quot;},
+  &quot;output&quot;: {&quot;ref&quot;: &quot;artifact:sha256:90bf...&quot;, &quot;exit_code&quot;: 1},
+  &quot;state&quot;: {&quot;workspace_before&quot;: &quot;git:8f31b6e&quot;, &quot;workspace_after&quot;: &quot;git:dirty:4e19...&quot;},
+  &quot;latency_ms&quot;: 18241,
+  &quot;cost&quot;: {&quot;compute_usd&quot;: 0.012},
+  &quot;status&quot;: &quot;error&quot;,
+  &quot;error_class&quot;: &quot;TEST_FAILURE&quot;,
+  &quot;vendor_payload_ref&quot;: &quot;secure-artifact:sha256:772e...&quot;
+}
 </code></pre>
-<p>平台必须保存供应商无关事件，避免未来自研 runtime 时被 Claude 特有消息格式锁定。Claude 的最终文本只是候选结果，企业 verifier 和 commit authority 仍在外部。</p>
+<p><code>event_id</code> 用于去重，parent 建立因果导航，workspace hash 连接状态变化，policy id 证明当时依据的规则。原始输出和供应商 payload 可能含源码或秘密，应放在更严格存储域；普通运营者只看到摘要和 locator。</p>
+<h2 id="9-trace">9. Trace 完整性与采样</h2>
+<p>高流量平台会希望采样，但 effect、policy、approval、checkpoint、verification 和 commit 事件不能像普通 debug log 一样随机丢弃。可按重要性分层：审计骨架全量保留；大输出只保留 hash 与按风险设定的原文；性能 span 可按任务和异常自适应采样。</p>
+<p>完整率可定义为 <code>具有所有必需父事件和 artifact 的 run / 已结束 run</code>。还要分别测 orphan event、重复 event、不可读取 artifact 和时间顺序异常。若 trace 在最困难任务中更容易缺失，直接分析剩余样本会产生幸存者偏差。</p>
+<p>反例是为了降成本只保留成功 run 的完整日志。事故和进化最需要的是失败轨迹，采样策略却系统性删除了它们。更合理的是失败、安全告警、人工接管和未知错误全量保留，普通成功按任务族抽样，同时遵守数据最小化。</p>
+<h2 id="10-eval">10. Eval 生命周期与污染控制</h2>
+<p>一个生产问题进入 eval 前，要经过候选、复现、清洗、标注和 owner 审批。用于调试的 task 属于 development set；用于选择候选的是 validation set；sealed test 只在预定时机使用；已频繁暴露或饱和的 task 转为 regression 或退役。四者不能用同一个“benchmark”目录混放。</p>
+<p>每次访问 held-out 都产生审计事件。Agent、evolver 和日常开发者不获得标签或 hidden verifier；评测服务只返回预注册粒度的诊断。若为了修复一个失败把完整 hidden test 发给模型，该样本应降级为 development，不再宣称 held-out 泛化。</p>
+<h2 id="11_5">11. 从指标到行动</h2>
+<p>每个告警都要关联 owner 和 playbook。未知工具错误突增时，先冻结相关 runtime/profile，检查 provider outage、schema 和版本，再决定回滚；错误完成上升时，优先审查 completion contract 与 verifier，而不是只调 prompt；成本上升要拆解模型请求、上下文、工具重试和人工等待。</p>
+<p>仪表盘如果只能显示红色曲线，却不能跳转到代表性 trace、版本差异和受影响任务，就不是运营系统。反过来，trace UI 若可以看见每个 token，却无法回答“哪个版本导致生产错误”，也只是调试玩具。</p>
+<h2 id="12_3">12. 可观测性的边界</h2>
+<p>更全的日志不总是更安全。源码、客户数据、工具结果和 prompt injection 内容会在 trace 平台形成新的高价值资产。默认采集字段白名单、用途限制、租户隔离、保留期和删除流程必须与 observability 同时设计。对高敏任务，可以只保存结构化 outcome 与加密原文引用，由受控流程临时解密。</p>
+<p>可观测性最终服务于责任：谁在什么版本、什么授权和什么环境下做了什么，系统如何知道结果正确，失败后如何恢复。它不应被用来推断或展示模型不可验证的内部心理状态。</p>
 <hr />
-<h1 id="openai-codex-agent">第十四章 OpenAI Codex：协议化 Agent 核心与工程控制面</h1>
-<blockquote>
-<p>产品快照截至 2026-08-22。</p>
-</blockquote>
-<p>Codex 展示的是“同一 Harness 核心，多种客户端与执行形态”。公开材料把 agent loop 描述为模型、工具和用户之间的控制器，并解释其如何处理流式事件、工具调用、上下文和循环终止。<a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Unrolling the Codex Agent Loop</a></p>
-<h2 id="1-app-server">1. App Server 是关键边界</h2>
-<p>Codex App Server 通过双向 JSON-RPC 把核心能力暴露给 CLI、IDE、桌面和其他客户端，使 UI 不必重新实现 agent loop。<a href="https://openai.com/index/unlocking-the-codex-harness/">Codex App Server</a> 这是一种重要的平台化：会话、审批、工具事件和状态成为协议对象，而不是终端输出解析。</p>
-<p>企业自研 Harness 应借鉴“核心只实现一次，客户端通过版本化协议接入”，同时避免把内部模型 provider 细节泄漏到协议。事件要可扩展，未知事件可向前兼容，命令必须有幂等和恢复语义。</p>
-<h2 id="2_7">2. 工作树与并行</h2>
-<p>Codex 的桌面与云形态强调隔离任务、worktree 和并行 Agent。<a href="https://openai.com/index/introducing-the-codex-app/">Introducing the Codex App</a> 代码并行的核心不是多开聊天，而是为每个执行者提供独立工作区，再在 Git 边界合并和验证。</p>
-<p>Worktree 解决文件覆盖，不解决语义冲突。多个 patch 合并后仍须在干净环境执行系统级测试，并由单一 owner 决定提交。</p>
-<h2 id="3_6">3. 策略层</h2>
-<p>开源 Codex 包含 sandbox、approval 与 exec policy。ExecPolicy 使用 allow、prompt、forbidden 的命令前缀规则，并允许规则附测试样例。<a href="https://github.com/openai/codex/blob/main/codex-rs/execpolicy/README.md">Codex ExecPolicy</a> 这说明持久批准应成为可测试的策略代码，而不是模糊的“始终允许”。</p>
-<p>企业扩展还需加入身份、资源、数据分类和跨域流动；命令字符串规则只是其中一层。</p>
-<h2 id="4-harness-engineering">4. Harness Engineering</h2>
-<p>OpenAI 将自身实践概括为 harness engineering：让仓库结构、测试、文档、日志和工具对 Agent 可读、可操作、可验证。<a href="https://openai.com/index/harness-engineering/">Harness Engineering</a> 这改变了平台投资方向。提升 Agent 不只是在 prompt 上打补丁，也包括缩短环境反馈回路、提高错误可诊断性、把隐性规范变成可执行检查。</p>
-<h2 id="5_6">5. 取舍与借鉴</h2>
-<p>Codex 的优势是开源核心、协议化 App Server、工作区隔离和系统策略。风险包括客户端/服务器协议演化、云与本地能力差异、并行任务的成本与合并复杂度，以及模型与 Harness 同厂优化造成的可移植性幻觉。</p>
-<p>企业最应借鉴的是控制面与执行面的协议化，而不是照搬工具名称。将 Codex 作为 runtime 时，外部平台继续拥有任务合同、租户身份、数据策略和最终证据；将来自 Codex 的事件映射为 canonical trace，未来即可替换为其他 runtime。</p>
+<h1 id="harness_3">第三篇 产品：当代主流 Harness 的不同答案</h1>
 <hr />
-<h1 id="cursoride-agent">第十五章 Cursor：IDE 原生上下文与云 Agent</h1>
-<blockquote>
-<p>产品快照截至 2026-08-22；厂商使用数据只作为其用户群观察，不外推全行业。</p>
-</blockquote>
-<p>Cursor 的代表性在于把 Harness 嵌入开发者交互面：编辑器状态、选择区、诊断、终端和代码索引成为上下文来源；同一产品又向云端长任务和隔离 VM 延伸。它展示了 Harness 不只是后台 runtime，也是人与 Agent 共享注意力和控制权的界面。</p>
-<h2 id="1_7">1. 动态上下文发现</h2>
-<p>Cursor 公开描述其从大量静态上下文与强约束，转向由模型主动发现所需信息。长工具结果可以写入文件，模型按需读取；工具 schema 可以动态发现；终端状态也可通过统一文件式接口访问。<a href="https://cursor.com/blog/dynamic-context-discovery">Dynamic Context Discovery</a></p>
-<p>这与“最小充分工作集”原则一致：不要预判并注入全部内容，而要提供廉价导航、搜索与回读。但动态发现增加工具轮次，若索引、文件命名或错误反馈差，模型会在探索中浪费预算。</p>
-<h2 id="2-harness_1">2. Harness 与模型共同适配</h2>
-<p>Cursor 明确讨论了不同模型需要不同工具描述、约束和交互设计，并通过线上与离线评测持续改进 Harness。<a href="https://cursor.com/blog/continually-improving-agent-harness">Continually Improving Our Agent Harness</a> 这反驳“一套系统提示适配所有模型”的设想。</p>
-<p>企业 provider abstraction 因而不应只统一 API。Canonical action contract 可以稳定，但 model-facing tool view、上下文布局和错误呈现需要按模型 profile 编译。可移植性发生在控制面，性能优化发生在适配层。</p>
-<h2 id="3-agent_1">3. 云 Agent 的环境工程</h2>
-<p>Cursor 对 cloud agents 的总结强调预构建环境、VM checkpoint/restore/fork 和专用 computer-use 能力。<a href="https://cursor.com/blog/cloud-agent-lessons">Cloud Agent Lessons</a> 长任务的速度很大程度取决于环境启动、依赖缓存和可恢复性，而不只是生成速度。</p>
-<p>Checkpoint 还支持从同一状态派生多个候选，但必须区分环境快照与任务真相：外部服务仍会变化，凭证与租约可能过期，恢复后需重新验证策略和 freshness。</p>
-<h2 id="4-ide">4. IDE 人机协作的优势与风险</h2>
-<p>IDE 内 Agent 能显示 diff、引用诊断并让开发者随时接管，适合高频、局部和互动式任务。风险是隐式上下文过多：打开文件、剪贴板、终端和索引可能包含敏感数据；频繁自动接纳可能降低审查质量；本地与云端的权限边界也容易被界面统一感掩盖。</p>
-<p>产品指标如自动接纳率、工具调用深度和上下文规模能展示趋势，但不能直接代表正确率。接受可能来自信任、疲劳或低风险任务。企业评估仍需以合并后缺陷、返工和交付周期为准。</p>
-<h2 id="5_7">5. 架构启示</h2>
-<p>Cursor 提供三条可迁移经验：交互面本身是 Harness 的一部分；模型 profile 应控制上下文和工具适配；云 Agent 的竞争力来自环境基础设施。企业平台若只提供一个聊天框和通用 API，即使模型相同，也难复制 IDE 原生 Agent 的能力。</p>
+<h2 id="_7">本篇导言：五种产品，五种架构重心</h2>
+<p>本篇用相同问题分析 Claude Code、OpenAI Codex、Cursor、DeepSeek Harness 与 OpenHands。它们分别突出生命周期扩展、协议化 core、IDE 原生上下文、可逆插件组合和 Agent/Runtime 分离。比较的目的不是给品牌排名，而是辨认哪些能力应留在供应商 Runtime，哪些责任必须由企业控制面拥有。</p>
+<p>产品事实以 2026-08-27 为截面，优先引用官方文档与仓库；未公开内部实现只作架构推断。每章同时列出集成面、失效模式和可迁移原则。第十八章把它们放到任务匹配、控制、证据、耐久、可替换和运营经济性六个坐标中。</p>
 <hr />
-<h1 id="deepseek-harness">第十六章 DeepSeek Harness：可组合运行时与进化载体</h1>
+<h1 id="claude-code">第十三章 Claude Code：薄循环、厚运行时</h1>
 <blockquote>
-<p>产品快照截至 2026-08-22。DSH 官方仓库仍应按 developer preview 看待。</p>
+<p>资料截面：2026-08-27。产品行为会持续变化；本章只把官方文档公开的行为视为事实，未公开内部实现均标为架构推断。</p>
 </blockquote>
-<p>DeepSeek Harness（DSH）最重要的贡献，不是已经实现了一个可信的自主进化 Agent，而是把 Harness 本身设计成可组合、可替换、可卸载的运行时。它让“运行时结构可以变化”成为一等能力，也因此把自我进化的安全与验证问题推到台前。</p>
-<h2 id="1-cordis">1. Cordis 插件树</h2>
-<p>DSH 运行实例建立在 Cordis 插件树上。模型适配、工具、持久化、默认 loop 等都可作为插件装配。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md">DSH Architecture</a> Cordis 用 context、service dependency、typed event/waterfall 与 effect ownership 管理组件生命周期。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cordis-primer.md">Cordis Primer</a></p>
-<p>所谓时间可组合性，是组件卸载时能撤销由其注册的 effect；空间可组合性，是组件按依赖和所在 context 激活。相比“启动时注册一堆全局回调”，这种设计更适合长生命周期、热装配和实验变体。</p>
-<h2 id="2-scope">2. 分层配置与 scope</h2>
-<p>DSH 通过 profile、bundle、用户 patch、home patch 和临时 overlay 组合配置，并区分 host scope 与 agent scope。不同会话可拥有不同模型、工具、persona、压缩策略和扩展，同时共享宿主服务。</p>
-<p>这给企业平台一个有价值的方向：配置不是一个巨大 JSON，而是带来源、优先级、生命周期和撤销语义的 patch。每个实验变体可以绑定 scope，避免修改污染所有租户。</p>
-<h2 id="3-tool-runtime-code-mode">3. Tool Runtime 与 Code Mode</h2>
-<p>DSH 的工具运行时支持将工具生成 SDK 视图，通过 <code>run_code</code> 让模型组合调用；嵌套调用仍回到受控工具管线，只有显式打印或返回的数据进入外层上下文。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/core/tools/README.md">DSH Code Mode</a></p>
-<p>这兼具 CodeAct 的表达力与集中 policy enforcement。风险在于生成 SDK、sandbox 和嵌套调用的语义复杂度，必须防止通过解释器、网络或输出通道绕过工具策略。</p>
-<h2 id="4_5">4. 可变不等于会进化</h2>
-<p>一个可热替换插件的系统只是 evolution substrate。可信进化还需要轨迹采集、失败归因、候选生成、独立评测、统计门禁、canary、回滚和审计。Agent 不能修改给自己评分与授权的根信任。</p>
-<p>近期 Self-Harness、Gated Semantic Quality-Diversity、Living-Harness 和 Hierarchical Self-Improvement 等工作分别探索 Harness 候选生成、确定性门禁、经验状态图和层级改进，但仍是快速发展的研究方向。<a href="https://arxiv.org/abs/2606.09498">Self-Harness</a></p>
-<h2 id="5_8">5. 企业取舍</h2>
-<p>DSH 的优点是微内核式组合、生命周期所有权、scope 与配置 patch，适合做可实验的 Agent runtime。风险是抽象学习成本、插件依赖图、动态装配的可预测性和开发预览阶段的稳定性。</p>
-<p>企业可借鉴 Cordis 的 effect ownership 与配置 provenance，而不必立即采用整个实现。若把 DSH 接入平台，应把可演化插件域与不可变控制面隔开：身份、策略、evaluator、审计与发布控制器不能由任务内 Agent 自行替换。</p>
-<hr />
-<h1 id="openhandsagent-runtime">第十七章 OpenHands：Agent 与 Runtime 分离的开放架构</h1>
-<blockquote>
-<p>产品快照截至 2026-08-22。</p>
-</blockquote>
-<p>OpenHands 被选为第五主案例，不是因为它一定拥有最大用户规模，而是其开放代码、论文传统和 Agent/Runtime 分离对企业架构最具教学价值。它补足了四个商业产品公开实现透明度不足的问题。</p>
-<h2 id="1-actionobservationevent">1. Action—Observation—Event</h2>
-<p>OpenHands 用 action 表示 Agent 意图，用 observation 表示环境反馈，并通过事件流连接会话。<a href="https://arxiv.org/abs/2407.16741">OpenHands Paper</a> 这个协议边界允许替换 Agent 策略、模型和 Runtime，也允许记录、重放与插入策略。</p>
-<p>关键不是类名，而是模型不直接操作宿主。Runtime 接收规范化动作，在受控环境执行并返回结构化观察。终端输出、文件变化、浏览器状态和错误都成为事件。</p>
-<h2 id="2-runtime">2. Runtime 生命周期</h2>
-<p>OpenHands Runtime 可以运行在 Docker 或远程环境中，负责初始化、执行、文件传输和 teardown。<a href="https://docs.openhands.dev/openhands/usage/architecture/runtime">OpenHands Runtime Architecture</a> 这把高风险计算面从 Agent server 分离，也为企业替换 Kubernetes、VM 或专用沙箱提供接口。</p>
-<p>远程 Runtime 并不自动安全。镜像供应链、网络、凭证、租户隔离和 artifact 导出仍需控制面治理。协议只提供插入控制的机会。</p>
-<h2 id="3_7">3. 开放平台的价值</h2>
-<p>开放实现允许研究者比较不同 Agent、模型与工具，并在 SWE-bench 等环境中复现。它也暴露生产化成本：事件 schema 演化、Runtime 兼容、部署复杂度、持久化与 UI 都需要持续工程。</p>
-<p>OpenHands 的设计比“一个 Python while loop + shell”更适合作为企业参考，是因为它天然支持执行面的独立扩缩、故障隔离和审计。但企业仍需要补充统一身份、策略即代码、证据包和供应商 runtime adapter。</p>
-<h2 id="4_6">4. 与其他案例的互补</h2>
-<p>Claude Code 展示终端产品与扩展生态，Codex 展示协议化核心与多客户端，Cursor 展示 IDE/云环境，DSH 展示可组合插件树；OpenHands 则把 Agent 与计算 Runtime 的边界公开化。五者共同说明，Harness 不是单一框架，而是一组控制面和数据面职责。</p>
-<h2 id="5_9">5. 企业采用方式</h2>
-<p>最稳妥的采用不是 fork 全部代码并深度改造，而是把 Runtime protocol、event model 和 workspace lifecycle 作为可替换组件接入。上层平台生成 canonical task，映射为 OpenHands session；下层接收 evidence package，再由企业完成门决定提交。</p>
-<p>当未来自研 Agent loop 时，可以保留 Runtime 与控制面，只替换决策策略。这正是开放架构的长期价值。</p>
-<hr />
-<h1 id="harness_3">第十八章 横向比较：不同 Harness 的答案</h1>
-<blockquote>
-<p>比较快照截至 2026-08-22。矩阵描述公开能力与设计重心，不等同于质量排名。</p>
-</blockquote>
-<p>五个主案例并非五套互斥架构，而是对相同责任作出不同取舍。</p>
+<p>Claude Code 最值得研究的不是某条提示词，而是它把一个极薄的“模型—工具—观察”循环包在了较厚的会话、权限、上下文和扩展系统里。Claude Agent SDK 的官方说明把循环写得很直接：接收 prompt，模型产生文本或工具调用，SDK 执行工具并回传结果，直到模型不再请求工具，最后产生带 token、费用和 session id 的结果消息。<a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">Agent loop</a> 这与第六章的耐久状态机并不矛盾：前者描述一次存活进程里的控制逻辑，后者描述企业平台必须补上的崩溃恢复和副作用语义。</p>
+<h2 id="1_6">1. 可观察的系统分层</h2>
+<p>从公开接口可确认的结构可以整理为四层：</p>
 <table>
 <thead>
 <tr>
-<th>维度</th>
-<th>Claude Code</th>
-<th>Codex</th>
-<th>Cursor</th>
-<th>DSH</th>
-<th>OpenHands</th>
+<th>层</th>
+<th>公开能力</th>
+<th>平台集成时应保留的边界</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>主要交互面</td>
-<td>终端/SDK</td>
-<td>CLI、IDE、App、云</td>
-<td>IDE、云</td>
-<td>Runtime/CLI</td>
-<td>Web/SDK/研究平台</td>
+<td>会话层</td>
+<td>session、resume、消息流、成本和结果</td>
+<td>平台 task id 不等同于 Claude session id</td>
 </tr>
 <tr>
-<td>核心重心</td>
-<td>薄 loop、扩展与安全</td>
-<td>协议化核心、工作树、策略</td>
-<td>动态上下文、IDE 与 VM</td>
-<td>插件树与生命周期</td>
-<td>Agent/Runtime 分离</td>
+<td>决策层</td>
+<td>模型、effort、turn/budget、自动压缩</td>
+<td>供应商“停止”不等同于业务完成</td>
 </tr>
 <tr>
-<td>上下文</td>
-<td>项目规则、压缩、tool search</td>
-<td>会话与 compaction</td>
-<td>动态发现、索引、文件化结果</td>
-<td>可替换策略</td>
-<td>事件与观察</td>
+<td>能力层</td>
+<td>内置工具、MCP、skills、subagents</td>
+<td>工具可见性不等同于工具授权</td>
 </tr>
 <tr>
-<td>执行隔离</td>
-<td>OS sandbox</td>
-<td>sandbox/worktree/cloud</td>
-<td>本地与 cloud VM</td>
-<td>sandbox service</td>
-<td>Docker/remote Runtime</td>
-</tr>
-<tr>
-<td>扩展</td>
-<td>hooks、skills、MCP、subagent</td>
-<td>tools、MCP、App Server</td>
-<td>MCP、IDE/云能力</td>
-<td>Cordis plugins</td>
-<td>Agent/Runtime/tool 扩展</td>
-</tr>
-<tr>
-<td>独特价值</td>
-<td>开发者终端闭环</td>
-<td>多客户端控制面</td>
-<td>交互原生性</td>
-<td>可变运行时载体</td>
-<td>开放协议边界</td>
+<td>控制层</td>
+<td>permission mode、hooks、sandbox</td>
+<td>hook 是策略执行点之一，不是唯一安全边界</td>
 </tr>
 </tbody>
 </table>
-<h2 id="1_8">1. 薄与厚不是优劣</h2>
-<p>Pi 代表极薄 Harness：少量工具、依赖 shell 和文件、刻意不内置复杂 plan、permission UI 或多 Agent。这提醒我们，功能越多不必然越可靠。相反，企业场景要求身份、审计、策略和恢复，厚控制面又不可避免。</p>
-<p>合理分层是：模型面对的动作面保持小而清晰，运行时内部可以很厚。复杂度应服务于确定性边界，而不是把更多抽象暴露给模型。</p>
-<h2 id="2_8">2. 本地与云</h2>
-<p>本地 Agent 接近开发者环境、启动快、交互自然，但宿主秘密和环境漂移风险高。云 Agent 易隔离、并行和恢复，却有环境准备、数据上传、凭证代理与成本问题。现代产品通常走向混合：控制面统一，本地与云作为不同 execution profile。</p>
-<h2 id="3_8">3. 开放与闭源</h2>
-<p>开源可验证协议、策略和沙箱实现，闭源产品可能拥有更成熟模型适配和运维数据。企业选择不应只看许可证，而要看可导出的 trace、artifact、策略控制、数据边界、版本可固定性和退出路径。</p>
-<h2 id="4_7">4. 共同收敛</h2>
-<p>五者正在共同收敛到：持久会话、按需上下文、结构化工具、隔离执行、审批策略、MCP/扩展、多 Agent、可观测和验证。差异逐渐从“有没有工具调用”转向每个层的质量与组合方式。</p>
-<h2 id="5_10">5. 选择原则</h2>
-<p>交互式个人 coding 优先考虑 IDE/终端体验；后台并行任务重视云工作区和协议；强定制企业平台重视开放 Runtime、策略与事件；进化研究重视可组合配置和评测接口。没有一个产品应同时作为组织的身份源、策略根、证据库和唯一执行 runtime。</p>
-<p>因此企业架构的目标不是选出永久赢家，而是定义稳定的 canonical contracts，让五类 runtime 都能被接入、比较和替换。</p>
+<p>官方把 Claude Code 的扩展面概括为 <code>CLAUDE.md</code>、Skills、subagents、hooks、MCP、plugins 和 agent teams。<a href="https://code.claude.com/docs/en/features-overview">扩展总览</a> 这些机制处在循环的不同位置：规则提供持续上下文，skill 提供按需程序知识，subagent 以独立上下文执行，hook 在生命周期事件上运行，MCP 引入外部能力。把它们都翻译成“再加一段 prompt”会丢失最关键的时机、权限和隔离语义。</p>
+<h2 id="2_5">2. 上下文不是一段无限增长的聊天</h2>
+<p>Claude Code 会把 system prompt、工具定义、消息与工具结果放入上下文，并在接近上限时压缩。subagent 之所以同时有能力和成本价值，是因为它从新上下文开始，只把最终结果返回父会话，而不是把全部子轨迹复制回来。<a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">Agent loop</a> 这印证了第七章的结论：上下文管理是一项有损编译工作，压缩摘要不能成为任务状态和完成证据的唯一载体。</p>
+<p>一个常见失效场景是：主 Agent 把测试失败委派给子 Agent，子 Agent 返回“已修复”，但没有返回失败命令、工作区版本和实际 diff。主 Agent 的上下文变小了，证据也一起消失了。正确做法是让 artifact 和 verification result 进入平台证据面，文本总结只承担导航作用（见第十章）。</p>
+<h2 id="3-hook">3. Hook 是可编程生命周期，不是万能策略层</h2>
+<p>官方 SDK 暴露 <code>PreToolUse</code>、<code>PostToolUse</code>、<code>Stop</code>、<code>SubagentStart/Stop</code>、<code>PreCompact</code> 等事件。<code>PreToolUse</code> 可以在执行前拒绝工具调用，<code>Stop</code> 可以校验终止结果；hook 运行在应用进程而非模型上下文里。<a href="https://code.claude.com/docs/en/hooks-guide">Hooks</a> 因此它适合做格式校验、审计、阻断和上下文注入。</p>
+<p>但 hook 有三个边界。第一，只有进入该生命周期的动作才会被拦截；旁路进程或共享凭证仍需执行环境控制。第二，多个配置层的 hook 需要明确合并顺序和失败策略。第三，用 LLM hook 判断高风险动作，仍然只是概率策略，不能替代确定性授权。企业集成应让平台 policy engine 保持最终权威，并把 Claude hook 当作靠近运行时的适配器。</p>
+<h2 id="4-permissionsandbox">4. Permission、sandbox 与凭证必须拆开</h2>
+<p>Anthropic 公开说明 Claude Code 的 sandbox 通过操作系统级文件与网络边界减少逐命令批准，并报告其内部使用中 permission prompts 减少 84%。这是供应商自报数据，实验环境和统计窗口不足以支持跨产品外推。<a href="https://www.anthropic.com/engineering/claude-code-sandboxing">Sandboxing</a> 更重要的设计不是该数字，而是“边界内自动、越界审批”：读写范围和网络目的地先受隔离约束，策略再决定具体动作是否需要批准。</p>
+<p>平台仍要把认证与授权分开。能够以用户账号登录 Claude 服务，不代表该进程可以读取任意仓库、调用生产 API 或把数据发送到任意 MCP server。短期凭证应由平台在工具提交时注入，不应进入模型上下文；这与第九章的 capability lease 和 credential broker 相呼应。</p>
+<h2 id="5_6">5. 企业集成剖面</h2>
+<p>推荐把 Claude Agent SDK/CLI 放在 runtime adapter 之后：平台创建任务合同、租户身份和隔离工作区，adapter 启动 session 并把消息、工具调用、审批请求和结果映射成 canonical event。平台在外部执行 completion gate，并保存原始供应商事件引用。</p>
+<pre><code class="language-yaml">runtime_profile:
+  provider: anthropic-claude-code
+  version: pinned
+  permission_mode: policy_mediated
+  workspace: isolated
+  network: allowlist
+  completion_authority: external_verifier
+  export:
+    - session_id
+    - tool_events
+    - cost
+    - artifacts
+</code></pre>
+<p>不要解析彩色终端输出，也不要让一次 Claude session 成为业务任务的唯一主键。CLI 适合人工交互和低耦合接入；SDK 适合需要结构化事件和生命周期控制的平台。若所需能力只在 CLI 暴露，应把它明确标记为兼容性债务。</p>
+<h2 id="6_1">6. 设计判断</h2>
+<p>Claude Code 的长处是把模型行为嵌入一个丰富、可扩展的开发者运行时；代价是扩展点很多，配置来源和供应链随之增大。对自研 Harness 最可迁移的原则有三条：循环保持简单；上下文、工具和控制面分离；扩展必须挂在有语义的生命周期上。最不可迁移的做法是复制某一版本的隐藏提示词，因为它既不稳定，也不能替代环境、权限和验证架构。</p>
+<hr />
+<h1 id="openai-codex-agent-core">第十四章 OpenAI Codex：协议化的 Agent Core</h1>
+<blockquote>
+<p>资料截面：2026-08-27。这里的 Codex 指开源 Codex harness 及其 CLI、SDK、App Server 接入面，不把模型名称与运行时名称混为一谈。</p>
+</blockquote>
+<p>Codex 的关键设计选择，是把同一套核心循环从终端 UI 中抽出，并用稳定事件协议提供给 IDE、桌面和云端客户端。OpenAI 官方把 harness 的职责列为：线程生命周期与持久化、配置与认证、沙箱中的工具执行，以及 MCP/skills 等扩展；这些逻辑位于 Codex core。App Server 则是承载多个 core thread 的长生命周期进程和双向协议层。<a href="https://openai.com/index/unlocking-the-codex-harness/">App Server</a></p>
+<h2 id="1-ui">1. 从 UI 内核到可嵌入服务</h2>
+<p>App Server 采用 JSON-RPC 风格的 request、response、notification，但官方特别说明它省略标准 JSON-RPC 2.0 header，并以 JSONL over stdio 分帧，所以更准确的名称是“JSON-RPC lite”，不能假定任意 JSON-RPC 客户端都可无缝兼容。<a href="https://openai.com/index/unlocking-the-codex-harness/">App Server</a> 一个客户端请求可以产生多个通知；服务器也可以主动发起审批请求并暂停 turn。这种双向、流式、可暂停的协议，比把 Agent 包装成同步 <code>run(prompt) -&gt; text</code> 更接近真实交互。</p>
+<pre><code class="language-text">client request: thread/start, turn/start, turn/cancel
+server stream: item/start, item/update, item/completed, turn/completed
+server request: approval or user input
+</code></pre>
+<p>协议化的价值不是“多了一层 RPC”，而是把 UI 迭代周期与 Agent core 分开。官方实践中，有的客户端打包并固定测试过的二进制；有的客户端保持稳定、连接较新的 App Server，并依赖向后兼容协议。<a href="https://openai.com/index/unlocking-the-codex-harness/">App Server</a> 企业平台也应固定经过认证的 runtime 版本，而不是启动时自动拉取最新版。</p>
+<h2 id="2_6">2. 三种集成面不是同一抽象</h2>
+<table>
+<thead>
+<tr>
+<th>接入面</th>
+<th>适合</th>
+<th>主要局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>codex exec</code></td>
+<td>一次性 CI、脚本、清晰退出码</td>
+<td>难承载丰富的中途交互</td>
+</tr>
+<tr>
+<td>Codex SDK</td>
+<td>TypeScript 应用内控制本地 Agent</td>
+<td>语言与功能面相对受限</td>
+</tr>
+<tr>
+<td>App Server</td>
+<td>IDE、桌面、平台级流式集成</td>
+<td>客户端需实现协议、状态与兼容处理</td>
+</tr>
+</tbody>
+</table>
+<p>如果平台需要并发 thread、恢复、审批和丰富进度，App Server 是更自然的边界；如果只是夜间批量修复任务，<code>exec</code> 更简单。过早统一为一个最小 <code>Agent.run()</code> 接口，会把 cancel、approval、fork、artifact 和增量 diff 都压成供应商私有字段，最终只能通过旁路补洞。</p>
+<h2 id="3-loopcontext">3. Loop、context 与执行边界</h2>
+<p>OpenAI 对 agent loop 的公开拆解强调：环境和权限变化作为新消息追加，长会话自动 compaction，并尽量保持可缓存前缀。<a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Agent loop</a> 这说明“上下文是事件投影”比“上下文就是数据库”更准确。平台需要保留 canonical task state 与原始事件，compacted context 只是下一次推理输入（见第七章）。</p>
+<p>Codex 的本地执行由操作系统级 sandbox 和 approval policy 约束。公开的 ExecPolicy 允许按命令前缀规则决定 allow、prompt 或 forbidden。<a href="https://github.com/openai/codex/blob/main/codex-rs/execpolicy/README.md">ExecPolicy</a> 规则匹配适合处理确定性命令边界，但无法理解所有脚本内部副作用。因此 sandbox、网络策略、工作区隔离和凭证代理仍不可省略（见第九章）。</p>
+<h2 id="4_4">4. 并行工作不是共享目录里多开几个进程</h2>
+<p>Codex 产品使用 Git worktree 隔离并行 Agent 的代码修改。<a href="https://openai.com/index/introducing-the-codex-app/">Codex app</a> 其可迁移原则是“每个候选拥有独立可回收写集”，而不是必须使用 Git。数据库任务可以使用临时 schema，数据任务可以使用固定快照，基础设施任务可以使用独立 plan。合并之后还要在组合状态重跑验证；单分支通过不证明组合正确。</p>
+<p>反例是两个 Agent 分别修改依赖与调用方，各自在独立 worktree 通过局部测试，合并后锁文件冲突或接口不兼容。若平台只收集“两个 Agent 都成功”的文本，就会把协调失败误判为模型失败。真正的完成点在合并后的 completion gate（见第十、十一章）。</p>
+<h2 id="5-adapter">5. 企业 adapter 的状态模型</h2>
+<p>平台不应直接把 Codex thread 当作 task。一个 task 可以重试、fork 或切换 runtime；一个 thread 也可能包含多个用户 turn。建议保存如下映射：</p>
+<pre><code class="language-json">{
+  &quot;task_id&quot;: &quot;TASK-2048&quot;,
+  &quot;attempt_id&quot;: &quot;A-03&quot;,
+  &quot;runtime&quot;: &quot;codex-app-server&quot;,
+  &quot;runtime_version&quot;: &quot;pinned-build&quot;,
+  &quot;thread_id&quot;: &quot;vendor-thread-ref&quot;,
+  &quot;workspace_revision&quot;: &quot;git:8f31...&quot;,
+  &quot;policy_profile&quot;: &quot;code-medium-v4&quot;,
+  &quot;completion_contract&quot;: &quot;cc:v7&quot;
+}
+</code></pre>
+<p>adapter 要处理协议版本协商、断线重连、重复通知、客户端取消和进程退出。收到 <code>turn/completed</code> 只表示该 turn 结束；平台还需收集 artifact、执行独立 verifier，再决定 task 是否完成。健康指标至少包括事件缺口率、审批往返时延、断线恢复成功率和 runtime 版本漂移率。</p>
+<h2 id="6_2">6. 设计判断</h2>
+<p>Codex 提供的核心启示是：Agent core 应能被多个产品表面复用，协议必须表达长生命周期和双向控制。它的边界也很明确：协议化不自动带来业务幂等、跨供应商语义统一或完成证明。自研平台应借鉴 thread/turn/item 的事件化思想，但在更外层拥有 task、policy、evidence 与 commit authority。</p>
+<hr />
+<h1 id="cursoride-agent">第十五章 Cursor：IDE 原生上下文与云端 Agent</h1>
+<blockquote>
+<p>资料截面：2026-08-27。Cursor 的实现并非完全开源，本章区分官方披露与本书的架构归纳。</p>
+</blockquote>
+<p>Cursor 的差异化不是“也能调用 shell”，而是把编辑器状态、代码检索、终端、模型选择和远程执行组织成连续体验。它展示了 Harness 的另一条路线：不是先设计通用 runtime 再接 UI，而是从开发者工作流反向塑造上下文与工具。</p>
+<h2 id="1_7">1. 动态上下文发现</h2>
+<p>Cursor 把较少信息静态塞入 prompt，让 Agent 按需检索更多上下文。官方列出的做法包括：把长工具输出写入文件、把历史会话作为可搜索文件、按需加载 skill、把 MCP 工具描述同步为目录，以及把集成终端输出映射为文件。<a href="https://cursor.com/blog/dynamic-context-discovery">Dynamic context discovery</a> 这里的核心抽象不是“文件万能”，而是把大对象变成带地址的外部状态，模型先看索引，再决定读取哪一部分。</p>
+<p>官方 A/B 测试报告称，在确实调用 MCP 工具的 run 中，按需发现工具描述使总 Agent token 减少 46.9%，同时指出结果随已安装 MCP 数量高度变化。<a href="https://cursor.com/blog/dynamic-context-discovery">Dynamic context discovery</a> 这是厂商内部实验，不能外推成所有 Harness 的固定收益；它更适合作为一个可复现实验假设：比较静态注入与目录发现时的 token、工具选择正确率和任务成功率。</p>
+<p>动态发现也有失效边界。若索引命名差、文件过期或 Agent 不知道应搜索什么，重要信息可能从“上下文噪声”变成“不可发现状态”。因此需要测量 context recall：完成任务所需的权威资料中，有多少在决策前被读取；不能只看 token 下降（见第七章）。</p>
+<h2 id="2-model-specific-harness">2. Model-specific Harness</h2>
+<p>Cursor 公开说明会按模型及版本定制 prompt 和工具格式。例如不同模型训练时熟悉的编辑动作不同，使用不熟悉的格式会增加推理和错误；中途切换模型时，Harness 也随之切换，但新模型仍要消费前一个模型产生的历史。<a href="https://cursor.com/blog/continually-improving-agent-harness">Harness evolution</a> 这说明“模型无关 canonical action”与“模型面向的 tool view”应是两层：平台内部语义稳定，模型看到的名称、schema、示例和返回压缩可按 profile 编译。</p>
+<p>反例是为了跨模型统一而强制所有模型使用同一编辑工具。接口表面更整齐，实际成功率和 token 可能下降。另一个极端是每个模型拥有完全私有的 action 语义，使 trace 和 eval 无法比较。正确边界是共享效果语义、允许表现形式变化（见第八章）。</p>
+<h2 id="3_5">3. 在线信号与离线评测</h2>
+<p>Cursor 披露其同时使用公开/内部 benchmark、在线 A/B、时延、token 效率、工具错误、cache hit，以及代码在一段时间后仍被保留的 Keep Rate。<a href="https://cursor.com/blog/continually-improving-agent-harness">Harness evolution</a> Keep Rate 比“用户点击接受”更接近长期效用，但仍不是正确性的充分条件：用户可能没发现缺陷，代码也可能因项目中止而保留。企业应把行为信号与确定性测试、事故和人工抽检组合，而不是让单一代理指标驱动进化（见第十九、二十四章）。</p>
+<h2 id="4_5">4. 从前台审批到云端自治</h2>
+<p>Cursor Background Agents 在隔离的 Ubuntu 机器中异步运行，默认可联网、可安装包并自动执行终端命令；官方安全说明明确提示这会带来 prompt injection 和数据外泄风险。<a href="https://docs.cursor.com/background-agent">Background Agents</a> 本地前台 Agent 默认对敏感动作要求人工批准，而远程后台执行需要更强的环境、网络和凭证控制。<a href="https://docs.cursor.com/agent/security">Agent security</a></p>
+<p>这揭示了一个重要规律：交互模式变化会改变威胁模型。人在 IDE 前并不等于每一步都可靠审查；无人值守云端也不应简单地把所有命令设为自动批准。平台需要按运行模式选择 policy profile，并将出网 allowlist、仓库权限、secret 注入和最大运行时长设为独立硬边界。</p>
+<h2 id="5-hooks">5. Hooks 与企业控制点</h2>
+<p>Cursor hooks 通过 stdio JSON 在 Agent 生命周期前后运行，可观察、阻断或修改部分行为，并支持项目、用户和企业层配置。<a href="https://docs.cursor.com/hooks">Hooks</a> hooks 很适合接入格式化、PII/secret 扫描、SQL 写入门和审计。但某些事件是 fire-and-forget，云端早期只读探索阶段也不运行全部 hooks；集成方必须逐事件确认是否可阻断，不能因“支持 hooks”就推断获得完整策略控制。</p>
+<pre><code class="language-text">IDE state → context index → model-specific tool view
+         → local or cloud execution → diff/terminal feedback
+         → online signal + offline eval → harness release
+</code></pre>
+<h2 id="6_3">6. 设计判断</h2>
+<p>Cursor 最可迁移的经验是：上下文应可发现、工具应适配模型、产品反馈应进入 Harness 评测。其局限是专有实现使企业难以独立验证内部选择器和压缩器。平台接入时应优先获取结构化事件、workspace revision、diff、命令结果和策略决定；若只能获得 UI 结果，就把它定位为开发者工具，而不是企业任务运行时的唯一事实源。</p>
+<hr />
+<h1 id="deepseek-harness">第十六章 DeepSeek Harness：可组合、可逆的运行时</h1>
+<blockquote>
+<p>资料截面：2026-08-27。DeepSeek Harness（dsh）官方明确标为 developer preview，并警告会发生破坏兼容性的变化；本章讨论其设计方向，不把当前接口当成稳定企业标准。<a href="https://github.com/deepseek-ai/deepseek-harness">官方仓库</a></p>
+</blockquote>
+<p>dsh 带来的重要问题不只是“又一个 coding agent”，而是 Agent Harness 是否可以像组件系统一样装配、替换和演化。它以 Cordis 为基础，把模型 adapter、工具注册、session log 和 agent loop 都实现为插件。官方架构文档称没有需要打补丁的特权核心；插件向共享 context 注册 service、typed event 和 effect，卸载时注册效果随之撤销。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md">Architecture</a></p>
+<h2 id="1_8">1. 空间与时间上的组合</h2>
+<p>传统插件系统强调“能加载”。Cordis 更值得关注的是两种约束：空间上，组件按声明依赖获得服务；时间上，组件产生的注册和副作用在卸载时可逆。对 Harness 来说，这允许替换 tool registry、model adapter 或 policy plugin，而不必永久污染全局单例。</p>
+<pre><code class="language-text">context
+ ├─ service dependency graph
+ ├─ typed event routes
+ ├─ plugin-owned effects
+ └─ lifecycle: load → reconcile → unload/rollback
+</code></pre>
+<p>但“可逆注册”不等于“可逆现实副作用”。卸载一个发送邮件的插件不会撤回邮件，卸载一个数据库工具也不会自动回滚已提交事务。外部 effect 仍需第六章的 intent/outcome ledger、幂等键和 reconciliation。否则开发者会把框架级可逆性误当成业务事务。</p>
+<h2 id="2-profilebundle">2. Profile、bundle 与分层配置</h2>
+<p>官方说明一个运行中的 dsh 是启动时由有序层组成的插件树；profile 组合多个 bundle，并叠加用户 patch、home patch 和命令行 overlay。bundle 是 Cordis 配置行及其挂载代码的分发形式，上层仍可继续 patch。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md">Architecture</a> 这种结构适合表达“企业基线 + 团队能力包 + 仓库定制 + 单次实验”。</p>
+<p>同时它引入配置优先级风险：同一 tool 可能在不同层被替换，最终运行图与任一源文件都不同。企业使用时必须在启动后导出 resolved plugin graph、配置来源和 hash；证据包记录的是解析后的运行版本，而不只是 profile 名称。</p>
+<h2 id="3-code-mode">3. Code Mode 作为工具压缩</h2>
+<p>dsh 的工具系统提供 <code>run_code</code>，通过代码运行时桥接多个工具调用，并有专门的动态 Cordis runner 和 VM sandbox。<a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/tool-catalog.md">Tool catalog</a> 设计动机与第八章讨论的 CodeAct/Code Mode 相近：把多步数据变换和工具编排压缩成一次程序化动作，减少 schema 常驻和模型往返。</p>
+<p>它并非免费午餐。代码可能形成更大的副作用批次，细粒度审批、trace 和成本归因更难；动态插件还可能扩大供应链面。合理做法是让代码只访问显式桥接的 capability，对每个子调用生成独立 action/effect event，并限制 CPU、内存、网络和执行时长。</p>
+<h2 id="4_6">4. “一切皆插件”的边界</h2>
+<p>可替换性适用于运行时组件，不应扩展到根信任。identity root、policy root、held-out eval、审计和 release controller 若也由候选插件任意替换，系统就可以通过修改裁判证明自己进步。dsh 是优秀的 evolvable plane 载体，但 governance plane 必须在其外部或处于不可变信任域（见第二十四章）。</p>
+<p>一个具体失效场景是：候选插件同时改写工具描述和成功统计器。工具选择率上升，却是因为统计器把 timeout 排除在分母外。插件图保持“可组合”，实验结论仍然无效。因此进化系统要记录 validity、activation 和 significance 三类门，而不是只比较平均分。</p>
+<h2 id="5_7">5. 企业集成策略</h2>
+<p>在 developer preview 阶段，更稳妥的定位是研究与受控 profile：固定 commit 和 lockfile，在隔离环境加载经过签名的 bundle，禁止生产热更新；adapter 导出 resolved graph、session event、tool 子调用、approval 和 artifact。兼容性测试覆盖 profile 启动、插件卸载、失败回滚与旧会话恢复。</p>
+<table>
+<thead>
+<tr>
+<th>采用方式</th>
+<th>适用场景</th>
+<th>进入生产前的附加条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研究框架</td>
+<td>比较 loop、tool、context 变体</td>
+<td>固定版本与可重复 eval</td>
+</tr>
+<tr>
+<td>专用 runtime</td>
+<td>内部低风险自动化</td>
+<td>插件白名单、隔离、证据导出</td>
+</tr>
+<tr>
+<td>平台核心</td>
+<td>暂不建议直接押注 preview API</td>
+<td>稳定协议、迁移策略、长期运维承诺</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6_4">6. 设计判断</h2>
+<p>dsh 的原创价值在于把 Harness 从硬编码程序变成可解析、可替换、可撤销的组件图，并把“谁能改变运行时”推到架构中心。它为自我进化提供了可变表面，却没有自动解决评价独立性、外部副作用和发布治理。真正的进化系统需要把 Cordis 式组合能力与第二十四章的不可变治理平面结合。</p>
+<hr />
+<h1 id="openhandsagent-runtime">第十七章 OpenHands：Agent 与执行 Runtime 分离</h1>
+<blockquote>
+<p>资料截面：2026-08-27。OpenHands 是快速演进的开源项目；本章以官方文档和论文描述的稳定边界为准，不承诺具体类名长期不变。</p>
+</blockquote>
+<p>OpenHands 对企业架构最有价值的启示，是明确区分“产生 Action 的 Agent”与“在环境中执行 Action 的 Runtime”。官方 Runtime 架构中，backend 创建 Agent 和 EventStream，Docker 容器内的 Action Executor 初始化 shell、browser 和插件；EventStream 把 Agent 的 Action 送往 Runtime，再把 Observation 返回 Agent。<a href="https://docs.openhands.dev/openhands/usage/architecture/runtime">Runtime architecture</a></p>
+<h2 id="1-actionobservation">1. Action—Observation 作为系统脊柱</h2>
+<pre><code class="language-text">user/task → agent controller → Action → EventStream
+                                  ↓
+                              Runtime API
+                                  ↓
+                         shell/browser/files
+                                  ↓
+             Observation → EventStream → next decision
+</code></pre>
+<p>这个边界让模型和执行环境可以独立变化：同一种 Action 语义可以落到本地、Docker 或远程 runtime；同一 runtime 也可服务不同 Agent。OpenHands 论文把平台定位为面向软件开发 Agent 的开放基础设施，而非单一模型 wrapper。<a href="https://arxiv.org/abs/2407.16741">OpenHands paper</a></p>
+<p>事件流的价值在于统一交互，不等于天然耐久。若 event 只在内存里、外部动作没有幂等键，进程崩溃仍会产生第六章所述的不确定提交窗口。企业 fork 或二次封装时应逐项验证：事件是否持久化、是否可去重、重放是否会再次执行副作用、取消是否传播到容器进程树。</p>
+<h2 id="2-runtime-docker">2. Runtime 是能力边界，不只是 Docker 名称</h2>
+<p>官方文档强调 sandbox 带来的安全、一致性、资源控制、隔离和可复现性，并采用 backend—runtime client/server 结构。<a href="https://docs.openhands.dev/openhands/usage/architecture/runtime">Runtime architecture</a> 但“运行在容器中”本身不能证明安全：容器挂载、宿主 socket、网络、内核能力、secret 和镜像供应链共同决定真实边界。</p>
+<p>一个典型反例是把 Docker socket 挂入 Agent 容器，表面上每个任务都有容器，实际上 Agent 可控制宿主 Docker daemon，隔离边界被绕过。企业 profile 应显式声明 mount、network、user namespace、resource limit 和 credential injection，并以对抗测试验证，而不是只检查 runtime 类型字符串。</p>
+<h2 id="3_6">3. 开放平台的可替换性</h2>
+<p>OpenHands 的开放实现适合回答专有产品难以回答的问题：Action/Observation 如何序列化、runtime 如何启动、插件在哪里执行、事件如何流动。它也因此适合作为自研平台的参考实现或兼容测试对象。可替换性应落在契约，而不是 fork 大量内部类。</p>
+<p>建议 adapter 只依赖五类稳定语义：启动/恢复会话、流式事件、审批或输入、取消、artifact 收集。原始 OpenHands event 作为 provenance 保留，平台把它映射为 canonical Action、Observation 和 Artifact（见第二十六章）。当上游 schema 改变时，契约测试应在发布前失败。</p>
+<h2 id="4_7">4. 失败模式与运营负担</h2>
+<p>开放 runtime 让组织获得控制，也把镜像构建、冷启动、浏览器依赖、资源回收、日志容量和多租户隔离交给自己。需要分别观测：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>含义</th>
+<th>典型告警</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>runtime provision success</td>
+<td>环境是否成功创建</td>
+<td>镜像/调度故障突增</td>
+</tr>
+<tr>
+<td>action transport gap</td>
+<td>Action 是否都有 Observation</td>
+<td>事件缺口或重复</td>
+</tr>
+<tr>
+<td>orphan process count</td>
+<td>取消后是否残留进程</td>
+<td>资源与副作用泄漏</td>
+</tr>
+<tr>
+<td>workspace reproducibility</td>
+<td>相同版本能否重建</td>
+<td>浮动依赖或镜像漂移</td>
+</tr>
+<tr>
+<td>tenant boundary violations</td>
+<td>是否发生跨租户访问</td>
+<td>任何非零即事故</td>
+</tr>
+</tbody>
+</table>
+<p>这些指标不能由 Agent 自报，必须在 control/execution plane 采集。Agent 说“环境坏了”只是一条诊断候选。</p>
+<h2 id="5_8">5. 与其他产品的互补关系</h2>
+<p>OpenHands 不必与 Claude Code 或 Codex 二选一。企业可以借鉴它的 Agent/Runtime 边界，把供应商 Agent 放在隔离工作区里执行，再由外部 evidence plane 验证。反过来，如果组织主要需要成熟 IDE 体验和模型特化工具，自行运营 OpenHands 全栈可能得不偿失。</p>
+<h2 id="6_5">6. 设计判断</h2>
+<p>OpenHands 最可迁移的原则是：决策者、事件总线与效果执行者分离；环境实现可替换；Action/Observation 是可观察接口。其风险是把“开源可见”误当成“生产完备”。进入企业平台仍需补齐 durable state、策略根、凭证代理、completion gate 和版本治理。本章的分离结构将在第二十六章被提升为多 runtime 参考架构。</p>
+<hr />
+<h1 id="_8">第十八章 产品比较：不要用一张总分表掩盖架构差异</h1>
+<p>产品比较的第一原则是比较“系统在特定任务、预算和环境中的行为”，而不是给品牌排一个脱离场景的总名次。模型、Harness、工具、sandbox、任务合同和 verifier 共同决定结果；任一变量不同，都只能支持系统对系统结论，不能直接推出模型强弱。</p>
+<h2 id="1_9">1. 五种代表性重心</h2>
+<table>
+<thead>
+<tr>
+<th>系统</th>
+<th>公开架构重心</th>
+<th>最自然的接入面</th>
+<th>主要优势</th>
+<th>主要集成风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code</td>
+<td>loop + lifecycle extensions</td>
+<td>Agent SDK / CLI</td>
+<td>hooks、skills、subagent、MCP 组合成熟</td>
+<td>配置与扩展供应链复杂；业务完成需外置</td>
+</tr>
+<tr>
+<td>Codex</td>
+<td>protocolized core</td>
+<td>App Server / SDK / exec</td>
+<td>双向事件、线程生命周期、多产品复用</td>
+<td>JSON-RPC lite 适配与版本兼容；不可把 turn 当 task</td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td>IDE-native harness</td>
+<td>IDE / cloud agent</td>
+<td>动态上下文、模型特化、在线产品信号</td>
+<td>专有内部选择器难独立审计；云端出网风险</td>
+</tr>
+<tr>
+<td>DeepSeek Harness</td>
+<td>reversible plugin graph</td>
+<td>profile / bundle / SDK</td>
+<td>运行时可组合、可 patch、适合实验</td>
+<td>developer preview；配置图与插件供应链治理重</td>
+</tr>
+<tr>
+<td>OpenHands</td>
+<td>Agent/Runtime split</td>
+<td>event/runtime API</td>
+<td>开源可观测、执行环境可替换</td>
+<td>自运维隔离、镜像、durability 的成本高</td>
+</tr>
+</tbody>
+</table>
+<p>表中的事实分别来自各产品官方资料；它描述的是 2026-08-27 截面，不是永久能力清单。<a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">Claude loop</a>、<a href="https://openai.com/index/unlocking-the-codex-harness/">Codex App Server</a>、<a href="https://cursor.com/blog/continually-improving-agent-harness">Cursor harness</a>、<a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md">dsh architecture</a>、<a href="https://docs.openhands.dev/openhands/usage/architecture/runtime">OpenHands runtime</a></p>
+<h2 id="2_7">2. 统一评价坐标</h2>
+<p>建议用六个坐标替代总分：</p>
+<ol>
+<li><strong>任务匹配度</strong>：真实任务族的完成率与失败成本；</li>
+<li><strong>控制力</strong>：身份、权限、网络、审批、取消和版本是否可由平台掌握；</li>
+<li><strong>证据性</strong>：能否导出动作、观察、artifact、策略决定与 verifier 结果；</li>
+<li><strong>耐久性</strong>：中断、重试、恢复和外部副作用对账能力；</li>
+<li><strong>可替换性</strong>：任务与证据契约是否独立于供应商消息格式；</li>
+<li><strong>运营经济性</strong>：端到端成本、时延、人工介入和平台维护成本。</li>
+</ol>
+<p>每项都要在相同 completion contract、workspace snapshot、权限和预算下多 trial 测量（见第十二章）。GitHub stars、营销 benchmark 和一次成功 demo 最多用于候选发现，不能作为企业选型证据。</p>
+<h2 id="3_7">3. 协议统一的限度</h2>
+<p>可以统一的是可观察语义：Task、Action、Observation、Artifact、Approval、Checkpoint、VerificationResult。不能强制统一的是每个模型内部 reasoning、原生 tool shape、上下文压缩策略和产品交互。Codex 官方也指出，跨提供方协议容易收敛到共同子集，从而难以表达更丰富的 provider-specific session 和 tool 语义。<a href="https://openai.com/index/unlocking-the-codex-harness/">App Server</a></p>
+<p>因此 adapter 应“双轨保存”：向上输出 canonical event，向下保留原始 payload 与版本。若某产品支持 fork 而统一层没有，就以 capability negotiation 暴露，不要静默丢弃；若某产品无法导出关键证据，则降低其可自动提交的风险等级。</p>
+<h2 id="4_8">4. 常见失效比较</h2>
+<p>最常见的错误是给每个产品不同模型、不同时间和不同权限，然后比较最终通过率。另一个错误是只比较 token 单价，却忽略失败重试、人工接管、环境冷启动与错误提交。第三个错误是把厂商内部指标当共同口径，例如 Cursor 的 Keep Rate 与测试通过率衡量的不是同一对象。</p>
+<p>一个可审计的 POC 应发布完整配置矩阵：</p>
+<pre><code class="language-yaml">comparison:
+  task_suite: repo-maintenance-v3
+  workspace_snapshot: fixed
+  trials_per_case: 5
+  budgets: {wall_minutes: 30, model_usd: 8}
+  permissions: code-medium-v4
+  verifier: clean-room-v6
+  report_slices: [task_type, repo_size, risk, runtime, model]
+</code></pre>
+<h2 id="5_9">5. 组合战略</h2>
+<p>多数企业不需要挑选唯一赢家。更稳妥的结构是：供应商/开源 Agent 负责高变化的决策循环，企业控制面拥有 task、identity、policy、workspace、evidence、eval 和 commit authority。低风险 IDE 工作可直接使用 Cursor 或 Claude Code；需要深度嵌入的产品可接 App Server；需要研究可变 Harness 可使用 dsh；需要掌握执行环境实现可研究 OpenHands。</p>
+<p>这一比较的最终结论不是“哪个最好”，而是哪些边界必须由企业拥有。第二十六至二十九章将把这些产品差异转成可迁移的控制面和分阶段路线图。</p>
 <hr />
 <h1 id="agent_2">第四篇 进化：Agent 如何从轨迹中变得更好</h1>
 <hr />
-<h1 id="_6">第十九章 进化不是自我修改：目标函数、数据与治理</h1>
-<p>Agent 进化常被描述成“它会修改自己”。这种说法隐藏了最重要的问题：谁定义更好，谁提供数据，谁评价候选，谁有权发布，失败如何回滚。工程上，进化是一个受控优化系统，而不是自治主体获得无限写权限。</p>
-<h2 id="1_9">1. 四个层次</h2>
-<p>本书把进化分为：任务内策略适应；跨任务记忆与 skill；Harness 的 prompt、工具、路由和工作流变化；模型参数变化。越往后影响面越大、反馈越慢、治理成本越高。</p>
-<pre><code class="language-text">task-time repair → memory/skill → harness release → model training
-minutes             days           weeks             weeks/months
-</code></pre>
-<p>不要用模型训练解决本可由工具 schema 修复的问题，也不要把短期上下文摘要冒充长期学习。</p>
-<h2 id="2_9">2. 优化对象与根信任</h2>
-<p>系统先声明 mutable surface：哪些 prompt、retriever、tool view、policy 参数、workflow 或 memory 可产生候选。Evaluator、held-out 数据、权限根、审计和 release controller 默认不可由候选修改。</p>
-<p>如果 Agent 同时修改实现和评分器，分数上升没有意义。自我进化的第一原则是评价独立性。</p>
-<h2 id="3_9">3. 数据不是天然经验</h2>
-<p>生产轨迹包含成功、偶然成功、失败、攻击、用户妥协和环境噪声。进入经验库前要脱敏、归因、去重、标注任务分布和结果证据。只学习被用户接受的答案会产生选择偏差；用户可能没有检查。</p>
-<h2 id="4_8">4. 多目标而非单分数</h2>
-<p>目标至少包含正确性、稳定性、安全、成本、时延、人工负担与可解释性。优化单一通过率容易导致更长轨迹、更多权限或测试投机。采用 Pareto frontier 与硬约束：安全回归不允许被平均收益抵消。</p>
-<h2 id="5_11">5. 最小可信闭环</h2>
-<pre><code class="language-text">observe → attribute → propose minimal change
-→ isolated multi-trial eval → statistical gate
-→ canary → monitor → promote/rollback
-</code></pre>
-<p>Self-Harness 等近期工作说明冻结模型时，Harness 改进也可能产生显著收益；但论文结果不等于生产自治许可。<a href="https://arxiv.org/abs/2606.09498">Self-Harness</a> 组织需要可重放证据和发布治理。</p>
-<h2 id="6_1">6. 能力边界</h2>
-<p>Harness 可以减少接口摩擦、提供搜索与验证、扩大推理预算，却不能无限补偿模型缺少的知识和推理能力。Hierarchical Self-Improvement 报告的边界性结果提醒：在超出基础能力的任务上，结构优化可能没有提升。<a href="https://arxiv.org/abs/2608.08466">HSI</a></p>
-<p>进化项目应建立对照：模型升级、Harness 变化、环境变化和数据污染分别测量。否则组织会把供应商模型进步误认为自研 Harness 学会了进化。</p>
+<h2 id="_9">本篇导言：从“能改自己”到“能证明改得更好”</h2>
+<p>本篇是全书的原创综合重点。第十九章冻结四层模型：任务内适应、跨任务经验、Harness 版本和模型参数；第二十至二十三章用同一证据模板逐层展开；第二十四章把候选生成、独立评价、shadow、canary、发布和回滚组成治理闭环。</p>
+<p>这里不把 2026 年预印本结果扩大为生产事实。真正的难题不是让 Agent 生成修改，而是 credit assignment：谁定义更好，评价数据是否隔离，缺失 trial 怎样计分，收益是否跨任务复现，错误版本能否完整回滚。进化的上限同时受反馈质量和基础模型能力约束。</p>
 <hr />
-<h1 id="_7">第二十章 任务内进化：搜索、反思与验证—修复</h1>
-<p>任务内进化不改变长期系统版本，而是在一次 run 中根据反馈调整计划、候选和资源。它是最安全、反馈最快的一层，也最容易被误称为“自我学习”。</p>
-<h2 id="1-reflexion">1. Reflexion 的贡献与边界</h2>
-<p>Reflexion 将失败反馈转成语言记忆，在后续 trial 中影响行为，不更新模型权重。<a href="https://arxiv.org/abs/2303.11366">Reflexion</a> 它证明文本反馈可形成短期策略改进，但反思是否正确仍依赖 evaluator。让同一模型自由写“教训”可能固化错误归因。</p>
-<h2 id="2_10">2. 搜索不是无限重试</h2>
-<p>候选搜索可以采用 best-of-N、树搜索、分支工作区或多 Agent 并行。每个分支必须有不同假设、预算和停止条件；重复相同 prompt 只是在采样。选择由外部 verifier 进行，不能按语言自信度。</p>
-<h2 id="3_10">3. 验证—修复循环</h2>
-<pre><code class="language-text">candidate → deterministic checks
-  ├─ pass → completion gate
-  ├─ diagnostic failure → minimal repair context
-  ├─ flaky/ambiguous → independent review
-  └─ no progress/budget → escalate
+<h1 id="_10">第十九章 进化不是自我修改：目标函数、证据与边界</h1>
+<p>“Agent 会修改自己”是一个诱人的叙事，却不是可执行定义。一次反思、写入一条 memory、发布新 prompt、微调模型参数都可能被称为进化，四者的时标、影响面和责任完全不同。工程上，进化是：系统根据可归因的反馈生成有限候选，在独立评价下选择，并通过受控发布改变未来行为。</p>
+<h2 id="1_10">1. 四层进化模型</h2>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>主要可变对象</th>
+<th>生效范围</th>
+<th>典型时标</th>
+<th>默认回滚粒度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1 任务内适应</td>
+<td>计划、候选、重试策略、临时摘要</td>
+<td>当前 run</td>
+<td>秒—小时</td>
+<td>丢弃分支/回到 checkpoint</td>
+</tr>
+<tr>
+<td>L2 跨任务经验</td>
+<td>memory、skill、策略统计</td>
+<td>一组未来任务</td>
+<td>天—月</td>
+<td>撤销条目或 registry 版本</td>
+</tr>
+<tr>
+<td>L3 Harness 版本</td>
+<td>prompt、tool view、context compiler、router、workflow</td>
+<td>一个 profile/流量切片</td>
+<td>天—周</td>
+<td>bundle/profile 版本</td>
+</tr>
+<tr>
+<td>L4 模型参数</td>
+<td>权重、adapter、训练配方</td>
+<td>使用该模型的全部 profile</td>
+<td>周—月</td>
+<td>模型 checkpoint</td>
+</tr>
+</tbody>
+</table>
+<p>越往下，单次变化成本通常越高、影响面越大、因果反馈越慢。不要用训练解决一个错误的 tool schema，也不要把一次上下文摘要冒充组织已经学习。反过来，若某类推理错误跨工具和任务稳定重复，仅靠追加 prompt 也可能形成规则堆，应评估模型级改进。</p>
+<h2 id="2_8">2. 统一证据模板</h2>
+<p>后四章都用同一组字段描述一层进化，避免用不同术语掩盖同一控制问题：</p>
+<pre><code class="language-yaml">EvolutionEvidence:
+  可变对象: 被允许产生候选的表面
+  观测信号: 失败、成功、成本与安全数据
+  归因方法: 如何区分模型、Harness、环境与随机性
+  候选生成: 谁提出什么最小变化
+  评价隔离方式: 候选看不到什么、谁重算分数
+  门禁判据: 主要指标、硬约束、统计规则
+  发布方式: 变化影响哪些任务与租户
+  回滚粒度: 恢复到哪个一致版本
+  失败模式: 污染、投机、漂移与不可恢复风险
 </code></pre>
-<p>Harness 只回传修复所需诊断，避免逐轮泄漏 held-out。使用错误签名检测循环；连续两次没有减少失败集合时换假设，而不是继续局部补丁。</p>
-<h2 id="4_9">4. 动态工作流</h2>
-<p>任务内可以根据风险与不确定性增加搜索、reviewer 或测试，但 runtime 仍执行预算与权限上限。模型可以提议新步骤，不能自行取消强制检查。</p>
-<h2 id="5_12">5. 三类案例</h2>
-<p>代码 Agent 在独立 worktree 生成多个 patch，由测试和静态分析选；数据 Agent 对异常结论生成替代查询并对账；自进化实验中的候选生成器根据失败簇提出最小 mutation。共同点是变化留在 run scope，结束后不自动污染全局系统。</p>
-<p>任务内进化的成熟指标不是“思考轮数”，而是单位成本下错误集合是否收敛、是否避免重复副作用、是否保留可解释的候选淘汰记录。</p>
+<p>任何“自我进化”主张若不能填满这些字段，最多是想法生成器，不是可信学习系统。</p>
+<h2 id="3_8">3. 根信任与可变表面</h2>
+<p>系统必须先声明 mutable surface。候选可以改 prompt、retriever、tool description、skill、workflow 或 model profile；identity root、policy root、held-out vault、审计、evaluator 和 release controller 默认不可变。若执行者同时改实现和评分器，分数上升没有可解释性。</p>
+<p>根信任并不意味着治理代码永不更新，而是它不能由同一候选在同一实验中修改。治理平面可以走独立版本流程，经人类和不同测试集发布。这个“评价权与被评价对象分离”是本篇的第一原则。</p>
+<h2 id="4_9">4. 数据不是天然经验</h2>
+<p>生产轨迹混合了真实成功、偶然成功、用户妥协、攻击、工具故障和环境漂移。用户没有继续追问，可能是满意，也可能是放弃；visible test 通过，可能是正确，也可能是投机。进入进化数据集前，需要结果验证、脱敏、去重、任务分布、环境版本和失败归因。</p>
+<p>一个反例是只学习被合并的 patch。高风险错误通常在 code review 前被阻止，不会进入“成功”数据；低质量 patch 也可能因赶工被合并。这样的选择偏差会教系统复制组织过去的妥协。正确做法是同时保存候选、拒绝原因、最终 artifact 和后续事故，并把人类接受视为弱标签而非真值。</p>
+<h2 id="5_10">5. 多目标与硬约束</h2>
+<p>进化目标至少包括正确性、稳定性、安全、成本、时延、人工负担和可解释性。单一通过率会鼓励更长轨迹、更多权限或测试投机。可把候选表示为 Pareto 集：在不降低安全和关键任务切片的前提下，提高主要质量或降低资源。</p>
+<p>建议报告三类数：主要效用 <code>U</code>，硬约束违规 <code>H</code>，单位成功成本 <code>C_success = 总成本 / 可信完成数</code>。健康候选不是 <code>U</code> 最高者，而是 <code>H=0</code>、关键切片非劣、且 <code>U</code> 的置信区间满足预注册门槛者。阈值应由业务损失和样本量决定，本书不提供伪通用常数。</p>
+<h2 id="6_6">6. 当前研究证据的强弱</h2>
+<p>2026 年的几项工作把 Harness 进化变成可实验对象。Self-Harness 用 weakness mining、最小变更提案和回归验证改善冻结模型在 Terminal-Bench-2.0 子集上的 held-out 通过率；Gated Semantic Quality-Diversity 把“提出变更”与确定性计量、显著性检验分开；Living-Harness 把交互轨迹提炼为 episodic procedural memory 与 state graph；HSI 进一步允许 evolver 和 meta-evolver 分层改写，但也报告在超出 backbone 能力的 NLE 任务上没有改善。<a href="https://arxiv.org/abs/2606.09498">Self-Harness</a>、<a href="https://arxiv.org/abs/2607.13683">GSME</a>、<a href="https://arxiv.org/abs/2607.26598">Living-Harness</a>、<a href="https://arxiv.org/abs/2608.08466">HSI</a></p>
+<p>这些材料截至本书截面均为预印本，支持“受限条件下 Harness 变化可能改善冻结模型”，不支持“生产 Agent 已可安全无限递归自改”。外部复现、长期漂移、真实权限环境和经济成本仍是开放问题。</p>
+<h2 id="7_6">7. 最小可信闭环</h2>
+<pre><code class="language-text">observe → attribute → propose minimal candidate
+→ isolated multi-trial evaluation → hard gates
+→ shadow → canary → promote or rollback
+→ retain lineage and post-release evidence
+</code></pre>
+<p>成熟度不由自动化比例决定，而由错误候选能否被识别、影响能否被限制、结论能否复查决定。第二十至二十三章分别实例化四层模板，第二十四章再把它们放入统一治理闭环。</p>
+<h2 id="8_6">8. 四层不是线性升级阶梯</h2>
+<p>四层经常相互嵌套。一次任务内 repair 可以提出候选 lesson，lesson 经跨任务验证后成为 skill；多个 skill 的共同失败可能触发 Harness mutation；稳定、跨 Harness 仍存在的错误才进入训练数据。反方向也成立：新模型上线后，旧 tool view 可能不再合适，需要重新演化 Harness；新 Harness 改变了轨迹分布，旧 memory 的适用条件也随之失效。</p>
+<p>因此每个 release 都要记录完整系统组合，而不是只记“模型版本”或“prompt 版本”。归因分析至少回答：变化发生在哪一层，哪些相邻层保持冻结，收益能否在旧/新组合中复现，是否只是把成本或风险转移到另一层。第二十三章的 Model×Harness 2×2 是最小形式；复杂系统还应加入环境和数据 snapshot 作为分层变量。</p>
+<p>一个常见反例是模型供应商静默升级后，线上成功率上升，团队把它归因于刚发布的 memory。若没有版本粘性和交错实验，后续删除 memory 可能仍保持收益，却无人知道此前结论错误。进化账本必须允许修正归因，并把错误结论标记为 revoked；“曾经被批准”不能让它永久成为组织知识。</p>
+<h2 id="9_1">9. 从失败样本到可检验假设</h2>
+<p>失败聚类只是起点。好的进化假设应同时包含机制、适用条件和反事实。例如：“当可见工具 schema 超过当前模型的可靠选择范围时，错误工具率升高；将目录改为按 server 分组的按需发现，在不降低关键任务完成率时减少选择错误。”它比“工具太多，优化 prompt”更可证伪。</p>
+<p>归因可使用四级证据：时间相关只说明变化同时发生；trace 对齐能找到最早分歧；消融能证明某组件是必要条件；随机对照和跨切片复现才较强地支持因果。高风险发布不应只依赖模型对轨迹的叙述，因为语言解释本身也是候选。</p>
+<p>每个失败簇还要保存“暂不改变”的选项。环境服务短期抖动、样本太少或损失可接受时，修观测和等待更多数据可能优于立即变异。持续进化不等于持续发布。</p>
+<h2 id="10_5">10. 进化预算也是治理工具</h2>
+<p>候选生成、评测和 canary 都消耗模型、计算、人力和机会成本。预算应分成探索预算、确认预算和生产风险预算。探索允许快速淘汰；确认要求固定环境和足够 trial；生产风险预算限制 canary 可触达的数据、金额和用户。</p>
+<p>可以用 <code>可信学习效率 = 被复现的效用增量 /（实验总成本 + 事故期望损失）</code> 比较计划。这个指标不适合跨组织排名，但适合判断同一团队的搜索是否越来越昂贵。若候选数量持续增加而被复现的增益不变，问题可能在 failure taxonomy、evaluator 或搜索空间，而不是“算力还不够”。</p>
+<h2 id="11_6">11. 先决定是否值得进化</h2>
+<p>建立闭环前，应先做一次 value-of-information 判断。若故障频率低、损失小、根因明确且人工修复便宜，自动搜索产生的额外观测、评测和发布成本可能大于收益。相反，故障重复出现、影响可量化、候选能隔离且结论可跨任务复现时，进化才有工程杠杆。决策记录至少写明基线损失、预期改善、实验成本、最大可接受事故和停止日期；缺少其中任一项，就只能立项为探索，不能承诺生产收益。</p>
+<p>另一个失效场景是把“长期没有发布”解释成系统停滞。若进化控制器连续否决有回归的候选，它实际上在产生负面知识：哪些表面不该改、哪些 evaluator 不足以归因。平台应统计被否决假设的复用价值与重复提案率。重复提出已经证伪的 mutation，说明 lineage 没有进入候选生成上下文；很少发布但重复提案下降，则可能表示治理正在学习。由此，进化吞吐量应以可信结论而非上线次数计量。</p>
+<p>组织还应为“保持现状”建立可比较的基线版本。候选不仅与父版本比较，也与不启用学习、固定预算和相同环境的对照比较；否则任务变简单、数据被清洗或人工支持增加，都可能伪装成进化收益。若对照组长期缺失，系统只能证明版本之间相关，不能证明学习闭环创造了价值。基线本身发生变化时，应关闭旧实验并重新预注册，而不是把新样本继续累加到旧结论中。</p>
+<p>长期基线还应保留事故严重度与人工补救成本，防止质量提升只是把失败转移给运营人员。</p>
+<hr />
+<h1 id="_11">第二十章 任务内进化：搜索、反思与验证—修复</h1>
+<p>任务内进化不改变长期系统版本，而是在一次 run 中根据新观察调整计划、候选和资源。它反馈最快、回滚最容易，也是最适合先自动化的一层。它不是“模型学会了”，因为下一次独立 run 若没有携带结果，行为不会持久改变。</p>
+<h2 id="1_11">1. 本层的证据模板实例</h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>任务内实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可变对象</td>
+<td>当前计划、分支候选、临时反思、检索范围、分配预算</td>
+</tr>
+<tr>
+<td>观测信号</td>
+<td>工具错误、测试差异、环境状态、review 诊断、成本增量</td>
+</tr>
+<tr>
+<td>归因方法</td>
+<td>错误分类、假设—动作—结果链、同一环境下候选对比</td>
+</tr>
+<tr>
+<td>候选生成</td>
+<td>best-of-N、树搜索、独立 worker、最小 repair</td>
+</tr>
+<tr>
+<td>评价隔离方式</td>
+<td>verifier 在候选外运行，held-out 不进入修复上下文</td>
+</tr>
+<tr>
+<td>门禁判据</td>
+<td>失败集合收敛、硬约束通过、预算与副作用上限</td>
+</tr>
+<tr>
+<td>发布方式</td>
+<td>只选中当前 run 的 artifact，不改全局配置</td>
+</tr>
+<tr>
+<td>回滚粒度</td>
+<td>分支/worktree/checkpoint</td>
+</tr>
+<tr>
+<td>失败模式</td>
+<td>无限重试、自我确认、错误反思、重复副作用、测试泄漏</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-reflexion">2. Reflexion 的贡献与限制</h2>
+<p>Reflexion 将环境反馈写成语言反思，并在后续 trial 中作为 episodic memory 使用，不更新模型权重。<a href="https://arxiv.org/abs/2303.11366">Reflexion</a> 它的重要贡献是证明文本反馈可以改变同一任务的后续策略；限制是反思的正确性仍依赖外部反馈。若同一模型既产生失败又自由解释失败，它可能把“权限被拒绝”归因为“命令写法不好”，随后反复换命令绕边界。</p>
+<p>反思应绑定可观察证据：失败 action id、错误类别、相关 artifact 和尚未解释的替代假设。它的格式可以是“观察—归因置信度—下一试验”，而不是一段人格化自我批评。</p>
+<h2 id="3_9">3. 搜索不是重复采样</h2>
+<p>best-of-N 只有在候选具有实质差异且存在选择器时才构成搜索。每个分支应声明假设、允许动作、预算和停止条件。例如仓库修复可以并行尝试“回滚 API 变化”“补兼容层”“修调用方”，而不是三次发送相同 prompt。</p>
+<pre><code class="language-text">frontier = [baseline_state]
+while budget and frontier:
+    state = select(frontier)
+    candidates = propose_distinct_hypotheses(state)
+    for c in candidates:
+        result = execute_in_isolated_branch(c)
+        score = external_verifier(result)
+        retain_if_nondominated(c, score)
+return best_candidate_that_passes_hard_gates()
+</code></pre>
+<p>树宽、深度和 reviewer 数都应计入总预算。搜索让成功率提高但单位成功成本恶化时，不一定值得上线。</p>
+<h2 id="4_10">4. 验证—修复循环</h2>
+<p>第十章把模型停止与业务完成分开；本层进一步把 verifier 失败转换成最小修复上下文。确定性失败可回传失败检查和定位信息，flaky 或相互矛盾的结果先重跑或升级独立 review，不能把 held-out 测试全文交给 Agent。</p>
+<pre><code class="language-text">candidate → clean-room checks
+  ├─ pass → seal artifact
+  ├─ diagnostic failure → bounded repair context
+  ├─ flaky/infrastructure → retry outside candidate score
+  ├─ integrity alarm → quarantine
+  └─ no progress/budget exhausted → human escalation
+</code></pre>
+<p>进度可定义为 <code>ΔF = |失败集合_before| - |失败集合_after|</code>，同时检查是否新增高严重度失败。连续多个 repair 的 <code>ΔF ≤ 0</code> 表示局部策略停滞，应换假设或停止；具体连续次数应按任务成本配置，不应硬编码成通用数字。</p>
+<h2 id="5_11">5. 副作用与并行分支</h2>
+<p>代码分支可用 worktree 隔离，外部系统却未必有天然分支。数据写入、邮件、工单和部署只能在 simulation/dry-run 中搜索，真实 commit 由选中候选在幂等控制下执行一次。否则三个候选都“试发一封邮件”，即使最终只选一个，副作用已经发生三次。</p>
+<p>任务内回滚也不是删除聊天。需要恢复 workspace、pending effect、临时凭证和预算状态；对结果未知的外部调用先 reconcile（见第六章）。</p>
+<h2 id="6_7">6. 何时不使用任务内进化</h2>
+<p>当任务可由确定性 workflow 完成、失败代价很高且 verifier 弱，增加自由搜索只会扩大风险。此时应选择受限流程或人工决策。相反，当候选可隔离、反馈快、结果可执行验证时，任务内搜索最有价值。</p>
+<p>本层成熟指标包括可信完成率、平均候选数、单位可信完成成本、重复 effect 率、无进展停止率和人工升级率。它们共同回答“系统是否更有效地收敛”，而不是“模型思考了多少轮”。</p>
+<h2 id="7_7">7. 候选选择器的三种强度</h2>
+<p>第一种是确定性 verifier，例如编译、测试、约束求解和账目对平；它最适合筛除明确错误。第二种是 rubric reviewer，用于设计质量、解释充分性等不能完全形式化的目标；应采用结构化维度、盲化候选顺序并保留分歧。第三种是人类 decision owner，处理价值取舍和材料性歧义。三者可以串联，而不应让 LLM reviewer 的总分覆盖确定性失败。</p>
+<p>当候选都通过硬检查，可使用 Pareto 选择，而不是把测试、成本、改动规模和风险压成一个随意权重。代码修复中，一个改动两行、证据完整的候选，可能比重构二十个文件、平均 judge 分略高的候选更适合生产。选择规则应在看到具体候选前确定，避免按结果挑指标。</p>
+<h2 id="8_7">8. 计划修复与状态修复要分开</h2>
+<p>任务内失败可能是计划错，也可能是状态已被破坏。计划错可以回到同一 checkpoint 选择新动作；状态错则要恢复 workspace、撤销临时资源或新建分支。若 Harness 只更换 prompt 而沿用被污染环境，新候选会把旧副作用当成事实，搜索分支名义独立、实际共享状态。</p>
+<p>例如 Agent 先升级依赖再尝试局部代码修复，后者失败后决定回滚升级。如果 lockfile、缓存和后台进程没有一起恢复，下一候选的测试仍运行在混合环境。正确的 checkpoint 包含权威 revision、依赖/image、环境变量引用、pending effects 和事件 offset，而不是一句“已撤销修改”。</p>
+<h2 id="9_2">9. 一个有界修复策略</h2>
+<p>平台可以按错误类别分配不同策略：<code>INVALID_ARGUMENT</code> 允许同一假设内一次参数修正；<code>TEST_FAILURE</code> 要求形成新因果假设；<code>POLICY_DENIED</code> 不允许换写法绕过，只能请求合法 amendment；<code>INFRASTRUCTURE</code> 由控制面重试且不算候选能力；<code>UNKNOWN_EFFECT</code> 进入 reconciliation，暂停任何可能重复的提交。</p>
+<pre><code class="language-yaml">repair_policy:
+  TEST_FAILURE:
+    max_hypotheses: 3
+    require: [failure_delta, changed_assumption]
+  POLICY_DENIED:
+    action: escalate_or_stop
+  UNKNOWN_EFFECT:
+    action: reconcile_before_resume
+</code></pre>
+<p>这里的次数只是 profile 示例，需要按任务损失校准。关键不是“三次”，而是每种失败有不同权限和会计语义。</p>
+<h2 id="10_6">10. 任务内学习如何退出当前任务</h2>
+<p>run 结束时，系统可生成 lesson candidate，但不得直接发布。candidate 必须携带原 task、证据、适用条件、反例和归因置信度，进入第二十一章的写入门。失败任务也有价值：它可以暴露工具不可诊断、合同缺字段或 verifier 不稳定，而不必强行提炼成“以后应该怎样做”。</p>
+<p>这条边界防止一次偶然修复污染未来。L1 的输出是候选 artifact 与候选经验；只有后续跨任务评价才能把后者升级为 L2 资产。</p>
+<h2 id="11_7">11. 搜索预算要按信息增益分配</h2>
+<p>平均给每个分支相同 token 或时间看似公平，却会把预算浪费在已经被硬证据否定的假设上。控制器应按“下一次动作可能区分哪些竞争解释”分配预算：能同时排除多个根因的诊断优先，只改变输出措辞而不触碰失败机制的候选降级。每轮记录假设集合、预测 observation 和实际 observation；若候选没有写出可区分的预测，它只是随机重试。</p>
+<p>例如测试失败可能来自代码、fixture 或环境。直接生成三个 patch 会混合三类原因；先重放最小失败、校验 image 与 fixture hash，往往能以更低成本缩小空间。反例是把 LLM 自评“更有信心”当作信息增益：信心变化没有外部测量，不能增加预算。可观察指标包括每个可信修复淘汰的假设数、诊断成本占比和分支间状态泄漏率。诊断成本上升但总候选数、人工升级和事故同时下降，通常比单看完成时延更能说明搜索质量改善。</p>
 <hr />
 <h1 id="memoryskill">第二十一章 跨任务经验化：Memory、Skill 与策略库</h1>
-<p>跨任务进化把一次 run 的信息带到未来。它比任务内修复更有杠杆，也更容易形成持久污染。核心问题不是“记住更多”，而是哪些经验值得固化、在什么条件下检索、何时过期、谁能撤销。</p>
-<h2 id="1_10">1. 四类持久对象</h2>
-<p>事实记忆保存相对稳定的领域信息；情景记忆保存任务、动作与结果；程序记忆以 skill、脚本或 SOP 表达做法；策略统计保存某类选择的效果。四者拥有不同验证和 TTL，不能都塞进向量库。</p>
-<p>Voyager 的 skill library 展示了把验证过的可执行技能积累并在未来复用的路线。<a href="https://arxiv.org/abs/2305.16291">Voyager</a> Claude 的项目规则则展示由人维护、随仓库版本化的程序知识。前者偏自动发现，后者偏组织治理。</p>
-<h2 id="2_11">2. 写入门比检索更重要</h2>
-<p>自动记忆必须满足来源可信、结果已验证、可泛化、无秘密、与已有项不冲突。一次成功不能证明因果。候选 memory 先进入隔离区，经多任务验证和人工/策略批准后晋级。</p>
+<p>跨任务进化把一次 run 的信息带到未来。它比任务内修复更有杠杆，也更容易形成持久污染。核心问题不是“记住更多”，而是哪些经验值得固化、在哪些条件下检索、何时过期、谁能撤销。</p>
+<h2 id="1_12">1. 本层的证据模板实例</h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>跨任务实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可变对象</td>
+<td>事实/情景 memory、skill、SOP、策略统计、检索权重</td>
+</tr>
+<tr>
+<td>观测信号</td>
+<td>已验证轨迹、用户纠正、复用效果、冲突与过期事件</td>
+</tr>
+<tr>
+<td>归因方法</td>
+<td>条目级 provenance、启用/禁用对照、任务切片评测</td>
+</tr>
+<tr>
+<td>候选生成</td>
+<td>轨迹提炼、人工编写、重复失败聚类、skill 合成</td>
+</tr>
+<tr>
+<td>评价隔离方式</td>
+<td>候选隔离区、held-out 复用任务、独立安全扫描</td>
+</tr>
+<tr>
+<td>门禁判据</td>
+<td>可泛化、无秘密、非劣、无冲突、权限 manifest 合格</td>
+</tr>
+<tr>
+<td>发布方式</td>
+<td>租户/团队/仓库 registry 与分层 rollout</td>
+</tr>
+<tr>
+<td>回滚粒度</td>
+<td>单条 memory、skill 版本、registry snapshot</td>
+</tr>
+<tr>
+<td>失败模式</td>
+<td>陈旧、误检索、租户泄漏、恶意 skill、相关性误作因果</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2_9">2. 四类持久对象不能共用一种生命周期</h2>
+<p>事实记忆保存相对稳定的领域事实；情景记忆保存一次任务、动作和结果；程序记忆以 skill、脚本或 SOP 表达做法；策略统计保存某类选择在某种条件下的效果。四者的验证、访问控制和 TTL 不同，不能都变成无类型向量。</p>
+<p>Voyager 展示了把验证过的可执行技能积累并在未来复用的路线，其系统组合自动课程、可执行 skill library 与环境反馈。<a href="https://arxiv.org/abs/2305.16291">Voyager</a> Living-Harness 则在 2026 年预印本中把交互轨迹转成 episodic procedural memory 和 repair state graph，同时冻结工具和基础上下文。<a href="https://arxiv.org/abs/2607.26598">Living-Harness</a> 两者支持“程序经验可积累”这一研究方向，不证明自动写入在开放企业数据中天然安全。</p>
+<h2 id="3_10">3. 写入门比检索算法更重要</h2>
+<p>候选经验先回答五个问题：来源是否可信，结果是否独立验证，因果假设是否合理，是否可跨任务泛化，是否包含秘密或越权步骤。一次成功不足以证明某条做法有效；至少应有相似任务的启用/禁用对照或人工领域审查。</p>
 <pre><code class="language-text">trace → candidate lesson → evidence linkage
-→ dedupe/conflict → held-out reuse eval → publish with TTL
+→ secret/PII scan → dedupe/conflict
+→ held-out reuse eval → approve → publish with scope and TTL
 </code></pre>
-<h2 id="3_11">3. 检索与适用条件</h2>
-<p>每条经验带适用范围、前置条件、反例、版本和置信度。检索器不仅按语义相似，还按环境、工具版本、租户和 freshness 过滤。过期 skill 应失败关闭，而不是悄悄运行旧命令。</p>
-<h2 id="4-skill">4. Skill 供应链</h2>
-<p>Skill 可能包含指令、脚本和资源，等同于可执行依赖。需要 owner、版本、签名、权限 manifest、测试、变更评审和撤销。Agent 自动生成 skill 只能进入候选 registry，不直接成为全局能力。</p>
-<h2 id="5_13">5. 遗忘与纠错</h2>
-<p>记忆系统必须支持 provenance 查询、降权、失效和删除。用户纠正不是简单追加相反文本，而要定位受影响的记忆和派生 artifact。组织还需满足数据删除与租户隔离。</p>
-<p>跨任务进化成功的标准，是未来任务在稳定成本和安全约束下改善，并能证明改善来自哪条经验；不是 memory 条目持续增长。</p>
+<p>一个失效场景是从事故处理中提炼出“遇到权限错误就使用管理员 token”，随后被无关任务检索。即使原轨迹成功，该 skill 也把临时例外固化为常规做法。写入门应保留原授权上下文，并禁止把一次性凭证和 waiver 编译成全局程序知识。</p>
+<h2 id="4_11">4. 检索是策略决策</h2>
+<p>每条经验至少包含适用范围、前置条件、反例、owner、版本、可信度、TTL 和 provenance。检索除了语义相似，还要按租户、环境、工具版本、数据分类和 freshness 过滤。模型可以在候选之间判断相关性，但硬隔离必须在检索前执行。</p>
+<p>评估 memory 不只测 recall。还要测 harmful retrieval rate：被检索且导致硬约束失败的条目占启用条目的比例；stale activation rate：过期或不兼容条目被激活的比例；causal lift：启用相对于禁用对照的可信完成差异。三个指标都需按任务族切片。</p>
+<h2 id="5-skill">5. Skill 是供应链包</h2>
+<p>Skill 可能包含指令、脚本、模板与资源，本质上是可执行依赖。它需要 owner、版本、签名、权限 manifest、测试、变更评审和撤销。自动生成 skill 只能进入候选 registry；运行时根据声明 capability 给它最小权限，不因“是内部 Agent 写的”而信任。</p>
+<pre><code class="language-yaml">skill_manifest:
+  id: repo.release-notes
+  version: 3.2.1
+  owner: dev-platform
+  allowed_tools: [repo.read, git.diff]
+  network: deny
+  data_scope: current_repository
+  expires_at: 2027-01-31
+  evidence_suite: skill-release-notes-v5
+</code></pre>
+<h2 id="6_8">6. 遗忘、纠错与派生影响</h2>
+<p>“遗忘”不是从向量库删一行。系统要能定位受影响的缓存、派生 skill、已生成 artifact 和下游 profile。用户纠正应生成 supersedes/revokes 关系，旧条目停止新激活；需要法律删除时，再按数据治理流程物理清除并留下不可含原文的审计证明。</p>
+<p>本层最适合在重复、可验证且环境相对稳定的任务上使用。高度一次性的战略判断不宜自动固化。成功标准是未来任务在稳定成本与安全约束下改善，并能证明改善来自哪些经验；memory 条目数量持续增长不是能力指标。</p>
+<h2 id="7-memory">7. Memory 的状态机</h2>
+<p>一条经验不应只有 active/deleted 两态。推荐状态为 <code>candidate → quarantined → validated → active → deprecated → revoked/expired</code>。candidate 尚未经过复用验证；quarantined 因秘密、冲突或来源问题暂停；validated 表示证据充分但未必对所有租户发布；deprecated 停止新使用但保留可重建性；revoked 表示已知有害。</p>
+<p>状态转换由不同 authority 控制。自动提炼器可以创建 candidate，安全扫描可以 quarantine，registry owner 批准 active，事故响应可紧急 revoke。所有转换带原因和 evidence ref。若系统只允许覆盖内容，后续无法解释历史任务为什么使用了旧规则。</p>
+<h2 id="8_8">8. 冲突不是“取最新”</h2>
+<p>两条 memory 可能在不同环境都正确。例如旧 API 要求 <code>v1</code> header，新区域已迁移 <code>v2</code>；简单地按时间取最新会破坏旧区域。冲突处理应先比较 scope、前置条件和权威来源，再决定并存、细分或撤销。对无法判定的冲突，检索器应返回不确定性并触发人工，而不是随机选一条。</p>
+<p>事实记忆还要区分 source truth 与 learned summary。法规、价格、组织权限等易变化或高风险事实应在使用时查询权威系统；memory 只保存 locator 和检索方法。把一份旧网页摘要永久嵌入向量库，会让回答流畅但不可纠正。</p>
+<h2 id="9_3">9. 复用实验与负迁移</h2>
+<p>评估一条 skill 时，任务集应包含目标任务、相邻任务和反例任务。目标集改善但反例集频繁误触发，说明 description 或触发条件过宽。除了平均收益，还应报告 activation precision、未激活时的额外上下文成本、失败严重度和跨模型差异。</p>
+<p>一个实用对照是同一模型和 Harness 下，随机交错运行 <code>registry_without_candidate</code> 与 <code>registry_with_candidate</code>。若 skill 包含脚本，还要固定依赖和 sandbox。仅比较发布前后的线上结果会混入模型升级、季节性任务和其他 memory 变化。</p>
+<h2 id="10_7">10. 经验库的容量与注意力预算</h2>
+<p>经验越多，检索、冲突和安全扫描成本越高。即使采用按需加载，名称和描述也会占索引与模型注意力。registry 应定期合并重复项、退役低价值项，并测量每条经验的边际激活与收益。长期未激活不一定无用，但需要 owner 重新确认保留理由。</p>
+<p>容量治理可以采用“总量配额 + 领域 owner + 自动过期复核”，而不是让向量库无限增长。其目标是提高可用知识密度：被正确激活、产生可验证帮助且能追溯来源的条目，占全部可见条目的比例。</p>
+<h2 id="11_8">11. 记忆收益必须扣除维护债务</h2>
+<p>一条经验带来的收益不能只按单次 token 节省或成功率提升计算。它还创造版本兼容、权限审查、冲突处理、删除传播和事故响应成本。可以记录 <code>净经验价值 = 可信完成增量价值 - 检索成本 - 维护成本 - 负迁移期望损失</code>，并按 owner 与任务族滚动复核。该式不用于跨团队排名，而用于识别“看起来常被调用、实际只是在制造协调”的资产。</p>
+<p>一个反例是公共 skill 在十个团队都被激活，因此被认定为核心能力；但九个团队随后覆盖其默认值，且每次模型升级都要重新验证。更好的动作可能是拆成稳定协议 schema 与领域 profile，或把确定性部分下沉到工具服务。经验库的演化方向不总是增加内容，也包括把成熟知识编译成 policy、validator、默认配置或产品接口。只有仍需模型情境判断的部分才应保留为可检索经验，从而缩小不确定性表面。</p>
 <hr />
-<h1 id="harness-prompt">第二十二章 Harness 进化：Prompt、工具、上下文与工作流</h1>
-<p>Harness 进化直接修改模型所处的决策环境，通常比训练模型便宜、上线快。可变对象包括 system instruction、tool schema、上下文选择器、压缩器、router、retry、workflow、sandbox profile 与模型 profile。</p>
-<h2 id="1_11">1. 先归因再变异</h2>
-<p>工具选择失败可能来自描述、参数、返回噪声或模型能力。盲目追加 prompt 会形成不可维护的规则堆。每个 mutation 应对应失败簇和因果假设，例如“工具目录过大导致选择错误”，候选则是动态 tool discovery，而非泛化提醒。</p>
-<h2 id="2_12">2. 最小变更原则</h2>
-<p>候选表示为版本化 patch：</p>
-<pre><code class="language-text">HarnessMutation {
-  base_version
-  target_component
-  hypothesis
-  patch
-  expected_gain
-  risk_surface
-  eval_plan
+<h1 id="harness_4">第二十二章 Harness 进化：从失败病理到版本化变更</h1>
+<p>Harness 进化直接修改模型所处的决策环境，通常比训练模型上线快，也最容易陷入“不断追加 prompt”。可变对象包括 system instruction、tool schema、context compiler、retriever、compactor、router、retry、workflow、sandbox profile 和 model profile。只有当变化被版本化、独立评价并可回滚时，才称得上 Harness 进化。</p>
+<h2 id="1_13">1. 本层的证据模板实例</h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>Harness 实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可变对象</td>
+<td>prompt、tool view、context、router、workflow、runtime config</td>
+</tr>
+<tr>
+<td>观测信号</td>
+<td>失败簇、工具错误、trace、在线实验、成本与安全告警</td>
+</tr>
+<tr>
+<td>归因方法</td>
+<td>pathology 分类、单变量/消融、Model×Harness 2×2</td>
+</tr>
+<tr>
+<td>候选生成</td>
+<td>人工假设、evolver Agent、搜索/重组、供应商适配</td>
+</tr>
+<tr>
+<td>评价隔离方式</td>
+<td>冻结 evaluator/数据/环境，候选不可读取 sealed test</td>
+</tr>
+<tr>
+<td>门禁判据</td>
+<td>激活、有效性、显著改善、关键切片非劣、硬门通过</td>
+</tr>
+<tr>
+<td>发布方式</td>
+<td>shadow、canary、按任务/模型/租户 profile 晋级</td>
+</tr>
+<tr>
+<td>回滚粒度</td>
+<td>完整 Harness bundle，而非单个 prompt 字符串</td>
+</tr>
+<tr>
+<td>失败模式</td>
+<td>规则堆、过拟合、未激活补丁、指标投机、组合漂移</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2_10">2. 先诊断失败病理</h2>
+<p>“工具调用失败”可能来自模型选错工具、schema 不清、参数校验缺失、返回噪声、网络故障或权限拒绝。每个 mutation 必须绑定 <code>where × why</code>：改哪里，针对什么可观察病理。若工具目录过大导致选择错误，候选可以是动态 tool discovery；若根因是服务 500，追加“请认真选择工具”毫无意义。</p>
+<p>一个可审计变更至少包含：base version、目标组件、失败簇、因果假设、patch、预期收益、风险面、激活 beacon、eval plan 和 rollback。一次尽量只改变一个因果因素；组合优化放在单因素证据之后。</p>
+<pre><code class="language-json">{
+  &quot;base&quot;: &quot;harness-42&quot;,
+  &quot;target&quot;: &quot;tool_catalog.retrieval&quot;,
+  &quot;pathology&quot;: &quot;wrong_tool_when_catalog_gt_80&quot;,
+  &quot;hypothesis&quot;: &quot;static schemas overload selection&quot;,
+  &quot;mutation&quot;: &quot;server-grouped on-demand discovery&quot;,
+  &quot;activation_beacon&quot;: &quot;tool_catalog_lookup&quot;,
+  &quot;rollback&quot;: &quot;harness-42&quot;
 }
 </code></pre>
-<p>一次只改变尽量少的因素，便于归因和回滚。涉及多个组件的组合优化可在单变量证据后进行。</p>
-<h2 id="3_12">3. 质量多样性</h2>
-<p>只保留最高平均分候选会收敛到单一策略，并可能牺牲某些任务族。Gated Semantic Quality-Diversity 将候选多样性与确定性门禁结合，强调把生成交给模型、计量和显著性检验交给代码。<a href="https://arxiv.org/abs/2607.13683">Gated Semantic QD</a></p>
-<p>企业可以维护按任务域、风险和模型区分的多个 Harness profile，而非追求一个全局最优 prompt。</p>
-<h2 id="4_10">4. 四组门禁</h2>
-<p>正确性门检查能力与回归；安全门检查权限、注入和信息流；运营门检查成本、时延和稳定性；治理门检查可解释性、所有者与回滚。任何硬门失败都不能被平均收益抵消。</p>
-<h2 id="5_14">5. 发布</h2>
-<p>候选先 shadow，再小流量 canary，随后按切片晋级。运行时记录完整版本组合：模型、prompt、tools、retriever、policy、sandbox 与 evaluator。回滚必须能恢复组合，而不仅是 prompt 文本。</p>
-<p>DSH/Cordis 为动态装配提供了优雅载体，但 evolution controller 应在插件树外部。可修改性与评价权分离，是 Harness 进化从 demo 走向生产的分界线。</p>
+<h2 id="3_11">3. 研究系统提供了什么证据</h2>
+<p>Self-Harness 预印本把流程分成 Weakness Mining、Harness Proposal 和 Proposal Validation，并在三个冻结模型上报告 held-out Terminal-Bench-2.0 子集通过率改善。<a href="https://arxiv.org/abs/2606.09498">Self-Harness</a> 它的重要机制是从模型特定弱点产生最小变更，而不是复用一套万能 prompt。</p>
+<p>GSME 预印本进一步把候选生成与 credit 分开：模型诊断并提案，确定性代码拥有采样、计量和显著性检验；候选按 <code>where × why</code> 病理进入质量—多样性 archive，并设置 validity、activation 和 significance gate。<a href="https://arxiv.org/abs/2607.13683">GSME</a> 这比“让另一个模型打分”更接近实验系统，但结论仍受任务集、冻结模型、样本量和实现质量约束。</p>
+<p>HSI 预印本允许同一冻结模型分别承担 task harness、evolver 和 meta-evolver，并保留 frozen outer anchor；其在中等难度 BALROG 环境报告收益，同时在超出 backbone 能力的 NLE 上没有改善。<a href="https://arxiv.org/abs/2608.08466">HSI</a> 这给出两条边界：反馈必须有信息，基础模型必须有能力利用新结构。</p>
+<h2 id="4_12">4. 四组门禁</h2>
+<p>正确性门检查 capability 与 regression；安全门检查权限、注入、信息流和供应链；运营门检查成本、时延、稳定性与资源；治理门检查 owner、解释、版本、回滚和数据许可。任何硬门失败不能被平均收益抵消。</p>
+<p>激活门尤其容易被忽略。候选 prompt 可能从未进入相关上下文，却因随机波动看似提高分数。每次 trial 应记录 mutation 是否被实际加载、相关工具是否被发现、策略分支是否触发；未激活 trial 不能被解释为机制证据。</p>
+<h2 id="5-profile">5. Profile 而非全局最优</h2>
+<p>不同模型对工具格式、上下文与提示敏感度不同，Cursor 的公开实践也按模型版本定制 Harness。<a href="https://cursor.com/blog/continually-improving-agent-harness">Cursor harness</a> 因此企业更适合维护按任务、风险和模型区分的 profile，而不是追求一个全局最优 prompt。profile 数量也要受控，否则组合爆炸使 eval 覆盖失真。</p>
+<p>DeepSeek Harness/Cordis 提供动态装配和可逆插件的载体（见第十六章），但 evolution controller 应位于候选插件树之外。可修改性越强，评价权隔离越重要。</p>
+<h2 id="6_9">6. 何时选择替代方案</h2>
+<p>如果失败来自确定性 API 约束，直接修 schema、validator 或服务比自动搜索更可靠；如果任务很少且变化慢，人工评审的版本化配置成本更低；只有失败重复、eval 可信、候选空间较大时，自动提案和搜索才产生杠杆。</p>
+<p>本层健康指标包括 candidate activation rate、credited gain、关键切片最大回归、rollback rate、实验成本/被采纳变更和变更半衰期。最后一项衡量改进多久后因模型或环境变化失效，防止团队只累计“曾经有效”的补丁。</p>
+<h2 id="7_8">7. 可变表面的风险排序</h2>
+<p>并非所有 Harness 组件都适合相同自动化。tool description 和检索排序通常只改变模型看到什么，风险相对可控；workflow 可以改变动作顺序和并发；sandbox profile 与 approval policy 直接改变可做什么，风险最高。候选权限应按表面分级：低风险可自动生成并进入 shadow，高风险只能由人提交、由安全套件验证。</p>
+<p>同一文本改动也可能跨级。给 tool description 增加示例看似是提示优化，若示例含生产 URL 或教模型绕过批准，就变成数据与权限风险。mutation scanner 应分析引用的数据分类、工具 capability 和潜在外部效果，而不是只按文件路径判定。</p>
+<h2 id="8_9">8. 组合爆炸与交互效应</h2>
+<p>Prompt、tool view、context compiler、model 和 workflow 之间有交互。单变量改善可能在另一模型上退化，两个独立改善也可能组合后冲突。平台先建立小规模因子实验，找出主要交互，再决定哪些组件必须作为 bundle 一起发布。</p>
+<p>例如“更简短的工具描述”和“按需工具发现”单独都减少 token，但组合后索引缺少足够区分信息，wrong-tool 反而上升。若只保存最终平均分，无法定位交互。trace 需要记录每个动态上下文项的来源、选择原因和 token 成本。</p>
+<h2 id="9-prompt-rule-accretion">9. 防止 Prompt Rule Accretion</h2>
+<p>规则堆积的典型症状是：每次事故都在 system prompt 增加一句“永远不要”，旧规则没有 owner、测试和退役时间，模型面对相互冲突的长指令。治理方法与代码相似：每条承重规则绑定 failure id 和 eval，定期消融；可以由 schema、policy 或工具默认值保证的内容移出 prompt。</p>
+<p>建议把 Harness source 分成 invariant、model profile、task profile 与 experiment overlay。invariant 只放跨任务硬语义的模型说明，真正硬约束仍由系统执行；model profile 适配工具和行为；task profile 注入领域做法；overlay 只在实验流量存在。构建产物记录各层来源和冲突解析。</p>
+<h2 id="10_8">10. 从候选到可维护版本</h2>
+<p>Evolver 生成的 patch 通常只针对局部失败，代码和文字质量未必适合长期维护。进入 release 前还需 normalization：消除重复、补 owner 和注释、生成兼容测试、检查是否改变未声明表面。normalization 后必须重跑评测，因为“语义等价”的重写对模型未必等价。</p>
+<p>退役同样重要。模型升级后逐条消融旧补丁；若移除不退化，就删除而不是保留“保险”。Harness evolution 的净产出应是更好的决策环境，而不是增长最快的配置仓库。</p>
+<h2 id="11_9">11. 用可逆性决定发布半径</h2>
+<p>mutation 风险不仅取决于改了什么，还取决于错误被发现后能否恢复。纯检索排序通常可以按请求回滚；workflow 变更可能留下在途任务；工具权限和外部 effect 可能不可逆。因此 release controller 应为每个 surface 记录 detection latency、rollback latency、在途状态兼容和最大 effect 半径，再决定 shadow、canary 或人工提交。无法给出恢复路径的候选，即使离线收益显著，也只能停在模拟环境。</p>
+<p>例如一个新 workflow 将串行审批改为并行，以降低时延。离线任务都通过，但真实环境中两个分支同时预留同一资源，形成双重承诺。只回滚配置不会撤销已生成 reservation；系统还需 effect ledger、冲突检测和补偿流程。这个反例说明“可逆插件”描述的是软件装配，不自动保证业务效果可逆。发布证据应分别证明配置可回退、状态可读取、外部效果可对账；三者缺一，rollback 字段就只是一个版本号。</p>
 <hr />
-<h1 id="_8">第二十三章 模型进化：轨迹蒸馏、偏好与强化学习</h1>
-<p>当问题跨任务重复出现、无法仅靠接口和上下文修复，且有足够高质量数据时，才考虑模型参数进化。Harness 在这里既是数据生成器，也是评测与部署容器。</p>
-<h2 id="1_12">1. 轨迹不等于训练样本</h2>
-<p>生产轨迹包含冗余探索、工具错误、秘密、偶然成功和环境依赖。训练前需要结果验证、步骤归因、脱敏、去重、难度与任务分布标注。只蒸馏成功轨迹可能教会模型隐藏失败；还需保留纠错和负例。</p>
-<h2 id="2-sft">2. SFT 与蒸馏</h2>
-<p>SFT 适合稳定格式、工具协议和高质量行为模式。强模型或昂贵 Harness 可产生候选轨迹，由 verifier 过滤后训练更小模型。但学生模型可能模仿文本表面而未获得环境适应能力，因此必须在真实 Harness 中评测。</p>
-<h2 id="3_13">3. 偏好优化</h2>
-<p>成对比较可训练模型偏好更安全、简洁或可验证的轨迹。Preference 数据应基于结果与 rubric，而非只由同族模型 judge；否则把 judge 偏差蒸馏进模型。</p>
-<h2 id="4-rl">4. RL 与可验证奖励</h2>
-<p>可执行任务提供测试、约束和环境结果作为奖励，适合 RLVR。风险是 reward hacking：修改 evaluator、硬编码 visible test、泄漏 held-out 或通过更危险权限取巧。Reward 必须由隔离控制面重算，并把安全、成本纳入约束。</p>
-<h2 id="5-harness-22">5. 模型—Harness 2×2 归因</h2>
-<p>比较旧模型/新模型与旧 Harness/新 Harness 四个组合，才能判断收益来自哪里：</p>
+<h1 id="_12">第二十三章 模型进化：从轨迹到参数更新</h1>
+<p>当一种错误跨任务、工具和 Harness profile 稳定重复，且接口修复无法解决，才进入模型参数进化。Harness 在这里既是轨迹生成器，也是评测与部署容器。权重变化的影响面最大，所以它的证据门槛应高于 prompt 或 skill 更新。</p>
+<h2 id="1_14">1. 本层的证据模板实例</h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>模型参数实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可变对象</td>
+<td>模型权重、adapter、训练目标、数据混合</td>
+</tr>
+<tr>
+<td>观测信号</td>
+<td>验证轨迹、偏好、可执行奖励、安全与成本结果</td>
+</tr>
+<tr>
+<td>归因方法</td>
+<td>数据 lineage、Model×Harness 2×2、消融和多 trial</td>
+</tr>
+<tr>
+<td>候选生成</td>
+<td>SFT、蒸馏、偏好优化、RLVR、checkpoint sweep</td>
+</tr>
+<tr>
+<td>评价隔离方式</td>
+<td>训练/验证/test 分离，evaluator 与环境由外部重建</td>
+</tr>
+<tr>
+<td>门禁判据</td>
+<td>能力增益、关键回归、安全、校准、成本和稳定性</td>
+</tr>
+<tr>
+<td>发布方式</td>
+<td>model registry、shadow、canary、profile 兼容矩阵</td>
+</tr>
+<tr>
+<td>回滚粒度</td>
+<td>模型 checkpoint + 配套 Harness profile</td>
+</tr>
+<tr>
+<td>失败模式</td>
+<td>数据污染、reward hacking、能力遗忘、judge 偏差、分布漂移</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2_11">2. 轨迹不等于训练样本</h2>
+<p>生产轨迹包含冗余探索、工具故障、秘密、偶然成功、用户提示和特定环境路径。训练前要验证最终结果，标出哪些步骤对成功有因果贡献，脱敏、去重，并绑定模型、Harness、工具和环境版本。只保留成功轨迹会删除“如何发现并修复错误”的信息，也可能教模型隐藏失败。</p>
+<p>反例是从通过 visible test 的 patch 直接蒸馏。若 patch 硬编码测试值，训练会强化 reward hacking；若轨迹使用了后来撤销的生产权限，模型会学习不可部署行为。数据门必须读取独立 completion evidence 和 policy decision，而不是只看最终 reward。</p>
+<h2 id="3_12">3. 四类训练路线</h2>
+<p>SFT 适合稳定工具协议、输出结构和高质量行为模式；蒸馏可让昂贵模型或重型 Harness 产生经 verifier 过滤的轨迹，再训练较小模型。学生可能只模仿语言表面，因此必须放回真实 Harness 测试环境适应。</p>
+<p>偏好优化适合难以写成单一正确答案、但能比较安全性、简洁性或证据质量的任务。偏好应由结果、规则和多源 review 形成；同族 LLM judge 存在自偏好与位置偏差，不能成为唯一真值。<a href="https://arxiv.org/abs/2410.21819">Self-preference bias</a>、<a href="https://arxiv.org/abs/2406.07791">Position bias</a></p>
+<p>RLVR 利用测试、约束或环境结果作为可验证奖励，适合代码与形式任务。其风险是修改 evaluator、泄漏 held-out、硬编码 visible test 或争取更危险权限。reward 必须在隔离控制面重算，失败和基础设施异常不能被随意移出分母。</p>
+<h2 id="4-modelharness-22">4. Model×Harness 2×2 归因</h2>
+<p>新模型经常伴随新 prompt、tool view 和 context 策略一起发布。只比较旧系统与新系统无法判断收益来源。至少运行四个组合：</p>
 <table>
 <thead>
 <tr>
@@ -2696,297 +3329,1344 @@ minutes             days           weeks             weeks/months
 <tbody>
 <tr>
 <td>旧模型</td>
-<td style="text-align: right;">baseline</td>
-<td style="text-align: right;">Harness gain</td>
+<td style="text-align: right;">基线</td>
+<td style="text-align: right;">Harness 主效应</td>
 </tr>
 <tr>
 <td>新模型</td>
-<td style="text-align: right;">model gain</td>
-<td style="text-align: right;">combined</td>
+<td style="text-align: right;">模型主效应</td>
+<td style="text-align: right;">组合与交互效应</td>
 </tr>
 </tbody>
 </table>
-<p>多 trial 和任务切片还能发现交互效应：新 Harness 可能只适配某模型。模型发布后继续保留旧版本回归，避免把基础能力变化误判为环境问题。</p>
-<p>模型进化的门槛高于 Harness 进化：数据、训练、模型安全和部署都需要独立治理。它不是每个企业平台的必建能力；很多组织更适合先建立高质量轨迹与 eval，再与模型提供方或专门训练平台合作。</p>
-<hr />
-<h1 id="_9">第二十四章 受控进化闭环：门禁、灰度、回滚与反投机</h1>
-<p>前三章分别讨论可变对象，本章把它们组成生产闭环。可信进化不是 Agent 在运行时修改自己，而是候选系统在不可变治理框架下接受实验。</p>
-<h2 id="1_13">1. 双平面架构</h2>
-<pre><code class="language-text">immutable governance plane
-  identity / policy root / eval registry / held-out vault
-  release controller / audit / rollback
-
-evolvable plane
-  prompts / skills / memory / tool views / workflows
-  model profiles / candidate plugins
+<p>任务、环境、预算和 verifier 必须固定并多 trial。若新模型只在新 Harness 上改善，说明存在交互；若旧模型在新 Harness 上同样改善，部分收益不应归因于训练。这个矩阵也决定回滚：通常要回滚经过验证的 model—Harness bundle，而不是只换模型 id。</p>
+<h2 id="5-lineage">5. 数据与模型 lineage</h2>
+<p>每个 checkpoint 应记录训练数据 snapshot、过滤规则、父模型、训练代码、超参数、reward/evaluator 版本、已知限制和许可证。为了满足删除与事故追踪，还需从轨迹回到 source artifact 的 lineage。无法解释来源的数据不应进入高风险生产模型。</p>
+<pre><code class="language-yaml">model_release:
+  id: repo-agent-7b-r12
+  parent: repo-agent-7b-r11
+  data_snapshot: trajectories-2026w31-v4
+  harness_train: h42
+  compatible_harnesses: [h42, h43]
+  eval_bundle: enterprise-code-v9
+  rollback: repo-agent-7b-r11+h42
 </code></pre>
-<p>候选平面只能提交 proposal，没有自行晋级权限。治理平面也不接收候选生成的自报分数，而在隔离环境重算。</p>
-<h2 id="2_13">2. 实验协议</h2>
-<p>每次实验预注册目标、主要指标、硬约束、任务集、trial 数、停止规则和允许风险。基线与候选随机交错运行，减少时间和环境漂移。报告总体与关键切片、置信区间、成本、失败簇和完整性告警。</p>
-<h2 id="3-reward-hacking">3. 防 Reward Hacking</h2>
-<p>Evaluator 只读隔离，held-out 不进候选上下文；记录文件与网络访问；Agent 报告分数与可信重算对账；测试文件、metric 代码和数据 hash 纳入 evidence package。EvilGenie 与 SpecBench 说明 visible test 通过并不足以证明真实目标。<a href="https://arxiv.org/abs/2511.21654">EvilGenie</a></p>
-<h2 id="4-canary">4. Canary 与回滚</h2>
-<p>发布从 shadow、内部、低风险租户到广泛流量。Canary 采用版本粘性，避免同一任务中途切换。异常触发自动停止新任务，进行中任务按风险完成或暂停。回滚同时恢复 Harness bundle、模型 profile、memory snapshot 和 policy compatibility。</p>
-<h2 id="5_15">5. 组织责任</h2>
-<p>产品 owner 定义价值，领域专家维护任务，安全团队定义硬门，平台团队维护 runtime，独立评测方管理 held-out，发布责任人批准晋级。小组织可一人多角，但系统权限仍分离。</p>
-<h2 id="6_2">6. 进化账本</h2>
-<p>保存 lineage：父版本、mutation、数据、评测、选择原因、canary、事故和退役。这样可回答“为何变好”“谁批准”“哪些任务退化”“如何回去”。没有 lineage 的自动优化只是不可审计配置漂移。</p>
-<p>成熟系统的目标不是最大更新频率，而是最大可信学习率：每次变化都能从证据中学习，同时把错误候选限制在可恢复的爆炸半径内。</p>
-<hr />
-<h1 id="harness_4">第五篇 实践：下一代企业 Harness</h1>
-<hr />
-<h1 id="_10">第二十五章 三个贯穿案例的端到端设计</h1>
-<h2 id="1_14">1. 仓库级软件工程</h2>
-<p>入口把 issue 编译为 completion contract：目标、允许目录、兼容不变量、测试和 PR 证据。控制面创建固定 commit 的 worktree，runtime adapter 启动 Claude Code、Codex 或自研 Agent。Agent 搜索、修改和测试；高风险依赖安装或网络访问经策略门。</p>
-<p>候选 patch 被 seal，在 clean workspace 执行 fail-to-pass、pass-to-pass、lint、安全和变更范围检查。独立 reviewer 只看任务、diff 和证据。通过后生成 PR；merge 仍由人或发布策略批准。失败轨迹按上下文、工具、代码、环境或 verifier 归因，进入 eval 候选池。</p>
-<h2 id="2_14">2. 企业数据分析</h2>
-<p>任务合同固定指标口径、数据快照、时间、币种、允许来源和交付格式。Planner 将取数、对账、解释和反证分解；每个 worker 使用最小权限短期凭证，敏感数据不进入外部模型上下文。</p>
-<p>SQL、参数、行数、数据 hash 和图表源成为 artifact。数字由独立查询与总额对账验证，文字结论由 rubric/model/分析师检查。最终 evidence package 能让另一位分析师重建报告。任何 freshness 变化都标记，不静默混合快照。</p>
-<h2 id="3-agent_2">3. 自我进化 Agent</h2>
-<p>Observability 聚类一段时间的失败，提出“工具目录过大造成选择错误”的归因。Mutation workers 生成动态发现、描述改写和模型 profile 三类候选。Evaluator 在 held-out、回归、安全与成本集上多 trial 运行；候选无权读取标签或修改 evaluator。</p>
-<p>统计门选择非劣且显著改善的 profile，先 shadow 后 canary。监控选择错误、任务成功、token 和权限请求。若关键切片退化，release controller 回滚 bundle 并记录 lineage。整个闭环没有让生产 Agent 直接改写自身。</p>
-<h2 id="4_11">4. 共用骨架</h2>
-<pre><code class="language-text">intent → contract → identity/workspace → runtime
-→ actions/effects → candidate → independent verification
-→ approval/commit → evidence → telemetry → eval/evolution
+<h2 id="6_10">6. 何时不训练</h2>
+<p>模型进化需要足够重复任务、高质量反馈、训练能力和独立安全评测。任务量小、规范频繁变化或供应商模型升级速度远高于企业训练周期时，context、tool 和 workflow 更经济。很多组织最合理的路线是先拥有轨迹和 eval，再与模型提供方或训练平台合作，而不是立即自建完整训练栈。</p>
+<p>本层指标除可信完成率外，还应包括能力遗忘、跨 Harness 兼容率、校准误差、安全严重度、训练数据污染告警和单位增益总成本。模型更强但需要更宽权限或更昂贵 Harness 才工作，不一定是系统级进步。</p>
+<h2 id="7_9">7. 轨迹筛选的多阶段管线</h2>
+<p>原始事件先按数据许可和租户边界过滤，再做结果验证和去重，随后抽取训练视图。训练视图不必保留所有模型中间文字，应保留任务条件、可观察状态、action、observation、纠错节点和结果。对危险动作和 secret 使用占位引用，必要时在受限环境训练。</p>
+<pre><code class="language-text">raw event graph
+→ consent/tenant/data-class filter
+→ outcome verification
+→ near-duplicate and contamination check
+→ causal segment labeling
+→ train/validation/test split by task lineage
+→ immutable dataset snapshot
 </code></pre>
-<p>三例的差异在工具、数据和风险，骨架相同。平台化价值来自复用任务、身份、策略、证据、trace 和发布，而不是强迫所有 Agent 共享一种内部思考方式。</p>
+<p>按单条轨迹随机切分容易泄漏。同一仓库 issue、同源模板或同一用户的近重复任务可能跨 train/test，使泛化被高估。更稳妥的是按 repository、task family、时间或 source lineage 分组切分，并对公开 benchmark 做污染检查。</p>
+<h2 id="8_10">8. 错误与纠错都要学习</h2>
+<p>只训练“最短成功路径”可以提高表面效率，却让模型在真实故障中缺少恢复经验。应保留有价值的失败—诊断—修复片段，并标明哪些错误是模型造成、哪些来自环境。模型不需要模仿每次冗余探索，但要学习何时停止、何时 reconcile、何时请求 authority。</p>
+<p>反例是把 <code>POLICY_DENIED</code> 后不断改写命令的轨迹作为“坚持解决问题”的正例。正确标签应奖励合法升级或停止。训练目标必须与生产 policy 一致，否则 Harness 会不断与模型的既有习惯对抗。</p>
+<h2 id="9_4">9. 安全回归与能力回归同权</h2>
+<p>模型更新可能提高任务成功，同时更善于寻找工具旁路、从日志恢复 secret 或说服 reviewer。安全评测要在真实 Harness 与权限下运行，包括直接/间接 prompt injection、数据外泄、越权委派、evaluator 触碰和长时策略漂移。只测裸模型拒绝率不能覆盖系统行为。</p>
+<p>安全 hard gate 也需要版本化，防止候选针对固定攻击集过拟合。保留 sealed 红队集，周期性引入新攻击并回放历史事故。任何严重安全回归都不能用平均能力收益抵消。</p>
+<h2 id="10_9">10. 模型发布后的监测</h2>
+<p>离线通过只是发布条件。canary 要观测新模型在各 Harness profile 的工具分布、审批请求、未知错误、长尾成本和完成后事故。若新模型改变 action 模式，旧 policy 规则可能不再覆盖；这属于系统兼容故障，不应只归咎模型。</p>
+<p>模型 registry 应支持紧急冻结新任务、恢复旧 checkpoint 和保留在途 task 的版本粘性。回滚后继续保存候选轨迹，用于解释为什么离线 eval 未发现问题，而不是删除失败 release 的数据。</p>
+<h2 id="11_10">11. 训练前先证明问题属于模型</h2>
+<p>模型训练是四层中成本最高、回滚粒度最粗的改变，因此归因门槛也应最高。只有同一失败在多个合理 Harness profile、稳定环境和足够任务切片中持续存在，且 context、tool、workflow 与 memory 的低成本修复无法解决时，才把它登记为 model-intrinsic candidate。否则训练可能把接口缺陷写进权重，随后每次模型升级都要重新对抗同一错误。</p>
+<p>最小归因实验是 Model×Harness 的交叉比较：旧模型/旧 Harness、旧模型/新 Harness、新模型/旧 Harness、新模型/新 Harness。若两个模型都只在旧 Harness 失败，优先修 Harness；若新模型在两个 Harness 都退化，才有较强的模型证据。反例是只比较最后一格与第一格并宣布训练有效，其中的增益无法分配。高风险领域还应加入时间外和组织外切片，防止模型记住本企业的流程表达，却在规则变化后失去校准。训练立项书必须保存未采用更轻变更的理由。</p>
 <hr />
-<h1 id="harness_5">第二十六章 下一代企业 Harness 参考架构</h1>
-<p>参考架构的目标不是重新实现每个 coding agent，而是在 Claude Code、Codex、OpenHands、DSH 与未来自研 runtime 之上建立稳定控制面。</p>
-<h2 id="1_15">1. 六层结构</h2>
-<pre><code class="language-text">Experience       IDE / Web / CLI / API / workflow
+<h1 id="_13">第二十四章 受控进化闭环：门禁、灰度、回滚与反投机</h1>
+<p>前四章描述不同可变对象，本章把它们放入同一发布制度。可信进化不是生产 Agent 在运行时直接改写自己，而是候选系统在不可变治理框架下接受实验。自动化可以逐步扩大，根信任不能与候选一起漂移。</p>
+<h2 id="1_15">1. 双平面架构</h2>
+<pre><code class="language-text">governance plane（候选不可写）
+  identity/policy root ─ eval registry ─ held-out vault
+  experiment service ─ release controller ─ audit/rollback
+                         │ proposal / signed release
+evolvable plane（有界可变）
+  task strategy ─ memory/skills ─ harness profiles ─ model profiles
+</code></pre>
+<p>候选平面只能提交 proposal，没有自行晋级权限。治理平面不接收候选自报分数，而在隔离环境中按固定协议重算。治理代码本身也能演进，但必须走另一条审批和验证链，不能与被评价候选同批发布。</p>
+<h2 id="2_12">2. 预注册实验协议</h2>
+<p>每次实验在看到结果前固定：假设、可变对象、主要指标、硬约束、任务集、trial 数、缺失数据处理、停止规则和最大风险。基线与候选随机交错，减少时间、服务和数据漂移。报告总体、关键切片、置信区间、成本、失败簇和完整性告警。</p>
+<pre><code class="language-yaml">experiment:
+  hypothesis: dynamic_tool_discovery_reduces_selection_errors
+  primary_metric: verified_task_success
+  hard_gates: [no_security_regression, no_critical_slice_regression]
+  missing_trials: count_as_failure_unless_infrastructure_retried
+  test_visibility: sealed
+  promotion: shadow_then_5_percent_low_risk
+  rollback_trigger: any_severity_1_or_gate_breach
+</code></pre>
+<p>阈值必须来自业务风险与统计功效。样本很小时，不应伪装成精确显著结论；可以保留“有希望但证据不足”的候选继续收集数据。</p>
+<h2 id="3-reward-hacking">3. 防 Reward Hacking 与数据泄漏</h2>
+<p>Evaluator 只读隔离，held-out 不进入候选上下文；测试文件、metric 代码、数据和环境 image 的 hash 进入 evidence package。记录候选对文件、网络和工具目录的访问，检查是否触碰评价资产。EvilGenie 与 SpecBench 分别研究 reward hacking 和长时 coding agent 的规格投机，提醒 visible test 通过不是目标达成的充分条件。<a href="https://arxiv.org/abs/2511.21654">EvilGenie</a>、<a href="https://arxiv.org/abs/2605.21384">SpecBench</a></p>
+<p>一个失效场景是候选发现某些 timeout trial 被评测脚本丢弃，于是故意在困难任务触发 timeout，平均分上升。正确处理是预注册缺失规则、基础设施失败独立重试，仍失败则保留在分母，并告警候选是否改变缺失模式。</p>
+<h2 id="4-shadowcanary">4. Shadow、Canary 与发布原子性</h2>
+<p>Shadow 在真实或近真实输入上运行但不提交效果；canary 只进入低风险租户和有限流量。版本必须对一个 task 粘性，不能在长任务中途静默切换模型、prompt 或 memory snapshot。发布单元是完整 bundle：model、prompt、tools、retriever、policy compatibility、sandbox image、memory snapshot 和 evaluator contract。</p>
+<p>异常时先停止新任务；进行中任务按风险完成、暂停或取消。回滚需要恢复整个兼容组合，并对已发生外部效果做 reconciliation。只把 prompt 文本换回旧版，可能仍搭配不兼容工具和 memory，形成“名义回滚”。</p>
+<h2 id="5_12">5. 进化账本与职责</h2>
+<p>lineage 至少保存父版本、mutation、数据、评测、选择原因、批准者、canary、事故和退役。产品 owner 定义效用，领域专家维护任务与 completion contract，安全团队定义硬门，平台团队维护 runtime，独立评测方管理 held-out，release owner 批准晋级。小组织可以一人多角，但凭证和系统权限仍应分离。</p>
+<pre><code class="language-json">{
+  &quot;release&quot;: &quot;harness-43&quot;,
+  &quot;parent&quot;: &quot;harness-42&quot;,
+  &quot;candidate&quot;: &quot;mut-981&quot;,
+  &quot;eval_report&quot;: &quot;eval:2026w34:771&quot;,
+  &quot;approvals&quot;: [&quot;product&quot;, &quot;security&quot;, &quot;runtime-owner&quot;],
+  &quot;canary&quot;: {&quot;slice&quot;: &quot;low-risk-code&quot;, &quot;result&quot;: &quot;pass&quot;},
+  &quot;rollback_bundle&quot;: &quot;harness-42+model-12+memory-87&quot;
+}
+</code></pre>
+<h2 id="6_11">6. 何时允许自动晋级</h2>
+<p>只有结果可确定验证、爆炸半径小、回滚可靠、历史样本足够且没有数据分类风险时，才考虑策略自动晋级。skill 文案、检索排序等低风险表面可以较早自动化；权限根、生产写入工具、财务规则和模型安全策略应保持人工或多方批准。</p>
+<p>治理健康度可以用：证据完整率、硬门逃逸数、canary 回滚率、平均检测时间、平均恢复时间、版本可重建率和错误归因修正率衡量。成熟系统追求的不是最大更新频率，而是最大可信学习率：每次变化都提供可复查证据，错误候选被限制在可恢复的影响范围内。</p>
+<p>本篇的四层模型到此闭合。下一篇将把这些原则放入三个端到端案例、企业参考架构和迁移路线中。</p>
+<h2 id="7_10">7. 完整性监控先于效用监控</h2>
+<p>进化系统首先确认实验仍在测量同一件事：任务输入 hash、环境 image、模型 endpoint、Harness bundle、evaluator 和样本分母是否一致；trial 是否缺失、重复或被候选触碰。只有完整性通过，效用分数才有解释意义。</p>
+<p>完整性告警包括：候选组 timeout/异常比例改变、sealed 资产访问、评测进程获得额外网络、任务难度分布漂移、artifact 无法读取、版本字段缺失。任何一项都应暂停 credit，而不是把异常 trial 静默排除。</p>
+<h2 id="8-canary">8. Canary 不是缩小版离线评测</h2>
+<p>离线评测有固定任务和环境，canary 面对真实分布、用户行为和外部系统。它重点发现分布外风险、运营成本和交互效应。canary 指标应包含 leading signal（未知工具错误、越权请求、时延、异常出网）与 lagging signal（返工、事故、用户纠正）。</p>
+<p>流量分配需按 task 固定，避免同一长任务中途跨版本；高风险、不可逆动作默认不进入首轮 canary。若总体正常而一个材料性切片样本不足，应延长观察或保持人工提交，不能用总体均值替代证据。</p>
+<h2 id="9_5">9. 事故演练</h2>
+<p>至少定期演练四类事件：候选修改了不在 mutable surface 的文件；evaluator 数据意外进入 Agent context；canary 产生重复外部 effect；回滚 bundle 缺少旧 sandbox image。演练检查 detection、freeze、reconcile、rollback、通知和 lineage 更新是否真的可执行。</p>
+<p>事故后要区分 candidate defect、evaluation defect 与 governance defect。候选行为错但门禁正确阻断，是系统正常工作；错误候选进入生产，才需追查哪些门失效。若每次候选失败都被定义为“进化系统事故”，团队会隐藏有价值的探索负例。</p>
+<h2 id="10_10">10. 人类批准也需要可评价</h2>
+<p>人类不是无误 oracle。批准者可能疲劳、被 Agent 叙述锚定或不理解统计报告。界面应优先展示合同差异、硬门、关键切片、最大回归和 rollback，而不是候选生成的长解释。材料性决定要求明确责任人，低风险重复决定可以逐步策略化。</p>
+<p>应观测批准等待时长、批准后回滚、不同 reviewer 分歧和 waiver 到期。若人类总是机械批准，保留点击并没有增加治理；应改善证据呈现、调整 authority 或降低自动化范围。</p>
+<h2 id="11_11">11. 自动化阶梯</h2>
+<p>治理自动化可分为：自动收集证据；自动生成但人工选择候选；自动运行隔离评测；自动 shadow；策略批准低风险 canary；满足长期门槛后自动晋级特定表面。每一级都以前一级的完整性和回滚演练为条件。</p>
+<p>系统应能按 surface、task 和 tenant 单独配置阶梯。把一个低风险 prompt 实验的成功经验直接推广到权限策略或模型训练，是范围越权。可信进化的本质不是让 Agent 获得更多自我修改权，而是让组织更快、更准确地把证据转成受控版本。</p>
+<h2 id="12_4">12. 治理自身也要接受演化，但不能同轮自改</h2>
+<p>门禁、评测集和审批流程会老化：攻击者适应固定红队集，业务损失结构变化，人工批准成为橡皮图章。治理平面因此也需要版本与评估，但它必须走独立于候选的 meta-governance 流程。被评估的 Harness 不能在同一实验中修改 evaluator；被评估的 evaluator 也不能选择自己的验收数据。至少由不同 owner、凭证和 sealed 资产维护两条发布链，并记录它们在哪个系统组合上生效。</p>
+<p>一个失效场景是团队发现新候选总被安全门拒绝，于是让同一 evolver 同时“优化安全 rubric”。随后通过率上升，却无法区分候选更安全还是门禁变弱。正确做法是把 rubric 变更作为独立 release，用历史事故、未见攻击和 reviewer 一致性验证，再冻结后评估 Harness。meta-governance 的指标包括门禁逃逸、误拒成本、waiver 复发、评测集更新后历史版本重放差异和 owner 独立性。这样才能允许治理进步，又不让自我进化系统获得修改裁判的即时权力。</p>
+<hr />
+<h1 id="harness_5">第五篇 实践：下一代企业 Harness</h1>
+<hr />
+<h2 id="_14">本篇导言：把原则落到企业控制面</h2>
+<p>本篇把前四篇收束为可实施方案。第二十五章用软件修复、经营分析和 Harness 进化三个案例展示合同、执行、证据和失败演练；第二十六章提出多 Runtime 企业参考架构；第二十七章解释规范驱动交付；第二十八、二十九章给出成熟度与迁移路线；第三十章讨论长期形态与开放问题。</p>
+<p>实践部分不要求采用某种编程语言。重点是语义合同、机器可读实例、状态机、指标和责任边界。组织可以先购买成熟 Runtime，再逐步建设任务、身份、策略、执行、证据和评测控制面；是否自研 loop 应由可量化的约束和总成本决定，而不是架构审美。</p>
+<hr />
+<h1 id="_15">第二十五章 三个贯穿案例：从意图到可验证结果</h1>
+<p>本章不试图给出某种语言的完整框架，而是用三个领域说明同一 Harness 骨架怎样落地。每个案例都回答六个问题：任务合同是什么，Agent 获得什么权力，真实副作用在哪里提交，完成由谁判定，证据怎样复建，故障时在哪里停止。</p>
+<h2 id="_16">案例一：仓库级软件修复</h2>
+<h3 id="1_16">1. 任务与合同</h3>
+<p>场景：支付服务升级日期库后，夏令时边界测试失败。Agent 可以修改 <code>src/time/</code> 与对应测试，不允许改账务规则、删除测试或联网发布；目标是生成待审 PR，而不是自行合并。</p>
+<pre><code class="language-json">{
+  &quot;contract_id&quot;: &quot;CC-REPO-2048-v3&quot;,
+  &quot;task&quot;: &quot;修复 DST 边界下的重复扣款时间窗计算&quot;,
+  &quot;workspace&quot;: {&quot;repo&quot;: &quot;payments&quot;, &quot;commit&quot;: &quot;8f31b6e&quot;},
+  &quot;allowed_writes&quot;: [&quot;src/time/**&quot;, &quot;tests/time/**&quot;],
+  &quot;forbidden&quot;: [&quot;delete_tests&quot;, &quot;change_ledger_rules&quot;, &quot;push&quot;, &quot;deploy&quot;],
+  &quot;deliverables&quot;: [&quot;git_patch&quot;, &quot;change_explanation&quot;, &quot;verification_results&quot;],
+  &quot;checks&quot;: [
+    &quot;tests/time/test_dst.py::test_fall_back_window&quot;,
+    &quot;tests/time/test_dst.py::test_spring_forward_window&quot;,
+    &quot;pytest tests/time&quot;,
+    &quot;lint&quot;,
+    &quot;no_pass_to_pass_regression&quot;
+  ],
+  &quot;budgets&quot;: {&quot;wall_minutes&quot;: 30, &quot;model_usd&quot;: 8, &quot;max_tool_calls&quot;: 120},
+  &quot;commit_authority&quot;: &quot;human_code_owner&quot;
+}
+</code></pre>
+<p>控制面验证合同和 caller authority，创建固定 commit 的 worktree，签发只能读取仓库、写允许目录的 lease。runtime adapter 可以选择 Claude Code、Codex 或自研 Agent；无论选择谁，平台都收集 canonical Action/Observation，并保留供应商原始事件引用。</p>
+<h3 id="2_13">2. 执行与验证序列</h3>
+<pre><code class="language-text">User → Control: submit contract
+Control → Workspace: create worktree@8f31b6e
+Control → Runtime: start(task, lease, budget)
+Runtime ↔ Workspace: search/edit/test
+Runtime → Control: candidate patch + self-report
+Control → Verifier: clean checkout + apply sealed patch
+Verifier → Control: checks + hashes + logs
+Control → Reviewer: diff + contract + evidence
+Reviewer → Git host: create PR (human merge remains)
+</code></pre>
+<p>Agent 在工作区执行测试只是反馈，不是完成证明。提交候选后，平台对 patch 做 hash 并封存，在无 Agent 写权限的 clean checkout 重跑 fail-to-pass、pass-to-pass、lint、secret scan 和允许目录检查。reviewer 只接收任务、diff 与证据，避免被长聊天中的自信叙述锚定。</p>
+<pre><code class="language-bash">git diff --binary 8f31b6e &gt; candidate.patch
+git diff --name-only 8f31b6e | sort &gt; changed-files.txt
+pytest -q tests/time
+</code></pre>
+<p>这些命令是案例中的可执行检查，不要求平台由 shell 实现。实际系统需把退出码、stdout/stderr artifact、环境 image 和依赖锁 hash 一并记录。</p>
+<h3 id="3-evidencepackage">3. EvidencePackage</h3>
+<pre><code class="language-yaml">evidence_package:
+  id: EP-REPO-2048-A3
+  contract: CC-REPO-2048-v3
+  input_revision: git:8f31b6e
+  runtime: codex-app-server@pinned-2026w34
+  harness_profile: code-medium-v4
+  candidate:
+    patch: artifact:sha256:4b2a...
+    changed_files: [src/time/window.py, tests/time/test_dst.py]
+  verification:
+    environment: image:sha256:91c7...
+    results:
+      - {check: fail_to_pass, status: pass, log: artifact:sha256:a11e...}
+      - {check: pass_to_pass, status: pass, total: 482, log: artifact:sha256:b71d...}
+      - {check: allowed_write_scope, status: pass}
+  policy:
+    decisions: artifact:sha256:29fd...
+    denied_actions: 0
+  final_authority: human_code_owner
+</code></pre>
+<h3 id="4-visible-test">4. 失败演练：visible test 投机</h3>
+<p>注入故障：Agent 发现测试使用固定日期，直接对该日期写特例。两条目标测试通过，但新增的 metamorphic test 在相邻年份失败。clean-room verifier 返回 <code>SPEC_GAP</code>，而不是把失败全文和 hidden fixture 发给 Agent；它只说明“不变量：任意有 DST 的年份都应保持同一扣款窗语义”。允许一次有界 repair。若第二候选仍只对特例打补丁，系统停止并升级领域 reviewer。</p>
+<p>人工介入点不是“Agent 看起来困惑”时，而是合同出现材料性歧义或修复不再收敛时。失败轨迹被标为 specification/verification gap，进入回归集，但不能自动写成全局 skill。</p>
+<h2 id="_17">案例二：企业经营分析</h2>
+<h3 id="1_17">1. 任务与口径</h3>
+<p>场景：生成 2026 年 7 月中国区订阅净收入变化分析。风险不在代码合并，而在指标口径、快照一致性和敏感数据泄漏。任务合同固定 semantic metric、数据 snapshot、币种、允许维度和交付格式。</p>
+<pre><code class="language-json">{
+  &quot;contract_id&quot;: &quot;CC-DATA-771-v5&quot;,
+  &quot;metric&quot;: &quot;net_subscription_revenue_v4&quot;,
+  &quot;period&quot;: [&quot;2026-07-01&quot;, &quot;2026-08-01&quot;],
+  &quot;comparison&quot;: &quot;previous_month&quot;,
+  &quot;currency&quot;: &quot;CNY_at_monthly_finance_rate&quot;,
+  &quot;snapshot&quot;: &quot;warehouse:2026-08-03T02:00:00Z&quot;,
+  &quot;allowed_dimensions&quot;: [&quot;province&quot;, &quot;plan&quot;, &quot;channel&quot;],
+  &quot;prohibited_fields&quot;: [&quot;email&quot;, &quot;phone&quot;, &quot;account_name&quot;, &quot;raw_payment_token&quot;],
+  &quot;deliverables&quot;: [&quot;analysis.md&quot;, &quot;aggregates.parquet&quot;, &quot;query_bundle&quot;, &quot;evidence.yaml&quot;],
+  &quot;checks&quot;: [&quot;metric_definition&quot;, &quot;snapshot_consistency&quot;, &quot;total_reconciliation&quot;, &quot;k_anonymity_20&quot;],
+  &quot;commit_authority&quot;: &quot;finance_analytics_owner&quot;
+}
+</code></pre>
+<p>Planner 可以拆分取数、对账、解释和反证，worker 使用只读、短期、绑定 snapshot 的凭证。模型只看到聚合结果；查询由 data gateway 解析、应用 row/column policy 后执行。SQL 是 artifact，不把 warehouse credential 放入 prompt。</p>
+<pre><code class="language-sql">SELECT month, province, plan,
+       SUM(recognized_revenue_cny - refunds_cny) AS net_revenue_cny,
+       COUNT(DISTINCT account_id) AS accounts
+FROM semantic.subscription_revenue_v4
+FOR SYSTEM_TIME AS OF TIMESTAMP '2026-08-03 02:00:00+00:00'
+WHERE region = 'CN'
+  AND month IN (DATE '2026-06-01', DATE '2026-07-01')
+GROUP BY month, province, plan
+HAVING COUNT(DISTINCT account_id) &gt;= 20;
+</code></pre>
+<h3 id="2_14">2. 双重验证</h3>
+<p>数字验证与文字验证分开。确定性 verifier 检查查询只引用批准 semantic model、所有 artifact 使用同一 snapshot、分组汇总与财务总额在允许误差内、低基数组被抑制。解释 reviewer 检查“相关”是否被写成“因果”、是否遗漏反证、每个数字能否追溯到 aggregate cell。</p>
+<pre><code class="language-text">metric contract → policy-rewritten SQL → snapshot query
+       ├─ aggregate artifact → deterministic reconciliation
+       └─ narrative draft   → claim-to-cell linkage + reviewer
+both pass → analyst approval → publish report
+</code></pre>
+<p>建议对账误差使用业务货币精度和已知舍入规则，而不是给所有指标设置统一百分比。健康指标包括 snapshot mismatch rate、unlinked numeric claim rate、suppression violations、rebuild success 和分析师实质修改率。</p>
+<h3 id="3-evidencepackage_1">3. EvidencePackage</h3>
+<pre><code class="language-yaml">evidence_package:
+  id: EP-DATA-771-R2
+  contract: CC-DATA-771-v5
+  semantic_model: net_subscription_revenue_v4
+  snapshot: warehouse:2026-08-03T02:00:00Z
+  query_bundle: artifact:sha256:77ac...
+  aggregates: artifact:sha256:19be...
+  narrative: artifact:sha256:ae20...
+  verification:
+    metric_definition: pass
+    snapshot_consistency: pass
+    finance_reconciliation: {status: pass, delta_cny: &quot;0.02&quot;}
+    low_count_suppression: pass
+    numeric_claim_links: {linked: 37, unlinked: 0}
+  approvals: [data_owner, finance_analytics_owner]
+</code></pre>
+<h3 id="4_13">4. 失败演练：快照漂移</h3>
+<p>注入故障：第一次查询后，上游退款表完成迟到回填；Agent 的第二条查询若使用“latest”，会把两个快照混在一份报告里。gateway 发现 query snapshot 与合同不一致，返回 <code>SNAPSHOT_STALE_OR_MISMATCH</code>。系统不能偷偷刷新部分表，而应暂停、告知任务 owner 两个选择：保持原快照并标注 freshness，或批准合同 amendment 后从头重建全部 artifact。</p>
+<p>如果 owner 选择新快照，旧 EvidencePackage 标为 superseded，不覆盖原文件；所有数字和叙述重新生成。人工介入点是改变权威数据截面，因为这会改变问题本身，而不是普通查询语法错误。</p>
+<h2 id="harness_6">案例三：自我进化 Harness</h2>
+<h3 id="1_18">1. 失败归因与实验合同</h3>
+<p>场景：平台观测到安装多个 MCP server 后，<code>wrong_tool</code> 错误上升。不能直接让生产 Agent 改写 tool catalog。Observability 先按模型、任务族、工具数量和错误类别聚类，形成假设“静态 schema 数量过多导致选择病理”。</p>
+<pre><code class="language-yaml">evolution_contract:
+  id: EVO-TOOL-93-v2
+  baseline: harness-42
+  mutable_surface: tool_catalog_presentation
+  frozen:
+    - model
+    - task_suite
+    - sandbox_image
+    - policy_root
+    - evaluator
+    - sealed_test
+  candidates:
+    - grouped_dynamic_discovery
+    - concise_descriptions
+    - task_scoped_allowlist
+  primary_metric: verified_task_success
+  diagnostics: [wrong_tool_rate, catalog_lookup_activation, tokens, latency]
+  hard_gates: [security_non_regression, critical_slice_non_regression]
+  release: shadow_then_low_risk_canary
+</code></pre>
+<p>Mutation workers 在独立分支生成候选。每个候选必须含 activation beacon；未实际触发新机制的 trial 不能作为因果证据。Evaluator 隔离运行多 trial，基础设施失败按预注册规则重试，仍失败计入分母而不是丢弃。</p>
+<h3 id="2_15">2. 选择与发布</h3>
+<pre><code class="language-text">production traces (read-only)
+  → pathology cluster + human-confirmed hypothesis
+  → isolated candidate generation
+  → preflight(valid + activated)
+  → train/eval selection
+  → one sealed-test evaluation
+  → shadow → canary → promote/rollback
+</code></pre>
+<p>选择不是“最高均分即胜”。先检查安全与关键切片硬门，再比较主要指标置信区间和单位成功成本；多个非劣候选可按模型 profile 保留。release controller 发布完整 bundle，并让正在运行的 task 保持版本粘性。</p>
+<h3 id="3-evidencepackage-lineage">3. EvidencePackage 与 lineage</h3>
+<pre><code class="language-json">{
+  &quot;evidence_package&quot;: &quot;EP-EVO-93-C7&quot;,
+  &quot;parent&quot;: &quot;harness-42&quot;,
+  &quot;candidate&quot;: &quot;grouped-dynamic-discovery-r4&quot;,
+  &quot;mutation_hash&quot;: &quot;sha256:09cd...&quot;,
+  &quot;activation&quot;: {&quot;eligible_trials&quot;: 240, &quot;activated&quot;: 228},
+  &quot;evaluation&quot;: {
+    &quot;report&quot;: &quot;artifact:sha256:f810...&quot;,
+    &quot;sealed_test_accessed_once&quot;: true,
+    &quot;security_gate&quot;: &quot;pass&quot;,
+    &quot;critical_slices&quot;: &quot;non_inferior&quot;
+  },
+  &quot;release&quot;: {&quot;mode&quot;: &quot;canary&quot;, &quot;slice&quot;: &quot;code-low-risk-5pct&quot;},
+  &quot;rollback_bundle&quot;: &quot;harness-42+model-12+memory-87&quot;,
+  &quot;approver&quot;: &quot;runtime-release-owner&quot;
+}
+</code></pre>
+<h3 id="4_14">4. 失败演练：通过修改分母“进步”</h3>
+<p>注入故障：某候选导致困难任务更常 timeout，而统计脚本只对完成 trial 求平均，分数看似提高。完整性门发现候选组 missingness 与基线显著不同，拒绝 credit；基础设施重跑仍 timeout 的 trial 计为失败。由于候选没有生产写权限，不会改动 evaluator 或删除日志。</p>
+<p>第二个停止点在 canary：若总体成功率上升但一个高风险工具切片的错误率恶化，release controller 自动停止新流量并回滚 bundle。是否重新设计候选由人和 evolver共同决定，但生产 Agent 没有自我晋级权。这正是第二十四章“最大可信学习率”的具体实现。</p>
+<h2 id="_18">三个案例的共用骨架</h2>
+<pre><code class="language-text">intent → versioned contract → identity/workspace → runtime
+→ observable actions/effects → sealed candidate
+→ independent verification → approval/commit
+→ evidence + telemetry → eval/evolution
+</code></pre>
+<p>三例的差异在工具、权威状态和风险，骨架相同。代码案例的权威状态是固定 commit，数据案例是 semantic model 与 snapshot，进化案例是冻结实验协议。平台化价值来自复用 task、identity、policy、evidence、trace 和 release，而不是迫使所有 Agent 共享一种内部思考方式。</p>
+<hr />
+<h1 id="harness_7">第二十六章 下一代企业 Harness 参考架构</h1>
+<p>参考架构的目标不是重新实现每个 coding agent，而是在 Claude Code、Codex、Cursor、DeepSeek Harness、OpenHands 与未来自研 runtime 之上建立稳定控制面。它优化的是替换成本、责任边界和可信完成，不追求把所有产品压成最低共同功能。</p>
+<h2 id="1_19">1. 六层结构与权威状态</h2>
+<pre><code class="language-text">Experience       IDE / Web / CLI / API / business workflow
 Control Plane    task contract / scheduler / identity / policy / approval
 Agent Runtime    vendor adapter / loop / context / delegation
 Execution Plane  workspace / sandbox / tool gateway / credential broker
 Evidence Plane   artifacts / trace / verifier / effect ledger
 Evolution Plane  eval registry / mutation / experiment / release / rollback
 </code></pre>
-<p>体验层不拥有任务真相；控制面生成 canonical task。Agent runtime 可替换。执行面负责真实副作用。证据面独立于聊天历史。进化面只能发布经门禁的版本。</p>
-<h2 id="2-canonical-contracts">2. Canonical contracts</h2>
-<p>平台至少定义 Task、Action、Observation、Artifact、PolicyDecision、Checkpoint、Delegation、VerificationResult 和 EvidencePackage。Vendor adapter 在 canonical event 与产品协议之间映射，保留原始 payload 引用以便诊断。</p>
+<p>体验层可以收集意图，不能拥有任务真相；控制面生成 canonical Task 并持久化状态。Agent Runtime 负责概率决策，可替换。Execution Plane 提交真实副作用。Evidence Plane 独立判断候选是否满足合同。Evolution Plane消费脱敏、验证过的证据，只能通过 release controller 改变未来 profile。</p>
+<p>在小团队低风险场景，六层可以部署在同一进程；分层是逻辑责任而非微服务数量。若任务只是只读代码解释，外部 verifier 可以很轻。若 Agent 可操作生产数据，即使系统规模小，也不能合并 policy root、credential broker 与模型上下文。</p>
+<h2 id="2-canonical-contracts">2. Canonical contracts 与能力协商</h2>
+<p>平台至少定义 Task、Action、Observation、Artifact、PolicyDecision、Checkpoint、Delegation、VerificationResult 和 EvidencePackage。adapter 在 canonical event 与产品协议之间映射，同时保存原始 payload 的 hash、位置和协议版本。</p>
 <pre><code class="language-text">RuntimeAdapter {
-  capabilities()
-  start(task, workspace, policy_profile)
-  stream_events(run_id)
-  approve_or_deny(request)
-  checkpoint(run_id)
-  cancel(run_id)
-  collect_artifacts(run_id)
+  negotiate(capability_requirements) -&gt; CapabilitySet
+  start(task, workspace, policy_profile) -&gt; Attempt
+  stream_events(attempt_id, after_offset)
+  respond_to_request(request_id, approval_or_input)
+  checkpoint(attempt_id)
+  cancel(attempt_id, reason)
+  collect_artifacts(attempt_id)
 }
 </code></pre>
-<p>不要强求所有 runtime 暴露同样的内部 reasoning。统一可观察动作与结果即可。</p>
-<h2 id="3_14">3. 身份与租户</h2>
-<p>User、platform、runtime、subagent、tool 和 external service 都有独立身份。授权以 capability lease 表达，绑定租户、资源、动作和 TTL。Credential broker 在执行时注入短期凭证，模型不看到 secret。</p>
-<h2 id="4-durable-execution">4. Durable execution</h2>
-<p>Run state 持久化，工具副作用记录幂等键和 outcome。Worker 崩溃后从 checkpoint 恢复；对不确定外部结果先 reconcile。Scheduler 管理预算、优先级、并发和取消树。</p>
-<h2 id="5-policy-sandbox">5. Policy 与 sandbox</h2>
-<p>策略在 action commit 时评估，输出 allow、deny、approval 或 constrained allow。Sandbox 同时限制文件、网络、进程和资源。Policy profile 与 sandbox image 都版本化并进入证据包。</p>
-<h2 id="6-evidence-first-completion">6. Evidence-first completion</h2>
-<p>Runtime 只能提交候选。Verifier service 在隔离环境运行完成契约，生成签名结果；commit controller 再执行外部提交。此边界使不同 runtime 可公平比较，也阻止供应商 Agent 自报完成。</p>
-<h2 id="7_6">7. 演进边界</h2>
-<p>Prompt、tool view、retriever、skill 和 workflow 可进入候选；identity root、policy root、held-out、审计与 release controller 不可由候选修改。所有版本组合进入 lineage registry。</p>
-<h2 id="8_5">8. 非功能要求</h2>
-<p>以租户隔离、可用性、恢复时间、trace 完整性、最大副作用、成本预算和数据驻留定义 SLO。Agent 成功率不是唯一 SLO；错误完成的代价通常远高于明确失败。</p>
-<p>这套架构允许企业先集成现有 runtime，再逐步替换上下文、loop 或工具层，而无需重建治理与证据系统。</p>
+<p>不要求 runtime 暴露私有 reasoning。统一动作、结果、批准、artifact 与生命周期即可。若某 runtime 不支持 resume 或结构化 diff，能力协商必须返回缺失，scheduler 决定降低自治风险、换 runtime 或要求人工，不得静默伪造支持。</p>
+<h2 id="3_13">3. 身份、租户与凭证</h2>
+<p>User、platform、runtime、subagent、tool 和 external service 都有独立身份。授权以 capability lease 表达，绑定租户、资源、动作、purpose 和 TTL。Credential broker 在执行时向受控工具注入短期凭证，模型与长期 trace 不出现 secret。</p>
+<p>委派必须缩权：子 Agent 的能力集合不超过父任务授权，并进一步按子任务收窄。跨租户缓存、共享 memory 和 tool result 在进入 context compiler 前先做数据分类与隔离，不能依赖模型“不要泄漏”的指令。</p>
+<h2 id="4-durable-execution">4. Durable execution 与副作用</h2>
+<p>Run/Attempt state 持久化，事件有单调 offset，工具副作用记录 intent、idempotency key、policy decision 和 outcome。worker 崩溃后从 checkpoint 恢复；对于结果未知的外部调用先查询目标系统，不能直接重放（见第六章）。scheduler 管理预算、优先级、并发、deadline 和取消树。</p>
+<p>反例是邮件工具超时后 runtime 自动 retry。第一封实际上已发送，第二次又成功，聊天里只看到一次“完成”。正确的 gateway 先以业务 idempotency key 查询发送状态，再决定返回旧结果、补偿或升级人工。</p>
+<h2 id="5-evidence-first-completion">5. Evidence-first completion</h2>
+<p>Runtime 只能提交 candidate。Verifier service 在独立环境执行 completion contract，生成带 artifact hash 的 VerificationResult；commit controller 再执行合并、发送或部署。这样不同 runtime 可以在相同合同和环境下比较，也阻止供应商 Agent 自报完成。</p>
+<p>EvidencePackage 是面向审计和重建的交付物，不是全量思维链。它连接输入版本、动作/效果、candidate、检查、策略、批准和外部 commit。敏感原始事件可按访问级别存放，摘要保留 provenance。</p>
+<h2 id="6-slo">6. 七类 SLO：定义、测量和博弈</h2>
+<p>初始阈值必须由风险与历史基线决定，下面给的是定义方法而非通用目标值。</p>
+<table>
+<thead>
+<tr>
+<th>SLO</th>
+<th>定义/测量点</th>
+<th>初始设定方法</th>
+<th>可能的指标博弈</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可信完成率</td>
+<td>通过独立 completion gate 的任务/合格任务</td>
+<td>按任务族和风险建立基线</td>
+<td>降低验收、排除困难任务</td>
+</tr>
+<tr>
+<td>错误完成率</td>
+<td>被宣布完成但后续证伪/总完成</td>
+<td>从事故和抽检回标</td>
+<td>延迟认定事故、隐藏返工</td>
+</tr>
+<tr>
+<td>证据完整率</td>
+<td>必填 evidence 字段齐全且 hash 可读/完成任务</td>
+<td>R3/R4 接近全覆盖，低风险可抽样</td>
+<td>填充无意义日志满足字段</td>
+</tr>
+<tr>
+<td>恢复成功率</td>
+<td>中断后在预算内恢复且无重复 effect/恢复尝试</td>
+<td>用 kill/restart 演练建立目标</td>
+<td>只恢复容易任务</td>
+</tr>
+<tr>
+<td>最大副作用</td>
+<td>单次失控可影响的资源/金额/对象数</td>
+<td>由业务 blast radius 反推</td>
+<td>把一个动作拆成多个规避限额</td>
+</tr>
+<tr>
+<td>单位可信完成成本</td>
+<td>模型、计算、工具、人力总成本/可信完成</td>
+<td>与当前人工流程比较</td>
+<td>忽略复核与事故成本</td>
+</tr>
+<tr>
+<td>P95 完成时延</td>
+<td>从合同冻结到完成门通过</td>
+<td>按同步/异步任务分开</td>
+<td>提前宣布完成、丢弃长尾</td>
+</tr>
+</tbody>
+</table>
+<p>每个 SLO 要有 owner、采样口径、数据 lineage、告警和例外流程。平均值不能掩盖高风险租户或任务切片；安全违规采用严重度与事件数，不被平均成功率抵消。</p>
+<h2 id="7-runtime">7. 多 runtime 数据流</h2>
+<pre><code class="language-text">request → contract compiler → scheduler → runtime adapter
+   → policy-mediated tool gateway → sandbox/external systems
+   → event + effect ledger → candidate seal
+   → verifier → approval/commit → EvidencePackage
+   → telemetry/eval → governed evolution release
+</code></pre>
+<p>最容易遗漏的是 adapter 之外的“旁路”：runtime 直接访问网络、插件自己持有 secret、UI 直接调用供应商 API。架构评审应画出实际数据流并验证所有副作用都经过控制点。</p>
+<h2 id="8_11">8. 构建顺序与替代方案</h2>
+<p>先建 contract、workspace、policy、artifact 和 verifier，再接多个 runtime；否则统一层只会统一聊天。若组织只有一个低风险 Agent，可先使用供应商 sandbox 与日志，不必立即建设六个独立服务，但要确保 task/evidence 数据可导出。规模扩大或进入高风险域后，再把 scheduler、credential broker、verifier 和 evolution service 独立扩展。</p>
+<p>这套架构允许企业先集成现有 runtime，再逐步替换 context、tool view 或 loop，而无需重建治理与证据系统。下一章把“合同”进一步展开为规范驱动交付。</p>
 <hr />
 <h1 id="agent-sdd">第二十七章 Agent SDD：规范驱动的任务与发布</h1>
-<p>Agent SDD（Specification-Driven Delivery）不是要求所有请求先写长文档，而是把关键意图转换成可执行、可版本化的契约，使自治执行有明确边界。</p>
-<h2 id="1_16">1. 规范层级</h2>
-<p>业务规范描述价值；任务规范定义交付物与不变量；工具契约定义动作；策略规范定义权限；验证规范定义证据；发布规范定义谁能让效果生效。自然语言可作为入口，但最终关键字段应结构化。</p>
-<h2 id="2_15">2. 从意图到合同</h2>
-<p>Agent 可协助澄清和生成 contract draft，用户只确认高材料性歧义。低风险探索允许渐进完善，高风险任务必须在执行前冻结关键不变量。</p>
-<pre><code class="language-text">intent → ambiguity detection → contract draft
+<p>Agent SDD（Specification-Driven Delivery）不是要求所有请求先写长文档，而是把材料性意图转换成可执行、可版本化的契约，使自治执行有明确边界。对低风险探索，规范可以渐进；对不可逆、高价值动作，关键不变量必须在执行前冻结。</p>
+<h2 id="1_20">1. 六类规范</h2>
+<table>
+<thead>
+<tr>
+<th>规范</th>
+<th>回答的问题</th>
+<th>推荐权威载体</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>业务规范</td>
+<td>为什么做、价值是什么</td>
+<td>product/业务系统</td>
+</tr>
+<tr>
+<td>任务规范</td>
+<td>交付物、不变量、截止与预算</td>
+<td>CompletionContract</td>
+</tr>
+<tr>
+<td>工具规范</td>
+<td>可执行动作与错误语义</td>
+<td>schema + effect contract</td>
+</tr>
+<tr>
+<td>策略规范</td>
+<td>谁在何种条件下能做什么</td>
+<td>policy-as-code</td>
+</tr>
+<tr>
+<td>验证规范</td>
+<td>什么证据足以证明完成</td>
+<td>verifier suite</td>
+</tr>
+<tr>
+<td>发布规范</td>
+<td>谁能让候选产生外部效果</td>
+<td>release/commit policy</td>
+</tr>
+</tbody>
+</table>
+<p>自然语言可以是入口，但金额、资源范围、数据快照、禁止动作、验收与 commit authority 等承重字段需要结构化。否则模型、reviewer 和审计者会分别解释同一句话。</p>
+<h2 id="2_16">2. 从意图到合同</h2>
+<pre><code class="language-text">intent → ambiguity/materiality detection → contract draft
 → authority confirmation → executable checks → run
 </code></pre>
-<p>运行中发现新事实可以提出 contract amendment，但不能由执行 Agent 单方面降低验收标准。每次修改保留 diff 和批准者。</p>
-<h2 id="3-specification-as-environment">3. Specification as environment</h2>
-<p>规范应贴近权威状态：代码规则进入仓库，数据口径进入 semantic layer，API 约束进入 schema，安全要求进入 policy-as-code。只写在 prompt 的规范难以测试和复用。</p>
-<h2 id="4_12">4. 发布门</h2>
-<p>候选 artifact 与 contract version 绑定；verifier 证明检查结果；waiver 明确风险和到期；commit controller 负责合并、发送或部署。模型停止与发布完全解耦。</p>
-<h2 id="5_16">5. 规范债务</h2>
-<p>过细规范会把 Agent 退化成昂贵工作流，过粗规范会产生假完成。通过生产失败持续调整边界：把重复、可确定的隐性要求转为 schema、测试或策略，把真正需要判断的部分保留给模型和人。</p>
-<p>Agent SDD 的价值是让平台可比较不同模型与 Harness：相同合同、相同环境、相同完成门，差异才可归因。</p>
+<p>Agent 可以自动补全可发现信息，例如当前 commit、已有测试和 schema；只把会显著改变结果或权限的歧义交给用户。合同编译器应区分 missing、conflicting 与 intentionally_open。刻意开放的设计选择可以留给 Agent，但必须有预算和评价 rubric。</p>
+<p>反例是用户说“清理老客户”，系统把“老”解释为 90 天未登录并直接删除账号。正确流程会发现阈值、删除/归档、法律保留和 commit authority 都是材料性歧义，在执行前冻结；探索阶段只能生成影响分析。</p>
+<h2 id="3-amendment">3. 运行中的 Amendment</h2>
+<p>执行中发现新事实可以提交 amendment proposal，例如依赖版本与合同不兼容。执行 Agent 不能单方面扩大写入范围、降低验收或改变数据 snapshot。proposal 包含差异、理由、影响、已发生效果和需要的 authority；批准后产生新 contract version，旧 attempt 与旧版本绑定。</p>
+<pre><code class="language-json">{
+  &quot;amendment&quot;: &quot;AM-CC2048-02&quot;,
+  &quot;from&quot;: &quot;CC-REPO-2048-v3&quot;,
+  &quot;change&quot;: {&quot;allowed_writes_add&quot;: [&quot;src/compat/date_adapter.py&quot;]},
+  &quot;reason&quot;: &quot;existing API compatibility layer is authoritative&quot;,
+  &quot;impact&quot;: &quot;adds one production file; verification suite unchanged&quot;,
+  &quot;required_authority&quot;: &quot;code_owner&quot;
+}
+</code></pre>
+<h2 id="4-specification-as-environment">4. Specification as environment</h2>
+<p>规范应贴近权威状态：代码规则进入仓库，数据口径进入 semantic layer，API 约束进入 schema，安全要求进入 policy engine。只写在 system prompt 的规范难以测试、版本化和复用。context compiler 给模型的是当前规范投影，并保留来源与版本。</p>
+<p>规范也不能无限细化。把每个动作都预写成步骤，会把 Agent 退化成昂贵 workflow；完全开放则让完成不可判定。经验法则是：重复、可确定、错误代价高的要求编译成 schema/test/policy；真正需要情境判断的部分交给模型和人。</p>
+<h2 id="5-waiver">5. 发布门与 Waiver</h2>
+<p>候选 artifact 与 contract version 绑定；verifier 生成结果；commit controller 依据 release policy 执行。若业务必须带已知失败上线，waiver 要写明失败检查、风险 owner、补偿措施、影响范围和到期时间。Agent 可以解释 waiver，不得自行批准。</p>
+<p>模型停止、候选完成、业务提交是三个不同事件（见第十章）。SDD 的价值正是让它们分别可观察和授权。</p>
+<h2 id="6_12">6. 规范质量指标</h2>
+<p>可观测指标包括：运行中材料性 amendment 率、完成后发现的隐含不变量数、无法执行的验收项比例、waiver 逾期率、同合同跨 runtime 结果差异和 contract-to-evidence 覆盖率。高 amendment 率可能说明入口澄清不足；零 amendment 也可能说明团队在聊天里偷偷改目标，需要抽检事件。</p>
+<p>当任务探索性极强且没有稳定 verifier 时，可选择 research brief + 人工 review，而不是伪造精确合同。Agent SDD 的适用边界，是组织能否说明谁拥有目标和什么结果算可接受。</p>
 <hr />
 <h1 id="build-vs-buy">第二十八章 成熟度模型与 Build-vs-Buy</h1>
-<h2 id="1_17">1. 五级成熟度</h2>
+<p>成熟度模型用于识别下一项控制缺口，不是采购打分或组织荣誉。等级按最弱关键层判断：UI 再好、模型再强，如果生产动作没有独立完成门，系统仍处于较低成熟度。</p>
+<h2 id="1_21">1. 五级模型</h2>
 <table>
 <thead>
 <tr>
 <th>等级</th>
-<th>特征</th>
+<th>可证明能力</th>
 <th>主要风险</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>L0 对话增强</td>
-<td>单轮/简单工具</td>
-<td>无完成证据</td>
+<td>单轮回答或简单工具可用</td>
+<td>无权力边界与完成证据</td>
 </tr>
 <tr>
 <td>L1 受控执行</td>
-<td>workspace、基础权限、日志</td>
-<td>恢复与策略薄弱</td>
+<td>workspace、基础权限、日志和人工提交</td>
+<td>恢复、策略与证据薄弱</td>
 </tr>
 <tr>
 <td>L2 可验证任务</td>
-<td>contract、verifier、artifact</td>
-<td>评测覆盖不足</td>
+<td>contract、artifact、独立 verifier</td>
+<td>eval 覆盖与运营不足</td>
 </tr>
 <tr>
 <td>L3 平台化运行时</td>
-<td>多 runtime、durable、租户策略</td>
-<td>复杂运营</td>
+<td>多 runtime、durable、租户策略、统一 evidence</td>
+<td>复杂度和组合漂移</td>
 </tr>
 <tr>
 <td>L4 受控进化</td>
-<td>轨迹、实验、canary、rollback</td>
-<td>优化投机与治理</td>
+<td>轨迹归因、隔离实验、canary、rollback</td>
+<td>优化投机与治理失效</td>
 </tr>
 </tbody>
 </table>
-<p>成熟度按最弱关键层判断，不能因 UI 漂亮或模型强而跳级。没有独立完成门的多 Agent 平台仍可能停在 L1。</p>
-<h2 id="2_16">2. 买什么</h2>
-<p>优先购买快速变化且有规模效应的能力：前沿模型、成熟 coding runtime、浏览器/计算沙箱、通用连接器。评估数据边界、可固定版本、trace 导出、权限控制、SLA 和退出成本。</p>
-<h2 id="3_15">3. 自建什么</h2>
-<p>企业差异化和责任不可外包的部分应自建或牢牢控制：任务合同、身份映射、业务策略、凭证代理、领域 verifier、证据与审计、eval 数据、发布门和 runtime abstraction。</p>
-<h2 id="4-runtime">4. 何时自研 runtime</h2>
-<p>只有当任务规模足够、现有产品在关键接口受限、定制收益可量化、团队能承担安全与运维时，才自研 loop/runtime。模型调用和 shell 很容易，durability、兼容、安全、恢复、评测和生态才是长期成本。</p>
-<h2 id="5_17">5. 决策矩阵</h2>
-<p>按任务匹配度、控制力、透明度、数据风险、总成本、可替换性和演进能力评分。POC 必须使用真实任务、真实权限与完整失败成本，不用厂商 demo 或单一 benchmark。</p>
-<p>推荐战略通常是“买 runtime，建控制面，保留替换权”；随着组织成熟，再选择性内化上下文、工具或 loop。</p>
+<h2 id="2_17">2. 二元自评方法</h2>
+<p>对每条只回答“有可复查证据/没有”，不要按印象给半分。当前等级是所有低等级硬条件都满足后的最高级；任何高风险任务缺关键条件时，按该任务单独降级。</p>
+<p><strong>L1 硬条件</strong>：任务在隔离 workspace 执行；身份可追踪；写入与网络有边界；敏感动作需批准；日志能关联 task；用户可取消；外部提交不由聊天文本隐式触发。</p>
+<p><strong>L2 硬条件</strong>：CompletionContract 版本化；candidate 可封存；verifier 独立运行；artifact 有 hash/provenance；模型停止不等于完成；关键副作用可对账；失败有明确升级点；证据包可由另一人重建。</p>
+<p><strong>L3 硬条件</strong>：canonical event 与 vendor payload 双轨保存；runtime 能力协商；持久 checkpoint 与取消树；租户隔离测试；credential broker 使用短期凭证；policy/sandbox/profile 版本化；SLO 按任务切片；供应商版本可固定和回滚。</p>
+<p><strong>L4 硬条件</strong>：mutable surface 明确；evaluator/held-out/policy root 与候选隔离；实验预注册并多 trial；缺失数据规则固定；shadow/canary/rollback 可演练；完整 lineage；自动晋级范围按风险限制；能区分 model 与 Harness 收益。</p>
+<p>证据可以是测试报告、事件样例、故障演练、配置或审计记录。“产品文档说支持”不是组织已经实现的证据。</p>
+<h2 id="3_14">3. 买什么，控制什么</h2>
+<p>优先购买变化快且有规模效应的能力：前沿模型、成熟 coding runtime、浏览器/计算 sandbox 和通用连接器。采购时评估数据边界、版本固定、事件导出、权限控制、SLA、地域、费用上限和退出成本。</p>
+<p>企业差异化与责任不可外包的部分应牢牢控制：任务合同、身份映射、业务策略、凭证代理、领域 verifier、证据与审计、eval 数据、发布门和 runtime abstraction。控制不一定意味着全部自写代码，可以是组织拥有配置、数据、密钥、契约和替换权。</p>
+<h2 id="4-runtime">4. 何时自研 Runtime</h2>
+<p>只有当任务规模足够、现有产品在关键接口受限、定制收益可测、团队能承担安全与运维时，才自研 loop/runtime。模型调用和 shell 很容易；durability、跨平台 sandbox、恢复、兼容、评测和插件生态才是长期成本。</p>
+<p>一个反例是因 token 单价差异重写 runtime，却没有计入值班、漏洞修复和模型更新适配。另一个反例是采购“企业 Agent 平台”，但关键事件和 artifact 无法导出，形成证据锁定。总成本模型应包含订阅/调用、基础设施、集成、人工复核、事故期望损失和退出迁移。</p>
+<h2 id="5-poc">5. 决策矩阵与 POC</h2>
+<p>按任务匹配、控制力、证据性、耐久性、数据风险、总成本、可替换性和演进能力评分。每项先定义可验证问题，例如“进程被杀后是否会重复发送外部动作”，再运行真实故障，而不是询问销售是否“支持恢复”。</p>
+<p>POC 使用代表性任务、真实权限边界和完整失败成本，多 trial 比较；至少包含正常完成、歧义升级、工具超时、凭证拒绝、取消、恢复和 verifier 失败。最终建议通常是“买高变化 runtime，建控制面，保留替换权”，随着成熟度再选择性内化 context、tool 或 loop。</p>
 <hr />
-<h1 id="agent_3">第二十九章 从接入现有 Agent 到自研运行时</h1>
-<h2 id="_11">阶段一：封装而非散接</h2>
-<p>为 Claude Code、Codex 或其他 Agent 建立 adapter，统一 task、event、artifact、approval 和 cancel。所有调用经过平台身份、workspace 与策略，不允许业务团队直接分散保存 token 和脚本。</p>
-<h2 id="_12">阶段二：外置完成与证据</h2>
-<p>先把 verifier、evidence package 和 commit authority 放到 runtime 外。这样即使更换 Agent，业务正确性与审计不随供应商迁移。</p>
-<h2 id="_13">阶段三：统一执行面</h2>
-<p>建立企业 sandbox、tool gateway、credential broker 和 artifact store。供应商 runtime 只决定动作，不直接持有生产凭证。对无法适配的功能保留专用 execution profile。</p>
-<h2 id="_14">阶段四：建立评测基线</h2>
-<p>从真实任务形成 capability、regression 和 safety suites，以相同合同比较不同模型/runtime 的成功、稳定、成本和人工负担。没有基线，自研无法证明价值。</p>
-<h2 id="_15">阶段五：逐层替换</h2>
-<p>先替换最具差异化的 context compiler、tool view 或 workflow，再考虑 loop。每次只替换一层，保留 2×2 对照和快速回滚。不要一次重写 UI、runtime、sandbox 和 eval。</p>
-<h2 id="_16">阶段六：引入受控进化</h2>
-<p>当 trace、归因和 eval 稳定后，才自动生成候选 Harness 变更。发布仍由外部治理平面控制。模型训练是更后的选择。</p>
-<h2 id="_17">迁移反模式</h2>
-<p>直接解析终端彩色输出；把厂商消息结构当领域模型；把供应商“完成”映射为业务成功；共享宿主凭证；无版本地自动更新；只比较 token 价格；在没有 eval 时宣布自研更强。</p>
-<p>最终目标不是完全摆脱供应商，而是让供应商成为可替换能力组件。平台拥有任务定义、权力边界、证据和学习数据，才拥有长期架构主动权。</p>
+<h1 id="agent_3">第二十九章 从接入现有 Agent 到拥有运行时主动权</h1>
+<p>迁移目标不是“去供应商化”，而是让供应商成为可替换能力组件。平台必须拥有任务定义、权力边界、证据和学习数据；是否自研模型循环是后续经济决策。</p>
+<h2 id="_19">阶段一：封装而非散接</h2>
+<p>为 Claude Code、Codex 或其他 Agent 建 adapter，统一 task、attempt、event、artifact、approval 和 cancel。所有调用经过平台身份、workspace 与策略，不允许业务团队在脚本中分散保存长期 token。此阶段不追求抹平所有差异，先双轨保存 canonical event 与原始 payload。</p>
+<p>退出条件：能列出每个 runtime 版本、调用者、工作区、费用和外部动作；停止解析彩色终端输出；供应商升级前有契约测试。</p>
+<h2 id="_20">阶段二：外置完成与证据</h2>
+<p>把 verifier、EvidencePackage 和 commit authority 放到 runtime 外。先选择一个高频任务族，定义可执行 CompletionContract，在 clean environment 重验 candidate。这样即使更换 Agent，业务正确性与审计不随供应商迁移。</p>
+<p>退出条件：模型停止不再直接触发 merge/send/deploy；任一完成任务都可从输入 revision 重建 artifact 和检查；错误完成能回标到 task 与 runtime 版本。</p>
+<h2 id="_21">阶段三：统一执行面</h2>
+<p>建立企业 sandbox、tool gateway、credential broker 和 artifact store。供应商 runtime 决定动作，受控工具提交效果；对无法适配的原生功能保留专用 execution profile，并明确降低自治等级。</p>
+<p>失效场景是“一半工具走 gateway，一半插件直连 SaaS”。架构图看似统一，最敏感的 secret 和出网反而旁路。应以网络流、secret 发放和外部审计日志验证覆盖率，而不是只数接入工具。</p>
+<h2 id="_22">阶段四：建立评测与运营基线</h2>
+<p>从真实任务形成 capability、regression、safety 和 recovery suites，以相同合同、环境和预算比较模型/runtime 的成功、稳定、成本与人工负担。建立第十二、二十六章的 trace 与 SLO；没有基线，自研无法证明价值，供应商切换也无法量化风险。</p>
+<p>退出条件：关键任务多 trial；故障注入可重复；报告按任务、风险、模型和 runtime 切片；能执行 Model×Harness 2×2 归因。</p>
+<h2 id="_23">阶段五：逐层替换</h2>
+<p>先替换最具企业差异化的 context compiler、tool view、policy adapter 或 workflow，再考虑 loop。每次只改变少数层，保留旧 bundle 与快速回滚。不要同时重写 UI、runtime、sandbox 和 eval，否则任何改善或退化都无法归因。</p>
+<table>
+<thead>
+<tr>
+<th>先内化对象</th>
+<th>何时值得</th>
+<th>不宜内化的信号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Context compiler</td>
+<td>企业知识复杂且可测 recall</td>
+<td>权威数据尚未治理</td>
+</tr>
+<tr>
+<td>Tool gateway</td>
+<td>权限/审计是核心要求</td>
+<td>只有低风险本地工具</td>
+</tr>
+<tr>
+<td>Workflow</td>
+<td>任务重复且边界稳定</td>
+<td>流程仍频繁人工协商</td>
+</tr>
+<tr>
+<td>Agent loop</td>
+<td>供应商协议限制关键能力</td>
+<td>只是希望省少量 token</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_24">阶段六：引入受控进化</h2>
+<p>当 trace、归因、eval、canary 和 rollback 稳定后，才自动生成候选 Harness 变更。发布仍由外部治理平面控制；跨任务 memory 先进入隔离 registry；模型训练是更后的选择。若组织尚不能可靠回滚普通配置，就不应自动进化配置。</p>
+<h2 id="_25">迁移治理</h2>
+<p>每阶段维护 capability map、数据出口、供应商依赖、compatibility test 和退场演练。至少每个主要版本演练一次：冻结新任务、导出未完成 attempt、在替代 runtime 重新开始或恢复、重建 evidence、撤销旧凭证。恢复不一定跨 runtime 保留内部思考，但必须保留任务、artifact 和已提交 effect。</p>
+<p>最终主动权的判据很简单：供应商暂时不可用或价格变化时，企业是否仍能解释任务状态、保护数据、验证已有结果，并在可控损失下切换。若答案是否定的，即使代码托管在自己账户，也没有真正拥有运行时。</p>
 <hr />
 <h1 id="harness-osagent">第三十章 展望：Harness OS、Agent 组织与持续进化</h1>
-<p>未来 Harness 会更像 Agent 的操作系统：调度概率执行者，管理上下文与能力，隔离计算，记录副作用，验证结果，并在多版本之间安全演进。这个比喻的价值在职责，不在复刻传统 OS API。</p>
+<p>未来 Harness 会更像 Agent 的操作系统：调度概率执行者，管理上下文与能力，隔离计算，记录副作用，验证结果，并在多版本之间安全演进。这个比喻的价值在职责和不变量，不在复刻传统 OS 的 API。</p>
 <h2 id="1-harness">1. 模型与 Harness 共同设计</h2>
-<p>工具使用、上下文读取和压缩将越来越进入模型训练；Harness 又会按模型 profile 动态编译接口。通用 provider API 仍存在，但性能前沿来自协同设计。企业需要稳定 canonical contract 与可变 model-facing view 的双层结构。</p>
-<h2 id="2-agent_1">2. 从应用到 Agent 组织</h2>
-<p>Agent 将跨越单个聊天，成为有身份、预算、工作区和持续责任的数字执行者。多个 Agent 组成按任务动态生成的组织，但组织图必须由合同、权限和 artifact 定义，而非角色扮演。</p>
-<p>人类工作从逐步操作转向定义目标、处理例外、维护规范和审查证据。若企业流程仍只有口头约定和不可观测系统，Agent 只会放大组织熵。</p>
-<h2 id="3_16">3. 环境成为主要护城河</h2>
-<p>模型能力趋同后，差异来自企业是否让数据、工具、日志、测试和审批对 Agent 可用且安全。Harness engineering 本质上也是组织的“可机器操作化”工程。</p>
-<h2 id="4_13">4. 持续进化的现实形态</h2>
-<p>短期内可信进化更可能是自动提案、自动评测、人或策略批准，而不是生产 Agent 任意改写自己。随着 evaluator、形式约束和沙箱成熟，可自动晋级的范围逐渐扩大，但根信任仍保持外部。</p>
-<h2 id="5_18">5. 新风险</h2>
-<p>长时自治、跨 Agent 信息流、插件供应链、评测污染、经济型 DoS、自动生成并固化错误 skill，以及多个 Agent 合谋或相互强化偏差，会成为主要治理议题。安全评价必须覆盖整个 Harness，不再只测裸模型拒绝率。</p>
-<h2 id="6_3">6. 最终判断</h2>
-<p>Agent 的竞争不只是谁拥有最强模型，而是谁能以更少上下文、更小权限、更低协调熵，在真实环境中持续产生可验证结果，并把失败转化为受控改进。Harness 将从脚手架变成企业 AI 劳动力的制度与基础设施。</p>
-<p>最值得建设的不是一个“永远正确的自治 Agent”，而是一套知道自己何时不确定、能证明完成、能安全失败、能从证据中改善且始终可被人类治理的系统。</p>
+<p>工具使用、上下文读取、压缩和长时任务能力会越来越多地进入模型训练；Harness 又会按 model profile 编译工具和上下文。Cursor 公开的模型特化工具、Claude/Codex 的 loop 设计和新一代 Agent SDK 都显示，性能前沿来自模型—Harness 协同，而不是一个永恒通用 prompt。</p>
+<p>企业需要双层结构：内部 canonical contract 保持任务、动作和证据语义稳定；model-facing view 可以随模型版本变化。否则追求模型无关会牺牲效果，追求每个模型私有又会失去可比较性和替换权。</p>
+<h2 id="2-agent-agent">2. 从 Agent 应用到 Agent 组织</h2>
+<p>Agent 会跨越单个聊天，成为有身份、预算、工作区和持续责任的数字执行者。多个 Agent 可按任务动态形成组织，但组织图必须由合同、权限、artifact 和 handoff 定义，而不是角色扮演。第十一章已经说明，多 Agent 增加的既有并行能力，也有协调熵和攻击面。</p>
+<p>人的工作从逐步操作转向定义目标、维护规范、处理例外和审查证据。若企业流程仍依赖口头约定、共享账号和不可观测系统，Agent 不会自动修复组织，只会更快放大组织熵。</p>
+<h2 id="3_15">3. 环境成为长期资产</h2>
+<p>模型可以采购，企业环境的可机器操作性更难复制：权威数据是否结构化，工具是否有稳定 schema，日志是否可查询，测试是否表达业务不变量，审批是否能被系统调用。Harness engineering 因而不仅是 AI 平台工程，也是组织把隐性制度转成可执行契约的过程。</p>
+<p>环境也可能成为负资产。为一个模型堆积的提示补丁、无法撤销的 skill 和不带 provenance 的 memory 会形成 Harness debt。未来平台需要像管理代码依赖一样管理上下文、工具与经验的 owner、版本、测试和退役。</p>
+<h2 id="4_15">4. 自我进化的近期现实</h2>
+<p>近期可信形态更可能是自动发现失败、自动提出候选、隔离评测、人或策略批准，而不是生产 Agent 任意改写自己。2026 年 Self-Harness、GSME、Living-Harness 和 HSI 等预印本提供了受限实验信号，也共同暴露反馈质量、基础模型能力、过拟合和评价隔离的边界（见第十九至二十四章）。</p>
+<p>随着形式验证、环境模拟和 sandbox 成熟，低风险表面的自动晋级范围会扩大；根信任仍保持外部。真正困难的研究问题不是能否生成修改，而是长期分布漂移下如何可靠 credit、如何防止 evaluator 被优化、如何证明跨版本安全不变量。</p>
+<h2 id="5_13">5. 新风险与开放问题</h2>
+<p>长时自治会放大累积小错误；跨 Agent 信息流可能突破原有租户和职能边界；插件与 skill 供应链可把 prompt injection 变成持久代码；评测污染会让系统“学会考试”；经济型 DoS 会用合法工具耗尽预算。多个 Agent 还可能相互强化错误，而没有任何一个单体表现出明显异常。</p>
+<p>开放研究至少包括：可组合策略的形式语义；跨 runtime 可移植 checkpoint；不暴露 held-out 的高信息反馈；memory 污染的因果追踪；面向副作用的 Agent benchmark；model—Harness 联合优化中的公平归因；以及自动进化系统自身的安全证明。</p>
+<h2 id="6_13">6. 三种可能未来</h2>
+<p>保守路径是 Agent 继续作为强大的交互工具，人始终提交关键动作；平台价值集中在上下文和体验。平台路径是多 runtime 共享企业 control/evidence plane，Agent 成为可调度的执行能力。进化路径是在前者之上形成持续实验系统，低风险 Harness 和 skill 自动晋级，高风险变化保留多方治理。</p>
+<p>三条路径会长期共存，取决于任务可验证性与错误代价。并非所有知识工作都应自治，也并非所有组织都应自研 runtime。</p>
+<h2 id="7_11">7. 最终判断</h2>
+<p>Agent 的竞争不只是谁拥有最强模型，而是谁能以更少无关上下文、更小权限、更低协调熵，在真实环境中持续产生可验证结果，并把失败转化为受控改进。Harness 将从脚手架变成企业 AI 劳动力的制度与基础设施。</p>
+<p>最值得建设的不是一个“永远正确的自治 Agent”，而是一套知道自己何时不确定、能证明完成、能安全失败、能从证据中改善且始终可被治理的系统。</p>
 <hr />
-<h1 id="_18">附录</h1>
+<h1 id="_26">附录</h1>
 <hr />
-<h1 id="a">附录 A：语言无关核心接口</h1>
-<pre><code class="language-text">Task {id, tenant, contract_version, input_refs, risk, budget}
-Action {id, actor, type, normalized_args, resource, provenance}
-Observation {action_id, status, structured, artifact_refs, diagnostics}
-Artifact {uri, hash, media_type, producer, classification}
-Checkpoint {run_id, state_version, event_offset, pending_effects}
-PolicyDecision {action_id, decision, constraints, policy_version}
-VerificationResult {contract, checks, status, evidence_refs}
+<h1 id="a">附录 A：语言无关核心契约与安全伪代码</h1>
+<p>本附录给出语义接口，不要求所有 Runtime 使用同一种语言或序列化格式。平台可以用 JSON、protobuf 或数据库事件实现，但字段所有权与状态转换应保持一致。</p>
+<h2 id="1_22">1. 核心对象</h2>
+<pre><code class="language-text">Task {
+  id, tenant, contract_version, input_refs[], risk, budget,
+  requested_by, commit_authority, status
+}
+Attempt {
+  id, task_id, runtime, runtime_version, harness_profile,
+  workspace_ref, policy_profile, started_at, status
+}
+Action {
+  id, attempt_id, actor, type, normalized_args_ref,
+  resource, side_effect_class, idempotency_key, provenance
+}
+Observation {
+  action_id, status, structured_result, artifact_refs[],
+  diagnostics, environment_revision
+}
+Artifact {
+  uri, hash, media_type, producer, classification,
+  input_refs[], created_at, retention_policy
+}
+PolicyDecision {
+  action_id, decision, constraints, policy_version,
+  reason_code, approval_request_id?
+}
+Checkpoint {
+  attempt_id, state_version, event_offset, workspace_ref,
+  pending_effect_ids[], context_projection_ref
+}
+VerificationResult {
+  contract_version, verifier_version, checks[], status,
+  evidence_refs[], environment_ref
+}
+EvidencePackage {
+  task, attempt, inputs[], candidate, effects[], policies[],
+  verification, approvals[], final_commit?, lineage
+}
 </code></pre>
-<pre><code class="language-text">while run.active:
-    context = compiler.build(run.state, budget)
-    proposal = model.decide(context, tool_views)
-    if proposal.action:
-        action = normalize_and_validate(proposal.action)
-        decision = policy.evaluate(action)
-        observation = executor.commit(action, decision)
-        ledger.append(action, decision, observation)
-        state.reduce(observation)
+<h2 id="2-run-loopproposal-effect">2. Run loop：proposal 不直接变成 effect</h2>
+<pre><code class="language-text">while attempt.active:
+    canonical_state = state_store.load(attempt.id)
+    context = context_compiler.project(canonical_state, budget)
+    proposal = model.decide(context, model_facing_tool_views)
+
+    if proposal.requests_action:
+        action = normalize_validate_and_assign_id(proposal.action)
+        decision = policy.evaluate(action, current_authority)
+        event_store.append(action, decision)
+
+        if decision == DENY:
+            observation = denied_observation(decision.reason)
+        elif decision == REQUIRE_APPROVAL:
+            suspend_attempt_with_checkpoint(action, decision)
+            continue_after_external_response()
+        else:
+            observation = commit_effect_safely(action, decision.constraints)
+
+        event_store.append(observation)
+        state_store.reduce(observation)
+        continue
+
+    candidate = seal(proposal.output, canonical_state.artifacts)
+    verification = completion_gate.verify(candidate, task.contract_version)
+    if verification.status == PASS:
+        return CANDIDATE_VERIFIED
+    if verification.repairable and budget.remaining:
+        state_store.reduce(minimal_diagnostics(verification))
     else:
-        candidate = seal(proposal.output, state.artifacts)
-        return completion_gate.verify(candidate)
+        return NEEDS_ESCALATION
 </code></pre>
-<pre><code class="language-text">recover(run_id):
-    checkpoint = store.latest(run_id)
-    replay_pure_events(checkpoint.offset)
-    for effect in checkpoint.pending_effects:
-        reconcile_by_idempotency_key(effect)
-    resume_with_fresh_policy_and_credentials()
+<p><code>DENY</code> 不调用 executor；<code>REQUIRE_APPROVAL</code> 在外部决定前挂起。模型输出无工具调用只表示提出 candidate，不表示业务已提交。</p>
+<h2 id="3-intent">3. 副作用提交：先记 intent，再执行</h2>
+<pre><code class="language-text">commit_effect_safely(action, constraints):
+    effect = EffectIntent(
+        effect_id = stable_id(action.id),
+        idempotency_key = action.idempotency_key,
+        target = action.resource,
+        requested_operation = constrained(action, constraints),
+        status = INTENT_RECORDED
+    )
+    durable_store.insert_if_absent(effect)
+
+    prior = target_system.lookup(effect.idempotency_key)
+    if prior.is_committed:
+        outcome = observation_from(prior)
+        durable_store.mark_committed(effect.id, outcome.ref)
+        return outcome
+
+    durable_store.mark_executing(effect.id)
+    outcome = executor.execute(effect.requested_operation)
+
+    if outcome.is_definitive:
+        durable_store.mark_final(effect.id, outcome)
+        return outcome
+
+    durable_store.mark_unknown(effect.id)
+    return Observation(status=UNKNOWN_EFFECT, diagnostics=reconcile_required)
 </code></pre>
-<p>这些接口是语义合同，不要求所有 runtime 使用同一编程语言或序列化格式。</p>
+<p>存储 effect intent 后、调用目标系统前崩溃，恢复流程能找到待提交记录；目标系统已执行但 outcome 尚未持久化时崩溃，状态为未知，必须查询幂等键或外部审计，不得盲目重试。</p>
+<h2 id="4_16">4. 恢复、取消与对账</h2>
+<pre><code class="language-text">recover(attempt_id):
+    lease = coordinator.acquire_single_owner(attempt_id)
+    checkpoint = state_store.latest_checkpoint(attempt_id)
+    state = replay_pure_events(checkpoint.event_offset)
+
+    for effect in state.pending_or_unknown_effects:
+        authoritative = target_system.lookup(effect.idempotency_key)
+        append_reconciliation_observation(effect, authoritative)
+
+    policy = policy_store.load_current_compatible_version()
+    credentials = broker.issue_fresh_leases(state.required_capabilities)
+    resume_from_reconciled_state(state, policy, credentials)
+
+cancel(attempt_id, reason):
+    state_store.mark_cancel_requested(attempt_id, reason)
+    scheduler.cancel_children(attempt_id)
+    executor.terminate_process_tree(attempt_id)
+    revoke_temporary_credentials(attempt_id)
+    reconcile_pending_effects(attempt_id)
+    state_store.mark_cancelled_when_quiescent(attempt_id)
+</code></pre>
+<p>恢复时不复用过期 credential，也不把 checkpoint 中旧授权当成当前授权。取消是一个需要收敛的状态，不是向 worker 发一条尽力而为的信号。</p>
+<h2 id="5-adapter_1">5. Adapter 的能力协商</h2>
+<pre><code class="language-text">CapabilitySet {
+  structured_events: yes/no
+  pause_for_approval: yes/no
+  resume: none/session/checkpoint
+  cancel: cooperative/process_tree
+  artifact_export: list of media types
+  workspace_isolation: local/worktree/container/vm/provider
+  raw_event_provenance: yes/no
+}
+</code></pre>
+<p>Control Plane 依据 Task 风险声明要求；adapter 返回实际能力。若关键能力缺失，scheduler 选择替代 Runtime、降低自治范围或要求人工，不能把 <code>no</code> 转成空字段继续执行。</p>
 <hr />
-<h1 id="bharness">附录 B：Harness 架构评审检查表</h1>
-<h2 id="_19">任务与完成</h2>
-<ul>
-<li>是否有版本化目标、交付物、不变量和验收条件？</li>
-<li>模型停止是否与业务完成分离？</li>
-<li>是否从目标环境回读结果并生成 evidence package？</li>
-</ul>
-<h2 id="_20">上下文与记忆</h2>
-<ul>
-<li>上下文来源、优先级、token 成本与 provenance 是否可见？</li>
-<li>压缩后哪些状态仍是权威？</li>
-<li>长期记忆是否有写入门、TTL、纠错和删除？</li>
-</ul>
-<h2 id="_21">工具与环境</h2>
-<ul>
-<li>Action schema、错误分类和输出截断是否稳定？</li>
-<li>工具副作用是否幂等、可对账？</li>
-<li>workspace、文件、网络、进程和资源是否隔离？</li>
-</ul>
-<h2 id="_22">权限与安全</h2>
-<ul>
-<li>身份、授权、批准和隔离是否分层？</li>
-<li>凭证是否短期、窄范围且不进入模型上下文？</li>
-<li>MCP、skill、plugin 是否有版本、签名、权限和撤销？</li>
-<li>是否测试间接 prompt injection 与跨域数据流？</li>
-</ul>
+<h1 id="b-harness">附录 B：可判定的 Harness 架构评审表</h1>
+<p>使用方法：每项必须附一个可复查 artifact（配置、测试、事件或演练报告），只回答“通过/不通过/不适用”。“不适用”需要风险 owner 说明。任何 R3/R4 动作若关键项不通过，不应进入生产自治。</p>
+<h2 id="_27">任务与完成</h2>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>合格判据</th>
+<th>不合格的典型症状</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标是否版本化</td>
+<td>合同含交付物、不变量、预算、权限、验收和 owner</td>
+<td>目标只在聊天里，运行中静默变化</td>
+<td>第十、二十七章</td>
+</tr>
+<tr>
+<td>停止是否与完成分离</td>
+<td>runtime stop 产生 candidate；独立 completion gate 决定完成</td>
+<td>final answer 直接触发 merge/send/deploy</td>
+<td>第十章</td>
+</tr>
+<tr>
+<td>是否生成证据包</td>
+<td>输入、artifact hash、检查、策略和批准可关联</td>
+<td>只有最终文本或截图</td>
+<td>第十、二十五章</td>
+</tr>
+<tr>
+<td>外部提交是否独立授权</td>
+<td>commit authority 与执行 Agent 分离</td>
+<td>Agent 自报成功后自动生效</td>
+<td>第十、二十六章</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_28">上下文与记忆</h2>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>合格判据</th>
+<th>不合格的典型症状</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上下文 provenance 可见</td>
+<td>每个承重片段有来源、版本、选择原因和 token 成本</td>
+<td>不知道规则从哪里注入</td>
+<td>第七章</td>
+</tr>
+<tr>
+<td>压缩不覆盖权威状态</td>
+<td>task、effect、artifact 保存在上下文外</td>
+<td>compaction 后遗忘约束或重复动作</td>
+<td>第六、七章</td>
+</tr>
+<tr>
+<td>Memory 有写入门</td>
+<td>candidate、验证、scope、TTL、owner、撤销齐全</td>
+<td>一次成功自动写入全局 memory</td>
+<td>第二十一章</td>
+</tr>
+<tr>
+<td>检索先做隔离</td>
+<td>租户、权限、数据分类在语义检索前过滤</td>
+<td>相似度搜索跨租户返回内容</td>
+<td>第七、二十一章</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_29">工具、环境与副作用</h2>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>合格判据</th>
+<th>不合格的典型症状</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Action schema 稳定</td>
+<td>参数、错误分类、版本、截断和 artifact 语义明确</td>
+<td>全部失败都是字符串 <code>error</code></td>
+<td>第八章</td>
+</tr>
+<tr>
+<td>Effect 可对账</td>
+<td>intent 先持久化，有幂等键，未知结果进入 reconcile</td>
+<td>timeout 后直接重试发送/支付</td>
+<td>第六章、附录 A</td>
+</tr>
+<tr>
+<td>Workspace 可重建</td>
+<td>输入 revision、image、依赖和初始化可固定</td>
+<td>“在 Agent 那台机器上能过”</td>
+<td>第四、六章</td>
+</tr>
+<tr>
+<td>Sandbox 经对抗验证</td>
+<td>文件、网络、进程、mount、资源和身份都有测试</td>
+<td>只因使用 Docker 就声称隔离</td>
+<td>第九、十七章</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_30">权限与供应链</h2>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>合格判据</th>
+<th>不合格的典型症状</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份、授权、批准分层</td>
+<td>actor identity、capability、decision、approver 可追踪</td>
+<td>登录成功被当作拥有全部权限</td>
+<td>第九章</td>
+</tr>
+<tr>
+<td>凭证短期且不进上下文</td>
+<td>broker 在提交时注入 lease，日志做 secret scan</td>
+<td>token 出现在 prompt、trace 或 skill</td>
+<td>第九、二十六章</td>
+</tr>
+<tr>
+<td>委派缩权</td>
+<td>子任务 capability 与预算不超过父任务</td>
+<td>subagent 继承宿主所有 secret</td>
+<td>第十一章</td>
+</tr>
+<tr>
+<td>扩展供应链可撤销</td>
+<td>MCP/skill/plugin 有 owner、版本、权限、签名和 kill switch</td>
+<td>自动更新未审查脚本</td>
+<td>第九、二十一章</td>
+</tr>
+<tr>
+<td>Prompt injection 有系统测试</td>
+<td>间接注入、数据外泄和跨域 flow 进入 safety suite</td>
+<td>只测试模型口头拒绝</td>
+<td>第九、二十三章</td>
+</tr>
+</tbody>
+</table>
 <h2 id="durable-agent">Durable 与多 Agent</h2>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>合格判据</th>
+<th>不合格的典型症状</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中断可恢复</td>
+<td>kill/restart 演练无状态丢失和重复 effect</td>
+<td>worker 崩溃后从头运行</td>
+<td>第六章</td>
+</tr>
+<tr>
+<td>取消能收敛</td>
+<td>子进程、子任务、凭证和 pending effect 被处理</td>
+<td>UI 显示取消，后台仍执行</td>
+<td>第六、十一章</td>
+</tr>
+<tr>
+<td>并行写入隔离</td>
+<td>分支有独立写集，合并后重验</td>
+<td>多 Agent 共享目录互相覆盖</td>
+<td>第十一、十四章</td>
+</tr>
+<tr>
+<td>Handoff 有结构化交付</td>
+<td>目标、已做、artifact、未决、权限和预算齐全</td>
+<td>只返回“已完成”摘要</td>
+<td>第十一章</td>
+</tr>
+</tbody>
+</table>
+<h2 id="eval">Eval、运营与进化</h2>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>合格判据</th>
+<th>不合格的典型症状</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Eval 集生命周期分开</td>
+<td>development、validation、sealed、regression 有 owner 与访问审计</td>
+<td>hidden test 被用于日常修 prompt</td>
+<td>第十二章</td>
+</tr>
+<tr>
+<td>报告多 trial 与切片</td>
+<td>固定任务/环境/预算，报告区间、成本和关键切片</td>
+<td>只报一次最好成绩</td>
+<td>第十二、十八章</td>
+</tr>
+<tr>
+<td>Trace 骨架完整</td>
+<td>policy/effect/checkpoint/verification 全量，artifact 可读取</td>
+<td>成功有日志、失败无日志</td>
+<td>第十二章</td>
+</tr>
+<tr>
+<td>候选与裁判隔离</td>
+<td>mutable surface 明确，候选不可写 evaluator/held-out/policy root</td>
+<td>Agent 可修改测试或分母</td>
+<td>第十九、二十四章</td>
+</tr>
+<tr>
+<td>发布可灰度与回滚</td>
+<td>task 版本粘性，bundle shadow/canary，回滚演练成功</td>
+<td>只会换回 prompt 文件</td>
+<td>第二十四章</td>
+</tr>
+<tr>
+<td>Lineage 可解释</td>
+<td>父版本、mutation、数据、评测、批准、事故和退役齐全</td>
+<td>无法回答“为何上线”</td>
+<td>第二十四章</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_31">最终判定</h2>
 <ul>
-<li>是否有 checkpoint、取消、恢复、reconciliation？</li>
-<li>委派是否缩权、限预算、结构化交付？</li>
-<li>并行写入是否隔离，合并后是否重验？</li>
+<li><strong>阻断</strong>：高风险任务在身份/授权、effect 对账、隔离、完成门、证据或回滚任一项不通过。</li>
+<li><strong>限域上线</strong>：核心安全项通过，但恢复、评测覆盖或运营证据不足；只允许低风险、可人工提交的任务。</li>
+<li><strong>生产候选</strong>：所有适用关键项有证据，并完成正常、拒绝、超时、取消、崩溃、恢复和 verifier 失败演练。</li>
 </ul>
-<h2 id="eval">Eval 与进化</h2>
-<ul>
-<li>Capability、regression、安全集是否分开？</li>
-<li>是否多 trial、报告成本和关键切片？</li>
-<li>候选是否无法修改 evaluator、held-out 和 policy root？</li>
-<li>是否 canary、回滚并保存 lineage？</li>
-</ul>
-<p>任何 R3/R4 动作若上述关键问题无答案，不应进入生产自治。</p>
+<p>评审结果应记录适用范围和到期时间。一个代码只读 Agent 的通过结论不能自动继承给可写生产数据库的 Agent。</p>
 <hr />
-<h1 id="c">附录 C：术语表</h1>
+<h1 id="c">附录 C：术语与本体边界</h1>
+<p>本书固定以下用法。产品文档可能采用不同名称，adapter 应映射语义，而不是仅按字符串对齐。</p>
 <ul>
-<li><strong>Agent</strong>：由模型动态管理工作流、使用工具并改变环境状态的系统。</li>
-<li><strong>Harness</strong>：围绕模型的上下文、工具、循环、环境、安全、状态、验证和可观测运行时。</li>
-<li><strong>Runtime</strong>：承载 Agent 循环或执行动作的运行组件；本文按语境区分 Agent Runtime 与 Execution Runtime。</li>
+<li><strong>Model</strong>：接收有限上下文并提出文本或动作的概率性策略；不天然拥有持久状态、权限和外部真值。</li>
+<li><strong>Agent</strong>：在任务范围内由模型动态选择观察或动作的执行者。Agent 是系统角色，不等于单次模型调用。</li>
+<li><strong>Agent System</strong>：Model、Harness、Environment 与 Feedback 的完整组合，是能力与风险的实际评价对象。</li>
+<li><strong>Harness</strong>：把任务、模型与环境组织成持续执行的逻辑控制系统，负责 loop、context、tools、state、policy、verification、observability 与 evolution governance。</li>
+<li><strong>Agent Runtime</strong>：承载 Agent loop、session 和模型交互的运行组件，如供应商 CLI/core 或自研 loop。</li>
+<li><strong>Execution Runtime</strong>：实际运行命令、浏览器、代码或连接器的环境，如容器、VM 或受控远程执行器。</li>
+<li><strong>Environment</strong>：Agent 可观察或改变的任务世界，包括 workspace、数据库、SaaS、日志和人类组织；不等于一个 shell。</li>
+<li><strong>Feedback</strong>：改变系统对动作或任务质量判断的信号；Observation 只有进入评价时才成为 feedback。</li>
+<li><strong>Workflow</strong>：由代码预定义主要控制路径的执行结构；可在节点中调用模型，但模型不拥有全部路由权。</li>
+<li><strong>Control Plane</strong>：拥有 task、identity、policy、调度、配置与发布权威的逻辑平面。</li>
+<li><strong>Evidence Plane</strong>：保存 artifact、trace、effect 和独立验证结果的逻辑平面；不依赖聊天历史证明完成。</li>
+<li><strong>Evolution Plane</strong>：生成、评价和发布 memory/Harness/model 候选的系统；受治理平面约束。</li>
 <li><strong>ACI</strong>：Agent-Computer Interface，模型与计算环境之间的动作和观察接口。</li>
-<li><strong>Completion Contract</strong>：目标、交付物、不变量、验收、证据、权限和停止条件的版本化合同。</li>
-<li><strong>Evidence Package</strong>：连接输入、artifact、检查、策略和外部效果的机器可读交付证据。</li>
-<li><strong>Effect Ledger</strong>：记录副作用意图、幂等键、提交状态和对账结果的账本。</li>
-<li><strong>Compaction</strong>：将长会话转换为可继续工作的较短表示，不等同于长期记忆。</li>
-<li><strong>Skill</strong>：可按需加载的程序知识，可能包含指令、脚本和资源。</li>
-<li><strong>Handoff</strong>：工作流责任从一个 Agent 转移给另一个 Agent。</li>
-<li><strong>Held-out</strong>：候选不可见、用于独立评价的数据或检查。</li>
-<li><strong>Canary</strong>：只在受限真实流量部署候选版本并监控。</li>
-<li><strong>Harness evolution</strong>：对 prompt、工具、上下文、路由、工作流等运行时组件进行受控优化。</li>
-<li><strong>Reward hacking</strong>：提高测量分数但偏离真实目标或破坏评价完整性。</li>
+<li><strong>Action</strong>：Agent 提议的规范化动作；在授权和执行前还不是现实副作用。</li>
+<li><strong>Observation</strong>：动作、环境或策略返回的可观察结果，带状态、诊断与 artifact 引用。</li>
+<li><strong>Effect</strong>：已经或可能改变外部权威状态的动作结果。</li>
+<li><strong>Effect Ledger</strong>：记录 effect intent、幂等键、提交状态、outcome 与 reconciliation 的账本。</li>
+<li><strong>CompletionContract</strong>：目标、交付物、不变量、验收、证据、权限、预算与停止条件的版本化合同。</li>
+<li><strong>Candidate</strong>：Agent 提交给外部完成门的候选 artifact；尚未获得业务提交权。</li>
+<li><strong>VerificationResult</strong>：特定 verifier 在固定环境下对合同检查的结构化结果。</li>
+<li><strong>EvidencePackage</strong>：连接输入、candidate、artifact、effect、policy、verification、approval 与最终提交的机器可读证据。</li>
+<li><strong>Artifact</strong>：有地址、hash、媒体类型、生产者和分类的持久交付或中间对象。</li>
+<li><strong>Checkpoint</strong>：恢复所需的任务状态、事件 offset、workspace 与 pending effect 引用；不等于上下文摘要。</li>
+<li><strong>Compaction</strong>：将长上下文转换为可继续推理的较短表示；是有损投影，不是长期记忆。</li>
+<li><strong>Memory</strong>：跨推理或跨任务保存的事实、情景、程序或策略状态；必须声明 scope、owner 和生命周期。</li>
+<li><strong>Skill</strong>：按需加载的程序知识包，可能含指令、脚本和资源；属于软件供应链对象。</li>
+<li><strong>Handoff</strong>：工作责任从一个 Agent/节点转移到另一个，携带结构化目标、状态、artifact、权限和未决项。</li>
+<li><strong>Capability lease</strong>：绑定 actor、资源、动作、purpose、租户和 TTL 的临时授权。</li>
+<li><strong>Held-out / sealed test</strong>：候选不可见、由独立评价服务在预定时机使用的数据或检查。</li>
+<li><strong>Canary</strong>：在受限真实流量和影响范围内部署候选版本并监控。</li>
+<li><strong>Harness evolution</strong>：对 prompt、工具、上下文、路由、工作流或 runtime profile 的受控优化，不等于模型权重训练。</li>
+<li><strong>Reward hacking</strong>：提高测量分数却偏离真实目标或破坏评价完整性的行为。</li>
+<li><strong>Lineage</strong>：版本从父项、数据、mutation、实验到发布、事故和退役的可追溯关系。</li>
 </ul>
+<p>最容易混淆的三组边界是：Agent Runtime 决定下一步，Execution Runtime 执行动作；Memory 保存跨时经验，Compaction 只压缩当前上下文；Harness 可以包含 policy adapter，但根授权和 release authority 不应由候选 Harness 自行修改。</p>
 <hr />
-<h1 id="_23">研究方法与局限</h1>
-<p>本书采用官方文档、开源仓库、论文和社区材料的分层证据法。产品事实以 2026-08-22 为时间截面；无法验证的内部实现不作为事实。设计原则是作者基于多来源的综合推断。研究资产包括 sources.jsonl、evidence.jsonl 与 claims.jsonl。局限包括产品快速迭代、公开 benchmark 污染、厂商数据选择偏差，以及部分 2026 年进化论文尚缺长期生产复现。</p>
+<h1 id="d">附录 D：概念首次定义与使用索引</h1>
+<p>本索引用于定位概念，不替代正文定义。</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>首次集中定义</th>
+<th>主要展开章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model × Harness × Environment × Feedback</td>
+<td>第五章</td>
+<td>第十八、二十三、二十六章</td>
+</tr>
+<tr>
+<td>Agent / Workflow</td>
+<td>第二、五章</td>
+<td>第十一、二十七章</td>
+</tr>
+<tr>
+<td>Harness</td>
+<td>第五章</td>
+<td>第六至十二、十九、二十六章</td>
+</tr>
+<tr>
+<td>Agent Runtime / Execution Runtime</td>
+<td>第五章</td>
+<td>第十三至十七、二十六章</td>
+</tr>
+<tr>
+<td>Control/Data/Execution Plane</td>
+<td>第五章</td>
+<td>第九、二十六章</td>
+</tr>
+<tr>
+<td>Durable state machine</td>
+<td>第六章</td>
+<td>第十一、二十六章</td>
+</tr>
+<tr>
+<td>Checkpoint</td>
+<td>第六章</td>
+<td>第七、二十章、附录 A</td>
+</tr>
+<tr>
+<td>Effect Ledger</td>
+<td>第六章</td>
+<td>第十、十一、二十六章、附录 A</td>
+</tr>
+<tr>
+<td>Reconciliation</td>
+<td>第六章</td>
+<td>第十、二十、二十五章</td>
+</tr>
+<tr>
+<td>Context compiler</td>
+<td>第七章</td>
+<td>第十五、二十二、二十九章</td>
+</tr>
+<tr>
+<td>Compaction</td>
+<td>第七章</td>
+<td>第十二至十五章</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>第七章</td>
+<td>第十九、二十一、二十四章</td>
+</tr>
+<tr>
+<td>Skill</td>
+<td>第七、八章</td>
+<td>第十三、二十一、二十二章</td>
+</tr>
+<tr>
+<td>ACI</td>
+<td>第三章</td>
+<td>第四、八章</td>
+</tr>
+<tr>
+<td>Action / Observation</td>
+<td>第三、六章</td>
+<td>第十七、二十六章、附录 A</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>第八章</td>
+<td>第九、十三、十五章</td>
+</tr>
+<tr>
+<td>Code Mode</td>
+<td>第八章</td>
+<td>第十六、二十二章</td>
+</tr>
+<tr>
+<td>Capability lease</td>
+<td>第九章</td>
+<td>第十一、二十六章</td>
+</tr>
+<tr>
+<td>Sandbox</td>
+<td>第九章</td>
+<td>第十三至十七、二十六章</td>
+</tr>
+<tr>
+<td>Credential broker</td>
+<td>第九章</td>
+<td>第二十五、二十六、二十九章</td>
+</tr>
+<tr>
+<td>CompletionContract</td>
+<td>第十章</td>
+<td>第二十五、二十七章</td>
+</tr>
+<tr>
+<td>EvidencePackage</td>
+<td>第十章</td>
+<td>第二十四至二十六章、附录 A</td>
+</tr>
+<tr>
+<td>Commit authority</td>
+<td>第十章</td>
+<td>第二十五至二十七章</td>
+</tr>
+<tr>
+<td>Delegation / Handoff</td>
+<td>第十一章</td>
+<td>第十三、二十六章</td>
+</tr>
+<tr>
+<td>Trace / Event graph</td>
+<td>第十二章</td>
+<td>第十四、二十四、二十六章</td>
+</tr>
+<tr>
+<td>Capability / Regression eval</td>
+<td>第十二章</td>
+<td>第十八、二十二、二十九章</td>
+</tr>
+<tr>
+<td>Runtime adapter</td>
+<td>第十四、十八章</td>
+<td>第二十五、二十六、二十九章</td>
+</tr>
+<tr>
+<td>四层进化模型</td>
+<td>第十九章</td>
+<td>第二十至二十四章</td>
+</tr>
+<tr>
+<td>Mutable surface / Root of trust</td>
+<td>第十九章</td>
+<td>第二十二、二十四章</td>
+</tr>
+<tr>
+<td>Model × Harness 2×2</td>
+<td>第十九、二十三章</td>
+<td>第二十九章</td>
+</tr>
+<tr>
+<td>Shadow / Canary</td>
+<td>第二十四章</td>
+<td>第二十五、二十六章</td>
+</tr>
+<tr>
+<td>Lineage</td>
+<td>第二十四章</td>
+<td>第二十五、二十六章</td>
+</tr>
+<tr>
+<td>Agent SDD</td>
+<td>第二十七章</td>
+<td>第二十五、二十九章</td>
+</tr>
+<tr>
+<td>L0–L4 成熟度</td>
+<td>第二十八章</td>
+<td>第二十九章</td>
+</tr>
+</tbody>
+</table>
+<p>若未来章节改变承重概念的定义，应同时更新本索引、术语表与机器可读契约；不要在新章节中给同一术语引入第二套隐含语义。</p>
 <hr />
-<h1 id="_24">完整参考文献</h1>
+<h1 id="e">附录 E：最小机器可读契约</h1>
+<p>下面的 JSON Schema 是教学用最小子集，展示如何把正文对象变成可校验协议。生产实现应拆分 schema、使用稳定 URI、补充 classification 枚举、兼容规则和签名；不要把示例中的字段数量误作完整规范。</p>
+<h2 id="1-task-completioncontract">1. Task 与 CompletionContract</h2>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot;,
+  &quot;$id&quot;: &quot;https://example.internal/harness/task-v1.schema.json&quot;,
+  &quot;title&quot;: &quot;Task&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;additionalProperties&quot;: false,
+  &quot;required&quot;: [&quot;task_id&quot;, &quot;tenant&quot;, &quot;contract_version&quot;, &quot;risk&quot;, &quot;deliverables&quot;, &quot;checks&quot;, &quot;commit_authority&quot;],
+  &quot;properties&quot;: {
+    &quot;task_id&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+    &quot;tenant&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+    &quot;contract_version&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+    &quot;risk&quot;: {&quot;enum&quot;: [&quot;R0&quot;, &quot;R1&quot;, &quot;R2&quot;, &quot;R3&quot;, &quot;R4&quot;]},
+    &quot;input_refs&quot;: {&quot;type&quot;: &quot;array&quot;, &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;}},
+    &quot;deliverables&quot;: {&quot;type&quot;: &quot;array&quot;, &quot;minItems&quot;: 1, &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;}},
+    &quot;invariants&quot;: {&quot;type&quot;: &quot;array&quot;, &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;}},
+    &quot;forbidden_actions&quot;: {&quot;type&quot;: &quot;array&quot;, &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;}},
+    &quot;checks&quot;: {&quot;type&quot;: &quot;array&quot;, &quot;minItems&quot;: 1, &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;}},
+    &quot;budget&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;wall_seconds&quot;: {&quot;type&quot;: &quot;integer&quot;, &quot;minimum&quot;: 1},
+        &quot;model_usd&quot;: {&quot;type&quot;: &quot;number&quot;, &quot;minimum&quot;: 0},
+        &quot;max_actions&quot;: {&quot;type&quot;: &quot;integer&quot;, &quot;minimum&quot;: 1}
+      }
+    },
+    &quot;commit_authority&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1}
+  }
+}
+</code></pre>
+<h2 id="2-actionpolicydecision-observation">2. Action、PolicyDecision 与 Observation</h2>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot;,
+  &quot;$defs&quot;: {
+    &quot;Action&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;required&quot;: [&quot;action_id&quot;, &quot;attempt_id&quot;, &quot;actor&quot;, &quot;type&quot;, &quot;resource&quot;, &quot;side_effect_class&quot;],
+      &quot;properties&quot;: {
+        &quot;action_id&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;attempt_id&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;actor&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;type&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;normalized_args_ref&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;resource&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;side_effect_class&quot;: {&quot;enum&quot;: [&quot;NONE&quot;, &quot;REVERSIBLE&quot;, &quot;COMPENSATABLE&quot;, &quot;IRREVERSIBLE&quot;]},
+        &quot;idempotency_key&quot;: {&quot;type&quot;: &quot;string&quot;}
+      }
+    },
+    &quot;PolicyDecision&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;required&quot;: [&quot;action_id&quot;, &quot;decision&quot;, &quot;policy_version&quot;],
+      &quot;properties&quot;: {
+        &quot;action_id&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;decision&quot;: {&quot;enum&quot;: [&quot;ALLOW&quot;, &quot;DENY&quot;, &quot;REQUIRE_APPROVAL&quot;, &quot;CONSTRAINED_ALLOW&quot;]},
+        &quot;policy_version&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;reason_code&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;constraints&quot;: {&quot;type&quot;: &quot;object&quot;}
+      }
+    },
+    &quot;Observation&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;required&quot;: [&quot;action_id&quot;, &quot;status&quot;],
+      &quot;properties&quot;: {
+        &quot;action_id&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;status&quot;: {&quot;enum&quot;: [&quot;OK&quot;, &quot;DENIED&quot;, &quot;ERROR&quot;, &quot;TIMEOUT&quot;, &quot;UNKNOWN_EFFECT&quot;, &quot;CANCELLED&quot;]},
+        &quot;artifact_refs&quot;: {&quot;type&quot;: &quot;array&quot;, &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;}},
+        &quot;diagnostics&quot;: {&quot;type&quot;: &quot;object&quot;},
+        &quot;environment_revision&quot;: {&quot;type&quot;: &quot;string&quot;}
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="3-evidencepackage_2">3. EvidencePackage 必填骨架</h2>
+<pre><code class="language-yaml">evidence_package:
+  schema_version: evidence-package/v1
+  package_id: required
+  task:
+    task_id: required
+    contract_version: required
+  attempt:
+    attempt_id: required
+    runtime: required
+    runtime_version: required
+    harness_profile: required
+  inputs:
+    - uri: required
+      hash: sha256-required
+  candidate:
+    uri: required
+    hash: sha256-required
+  effects: []
+  policy_decisions:
+    artifact_ref: required
+  verification:
+    verifier_version: required
+    environment_ref: required
+    status: PASS|FAIL|INCONCLUSIVE
+    checks: []
+  approvals: []
+  final_commit: null
+  lineage:
+    parent_attempt: optional
+    model_version: required
+    harness_bundle: required
+</code></pre>
+<p>Schema 只能保证形状，不能证明语义正确。<code>checks</code> 是否覆盖业务目标、hash 指向的 artifact 是否可信、approval 是否来自有权主体，仍需 policy、verifier 和签名基础设施保证。</p>
+<hr />
+<h1 id="_32">研究方法与局限</h1>
+<p>本书采用官方文档、开源仓库、论文和社区材料的分层证据法。产品事实以 2026-08-22 为时间截面；无法验证的内部实现不作为事实。设计原则是作者基于多来源的综合推断。研究资产包括 sources.jsonl、evidence.jsonl 与人工标注的 claims_v2.jsonl；旧 claims.jsonl 仅作历史迁移参考。局限包括产品快速迭代、公开 benchmark 污染、厂商数据选择偏差，以及部分 2026 年进化论文尚缺长期生产复现。</p>
+<hr />
+<h1 id="_33">完整参考文献</h1>
 <ol>
 <li>机构/作者未登记 (n.d.). <a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness official repository</a></li>
 <li>机构/作者未登记 (n.d.). <a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md">DeepSeek Harness Architecture</a></li>
@@ -3063,4 +4743,13 @@ VerificationResult {contract, checks, status, evidence_refs}
 <li>Anonymous/Research authors (2025). <a href="https://arxiv.org/abs/2503.13657">Why Do Multi-Agent LLM Systems Fail?</a></li>
 <li>Haolun Wu, Zhenkun Li, Lingyao Li (2025). <a href="https://arxiv.org/abs/2511.07784">Can LLM Agents Really Debate? A Controlled Study of Multi-Agent Debate in Logical Reasoning</a></li>
 <li>Kunlun Zhu et al. (2025). <a href="https://arxiv.org/abs/2503.01935">MultiAgentBench: Evaluating the Collaboration and Competition of LLM agents</a></li>
+<li>Anthropic (2026). <a href="https://code.claude.com/docs/en/features-overview">Extend Claude Code</a></li>
+<li>Anthropic (2026). <a href="https://code.claude.com/docs/en/hooks-guide">Automate actions with hooks</a></li>
+<li>Cursor (2026). <a href="https://docs.cursor.com/agent/security">Cursor Agent Security</a></li>
+<li>Cursor (2026). <a href="https://docs.cursor.com/background-agent">Cursor Background Agents</a></li>
+<li>Cursor (2026). <a href="https://docs.cursor.com/hooks">Cursor Hooks</a></li>
+<li>DeepSeek AI (2026). <a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/tool-catalog.md">DeepSeek Harness Tool Catalog</a></li>
+<li>OpenAI (2026). <a href="https://github.com/openai/openai-agents-python/blob/main/docs/agents.md">OpenAI Agents SDK Agents</a></li>
+<li>Model Context Protocol (2025). <a href="https://modelcontextprotocol.io/specification/2025-11-25/changelog">Model Context Protocol Changelog 2025-11-25</a></li>
+<li>Microsoft Research (2026). <a href="https://www.microsoft.com/en-us/research/project/autogen/publications/">AutoGen Publications</a></li>
 </ol></body></html>

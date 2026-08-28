@@ -11,7 +11,7 @@ hero:
       link: /chapters/00_preface
     - theme: alt
       text: 下载完整版 PDF
-      link: /downloads/agent_harness_book.pdf
+  link: /downloads/agent_harness_book.pdf
 
 features:
   - title: 完整设计体系

@@ -19,12 +19,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install publication dependencies
+        run: python -m pip install -r requirements.txt
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: site/package-lock.json
       - uses: actions/configure-pages@v5
+      - name: Validate evidence ledger
+        run: python publishing/scripts/audit_claim_ledger.py
+      - name: Build book and PDF artifacts
+        run: |
+          python publishing/scripts/build_book.py
+          python publishing/scripts/render_publications.py
       - name: Sync manuscript into the website
         run: python publishing/scripts/prepare_site.py
       - run: npm --prefix site ci

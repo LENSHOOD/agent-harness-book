@@ -1,38 +1,57 @@
-# 第十八章 横向比较：不同 Harness 的答案
+# 第十八章 产品比较：不要用一张总分表掩盖架构差异
 
-> 比较快照截至 2026-08-22。矩阵描述公开能力与设计重心，不等同于质量排名。
+产品比较的第一原则是比较“系统在特定任务、预算和环境中的行为”，而不是给品牌排一个脱离场景的总名次。模型、Harness、工具、sandbox、任务合同和 verifier 共同决定结果；任一变量不同，都只能支持系统对系统结论，不能直接推出模型强弱。
 
-五个主案例并非五套互斥架构，而是对相同责任作出不同取舍。
+## 1. 五种代表性重心
 
-| 维度 | Claude Code | Codex | Cursor | DSH | OpenHands |
-|---|---|---|---|---|---|
-| 主要交互面 | 终端/SDK | CLI、IDE、App、云 | IDE、云 | Runtime/CLI | Web/SDK/研究平台 |
-| 核心重心 | 薄 loop、扩展与安全 | 协议化核心、工作树、策略 | 动态上下文、IDE 与 VM | 插件树与生命周期 | Agent/Runtime 分离 |
-| 上下文 | 项目规则、压缩、tool search | 会话与 compaction | 动态发现、索引、文件化结果 | 可替换策略 | 事件与观察 |
-| 执行隔离 | OS sandbox | sandbox/worktree/cloud | 本地与 cloud VM | sandbox service | Docker/remote Runtime |
-| 扩展 | hooks、skills、MCP、subagent | tools、MCP、App Server | MCP、IDE/云能力 | Cordis plugins | Agent/Runtime/tool 扩展 |
-| 独特价值 | 开发者终端闭环 | 多客户端控制面 | 交互原生性 | 可变运行时载体 | 开放协议边界 |
+| 系统 | 公开架构重心 | 最自然的接入面 | 主要优势 | 主要集成风险 |
+|---|---|---|---|---|
+| Claude Code | loop + lifecycle extensions | Agent SDK / CLI | hooks、skills、subagent、MCP 组合成熟 | 配置与扩展供应链复杂；业务完成需外置 |
+| Codex | protocolized core | App Server / SDK / exec | 双向事件、线程生命周期、多产品复用 | JSON-RPC lite 适配与版本兼容；不可把 turn 当 task |
+| Cursor | IDE-native harness | IDE / cloud agent | 动态上下文、模型特化、在线产品信号 | 专有内部选择器难独立审计；云端出网风险 |
+| DeepSeek Harness | reversible plugin graph | profile / bundle / SDK | 运行时可组合、可 patch、适合实验 | developer preview；配置图与插件供应链治理重 |
+| OpenHands | Agent/Runtime split | event/runtime API | 开源可观测、执行环境可替换 | 自运维隔离、镜像、durability 的成本高 |
 
-## 1. 薄与厚不是优劣
+表中的事实分别来自各产品官方资料；它描述的是 2026-08-27 截面，不是永久能力清单。[Claude loop](https://code.claude.com/docs/en/agent-sdk/agent-loop)、[Codex App Server](https://openai.com/index/unlocking-the-codex-harness/)、[Cursor harness](https://cursor.com/blog/continually-improving-agent-harness)、[dsh architecture](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md)、[OpenHands runtime](https://docs.openhands.dev/openhands/usage/architecture/runtime)
 
-Pi 代表极薄 Harness：少量工具、依赖 shell 和文件、刻意不内置复杂 plan、permission UI 或多 Agent。这提醒我们，功能越多不必然越可靠。相反，企业场景要求身份、审计、策略和恢复，厚控制面又不可避免。
+## 2. 统一评价坐标
 
-合理分层是：模型面对的动作面保持小而清晰，运行时内部可以很厚。复杂度应服务于确定性边界，而不是把更多抽象暴露给模型。
+建议用六个坐标替代总分：
 
-## 2. 本地与云
+1. **任务匹配度**：真实任务族的完成率与失败成本；
+2. **控制力**：身份、权限、网络、审批、取消和版本是否可由平台掌握；
+3. **证据性**：能否导出动作、观察、artifact、策略决定与 verifier 结果；
+4. **耐久性**：中断、重试、恢复和外部副作用对账能力；
+5. **可替换性**：任务与证据契约是否独立于供应商消息格式；
+6. **运营经济性**：端到端成本、时延、人工介入和平台维护成本。
 
-本地 Agent 接近开发者环境、启动快、交互自然，但宿主秘密和环境漂移风险高。云 Agent 易隔离、并行和恢复，却有环境准备、数据上传、凭证代理与成本问题。现代产品通常走向混合：控制面统一，本地与云作为不同 execution profile。
+每项都要在相同 completion contract、workspace snapshot、权限和预算下多 trial 测量（见第十二章）。GitHub stars、营销 benchmark 和一次成功 demo 最多用于候选发现，不能作为企业选型证据。
 
-## 3. 开放与闭源
+## 3. 协议统一的限度
 
-开源可验证协议、策略和沙箱实现，闭源产品可能拥有更成熟模型适配和运维数据。企业选择不应只看许可证，而要看可导出的 trace、artifact、策略控制、数据边界、版本可固定性和退出路径。
+可以统一的是可观察语义：Task、Action、Observation、Artifact、Approval、Checkpoint、VerificationResult。不能强制统一的是每个模型内部 reasoning、原生 tool shape、上下文压缩策略和产品交互。Codex 官方也指出，跨提供方协议容易收敛到共同子集，从而难以表达更丰富的 provider-specific session 和 tool 语义。[App Server](https://openai.com/index/unlocking-the-codex-harness/)
 
-## 4. 共同收敛
+因此 adapter 应“双轨保存”：向上输出 canonical event，向下保留原始 payload 与版本。若某产品支持 fork 而统一层没有，就以 capability negotiation 暴露，不要静默丢弃；若某产品无法导出关键证据，则降低其可自动提交的风险等级。
 
-五者正在共同收敛到：持久会话、按需上下文、结构化工具、隔离执行、审批策略、MCP/扩展、多 Agent、可观测和验证。差异逐渐从“有没有工具调用”转向每个层的质量与组合方式。
+## 4. 常见失效比较
 
-## 5. 选择原则
+最常见的错误是给每个产品不同模型、不同时间和不同权限，然后比较最终通过率。另一个错误是只比较 token 单价，却忽略失败重试、人工接管、环境冷启动与错误提交。第三个错误是把厂商内部指标当共同口径，例如 Cursor 的 Keep Rate 与测试通过率衡量的不是同一对象。
 
-交互式个人 coding 优先考虑 IDE/终端体验；后台并行任务重视云工作区和协议；强定制企业平台重视开放 Runtime、策略与事件；进化研究重视可组合配置和评测接口。没有一个产品应同时作为组织的身份源、策略根、证据库和唯一执行 runtime。
+一个可审计的 POC 应发布完整配置矩阵：
 
-因此企业架构的目标不是选出永久赢家，而是定义稳定的 canonical contracts，让五类 runtime 都能被接入、比较和替换。
+```yaml
+comparison:
+  task_suite: repo-maintenance-v3
+  workspace_snapshot: fixed
+  trials_per_case: 5
+  budgets: {wall_minutes: 30, model_usd: 8}
+  permissions: code-medium-v4
+  verifier: clean-room-v6
+  report_slices: [task_type, repo_size, risk, runtime, model]
+```
+
+## 5. 组合战略
+
+多数企业不需要挑选唯一赢家。更稳妥的结构是：供应商/开源 Agent 负责高变化的决策循环，企业控制面拥有 task、identity、policy、workspace、evidence、eval 和 commit authority。低风险 IDE 工作可直接使用 Cursor 或 Claude Code；需要深度嵌入的产品可接 App Server；需要研究可变 Harness 可使用 dsh；需要掌握执行环境实现可研究 OpenHands。
+
+这一比较的最终结论不是“哪个最好”，而是哪些边界必须由企业拥有。第二十六至二十九章将把这些产品差异转成可迁移的控制面和分阶段路线图。

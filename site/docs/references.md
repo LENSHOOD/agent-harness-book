@@ -2,7 +2,7 @@
 
 
 
-本书共登记 75 个主要来源。产品事实以 2026-08-22 为时间截面。
+本书共登记 84 个主要来源。产品事实以 2026-08-22 为时间截面。
 
 
 
@@ -155,3 +155,21 @@
 74. Haolun Wu, Zhenkun Li, Lingyao Li (2025). [Can LLM Agents Really Debate? A Controlled Study of Multi-Agent Debate in Logical Reasoning](https://arxiv.org/abs/2511.07784)
 
 75. Kunlun Zhu et al. (2025). [MultiAgentBench: Evaluating the Collaboration and Competition of LLM agents](https://arxiv.org/abs/2503.01935)
+
+76. Anthropic (2026). [Extend Claude Code](https://code.claude.com/docs/en/features-overview)
+
+77. Anthropic (2026). [Automate actions with hooks](https://code.claude.com/docs/en/hooks-guide)
+
+78. Cursor (2026). [Cursor Agent Security](https://docs.cursor.com/agent/security)
+
+79. Cursor (2026). [Cursor Background Agents](https://docs.cursor.com/background-agent)
+
+80. Cursor (2026). [Cursor Hooks](https://docs.cursor.com/hooks)
+
+81. DeepSeek AI (2026). [DeepSeek Harness Tool Catalog](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/tool-catalog.md)
+
+82. OpenAI (2026). [OpenAI Agents SDK Agents](https://github.com/openai/openai-agents-python/blob/main/docs/agents.md)
+
+83. Model Context Protocol (2025). [Model Context Protocol Changelog 2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25/changelog)
+
+84. Microsoft Research (2026). [AutoGen Publications](https://www.microsoft.com/en-us/research/project/autogen/publications/)
