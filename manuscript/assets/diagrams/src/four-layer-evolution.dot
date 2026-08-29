@@ -1,0 +1,26 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", pad=0.25, nodesep=0.32, ranksep=0.6, fontname="PingFang SC"];
+  node [shape=box, style="rounded,filled", fontname="PingFang SC", fontsize=11, color="#8BA7B5", fillcolor="#F4F8FA", fontcolor="#17384A", margin="0.14,0.10"];
+  edge [fontname="PingFang SC", fontsize=9, color="#4F7487", fontcolor="#34596B", arrowsize=0.7];
+
+  observe [label="验证过的轨迹与事故", fillcolor="#E8F3F8"];
+  attribute [label="归因\nModel × Harness × Environment"];
+  l1 [label="L1 任务内适应\n计划、候选、repair"];
+  l2 [label="L2 跨任务经验\nmemory、skill"];
+  l3 [label="L3 Harness 版本\nprompt、tools、workflow"];
+  l4 [label="L4 模型参数\n权重、adapter、训练配方"];
+  eval [label="隔离评价\nheld-out、多 trial、硬门"];
+  release [label="Shadow → Canary → Release", fillcolor="#EAF5ED"];
+  rollback [label="Lineage / Rollback / Revoke", fillcolor="#FFF5E8"];
+
+  observe -> attribute;
+  attribute -> l1 [label="当前任务"];
+  attribute -> l2 [label="重复经验"];
+  attribute -> l3 [label="系统性 Harness 缺陷"];
+  attribute -> l4 [label="跨 Harness 稳定残差"];
+  l1 -> eval; l2 -> eval; l3 -> eval; l4 -> eval;
+  eval -> release [label="hard gates pass"];
+  eval -> rollback [label="reject / quarantine"];
+  release -> observe [label="post-release evidence", constraint=false];
+  release -> rollback [label="regression"];
+}

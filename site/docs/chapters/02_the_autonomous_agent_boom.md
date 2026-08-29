@@ -1,7 +1,5 @@
 # 第二章 2023：自主 Agent 爆发与第一次祛魅
 
-> 本章状态：正文初稿 v0.1。
-
 2023 年春天，GPT-4 与廉价 API、开源代码和社交媒体演示共同触发了一次“自主 Agent”爆发。AutoGPT、BabyAGI、AgentGPT 等项目让普通开发者第一次直观看见：只要给模型一个目标、少量工具、一段循环和某种记忆，它似乎就能自行拆解任务、搜索网络、写文件、运行代码，并不断决定下一步。
 
 从今天回看，这批系统并没有建立可靠的通用自治。但称它们只是“玩具”同样不准确。它们完成了一次重要的公共实验：把语言模型从单次问答移入持续执行循环，并在极短时间内暴露出 Harness 工程真正困难的部分。
@@ -160,7 +158,7 @@ Framework 主要回答“开发者怎样表达 Agent”；Runtime 还必须回�
 
 ## 7. 这一代系统留下了什么
 
-AutoGPT 和 BabyAGI 留下开放循环与任务外置；LangChain留下 Agent/Tool/Memory/Executor 词汇和集成生态；AutoGen 留下对话式多 Agent 编排；LangGraph 则代表从高层魔法回到显式状态和持久运行语义。
+AutoGPT 和 BabyAGI 留下开放循环与任务外置；LangChain 留下 Agent/Tool/Memory/Executor 词汇和集成生态；AutoGen 留下对话式多 Agent 编排；LangGraph 则代表从高层魔法回到显式状态和持久运行语义。
 
 它们共同证明：一个最小 Agent 的确可以很小，但一个可靠 Agent 系统不会很小。
 

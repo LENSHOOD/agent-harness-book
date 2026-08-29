@@ -1,7 +1,5 @@
 # 第六章 Agent Loop：从 while 循环到持久状态机
 
-> 本章状态：正文初稿 v0.1。
-
 几乎所有工具型 Agent 都能用十几行伪代码表达，但生产故障很少发生在那十几行的正常路径。真正困难的是：并行工具只完成一半怎么办？用户在命令运行期间取消怎么办？模型返回 final answer 是否意味着任务完成？进程在外部副作用提交后、结果落库前崩溃怎么办？
 
 因此，企业 Harness 不应把 loop 只实现为内存中的 `while`，而应把它设计成有持久身份、明确状态、可恢复转移和副作用账本的状态机。
@@ -155,7 +153,7 @@ Claude Code 把消息、工具调用和结果写入 JSONL，从而支持 resume�
 
 ## 9. Compaction 是有损状态迁移
 
-上下文接近上限时，Claude SDK 与 Codex 都会压缩历史。Codex强调缓存依赖精确前缀匹配，并尽量通过追加消息表达中途配置变化；其服务端 compaction 以较短 items 替代旧 input。[Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/)
+上下文接近上限时，Claude SDK 与 Codex 都会压缩历史。Codex 强调缓存依赖精确前缀匹配，并尽量通过追加消息表达中途配置变化；其服务端 compaction 以较短 items 替代旧 input。[Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/)
 
 压缩不是普通摘要，而是一次有损状态迁移。至少要保护：
 

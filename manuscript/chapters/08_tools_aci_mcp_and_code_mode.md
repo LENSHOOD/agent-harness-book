@@ -1,7 +1,5 @@
 # 第八章 工具、ACI、MCP 与 Code Mode
 
-> 本章状态：正文初稿 v0.1。
-
 工具决定 Agent 可以对世界提出哪些动作。一个模型即使理解了任务，如果只有模糊、冗余或危险的工具，也会表现得像能力不足；反过来，一个设计良好的 ACI 可以把复杂环境转化成模型容易观察、操作和修复的界面。
 
 企业平台不应从“接入多少工具”衡量成熟度，而应从动作语义是否稳定、权限是否清晰、结果是否可验证、失败是否可恢复来衡量。
@@ -131,7 +129,7 @@ Catalog summary → search(query, policy_scope) → candidate tools
 
 ## 8. CLI：最通用但最难治理的工具总线
 
-Shell 让 Agent 直接复用 git、编译器、数据库客户端和组织已有 CLI。它具有巨大组合性、文档生态和人类可复现性。Pi 的极简设计正是依赖 shell、文件和技能，而不是内置大量专用工具。
+Shell 让 Agent 直接复用 git、编译器、数据库客户端和组织已有 CLI。它具有巨大组合性、文档生态和人类可复现性。Pi 的官方说明把 `read`、`write`、`edit`、`bash` 作为默认工具，并通过技能、扩展与外部 CLI 增加能力，而不是把所有能力做成内置专用工具。[Pi coding agent README](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md)
 
 CLI 的代价是：参数空间开放、命令可能启动子进程、重定向和管道隐藏真实效果、静态策略难以理解 shell 语义。安全实现至少需要：
 

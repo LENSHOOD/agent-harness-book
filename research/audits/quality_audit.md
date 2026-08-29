@@ -1,30 +1,60 @@
 # 最终质量审计
 
-审计日期：2026-08-22
+审计日期：2026-08-28
 
-## 交付完整性
+适用内容版本：git `34be37385ee792592a25ce758ab4b136d3a584b9`
 
-- 30 章、序言、3 个附录、研究方法与完整参考文献已组装。
-- Markdown 约 11.0 万字符；PDF 可提取正文约 10.2 万字符。
-- 完整版 PDF 121 页；管理层版 14 页。
-- PDF 中检测到 30 个章节标题，未发现 Unicode replacement character。
-- 抽查封面、目录、正文中段、表格、代码块、参考文献和末页，未发现裁切、重叠、黑块或中文字体缺失。
+结论：**通过研究版发布门禁；不等同于同行评议学术出版。**
 
-## 来源与 claim
+## 1. 交付完整性
 
-- 来源 registry：75 条；持久化 evidence：69 条；自动抽取 claim：222 条。
-- Claim ledger 经重新分类：69 条带即时来源链接的事实单元，153 条作者综合/设计建议。
-- 严格检查中 factual unsupported 为 0。
-- 英文词法 verifier 对中文 claim 的自动结果为：supported 4、partial 36、needs_review 29。后两类主要反映中英文词法重叠不足以及 section-sized claim 过大，不能等价为来源反驳。
-- 最终稿保留所有即时 Markdown 来源链接，并在书末登记全部 75 条来源；未把未公开产品实现写成事实。
+- 1 篇序、30 章正文、5 个篇导言、5 个附录、研究方法与完整参考文献均已纳入统一构建。
+- 去除 fenced code 后，`manuscript/chapters + parts + appendices` 共 64,719 个中文正文字符，达到研究章程 6–10 万字下限。
+- 第 19–24 章“进化篇”共 13,558 个中文正文字符，占上述口径 20.949%，超过 20.8% 的评审缓冲要求，不再贴线达标。
+- 产品篇覆盖 Claude Code、Codex、Cursor、DeepSeek Harness/Cordis、OpenHands，并使用统一六轴比较与企业接入风险分析。
+- 实践篇包含三个端到端案例、完整合同/证据包实例、失败演练、企业 SLO、SDD、成熟度自评与迁移退出判据。
+- 附录 A–E 分别提供安全核心契约、可判定检查表、冻结术语本体、概念索引与机器可读 schema。
 
-## 已知局限
+## 2. 事实与证据
 
-- 2026 年 Harness 自进化论文较新，缺少长期生产复现，正文按研究方向而非成熟产品能力表达。
-- 厂商公开使用数据存在选择偏差，不外推为行业总体。
-- 产品功能快速变化，产品章节是 2026-08-22 时间截面。
-- 自动 claim extractor 以章节为粒度，不能替代逐句学术出版审校；本书用于内部交流。
+- 来源 registry：84 条；持久化 evidence：71 条；`claims_v2.jsonl`：25 条人工定义的原子承重 claim；正文外部链接：69 条。
+- Registry 中 37 条 `verified` 来源已全部填写访问日期、版本、网页快照或 commit；其中 28 个被 25 条承重 claim 使用。其余 47 条为显式 `unverified` 的检索 backlog，不冒充承重证据；来源类型收敛为 academic paper、official documentation、official article、official repository、platform metadata 五类。
+- 原子 claim 分为 `historical_fact`、`research_result`、`vendor_claim`，全部绑定具体 source/evidence；厂商数字标出供应商口径，2026 年演化研究标出预印本边界。
+- `audit_claim_ledger.py` 已改为只读校验：不再根据 URL 自动推断事实类型，也不写回账本；同时校验 claim/source/evidence 引用完整性、严格类型支撑状态、正文链接登记、含括号 DOI 解析、verified 元数据完整性及 README registry 数量声明。
+- 本轮运行结果：`PASS`，25/25 原子承重 claim 为 `supported`，无未登记正文链接。
+- 旧 `claims.jsonl` 保留为迁移审计材料，不再作为发布门禁的事实账本。
 
-## 结论
+## 3. 构建与发布
 
-结构、篇幅、来源、PDF 渲染与内部交付要求通过。若未来公开出版，建议增加逐句编辑、来源元数据补齐、图表重绘与外部同行评审。
+- 依赖由 `requirements.txt` 固定；PDF 由 ReportLab 直接从合并 Markdown 生成，不再依赖本机缺失的 GObject/WeasyPrint 运行时。
+- `prepare_site.py` 会先清理并重新同步 chapters、parts、appendices、assets 和下载文件，避免网页与 PDF 版本漂移。
+- `publishing/book_structure.json` 是 30 章标题的单一来源；构建脚本和 VitePress 侧边栏共同读取，CI 另以 `check_book_structure.py` 校验源稿 H1。
+- GitHub Actions 依次执行 claim audit、结构审计、合并书稿、生成 PDF、同步站点和 VitePress 构建；本地以同样顺序复现通过。
+- PDF 渲染启用 ReportLab invariant 模式并使用稳定书签键；CI 连续渲染两次并比较 SHA-256，拒绝时间戳、随机文档 ID 或书签键造成的字节漂移。
+- VitePress 构建完成；最终 dist 的错误 `/downloads/` 链接为 0，45 处完整版入口均为 `/agent-harness-book/downloads/agent_harness_book.pdf`。CI 在构建产物上设置正反双向门禁。
+
+## 4. PDF 验收
+
+- 完整版：135 页，A4，1,012,257 bytes；文本可提取 257,594 字符，无替换字符或空白页。
+- 管理层版：14 页，A4，67,652 bytes。
+- PDF 书签含 5 个篇节点和 30 个章节点；篇层级为 0，所有章层级为 1，章节已正确嵌套。
+- 第 5、19、25 章三张 Graphviz 关系图已进入网页与 PDF；JSON/YAML 中的引号以最终 PDF 抽查确认未被渲染为 HTML 实体。
+- Latin 封面字体以 ReportLab 自带 TrueType 字体嵌入，避免默认未嵌入 Helvetica 在部分渲染器中不可见。
+- 抽查完整版封面、目录、表格/代码页、进化篇新增页、参考文献末页，以及管理层版首末页；未发现裁切、重叠、黑块、缺字或不可见标题。
+- 发布前在两个独立渲染进程中复测：完整版 SHA-256 均为 `177a984e55c355f719dfb40db854fa04fc1ee38ddc0af2b7fded8a4efc197604`，管理层版均为 `ecdb0b526f5a3a912dce0e983b08f828f2398ac7986f3015167862f74e2fcd06`。
+
+## 5. Peer review 处置
+
+前两轮逐条判断见 `peer_review_disposition_20260828.md`，第三轮判断与修复见 `peer_review_disposition_round3_20260828.md`，第四轮验收与建议处置见 `peer_review_disposition_round4_20260828.md`。第五份独立记录 `审阅记录_第五轮闭环_20260828.md` 已复测第四轮全部处置，确认研究版无 P0/P1/P2 遗留，并接受对第四轮审阅自身两处偏差的更正；评审系列至此关闭。旧处置报告的 D-1 至 D-5 失实/漏报已在原报告文末公开勘误，未静默改写历史记录。
+
+## 6. 已知边界
+
+- 25 条原子 claim 是承重主张子集，不代表逐句学术事实核查；设计推导、规范性建议与非承重背景材料仍依赖正文限定和内联来源。
+- 产品章节以 2026-08-27 为资料截面，部分来源在 2026-08-28 复核；供应商功能、协议与安全边界会继续变化。
+- Self-Harness、GSME、Living-Harness、HSI 等 2026 年材料在本截面仍以预印本为主，缺少长期生产复现。
+- 厂商内部指标不外推为行业总体；未公开实现只作为推断或集成假设表达。
+- 正式 1.0 前仍须按 `research/maintenance/release_and_product_review_policy.md` 完成外部盲审，并持续巡检安全、训练数据治理和产品版本更新。
+
+## 7. 最终判定
+
+本修订稿已经满足“真实可追溯、结构完整、体系闭合、工程可落地、表述边界明确、发布可复现”的研究版要求。它可以进入公开阅读和同行反馈阶段；后续变更应继续由 claim audit、站点构建和 PDF 视觉抽查共同把关。

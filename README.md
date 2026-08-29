@@ -9,24 +9,26 @@
 
 | 目录 | 用途 | 是否为正文/发布必需 |
 | --- | --- | --- |
-| `manuscript/` | 小书的唯一正文源，包括章节、附录和正文资源 | 是 |
+| `manuscript/` | 小书的唯一正文源，包括篇导言、章节、附录和正文资源 | 是 |
 | `research/` | 研究过程资产：规划、笔记、证据账本与质量审计 | 是，支持溯源与修订 |
 | `publishing/` | 出版流水线：构建脚本、可交付文件和临时校验产物 | 是 |
-| `site/` | VitePress 在线阅读站；也是独立的 GitHub 仓库 | 是 |
+| `site/` | VitePress 在线阅读前端，由根目录仓库统一管理 | 是 |
 | `.venv/` | 本机 Python 依赖环境，不属于书稿内容 | 仅本地构建需要 |
 
 ### `manuscript/`
 
 - `chapters/`：序章及第 1—30 章 Markdown 源稿。
+- `parts/`：五篇的篇级导言，说明章节依赖与本篇产出。
 - `appendices/`：附录源稿。
-- `assets/`：正文引用的图片、图表等静态资源；目前为空。
+- `assets/`：正文引用的图片、图表及其可再生源文件。
 
 ### `research/`
 
 - `planning/`：研究章程、目录演进、核心论点、来源地图和专项证据复核。
 - `notes/`：分轮次的检索与综合笔记。
-- `evidence/`：`sources.jsonl`、`evidence.jsonl`、`claims.jsonl` 和运行清单，构成可机读证据链。
+- `evidence/`：`sources.jsonl`、`evidence.jsonl`、人工标注的 `claims_v2.jsonl` 和运行清单，构成可机读证据链；`claims.jsonl` 是旧版段落级账本，仅作迁移参考。
 - `audits/`：进度记录与质量审计结果。
+- `maintenance/`：产品事实巡检、版本发布和外部盲审的维护制度。
 
 ### `publishing/`
 
@@ -43,10 +45,10 @@
 在本目录执行：
 
 ```bash
-python publishing/scripts/build_book.py
+.venv/bin/python publishing/scripts/build_book.py
 .venv/bin/python publishing/scripts/render_publications.py
-python publishing/scripts/audit_claim_ledger.py
-python publishing/scripts/prepare_site.py
+.venv/bin/python publishing/scripts/audit_claim_ledger.py
+.venv/bin/python publishing/scripts/prepare_site.py
 npm --prefix site run docs:build
 ```
 
@@ -58,3 +60,7 @@ npm --prefix site run docs:build
 2. 新来源与论据进入 `research/evidence/`，研究过程记录进入 `research/notes/`。
 3. 生成文件进入 `publishing/artifacts/`，临时检查文件进入 `publishing/work/`。
 4. `site/` 只承担在线呈现，根目录 `.github/workflows/` 负责自动部署。
+
+## 审查状态
+
+截至 2026-08-28，本评审系列已由第五份独立审阅记录确认闭环：研究版发布门无 P0/P1/P2 遗留，产品、进化和实践篇完成系统性重写，证据账本迁移到原子 claim 只读校验，PDF/站点流水线可复现。五份审阅文档、四份处置报告和机器校验报告位于 `research/audits/`；正式 1.0 前的外部盲审与产品事实巡检要求见 `research/maintenance/`。

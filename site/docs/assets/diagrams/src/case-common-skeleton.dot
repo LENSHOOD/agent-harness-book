@@ -1,0 +1,26 @@
+digraph G {
+  graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.45, ranksep=0.55, fontname="PingFang SC"];
+  node [shape=box, style="rounded,filled", fontname="PingFang SC", fontsize=11, color="#8BA7B5", fillcolor="#F4F8FA", fontcolor="#17384A", margin="0.14,0.10"];
+  edge [fontname="PingFang SC", fontsize=9, color="#4F7487", fontcolor="#34596B", arrowsize=0.7];
+
+  intent [label="业务意图"];
+  contract [label="CompletionContract\n范围、不变量、预算、权力"];
+  control [label="Control Plane\n状态、策略、调度"];
+  runtime [label="可替换 Agent Runtime\nClaude / Codex / 自研"];
+  execution [label="Execution Plane\n受控工具与 workspace"];
+  artifact [label="Sealed candidate\nartifact + effect ledger"];
+  verify [label="Independent verifier\nclean environment"];
+  evidence [label="EvidencePackage\n输入、动作、检查、版本"];
+  commit [label="Commit controller\n人或策略拥有最终权力", fillcolor="#EAF5ED"];
+  failure [label="失败演练\nreconcile / rollback / escalate", fillcolor="#FFF5E8"];
+
+  { rank=same; intent; contract; control; }
+  { rank=same; runtime; execution; artifact; }
+  { rank=same; verify; evidence; commit; }
+
+  intent -> contract -> control -> runtime -> execution -> artifact -> verify -> evidence -> commit;
+  runtime -> control [label="canonical events", constraint=false];
+  execution -> failure [label="unknown effect"];
+  verify -> failure [label="hard gate fail"];
+  failure -> control [label="恢复或人工介入", constraint=false];
+}

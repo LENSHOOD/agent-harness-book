@@ -11,7 +11,7 @@ hero:
       link: /chapters/00_preface
     - theme: alt
       text: 下载完整版 PDF
-      link: /downloads/agent_harness_book.pdf
+      link: /agent-harness-book/downloads/agent_harness_book.pdf
 
 features:
   - title: 完整设计体系
@@ -32,6 +32,6 @@ features:
 Agent System Capability = Model × Harness × Environment × Feedback
 ```
 
-全书共 30 章，产品事实以 2026-08-22 的公开材料为时间截面。
+全书共 30 章，资料维护至 2026-08-28；快速变化的产品事实以各章章首声明为准。
 
 > 本书用于技术交流。快速变化的产品功能可能过时，设计原则比产品快照更稳定。

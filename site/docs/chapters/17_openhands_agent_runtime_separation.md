@@ -1,33 +1,55 @@
-# 第十七章 OpenHands：Agent 与 Runtime 分离的开放架构
+# 第十七章 OpenHands：Agent 与执行 Runtime 分离
 
-> 产品快照截至 2026-08-22。
+> 资料截面：2026-08-27。OpenHands 是快速演进的开源项目；本章以官方文档和论文描述的稳定边界为准，不承诺具体类名长期不变。
 
-OpenHands 被选为第五主案例，不是因为它一定拥有最大用户规模，而是其开放代码、论文传统和 Agent/Runtime 分离对企业架构最具教学价值。它补足了四个商业产品公开实现透明度不足的问题。
+OpenHands 对企业架构最有价值的启示，是明确区分“产生 Action 的 Agent”与“在环境中执行 Action 的 Runtime”。官方 Runtime 架构中，backend 创建 Agent 和 EventStream，Docker 容器内的 Action Executor 初始化 shell、browser 和插件；EventStream 把 Agent 的 Action 送往 Runtime，再把 Observation 返回 Agent。[Runtime architecture](https://docs.openhands.dev/openhands/usage/architecture/runtime)
 
-## 1. Action—Observation—Event
+## 1. Action—Observation 作为系统脊柱
 
-OpenHands 用 action 表示 Agent 意图，用 observation 表示环境反馈，并通过事件流连接会话。[OpenHands Paper](https://arxiv.org/abs/2407.16741) 这个协议边界允许替换 Agent 策略、模型和 Runtime，也允许记录、重放与插入策略。
+```text
+user/task → agent controller → Action → EventStream
+                                  ↓
+                              Runtime API
+                                  ↓
+                         shell/browser/files
+                                  ↓
+             Observation → EventStream → next decision
+```
 
-关键不是类名，而是模型不直接操作宿主。Runtime 接收规范化动作，在受控环境执行并返回结构化观察。终端输出、文件变化、浏览器状态和错误都成为事件。
+这个边界让模型和执行环境可以独立变化：同一种 Action 语义可以落到本地、Docker 或远程 runtime；同一 runtime 也可服务不同 Agent。OpenHands 论文把平台定位为面向软件开发 Agent 的开放基础设施，而非单一模型 wrapper。[OpenHands paper](https://arxiv.org/abs/2407.16741)
 
-## 2. Runtime 生命周期
+事件流的价值在于统一交互，不等于天然耐久。若 event 只在内存里、外部动作没有幂等键，进程崩溃仍会产生第六章所述的不确定提交窗口。企业 fork 或二次封装时应逐项验证：事件是否持久化、是否可去重、重放是否会再次执行副作用、取消是否传播到容器进程树。
 
-OpenHands Runtime 可以运行在 Docker 或远程环境中，负责初始化、执行、文件传输和 teardown。[OpenHands Runtime Architecture](https://docs.openhands.dev/openhands/usage/architecture/runtime) 这把高风险计算面从 Agent server 分离，也为企业替换 Kubernetes、VM 或专用沙箱提供接口。
+## 2. Runtime 是能力边界，不只是 Docker 名称
 
-远程 Runtime 并不自动安全。镜像供应链、网络、凭证、租户隔离和 artifact 导出仍需控制面治理。协议只提供插入控制的机会。
+官方文档强调 sandbox 带来的安全、一致性、资源控制、隔离和可复现性，并采用 backend—runtime client/server 结构。[Runtime architecture](https://docs.openhands.dev/openhands/usage/architecture/runtime) 但“运行在容器中”本身不能证明安全：容器挂载、宿主 socket、网络、内核能力、secret 和镜像供应链共同决定真实边界。
 
-## 3. 开放平台的价值
+一个典型反例是把 Docker socket 挂入 Agent 容器，表面上每个任务都有容器，实际上 Agent 可控制宿主 Docker daemon，隔离边界被绕过。企业 profile 应显式声明 mount、network、user namespace、resource limit 和 credential injection，并以对抗测试验证，而不是只检查 runtime 类型字符串。
 
-开放实现允许研究者比较不同 Agent、模型与工具，并在 SWE-bench 等环境中复现。它也暴露生产化成本：事件 schema 演化、Runtime 兼容、部署复杂度、持久化与 UI 都需要持续工程。
+## 3. 开放平台的可替换性
 
-OpenHands 的设计比“一个 Python while loop + shell”更适合作为企业参考，是因为它天然支持执行面的独立扩缩、故障隔离和审计。但企业仍需要补充统一身份、策略即代码、证据包和供应商 runtime adapter。
+OpenHands 的开放实现适合回答专有产品难以回答的问题：Action/Observation 如何序列化、runtime 如何启动、插件在哪里执行、事件如何流动。它也因此适合作为自研平台的参考实现或兼容测试对象。可替换性应落在契约，而不是 fork 大量内部类。
 
-## 4. 与其他案例的互补
+建议 adapter 只依赖五类稳定语义：启动/恢复会话、流式事件、审批或输入、取消、artifact 收集。原始 OpenHands event 作为 provenance 保留，平台把它映射为 canonical Action、Observation 和 Artifact（见第二十六章）。当上游 schema 改变时，契约测试应在发布前失败。
 
-Claude Code 展示终端产品与扩展生态，Codex 展示协议化核心与多客户端，Cursor 展示 IDE/云环境，DSH 展示可组合插件树；OpenHands 则把 Agent 与计算 Runtime 的边界公开化。五者共同说明，Harness 不是单一框架，而是一组控制面和数据面职责。
+## 4. 失败模式与运营负担
 
-## 5. 企业采用方式
+开放 runtime 让组织获得控制，也把镜像构建、冷启动、浏览器依赖、资源回收、日志容量和多租户隔离交给自己。需要分别观测：
 
-最稳妥的采用不是 fork 全部代码并深度改造，而是把 Runtime protocol、event model 和 workspace lifecycle 作为可替换组件接入。上层平台生成 canonical task，映射为 OpenHands session；下层接收 evidence package，再由企业完成门决定提交。
+| 指标 | 含义 | 典型告警 |
+|---|---|---|
+| runtime provision success | 环境是否成功创建 | 镜像/调度故障突增 |
+| action transport gap | Action 是否都有 Observation | 事件缺口或重复 |
+| orphan process count | 取消后是否残留进程 | 资源与副作用泄漏 |
+| workspace reproducibility | 相同版本能否重建 | 浮动依赖或镜像漂移 |
+| tenant boundary violations | 是否发生跨租户访问 | 任何非零即事故 |
 
-当未来自研 Agent loop 时，可以保留 Runtime 与控制面，只替换决策策略。这正是开放架构的长期价值。
+这些指标不能由 Agent 自报，必须在 control/execution plane 采集。Agent 说“环境坏了”只是一条诊断候选。
+
+## 5. 与其他产品的互补关系
+
+OpenHands 不必与 Claude Code 或 Codex 二选一。企业可以借鉴它的 Agent/Runtime 边界，把供应商 Agent 放在隔离工作区里执行，再由外部 evidence plane 验证。反过来，如果组织主要需要成熟 IDE 体验和模型特化工具，自行运营 OpenHands 全栈可能得不偿失。
+
+## 6. 设计判断
+
+OpenHands 最可迁移的原则是：决策者、事件总线与效果执行者分离；环境实现可替换；Action/Observation 是可观察接口。其风险是把“开源可见”误当成“生产完备”。进入企业平台仍需补齐 durable state、策略根、凭证代理、completion gate 和版本治理。本章的分离结构将在第二十六章被提升为多 runtime 参考架构。

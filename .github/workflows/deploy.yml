@@ -19,16 +19,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install publication dependencies
+        run: python -m pip install -r requirements.txt
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: site/package-lock.json
       - uses: actions/configure-pages@v5
+      - name: Validate evidence ledger
+        run: python publishing/scripts/audit_claim_ledger.py
+      - name: Validate canonical book structure
+        run: python publishing/scripts/check_book_structure.py
+      - name: Build book and PDF artifacts
+        run: |
+          python publishing/scripts/build_book.py
+          python publishing/scripts/render_publications.py
+      - name: Verify deterministic PDF rendering
+        run: |
+          sha256sum publishing/artifacts/agent_harness_book.pdf publishing/artifacts/executive_brief.pdf > /tmp/publication-checksums
+          python publishing/scripts/render_publications.py
+          sha256sum --check /tmp/publication-checksums
       - name: Sync manuscript into the website
         run: python publishing/scripts/prepare_site.py
       - run: npm --prefix site ci
       - run: npm --prefix site run docs:build
+      - name: Reject PDF links that bypass the GitHub Pages base path
+        run: |
+          if grep -R 'href="/downloads/' site/docs/.vitepress/dist; then
+            echo 'PDF link bypasses /agent-harness-book/ base path' >&2
+            exit 1
+          fi
+          grep -R 'href="/agent-harness-book/downloads/agent_harness_book.pdf"' site/docs/.vitepress/dist
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site/docs/.vitepress/dist
