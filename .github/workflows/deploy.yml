@@ -55,7 +55,7 @@ jobs:
             exit 1
           fi
           grep -R 'href="/agent-harness-book/downloads/agent_harness_book.pdf"' site/docs/.vitepress/dist
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site/docs/.vitepress/dist
 
