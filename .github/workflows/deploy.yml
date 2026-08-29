@@ -30,7 +30,7 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: site/package-lock.json
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - name: Validate evidence ledger
         run: python publishing/scripts/audit_claim_ledger.py
       - name: Validate canonical book structure
