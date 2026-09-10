@@ -2,7 +2,7 @@
 
 > 证据地位：本章综合公开研究与作者工程推导；2026 年演化研究以预印本为主，结论不等同于长期生产复现。
 
-当一种错误跨任务、工具和 Harness profile 稳定重复，且接口修复无法解决，才进入模型参数进化。Harness 在这里既是轨迹生成器，也是评测与部署容器。权重变化的影响面最大，所以它的证据门槛应高于 prompt 或 skill 更新。
+当一种错误跨任务、跨工具和 Harness profile 稳定重复，且接口修复无法解决时，才进入模型参数进化。Harness 在这里既是轨迹生成器，也是评测与部署容器。因为权重变化影响面最广，所以它的证据门槛应高于 prompt 或 skill 更新。
 
 ## 1. 本层的证据模板实例
 
@@ -20,13 +20,13 @@
 
 ## 2. 轨迹不等于训练样本
 
-生产轨迹包含冗余探索、工具故障、秘密、偶然成功、用户提示和特定环境路径。训练前要验证最终结果，标出哪些步骤对成功有因果贡献，脱敏、去重，并绑定模型、Harness、工具和环境版本。只保留成功轨迹会删除“如何发现并修复错误”的信息，也可能教模型隐藏失败。
+生产轨迹包含冗余探索、工具故障、秘密、偶然成功和用户提示，也包含特定环境路径。训练前要先验证最终结果，标出哪些步骤对成功有因果贡献，做脱敏、去重，并绑定模型、Harness、工具和环境版本。只保留成功轨迹会删掉“如何发现并修复错误”的信息，也可能教模型隐藏失败。
 
-反例是从通过 visible test 的 patch 直接蒸馏。若 patch 硬编码测试值，训练会强化 reward hacking；若轨迹使用了后来撤销的生产权限，模型会学习不可部署行为。数据门必须读取独立 completion evidence 和 policy decision，而不是只看最终 reward。
+反例是从通过 visible test 的 patch 直接蒸馏。若 patch 硬编码测试值，训练会强化 reward hacking；若轨迹里出现后续被撤销的生产权限，模型会学习到不可部署行为。数据门必须读取独立 completion evidence（完成证据）和 policy decision（策略决策），而不是只看最终 reward。
 
 ## 3. 四类训练路线
 
-SFT 适合稳定工具协议、输出结构和高质量行为模式；蒸馏可让昂贵模型或重型 Harness 产生经 verifier 过滤的轨迹，再训练较小模型。学生可能只模仿语言表面，因此必须放回真实 Harness 测试环境适应。
+SFT 适合稳定工具协议、输出结构和高质量行为模式；蒸馏可让昂贵模型或重型 Harness 产生经 verifier 过滤的轨迹，再训练较小模型。学生可能只模仿语言表面，因此必须放回真实 Harness 测试环境做适应。
 
 偏好优化适合难以写成单一正确答案、但能比较安全性、简洁性或证据质量的任务。偏好应由结果、规则和多源 review 形成；同族 LLM judge 存在自偏好与位置偏差，不能成为唯一真值。[Self-preference bias](https://arxiv.org/abs/2410.21819)、[Position bias](https://arxiv.org/abs/2406.07791)
 
@@ -34,7 +34,7 @@ RLVR 利用测试、约束或环境结果作为可验证奖励，适合代码与
 
 ## 4. Model×Harness 2×2 归因
 
-新模型经常伴随新 prompt、tool view 和 context 策略一起发布。只比较旧系统与新系统无法判断收益来源。至少运行四个组合：
+新模型经常伴随新 prompt、tool view 和 context 策略一起发布。只比较旧系统与新系统无法判断收益来源。至少要运行四个组合：
 
 | | 旧 Harness | 新 Harness |
 |---|---:|---:|
@@ -78,7 +78,7 @@ raw event graph
 → immutable dataset snapshot
 ```
 
-按单条轨迹随机切分容易泄漏。同一仓库 issue、同源模板或同一用户的近重复任务可能跨 train/test，使泛化被高估。更稳妥的是按 repository、task family、时间或 source lineage 分组切分，并对公开 benchmark 做污染检查。
+按单条轨迹随机切分容易泄漏。同一仓库 issue、同源模板或同一用户的近重复任务可能跨 train/test，让泛化被高估。更稳妥的是按 repository、task family、时间或 source lineage 分组切分，并对公开 benchmark 做污染检查。
 
 ## 8. 错误与纠错都要学习
 

@@ -2,60 +2,60 @@
 
 > 证据地位：本章为作者参考设计与工程推导，案例和阈值用于说明实现逻辑，不代表跨组织验证的通用标准。
 
-迁移目标不是“去供应商化”，而是让供应商成为可替换能力组件。平台必须拥有任务定义、权力边界、证据和学习数据；是否自研模型循环是后续经济决策。
+迁移目标不是“去供应商化”。目标是让供应商成为可替换的能力组件。平台必须拥有任务定义、权力边界、证据和学习数据。模型循环要不要自研，是后续的经济决策。
 
-迁移按能力门而不是日历推进。下表中的进入判据确认组织具备开始本阶段的前提，退出判据证明新增能力可用，回退条件则防止“已经投入很多”成为继续扩张风险的理由。回退不一定删除已建组件，也可以把自治范围降回上一阶段。
+迁移按能力门推进，而不是按日历推进。下表中的进入判据确认组织是否具备开始本阶段的前提，退出判据证明新增能力可用，回退条件防止“已经投入很多”成为继续扩张的理由。回退不一定要删除已建组件，也可以把自治范围降回上一阶段。
 
 | 阶段 | 进入判据 | 退出判据 | 回退条件 |
 |---|---|---|---|
-| 1. 封装 | 已盘点主要 Runtime、调用者与凭证路径 | canonical event、版本、成本、工作区和取消可观测；契约测试可运行 | adapter 丢失关键原始事件，或平台路径稳定性低于原接入 |
-| 2. 外置完成 | 至少一个高频任务族有 owner 和可执行验收 | Runtime 停止不再直接提交；EvidencePackage 可重建结果 | verifier 误判不可控，或 commit authority 仍被 Runtime 旁路 |
-| 3. 统一执行面 | 工具、网络、凭证和数据出口已完成威胁建模 | 关键 effect 全经 gateway，对账、短期凭证与隔离演练通过 | 敏感工具仍旁路，或 sandbox/gateway 导致材料性业务中断 |
-| 4. 评测运营 | 有稳定合同、任务快照与失败分类 | 多 trial、关键切片、恢复测试和 SLO 形成基线 | 数据污染、环境不可重建，或指标无法区分能力与风险 |
-| 5. 逐层替换 | 基线能比较旧/新组合，旧 bundle 可恢复 | 目标层收益在相同预算下复现且关键切片非劣 | 收益无法归因，兼容成本超预算，或快速回滚演练失败 |
-| 6. 受控进化 | trace、归因、sealed eval、canary 与 lineage 稳定 | 特定低风险表面的候选可被阻断、灰度、回滚并复查 | 候选可触碰裁判、出现硬门逃逸，或普通配置尚不能可靠回滚 |
+| 1. 封装 | 已盘点主要 Runtime、调用者与凭证路径 | canonical event（规范化事件）、版本、成本、工作区和取消可观测；契约测试可运行 | adapter 丢失关键原始事件，或平台路径稳定性低于原接入 |
+| 2. 外置完成 | 至少一个高频任务族有 owner（负责人）和可执行验收 | Runtime 停止不再直接提交；EvidencePackage（证据包）可重建结果 | verifier（验证器）误判不可控，或 commit authority（提交权限）仍被 Runtime 旁路 |
+| 3. 统一执行面 | 工具、网络、凭证和数据出口已完成威胁建模 | 关键 effect（副作用）全部经 gateway（网关），对账、短期凭证与隔离演练通过 | 敏感工具仍旁路，或 sandbox/gateway 导致材料性业务中断 |
+| 4. 评测运营 | 有稳定合同、任务快照与失败分类 | 多 trial（多次试验）、关键切片、恢复测试和 SLO（服务等级目标）形成基线 | 数据污染、环境不可重建，或指标无法区分能力与风险 |
+| 5. 逐层替换 | 基线能比较旧/新组合，旧 bundle（组合）可恢复 | 目标层收益在相同预算下复现且关键切片非劣 | 收益无法归因，兼容成本超预算，或快速回滚演练失败 |
+| 6. 受控进化 | trace（轨迹）、归因、sealed eval（封存评估）、canary（灰度）与 lineage（血缘）稳定 | 特定低风险表面的候选可被阻断、灰度、回滚并复查 | 候选可触碰裁判、出现硬门逃逸，或普通配置尚不能可靠回滚 |
 
 ## 1. 封装而非散接
 
-为 Claude Code、Codex 或其他 Agent 建 adapter，统一 task、attempt、event、artifact、approval 和 cancel。所有调用经过平台身份、workspace 与策略，不允许业务团队在脚本中分散保存长期 token。此阶段不追求抹平所有差异，先双轨保存 canonical event 与原始 payload。
+为 Claude Code、Codex 或其他 Agent 建 adapter（适配层），统一 task（任务）、attempt（尝试）、event（事件）、artifact（制品）、approval（批准）和 cancel（取消）模型。所有调用经过平台身份、workspace（工作区）与策略，不允许业务团队在脚本里分散保存长期 token。此阶段不要求抹平所有差异，先做 canonical event（规范化事件）与原始 payload 的双轨保存。
 
-退出条件：能列出每个 runtime 版本、调用者、工作区、费用和外部动作；停止解析彩色终端输出；供应商升级前有契约测试。
+退出条件是：能列出每个 runtime（运行时）版本、调用者、工作区、费用和外部动作；停止解析彩色终端输出；供应商升级前必须有契约测试。
 
 ## 2. 外置完成与证据
 
-把 verifier、EvidencePackage 和 commit authority 放到 runtime 外。先选择一个高频任务族，定义可执行 CompletionContract，在 clean environment 重验 candidate。这样即使更换 Agent，业务正确性与审计不随供应商迁移。
+把 verifier（验证器）、EvidencePackage（证据包）和 commit authority（提交权限）放到 runtime 外。先选一个高频任务族，定义可执行的 CompletionContract（完成契约），然后在 clean environment（清洁环境）重验 candidate（候选）。这样即便更换 Agent，业务正确性和审计也不随供应商迁移。
 
-退出条件：模型停止不再直接触发 merge/send/deploy；任一完成任务都可从输入 revision 重建 artifact 和检查；错误完成能回标到 task 与 runtime 版本。
+退出条件是：模型停止后不再直接触发 merge/send/deploy；任一完成任务都可从输入 revision（修订版本）重建 artifact（制品）和检查；错误完成能回标到 task 与 runtime 版本。
 
 ## 3. 统一执行面
 
-建立企业 sandbox、tool gateway、credential broker 和 artifact store。供应商 runtime 决定动作，受控工具提交效果；对无法适配的原生功能保留专用 execution profile，并明确降低自治等级。
+建立企业 sandbox（沙箱）、tool gateway（工具网关）、credential broker（凭证代理）和 artifact store（制品库）。供应商 runtime 决定动作，受控工具提交效果；对无法适配的原生功能保留专用 execution profile（执行配置），并明确降低自治等级。
 
-失效场景是“一半工具走 gateway，一半插件直连 SaaS”。架构图看似统一，最敏感的 secret 和出网反而旁路。应以网络流、secret 发放和外部审计日志验证覆盖率，而不是只数接入工具。
+失效场景是“一半工具走 gateway，一半插件直连 SaaS”。架构图看似统一，但最敏感的 secret（密钥）和出网会反而旁路。要验证覆盖率，不能只数接入工具，而要核验网络流、secret 发放和外部审计日志。
 
 ## 4. 建立评测与运营基线
 
-从真实任务形成 capability、regression、safety 和 recovery suites，以相同合同、环境和预算比较模型/runtime 的成功、稳定、成本与人工负担。建立第十二、二十六章的 trace 与 SLO；没有基线，自研无法证明价值，供应商切换也无法量化风险。
+从真实任务形成 capability（能力）、regression（回归）、safety（安全）和 recovery（恢复）四类套件，用同一合同、同一环境、同一预算比较模型/runtime 的成功率、稳定性、成本和人工负担。建立第十二、二十六章的 trace（轨迹）与 SLO（服务等级目标）；没有基线，自研就无法证明价值，供应商切换也无法量化风险。
 
-退出条件：关键任务多 trial；故障注入可重复；报告按任务、风险、模型和 runtime 切片；能执行 Model×Harness 2×2 归因。
+退出条件是：关键任务多 trial（多次试验）；故障注入可重复；报告按任务、风险、模型和 runtime（运行时）切片；能执行 Model×Harness 2×2 归因。
 
 ## 5. 逐层替换
 
-先替换最具企业差异化的 context compiler、tool view、policy adapter 或 workflow，再考虑 loop。每次只改变少数层，保留旧 bundle 与快速回滚。不要同时重写 UI、runtime、sandbox 和 eval，否则任何改善或退化都无法归因。
+先替换企业差异化最明显、最有价值的 context compiler（上下文编译器）、tool view（工具视图）、policy adapter（策略适配器）或 workflow（工作流），再考虑 loop。每次只改变少量层，保留旧 bundle（旧组合）和快速回滚能力。不要同时重写 UI、runtime（运行时）、sandbox（沙箱）和 eval（评估），否则任何改善或退化都无法归因。
 
 | 先内化对象 | 何时值得 | 不宜内化的信号 |
 |---|---|---|
-| Context compiler | 企业知识复杂且可测 recall | 权威数据尚未治理 |
+| Context compiler | 企业知识复杂且可测 recall（召回率） | 权威数据尚未治理 |
 | Tool gateway | 权限/审计是核心要求 | 只有低风险本地工具 |
 | Workflow | 任务重复且边界稳定 | 流程仍频繁人工协商 |
 | Agent loop | 供应商协议限制关键能力 | 只是希望省少量 token |
 
 ## 6. 引入受控进化
 
-当 trace、归因、eval、canary 和 rollback 稳定后，才自动生成候选 Harness 变更。发布仍由外部治理平面控制；跨任务 memory 先进入隔离 registry；模型训练是更后的选择。若组织尚不能可靠回滚普通配置，就不应自动进化配置。
+当 trace（轨迹）、归因、eval（评估）、canary（灰度）和 rollback（回滚）稳定后，才自动生成候选 Harness 变更。发布仍由外部治理平面控制。跨任务 memory（记忆）先进入隔离 registry；模型训练是更后面的选择。若组织还不能可靠回滚普通配置，就不应让配置自动进化。
 
 ## 7. 迁移治理
 
-每阶段维护 capability map、数据出口、供应商依赖、compatibility test 和退场演练。至少每个主要版本演练一次：冻结新任务、导出未完成 attempt、在替代 runtime 重新开始或恢复、重建 evidence、撤销旧凭证。恢复不一定跨 runtime 保留内部思考，但必须保留任务、artifact 和已提交 effect。
+每阶段维护 capability map（能力地图）、数据出口、供应商依赖、compatibility test（兼容性测试）和退场演练。至少每个主要版本演练一次：冻结新任务、导出未完成 attempt（尝试）、在替代 runtime（运行时）重新开始或恢复、重建 evidence（证据）、撤销旧凭证。恢复不一定跨 runtime 保留内部思考，但必须保留任务、artifact（制品）和已提交 effect（效应）。
 
-最终主动权的判据很简单：供应商暂时不可用或价格变化时，企业是否仍能解释任务状态、保护数据、验证已有结果，并在可控损失下切换。若答案是否定的，即使代码托管在自己账户，也没有真正拥有运行时。
+最终主动权的判据很简单：当供应商暂时不可用或价格变化时，企业是否仍能解释任务状态、保护数据、验证已有结果，并在可控损失下完成切换。若答案是否定的，企业就算代码托管在自己账户，也不算真正拥有运行时。

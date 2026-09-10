@@ -1,6 +1,6 @@
 # 附录 E：最小机器可读契约
 
-下面的 JSON Schema 是教学用最小子集，展示如何把正文对象变成可校验协议。生产实现应拆分 schema、使用稳定 URI、补充 classification 枚举、兼容规则和签名；不要把示例中的字段数量误作完整规范。
+下面的 JSON Schema 是教学用最小子集，用来展示如何把正文对象变成可校验的协议。生产环境的实现应拆分 schema、使用稳定 URI、补充 classification（分类）枚举、兼容规则和签名机制。不要把示例里的字段数量当作完整规范。
 
 ## 1. Task 与 CompletionContract
 
@@ -117,4 +117,4 @@ evidence_package:
     harness_bundle: required
 ```
 
-Schema 只能保证形状，不能证明语义正确。`checks` 是否覆盖业务目标、hash 指向的 artifact 是否可信、approval 是否来自有权主体，仍需 policy、verifier 和签名基础设施保证。
+Schema 只能保证数据形状，不能单独证明语义正确。`checks` 是否覆盖业务目标、hash 指向的 artifact 是否可信、approval 是否来自有权主体，这些前提仍需 policy（策略）、verifier（校验器）和签名基础设施保证。
