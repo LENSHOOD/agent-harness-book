@@ -1,0 +1,9 @@
+while budget_available:
+    decision = model(context, available_tools)
+
+    if decision.is_final:
+        return decision.answer
+
+    validated_call = validate(decision.tool_call)
+    observation = execute(validated_call)
+    context.append(observation)

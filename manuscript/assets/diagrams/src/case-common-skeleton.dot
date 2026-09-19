@@ -12,6 +12,7 @@ digraph G {
   verify [label="Independent verifier\nclean environment"];
   evidence [label="EvidencePackage\n输入、动作、检查、版本"];
   commit [label="Commit controller\n人或策略拥有最终权力", fillcolor="#EAF5ED"];
+  post [label="提交后回读与验收\n确认业务目标", fillcolor="#EAF5ED"];
   failure [label="失败演练\nreconcile / rollback / escalate", fillcolor="#FFF5E8"];
 
   { rank=same; intent; contract; control; }
@@ -19,6 +20,8 @@ digraph G {
   { rank=same; verify; evidence; commit; }
 
   intent -> contract -> control -> runtime -> execution -> artifact -> verify -> evidence -> commit;
+  commit -> post [label="合同需要外部提交时"];
+  post -> failure [label="已提交但后验失败"];
   runtime -> control [label="canonical events", constraint=false];
   execution -> failure [label="unknown effect"];
   verify -> failure [label="hard gate fail"];

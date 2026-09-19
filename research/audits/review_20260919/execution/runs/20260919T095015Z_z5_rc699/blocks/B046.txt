@@ -1,0 +1,2 @@
+Model-facing Tool View     为具体模型优化的名字、说明与 schema
+Canonical Action Contract 平台内部稳定的动作类型、语义和治理元数据

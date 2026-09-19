@@ -4,7 +4,7 @@
 
 这一阶段最重要的发现可以概括为：
 
-> 模型能力不是系统能力的固定上限。模型看见什么、能做什么、动作如何表达、反馈怎样返回，都会系统性改变任务表现。
+> 裸模型单次问答的成绩不能直接当作带工具系统的上限。模型看见什么、能做什么、动作如何表达、反馈怎样返回，都会影响任务表现；收益大小取决于任务、模型和预算，需要实测。
 
 ## 1. Aider：上下文不是越多越好
 
@@ -31,7 +31,7 @@ Full File：高成本、局部但更完整的源码观察
 
 让模型“给出正确代码”和让它“给出 Harness 能可靠应用的修改”是两个不同任务。Aider 为 whole file、search/replace block、unified diff 等多种编辑格式建立端到端 benchmark，测量代码是否正确、格式是否可解析、修改是否成功落盘并通过测试。[Aider 编辑 benchmark](https://aider.chat/docs/benchmarks.html)
 
-早期实验出现了一个反直觉结果：function calling 的结构更严格，却可能比简单文本格式表现更差。复杂格式不只增加解析约束，也占用模型用于解决代码问题的能力。不同模型对 whole、diff、diff-fenced 等格式的适应也不同。
+这些评测提示，不同模型对 whole、diff、diff-fenced 等格式的适应可能不同。本轮尚未固定早期 function calling 与文本格式比较的完整实验版本，因此不把“更严格的结构反而更差”作为已核验的历史结论。可保留的设计问题是：复杂格式增加了解析和生成约束，是否影响解题表现，应在同任务、同预算下比较。
 
 因此，“结构化接口必然优于文本接口”不是普遍真理。正确问题是：
 
@@ -88,7 +88,7 @@ JSON tool call 将动作限制为预定义函数及其参数。CodeAct 提出用
 
 ## 5. OpenHands：把 Agent 与 Runtime 分开
 
-OpenHands 将系统拆成三个核心概念：Agent 根据状态产生 Action；Event Stream 按时间保存 Action 与 Observation；Runtime 在沙箱环境中执行 Action 并返回 Observation。[OpenHands 论文](https://arxiv.org/abs/2407.16741)
+本节依据早期论文和历史0.62.0实现说明一种分工：Agent根据状态产生Action，Event Stream记录Action与Observation，Runtime执行动作并返回观察。当前SDK与Agent Server已经采用新的组件边界，见第十七章，不能拿此图代替当前产品接口。[OpenHands论文](https://arxiv.org/abs/2407.16741)
 
 ```text
                Action
@@ -104,7 +104,7 @@ Agent 是决策面：它可以替换模型、提示和策略。Runtime 是执行
 
 如果 Agent 进程崩溃，Runtime 不一定必须销毁；如果 UI 断开，事件仍可持久化；如果要回放问题，可以重建动作—观察历史；如果要并行评估，同一 Agent 可以连接多个隔离 Runtime；如果要支持远程执行，控制面不必进入容器。
 
-OpenHands 的 Docker Runtime 在用户镜像中加入 action-execution server，通过客户端—服务器接口发送动作和接收观察。这种结构把任意代码执行放入独立安全域，也让本地 Docker、远程容器和托管沙箱可以实现同一 Runtime 契约。[Runtime Architecture](https://docs.openhands.dev/openhands/usage/architecture/runtime)
+历史Docker Runtime在用户镜像中加入action-execution server，通过客户端—服务器接口传递动作和观察。它提供分离执行环境的部署接口，实际隔离取决于容器、挂载、网络和凭证配置；拆成客户端与服务器本身不证明建立了安全域。[历史Runtime文档](https://docs.openhands.dev/openhands/usage/architecture/runtime)
 
 ## 6. Event Stream 不等于完整事件溯源
 
@@ -147,4 +147,4 @@ Success = f(Model, Harness, Environment, TaskDistribution, Budget)
 6. Action/Observation 应成为结构化、可关联、可回放的运行时事实。
 7. 评估对象应是模型、Harness、环境、预算与任务分布的组合。
 
-这些原则解释了为什么后来的 Claude Code、Codex、Cursor 不只是“聊天框加 shell”。它们在上下文、编辑、命令、权限、会话和验证上各自选择了不同 ACI。下一篇将不再按时间讲故事，而是拆开现代 Harness 的核心责任，建立一套可用于产品分析和自研设计的统一模型。
+这些原则为比较 Claude Code、Codex、Cursor 提供了具体问题：它们如何设计上下文、编辑、命令、权限、会话和验证接口。下一章转向真实仓库与产品运行时，再由原理篇系统展开这些责任，建立可用于产品分析和自研设计的统一模型。

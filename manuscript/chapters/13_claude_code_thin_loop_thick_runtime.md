@@ -1,43 +1,54 @@
 # 第十三章 Claude Code：薄循环、厚运行时
 
-> 资料截面：2026-08-27。产品行为会持续变化；本章只把官方文档公开的行为视为事实，未公开内部实现均标为架构推断。
+> 资料截面：2026-09-19。Claude Code、Claude Agent SDK、Claude Managed Agents 与 Messages API 是不同接入面。本章依据已存档的官方文档与工程说明；托管内部实现属于厂商披露，未经过本书源码审计或端到端测试。
 
-Claude Code 最值得研究的，不是一条“万能提示词”，而是它把一条很薄的“模型—工具—观察”循环，放在更厚的会话、权限、上下文和扩展系统里。Claude Agent SDK 的官方说明写得很直接：接收 prompt，模型输出文本或工具调用，SDK 执行工具并回传结果，直到模型不再请求工具，最后返回带 token、费用和 session id 的结果消息。[Agent loop](https://code.claude.com/docs/en/agent-sdk/agent-loop) 这与第六章的耐久状态机不冲突：前者描述单个生命周期内的控制逻辑，后者描述企业平台必须补齐的崩溃恢复和副作用语义。
+Claude Code 把“模型—工具—观察”循环放在会话、权限、上下文和扩展系统里。Claude Agent SDK 的官方说明描述了接收输入、执行模型请求的工具、回传结果，直到模型不再请求工具，最后返回带 token、费用和 session id 的结果消息的过程。[Agent loop](https://code.claude.com/docs/en/agent-sdk/agent-loop) 本章把“薄循环、厚运行时”作为作者的架构归纳，不把它当作源码分层或性能结论。
 
-## 1. 可观察的系统分层
+## 1. 先选接入面，再讨论运行时
 
-从公开接口可确认的结构可以整理为四层：
+下表归纳公开产品面；接入建议是作者判断。不能因为它们都使用 Claude，就假定配置文件、事件名或恢复机制相同。
 
-| 层 | 公开能力 | 平台集成时应保留的边界 |
+| 接入面 | 公开能力与运行责任 | 证据边界与集成判断 |
 |---|---|---|
-| 会话层 | session、resume、消息流、成本和结果 | 平台 task id 不等同于 Claude session id |
-| 决策层 | 模型、effort、turn/budget、自动压缩 | 供应商“停止”不等同于业务完成 |
-| 能力层 | 内置工具、MCP、skills、subagents | 工具可见性不等同于工具授权 |
-| 控制层 | permission mode、hooks、sandbox | hook 是策略执行点之一，不是唯一安全边界 |
+| Claude Code / CLI | 开发者交互、工具、会话及本机扩展 | 根据公开行为集成；本轮没有可据以审计完整内部实现的源码证据 |
+| Claude Agent SDK | 在应用中控制 Agent 循环、消息流与生命周期 | 应用负责所部署进程与工作区；SDK 接口不能代替对底层运行时的审计 |
+| Claude Managed Agents | 托管循环、持久 session、工具与执行环境接口 | 通过服务接口接入；内部恢复与存储语义以厂商说明为依据 |
+| Claude Messages API | 模型请求、工具调用内容及显式压缩等接口 | 使用它自行组装循环，不会自动获得上述托管会话系统 |
 
-官方把 Claude Code 的扩展面归纳为 `CLAUDE.md`、Skills、subagents、hooks、MCP、plugins 和 agent teams。[扩展总览](https://code.claude.com/docs/en/features-overview) 这些机制分别在循环里承担不同位置：规则负责持续上下文，skill 提供按需程序知识，subagent 以独立上下文执行，hook 在生命周期事件点运行，MCP 引入外部能力。若把它们都变成“再加一段 prompt”，最容易丢掉时机控制、权限边界和隔离语义。
+Claude Code 的扩展面包括 `CLAUDE.md`、Skills、subagents、hooks、MCP、plugins 和 agent teams：规则提供持续上下文，skill 提供按需知识，子代理承接独立工作，hook 在生命周期节点运行，MCP 接入外部能力。[扩展总览](https://code.claude.com/docs/en/features-overview) Managed Agents 则把 session 日志、调用模型与路由工具的 Harness、执行代码的 sandbox 分开。这项架构说明发表于 2026 年 4 月 8 日，是本轮补收的既有材料，不能写成 9 月新架构。[Managed Agents 架构](https://www.anthropic.com/engineering/managed-agents)
 
 ## 2. 上下文不是一段无限增长的聊天
 
-Claude Code 会把 system prompt、工具定义、消息与工具结果放入上下文，并在接近上限时压缩。subagent 的优势在于同时兼顾能力和成本，因为它从新上下文起步，只返回最终结果给父会话，而不是把全部子轨迹复制回来。[Agent loop](https://code.claude.com/docs/en/agent-sdk/agent-loop) 这和第七章的结论一致：上下文管理是“有损编译”，压缩摘要不能当作任务状态和完成证据的唯一载体。
+Claude Code 会把系统提示、工具定义、消息与工具结果放入上下文，并在接近上限时压缩。子代理用独立上下文承接工作、向父会话返回结果，可以减少父窗口负担。[Agent loop](https://code.claude.com/docs/en/agent-sdk/agent-loop) 但整个任务的费用取决于重复探索、并发数量与交接内容；父窗口变小不等于总 token 或延迟下降。
 
-常见失效场景是：主 Agent 把测试失败委派给子 Agent，子 Agent 回“已修复”，却没回失败命令、工作区版本和实际 diff。主 Agent 的上下文随即变小，证据也跟着丢了。正确做法是让 artifact 和 verification result 进入平台证据面，文本总结只负责导航（见第十章）。
+2026 年 9 月 14 日发布说明增加的是 **Messages API 的按需压缩 beta**：请求带顶层 `compaction` 参数及 `compact-2026-09-04` beta header，返回签名的 compaction block，后续请求用它替换此前消息，也可保留近期原文。这不能直接写成 Claude Code 的 CLI 选项或 Managed Agents 的同名接口。签名提供供应商定义的完整性边界，不证明摘要没有遗漏业务限制。[Claude Platform 发布说明](https://docs.anthropic.com/en/release-notes/api)
 
-## 3. Hook 是可编程生命周期，不是万能策略层
+## 3. 九月配置与权限变化属于哪个产品
 
-官方 SDK 暴露 `PreToolUse`、`PostToolUse`、`Stop`、`SubagentStart/Stop`、`PreCompact` 等事件。`PreToolUse` 可在执行前拒绝工具调用，`Stop` 可校验终止结果；hook 在应用进程运行，而不是模型上下文里。[Hooks](https://code.claude.com/docs/en/hooks-guide) 因此它更适合做格式校验、审计、阻断和上下文注入。
+9 月 3 日，`ant` CLI 1.30.0 增加 `ant apply`：从仓库文件创建或更新 agents、environments、skills、memory stores 和 deployments，先展示计划供批准，再写入 `claude-lock.json`，使以后操作定位同一批资源。9 月 10 日，1.32.0 增加 `ant beta:sessions connect`，可跟随 Managed Agents 会话、发消息并批准或拒绝待处理调用。这些是 Claude Platform 的管理入口，不是 `claude` CLI 的配置别名。[Claude Platform 发布说明](https://docs.anthropic.com/en/release-notes/api)
 
-hook 也有三个边界。第一，只有经过该生命周期的动作才会被拦截，旁路进程或共享凭证仍需环境控制。第二，多个配置层的 hook 要明确合并顺序和失败策略。第三，用 LLM hook 判定高风险动作，仍然是概率策略，不能替代确定性授权。企业集成时应让平台 policy engine 保持最终权威，把 Claude hook 当作贴近运行时的适配器。
+同日 Managed Agents 的权限策略增加 `auto`：服务端逐次评估 Agent 或 MCP 工具调用，选择执行、拒绝或暂停等待批准；`agent.tool_use` 和 `agent.mcp_tool_use` 事件在 `evaluated_permission` 外增加 `evaluation`。集成方因此可记录“怎样作出决定”，但自动评估不等于企业已授权任何目标或数据范围。[Claude Platform 发布说明](https://docs.anthropic.com/en/release-notes/api)
 
-## 4. Permission、sandbox 与凭证必须拆开
+Claude Code 的 hooks 是另一条控制路径，例如工具前后、停止及压缩前的生命周期处理。[Hooks](https://code.claude.com/docs/en/hooks-guide) hook 命令由宿主执行，SDK 回调由应用侧执行，不能把它们当成模型上下文里的文字。作者建议对插件更新做 hook 清单差异审查，记录执行身份、命令与权限变化；高风险变更重新审批，撤销时同时停止在途执行。工作区沙箱未必覆盖这些宿主动作，工具调用的审批记录也不能替代 hook 自身的审计。
 
-Anthropic 公开说明 Claude Code 的 sandbox 通过操作系统级文件与网络边界减少逐命令批准，并披露其内部场景中 permission prompts 减少了 84%。这是供应商自报数据，实验环境和统计窗口不足以支持跨产品外推。[Sandboxing](https://www.anthropic.com/engineering/claude-code-sandboxing) 更关键的设计不是这个数字，而是“边界内自动、越界审批”：先用隔离约束读写范围和网络目的地，再由策略决定具体动作是否需要批准。
+## 4. 托管恢复的一条事件剖面
 
-平台仍要把认证与授权分离。能用用户账号登录 Claude 服务，不代表进程就能读取任意仓库、调用生产 API，或向任意 MCP server 发送数据。短期凭证应在工具提交时由平台注入，不应进入模型上下文；这与第九章的 capability lease 和 credential broker 对齐。
+Managed Agents 的工程文章给出两种不同失败路径。下列顺序是对其架构的转述，函数名是文章中的接口示意，不是本书实际发送的 API 报文：[Managed Agents 架构](https://www.anthropic.com/engineering/managed-agents)
+
+```text
+工具执行环境退出 → Harness 收到工具错误 → 模型决定是否重试
+                                      → 必要时重新 provision 环境
+Harness 自身退出 → 新实例 wake(sessionId) → getSession(id)
+                                      → 从已保存事件恢复
+```
+
+这项分离使执行容器故障不必带走会话日志，但不能推出外部动作恰好执行一次。若第三方写入已生效、工具响应却丢失，恢复日志仍可能不足以确定写入结果；此时应按第六章的不确定提交规则回读对账，而非直接重发。文章也描述凭证放在沙箱之外、MCP 经代理访问凭证库的设计；它是特定托管架构的披露，不能自动归到本地 Claude Code。
+
+Claude Code 的 OS 级文件与网络 sandbox 另有官方说明，其内部场景中权限提示减少 84% 是供应商自报结果，不能外推成跨产品收益或安全指标。[Sandboxing](https://www.anthropic.com/engineering/claude-code-sandboxing)
 
 ## 5. 企业集成剖面
 
-推荐把 Claude Agent SDK/CLI 放在 runtime adapter 之后：平台创建任务合同、租户身份和隔离工作区，adapter 启动 session 并把消息、工具调用、审批请求和结果映射成 canonical event。平台在外部执行 completion gate，并保存原始供应商事件引用。
+若选择自行部署 SDK/CLI，作者建议由适配器管理进程、工作区和原始事件；若选择 Managed Agents，则另建服务适配器，映射资源版本、会话事件及逐调用权限评估，不能沿用本地进程假设。以下是**本书自定义平台契约**，需由自建适配器解析和转换，不能直接交给 Claude CLI、Agent SDK 或 `ant apply`；值均为示意。
 
 ```yaml
 runtime_profile:
@@ -54,8 +65,8 @@ runtime_profile:
     - artifacts
 ```
 
-不要解析彩色终端输出，也不要让一次 Claude session 变成业务任务的唯一主键。CLI 更适合人工交互和低耦合接入；SDK 更适合需要结构化事件和生命周期控制的平台。若关键能力只在 CLI 侧可见，应明确标注为兼容性债务。
+`policy_mediated` 和 `external_verifier` 是本书的平台取值，不是厂商原生模式。接入时须逐项证明原生消息能映射到哪些字段；不能导出的审批或产物证据应标为缺失，并缩小自动执行范围。平台任务与会话的关系、业务验收规则统一见第十八章。
 
 ## 6. 设计判断
 
-Claude Code 的长处是把模型行为放到一个丰富且可扩展的开发者运行时里；代价是扩展点很多，配置来源和供应链也随之变复杂。对自研 Harness 可迁移的原则有三条：保持循环简洁；分离上下文、工具和控制面；把扩展挂在有语义的生命周期节点上。最不该迁移的方法是复制某个版本的隐藏提示词，因为它既不稳定，也不能替代环境、权限和验证架构。
+这一组产品让集成者可以选择自行运营循环，或采购会话与循环管理服务。作者的采用判断取决于已有应用、权限边界与运维能力：需要自定义生命周期时评估 SDK，需要托管恢复时评估 Managed Agents，并分别测量恢复缺口、权限决定可追踪性和费用。公开接口支持这些架构假设，还不足以证明某条路线普遍更便宜或更可靠。

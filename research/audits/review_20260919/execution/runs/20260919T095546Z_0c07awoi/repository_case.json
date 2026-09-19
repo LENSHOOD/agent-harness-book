@@ -1,0 +1,41 @@
+{
+  "provider": "predeclared deterministic local patch stub; no vendor/model API",
+  "semantics": "Half-open UTC interval representing one civil day; manuscript leaves exact billing rule unspecified",
+  "git_baseline": "real indexed Git tree, no new commit objects; no PR, push, merge or publication",
+  "candidates": [
+    {
+      "candidate": "overfit",
+      "baseline_tree": "8aa3892ed5a4b578b19d11742c9c33893d782951",
+      "patch": "overfit.patch",
+      "sha256": "b4b82f2030581d35a36b074c9cd57b97e0e4d121373d25d8e3a68ca2f749e842",
+      "visible_exit": 0,
+      "hidden_exit": 1,
+      "clean_visible_exit": 0,
+      "changed_paths": [
+        "src/time/window.py"
+      ],
+      "verifier_response_to_stub": "SPEC_GAP: arbitrary DST years must preserve civil-day window semantics",
+      "production_commit": null
+    },
+    {
+      "candidate": "repaired",
+      "baseline_tree": "8aa3892ed5a4b578b19d11742c9c33893d782951",
+      "patch": "repaired.patch",
+      "sha256": "8753abb0c54b24705cabc60490a910cf421e18bee1888e08b27831446789bc39",
+      "visible_exit": 0,
+      "hidden_exit": 0,
+      "clean_visible_exit": 0,
+      "changed_paths": [
+        "src/time/window.py"
+      ],
+      "verifier_response_to_stub": "CANDIDATE_VERIFIED",
+      "production_commit": null
+    }
+  ],
+  "limitations": [
+    "5 visible tests (2 DST + 3 ordinary), 17 held-out checks, not the illustrative 482 regressions",
+    "AST syntax check is not a project-specific linter; no production secret scanner",
+    "Separate verifier directories provide logical isolation only, same OS user; hidden tests are not a security vault",
+    "No real payment ledger, date-library upgrade, or supplier runtime is exercised"
+  ]
+}

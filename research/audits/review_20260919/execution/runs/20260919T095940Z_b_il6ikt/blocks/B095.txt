@@ -1,0 +1,9 @@
+skill_manifest:
+  id: repo.release-notes
+  version: 3.2.1
+  owner: dev-platform
+  allowed_tools: [repo.read, git.diff]
+  network: deny
+  data_scope: current_repository
+  expires_at: 2027-01-31
+  evidence_suite: skill-release-notes-v5

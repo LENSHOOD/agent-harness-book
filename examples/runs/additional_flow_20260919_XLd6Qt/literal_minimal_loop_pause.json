@@ -1,0 +1,28 @@
+{
+  "kind": "current source control flow with declared deterministic helpers",
+  "source": {
+    "file": "manuscript/chapters/01_from_control_loop_to_agent_runtime.md",
+    "line": 144,
+    "sha256": "7ba3bc56c012516f3844ff13d22909704dd167423209a7c15ddf53b77b553bc1",
+    "statement_anchor": "for step in range(max_steps):",
+    "syntax_translations": []
+  },
+  "translation": "def minimal_loop():\n    for step in range(max_steps):\n        ticket = budget.reserve_step_or_stop()\n        try:\n            decision = model(context, read_only_tools, limits=ticket)\n            if decision.is_final:\n                return candidate_answer(decision.answer)\n            call = validate_read_only_call(decision.tool_call)\n            observation = execute_in_simulator(call, limits=ticket)\n            context.append(observation)\n        finally:\n            budget.settle(ticket)  # 计入已消耗资源，归还未用预留\n    return STOPPED_INCOMPLETE\n",
+  "result": {
+    "propagated": "PauseRequested"
+  },
+  "events": [
+    "RESERVE",
+    "MODEL",
+    "VALIDATE:read",
+    "EXECUTE",
+    "SETTLE:2",
+    "PauseRequested"
+  ],
+  "spent": 2,
+  "remaining": 18,
+  "context": [
+    "observed"
+  ],
+  "limitation": "Pause/cancel/exhaustion propagate from host; source only guarantees finally settlement."
+}

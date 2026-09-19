@@ -1,0 +1,16 @@
+acceptance:
+  - id: compile
+    command: make typecheck
+    required: true
+  - id: reminder_regression
+    command: pytest tests/reminders
+    required: true
+  - id: sealed_cancelled_slice
+    verifier: reminder-contract-v4
+    expect: enqueued_count == 0
+  - id: invoice_integrity
+    verifier: table-hash-compare
+    expect: before_hash == after_hash
+  - id: scope_guard
+    verifier: changed-path-policy
+    expect: changed_paths subset_of allowed_writes

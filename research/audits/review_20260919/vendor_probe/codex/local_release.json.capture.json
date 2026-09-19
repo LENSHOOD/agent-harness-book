@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/openai/codex/releases/tags/rust-v0.142.5"
+  ],
+  "retrieved_at": "2026-09-19T09:57:14.156599+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "91e055464f342324c8851227e1d7f7c78c2b8bc624910c7a56e0e94e14593cd0"
+}

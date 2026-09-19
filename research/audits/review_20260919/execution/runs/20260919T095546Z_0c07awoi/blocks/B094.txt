@@ -1,0 +1,3 @@
+trace → candidate lesson → evidence linkage
+→ secret/PII scan → dedupe/conflict
+→ held-out reuse eval → approve → publish with scope and TTL

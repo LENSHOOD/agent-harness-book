@@ -1,0 +1,20 @@
+def recover(attempt_id):
+    lease = coordinator.acquire_single_owner(attempt_id)
+    checkpoint = state_store.latest_checkpoint(attempt_id)
+    state = replay_pure_events(checkpoint.event_offset)
+
+    for effect in state.pending_or_unknown_effects:
+        authoritative = target_system.lookup(effect.idempotency_key)
+        append_reconciliation_observation(effect, authoritative)
+
+    policy = policy_store.load_current_compatible_version()
+    credentials = broker.issue_fresh_leases(state.required_capabilities)
+    resume_from_reconciled_state(state, policy, credentials)
+
+def cancel(attempt_id, reason):
+    state_store.mark_cancel_requested(attempt_id, reason)
+    scheduler.cancel_children(attempt_id)
+    executor.terminate_process_tree(attempt_id)
+    revoke_temporary_credentials(attempt_id)
+    reconcile_pending_effects(attempt_id)
+    state_store.mark_cancelled_when_quiescent(attempt_id)

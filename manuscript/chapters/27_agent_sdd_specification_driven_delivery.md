@@ -2,7 +2,7 @@
 
 > 证据地位：本章为作者参考设计与工程推导，案例和阈值用于说明实现逻辑，不代表跨组织验证的通用标准。
 
-Agent SDD（Specification-Driven Delivery，规范驱动交付）不是要求每条请求都先写一份长文档。它把材料性意图转换成可执行、可版本化的契约，让自治执行有明确边界。低风险探索可以用渐进式规范；不可逆且高价值的动作，关键不变量必须在执行前冻结。
+Agent SDD（Specification-Driven Delivery，规范驱动交付）把影响结果与权限的意图转换成可执行、可版本化的合同。低风险探索可以逐步明确要求；涉及不可逆或高价值动作时，必须先固定关键不变量。文档长度不是目标，执行者、验证者和批准者对“可以做什么、怎样算完成”有一致理解才是。
 
 ## 1. 六类规范
 
@@ -15,7 +15,7 @@ Agent SDD（Specification-Driven Delivery，规范驱动交付）不是要求每
 | 验证规范 | 什么证据足以证明完成 | verifier suite |
 | 发布规范 | 谁能让候选产生外部效果 | release/commit policy |
 
-自然语言可以是入口，但金额、资源范围、数据快照、禁止动作、验收与 commit authority（提交权限）等承重字段需要结构化。否则模型、reviewer（审查者）和审计者会分别解释同一句话。
+自然语言可以是入口，但金额、资源范围、数据快照、禁止动作、验收项与提交权限需要结构化，否则模型、审阅者和审计者可能分别解释同一句话。
 
 ## 2. 从意图到合同
 
@@ -24,21 +24,23 @@ intent → ambiguity/materiality detection → contract draft
 → authority confirmation → executable checks → run
 ```
 
-Agent 可以自动补齐可发现信息，比如当前 commit（提交）、已有测试和 schema（数据结构定义）；只把会显著改变结果或权限的歧义交给用户。合同编译器应区分 missing、conflicting 与 intentionally_open。刻意开放的设计选择可以留给 Agent，但必须有预算和评价 rubric（评分标准）。
+Agent 可以查明当前提交、已有测试和数据结构，把会显著改变结果或权限的歧义交给目标负责人。合同编译器应区分信息缺失、要求冲突和有意开放的选择；实现形态可以开放，预算和评价标准仍需明确。
 
-反例是用户说“清理老客户”，系统把“老”解释为 90 天未登录并直接删除账号。正确流程会发现阈值、删除/归档、法律保留和 commit authority（提交权限）都是材料性歧义，在执行前冻结；探索阶段只能生成影响分析。
+例如“清理老客户”并未说明多久算老、采用归档还是删除、哪些记录必须保留，以及谁批准。系统应先生成影响分析，在这些条件明确前不能自行选择90天并删除账号。
 
-## 3. 完整实例：从规范到任务再到验收
+## 3. 教学实例：从规范到任务再到验收
 
-假设仓库 `billing-api` 要修复“取消订阅后仍发送续费提醒”的缺陷。业务 owner（业务负责人）先给出规范：已取消订阅不得进入提醒队列；不能改变账单状态；历史已发送消息不追溯删除；只允许修改通知筛选与对应测试。合同编译器把这些语义映射到可执行任务，而不是把一句工单标题直接交给 Runtime（运行时）。
+假设仓库 `billing-api` 要修复“取消订阅后仍发送续费提醒”的缺陷。业务负责人规定：在入队提交时已经取消的订阅不得入队，账单记录保持不变，历史已发送消息不追溯删除，只允许修改通知筛选与对应测试。若筛选后发生取消，入队服务需用同一事务或版本条件确认当前状态；只在初次筛选时读取一次状态不能满足这份合同。
+
+本书没有该生产仓库。下面的 YAML、`make typecheck` 和 `pytest tests/reminders` 都是自定义工程契约示意，须由真实项目提供实现，不能在本书仓库直接运行并宣称业务通过。原7位提交 `8f2c9d1` 是教学占位；实际输入必须解析为本次验证可读取的完整版本。
 
 ```yaml
 specification:
   id: SPEC-BILLING-214
   owner: subscription-product
-  snapshot: git:8f2c9d1
+  snapshot: "git:<resolved-full-oid>"
   invariant:
-    - cancelled_subscription_never_enqueued
+    - cancelled_at_enqueue_commit_never_enqueued
     - invoice_state_unchanged
   intentionally_open:
     - implementation_shape
@@ -47,22 +49,71 @@ task:
   task_id: TASK-BILLING-214-01
   contract_version: v1
   deliverables:
-    - patch_against_git_8f2c9d1
+    - sealed_patch_against_input_revision
     - evidence_package
   allowed_writes:
     - src/reminders/**
     - tests/reminders/**
   forbidden_actions:
-    - database_write
-    - message_send
+    - production_database_write
+    - production_message_send
     - billing_state_change
+    - delete_or_weaken_tests
   budget:
-    wall_minutes: 30
+    wall_seconds: 1800
     max_actions: 80
   commit_authority: billing-code-owner
 ```
 
-验收规范由独立 verifier（验证器）执行，并固定输入快照。它不仅检查新增测试，也从领域 fixture 生成 active、past_due、cancelled 三个切片，确认取消状态不入队、其他状态行为不回归，同时比较账单表前后 hash。Agent 可见公开测试和接口契约，但不可读取 sealed cancellation fixture（封存取消样本）。模型停止后只产生 candidate（候选）；clean workspace（清洁工作区）应用 patch 后，完成门运行：
+### 3.1 合同怎样映射到平台对象
+
+上面的 `specification` 与 `task` 是业务输入包，不直接符合附录 E 的 Task schema，也不是供应商配置。适配器先验证业务输入，再编译平台 Task、权限策略和完成合同，保留源字段到目标字段的映射。不能为了通过 Task 的 `additionalProperties: false` 而悄悄丢弃写入范围。
+
+| 业务输入 | 平台映射与责任 |
+|---|---|
+| `specification.id`、`owner` | 进入有版本的规范对象；Task 的 `input_refs` 引用它，负责人身份由控制面核实 |
+| `task.task_id`、合同版本 | 映射到 Task 的 `task_id`、`contract_version`；第二十五章的 `contract_id` 由登记表解析成不可变合同版本引用 |
+| 租户、风险 | 从已认证调用者和风险策略取得 Task 的 `tenant`、`risk`，不由模型自行填高权限值 |
+| `snapshot` 或第二十五章的 `workspace.commit` | 解析完整输入版本，写入 `input_refs`；证据包 `inputs` 另绑定清单及内容摘要 |
+| `invariant`、交付物、禁止动作 | 分别编译为 `invariants`、`deliverables`、`forbidden_actions`，并生成可执行策略 |
+| `allowed_writes` | 写入绑定合同版本的路径策略，Task引用该策略；租约与 `scope_guard` 同时执行 |
+| 验收表 | Task 的 `checks` 使用稳定的候选检查ID，适配器解析为完整CompletionContract的 `pre_commit_checks`；命令与验证器版本在只读套件登记。业务提交另有 `post_commit_checks`，附录E的最小Task未展开此字段，不能直接追加到根对象 |
+| `budget` | 使用 `wall_seconds`、`model_usd`、`max_actions`；旧 `wall_minutes` 乘60。旧工具调用上限不直接等同所有动作上限，须明确计数语义后转换 |
+| `commit_authority` | 映射到提交责任主体，实际动作仍校验当前授权；字段值本身不是批准 |
+| 运行与候选 | 控制面生成任务执行尝试的 `attempt_id`，每个逻辑动作有 `action_id`，工具重试另记ToolTry；证据包记录运行时版本、候选URI/摘要、验证器与环境、批准和最终提交 |
+
+以下是编译后的教学 Task；所有输入引用仍是占位。适配器通过 schema 登记表选择 `task/v1` 验证，证据包使用 `evidence-package/v1`。这两个版本标识属于不同对象，不能把证据包字段直接加进不允许扩展属性的 Task 根对象。
+
+```json
+{
+  "task_id": "TASK-BILLING-214-01",
+  "tenant": "teaching-tenant",
+  "contract_version": "CC-BILLING-214-v1",
+  "risk": "R2",
+  "input_refs": [
+    "spec:SPEC-BILLING-214-v1",
+    "git:<resolved-full-oid>",
+    "policy:reminder-write-scope-v1",
+    "suite:reminder-contract-v4"
+  ],
+  "deliverables": ["sealed_patch", "evidence_package"],
+  "invariants": ["cancelled_at_enqueue_commit_never_enqueued", "invoice_state_unchanged"],
+  "forbidden_actions": ["production_database_write", "production_message_send", "billing_state_change", "delete_or_weaken_tests"],
+  "checks": ["compile", "reminder_regression", "sealed_cancelled_slice", "invoice_integrity", "scope_guard", "immutable_suite_guard"],
+  "budget": {"wall_seconds": 1800, "max_actions": 80},
+  "commit_authority": "billing-code-owner"
+}
+```
+
+租户、风险和ID均为教学值。输入包、Task、候选与证据包须沿同一个 `task_id`、合同版本和输入版本连通；附录 E 的结构校验只检查形状，引用是否存在、权限是否有效和证据是否支持完成仍需独立检查。
+
+### 3.2 固定验收与数据库权限
+
+验证器在临时测试数据库中准备 active、past_due、cancelled 等固定样本，并测试“筛选后取消、入队前重验”的时序。执行 Agent 无生产写权限，不意味着验证器不能创建临时 fixture。候选测试只能访问隔离数据库和假消息出口，绝不能获得生产凭证。
+
+账单完整性以调用提醒逻辑之前和之后的同一张 fixture 表比较：按固定主键排序，对合同指定的全部账单业务字段作规范序列化再求摘要，包括金额、状态和有业务意义的时间字段。只能排除预先声明的非业务元数据，不能临时忽略被候选修改的列。检查在 fixture 准备完成后取基线，执行候选后取终值，并同时检查表行数和键集合。
+
+候选按第二十五章协议封存，在干净环境应用同一补丁后运行下列验收。公开测试可给开发反馈，封存验收由独立主体控制；删除、跳过或削弱公开测试也不能替代固定验收集。
 
 ```yaml
 acceptance:
@@ -75,19 +126,42 @@ acceptance:
   - id: sealed_cancelled_slice
     verifier: reminder-contract-v4
     expect: enqueued_count == 0
+    required: true
   - id: invoice_integrity
     verifier: table-hash-compare
     expect: before_hash == after_hash
+    required: true
   - id: scope_guard
     verifier: changed-path-policy
     expect: changed_paths subset_of allowed_writes
+    required: true
+  - id: immutable_suite_guard
+    verifier: frozen-suite-manifest
+    expect: required_checks_unchanged_and_executed_without_suppression
+    required: true
 ```
 
-若 candidate 通过公开测试，却修改 `src/billing/state.py` 把取消状态改回 active，`scope_guard` 与 `invoice_integrity` 都失败，任务不得完成；“提醒不再出现”不能覆盖业务不变量。若 Agent 发现真正过滤逻辑位于未授权的 `src/queue/subscription_filter.py`，它应提交 amendment（修订提案），说明所需路径、证据和验证不变，由 code owner（代码负责人）生成 v2。若所有检查通过，EvidencePackage（证据包）绑定 `SPEC-BILLING-214`、合同 v1、输入 commit、patch hash、verifier 版本和批准者；只有 commit authority（提交权限）才可合并。这个例子展示了规范、执行自由与发布权的边界：Agent 可以选择实现形态，却不能重写“不发送”“不改账单”和“谁批准”。
+### 3.3 四个独立负例
 
-## 4. 运行中的 Amendment
+从一个仅修复筛选且保留验收集的通过候选出发，每次只注入一种变化。下表是应预注册的预期结果，不宣称本书已经运行原生产项目。每列测量不同不变量，不能互相替代。
 
-执行中发现新事实可以提交 amendment proposal（修订提案），例如依赖版本与合同不兼容。执行 Agent 不能单方面扩大写入范围、降低验收或改变 data snapshot（数据快照）。proposal 包含差异、理由、影响、已发生效果和需要的 authority（权限）；批准后产生新 contract version（合同版本），旧 attempt 与旧版本绑定。
+| 注入变化 | `scope_guard` | `invoice_integrity` | `sealed_cancelled_slice` | `immutable_suite_guard` |
+|---|---|---|---|---|
+| 无注入：授权目录内修复筛选，账单与测试不变 | PASS | PASS | PASS | PASS |
+| 仅越界：另在 `src/billing/state.py` 加无行为影响的修改 | FAIL | PASS | PASS | PASS |
+| 仅改账单：在允许的提醒代码中更新 fixture 账单，取消过滤仍正确 | PASS | FAIL | PASS | PASS |
+| 仅保留错误入队：取消订阅仍进入提醒队列，账单不变 | PASS | PASS | FAIL | PASS |
+| 仅抑制测试：业务修复正确，但删除、跳过或削弱必需测试（suppressed tests） | PASS | PASS | PASS | FAIL |
+
+这些PASS是各隔离探针在其前提下的预期，并非发现一项FAIL后还必须执行危险代码。实际放行采用任一必需检查失败即阻断；未执行的检查明确标为未运行，不能填PASS。测试抑制负例还要求独立套件保持完整，候选工作区报告的“全绿”无权缩小验证分母。
+
+原稿把“取消状态改回active”写成scope与invoice两项必失败，混淆了代码路径和持久化数据。越界编辑会使scope检查失败，但只改变状态解释、不写账单表时，invoice检查可以通过；提醒反而可能继续入队。上述四个负例分别构造路径越界、账单变化、行为错误和测试抑制，避免靠一个含混场景推断多个失败。
+
+若真实过滤逻辑在未授权的 `src/queue/subscription_filter.py`，执行者应提交合同修订提案，说明路径、理由和不变的验收要求，由代码负责人批准新版本。通过检查后，证据包绑定规范、合同、输入、候选摘要和验证器；本例任务只交付补丁，合并另需提交授权。若合同本身要求合并，还要回读远端合并结果并完成所约定的后置检查。
+
+## 4. 运行中的合同修订
+
+执行中发现依赖与合同不兼容等新事实，可以提交修订提案。提案记录差异、理由、影响、已经发生的外部变更和所需批准；执行 Agent 不能自行扩大写入范围、降低验收或更换数据快照。批准后产生新合同版本，旧尝试继续绑定旧版，其迟到结果不自动获得新授权；后续执行从新版本开始，并对已发生副作用对账。
 
 ```json
 {
@@ -100,20 +174,20 @@ acceptance:
 }
 ```
 
-## 5. Specification as environment
+## 5. 规范怎样进入执行环境
 
-规范应贴近权威状态：代码规则进入仓库，数据口径进入 semantic layer，API 约束进入 schema，安全要求进入 policy engine。只写在 system prompt（系统提示词）的规范难以测试、版本化和复用。context compiler（上下文编译器）给模型的是当前规范投影，并保留来源与版本。
+规范应贴近权威状态：代码规则进入仓库，数据口径进入语义层，接口约束进入数据结构，安全要求进入策略引擎。上下文编译器给模型当前规范的必要部分，并保留来源与版本；只写在系统提示词中的要求难以独立执行和验证。
 
-规范也不能无限细化。把每个动作都预写成步骤，会把 Agent 退化成昂贵 workflow；完全开放则让完成不可判定。经验法则是：重复、可确定、错误代价高的要求编译成 schema/test/policy；真正需要情境判断的部分交给模型和人。
+重复、可确定且错误代价高的要求适合编译为检查或策略。如果全部步骤已能稳定编码，直接采用确定性工作流通常更容易验收；真正需要情境判断的部分再留给模型与人。
 
-## 6. 发布门与 Waiver
+## 6. 发布门与豁免
 
-候选 artifact（制品）与 contract version（合同版本）绑定；verifier（验证器）生成结果；commit controller（提交控制器）依据 release policy（发布策略）执行。若业务必须带已知失败上线，waiver（豁免）要写明失败检查、风险 owner（风险负责人）、补偿措施、影响范围和到期时间。Agent 可以解释 waiver，但不得自行批准。
+候选产物、合同版本和验证结果一同进入发布门；提交前再次核对授权、产物与目标版本。业务确需带已知失败上线时，豁免记录失败检查、风险负责人、补救措施、影响范围和到期时间；不可豁免的硬约束仍然阻断。Agent 可以起草说明，不能自行批准，也不能用豁免覆盖已经撤销的权限。
 
-模型停止、候选完成、业务提交是三个不同事件（见第十章）。SDD 的价值正是让它们分别可观察和授权。
+模型停止、候选 `checks` 通过、外部提交确认和 `post_commit_checks` 通过是不同事件。提交确认后进入 `VERIFYING_POSTCONDITIONS`，后置检查失败或未知为 `COMMITTED_BUT_UNVERIFIED`。纯成品交付合同在验收并交付后结束，不强造外部提交。第二十六章据此分别记录两类任务的完成率分母和时延。
 
 ## 7. 规范质量指标
 
-可观测指标包括：运行中材料性 amendment（修订）率、完成后发现的隐含不变量数、无法执行的验收项比例、waiver 逾期率、同合同跨 runtime 结果差异和 contract-to-evidence 覆盖率。高 amendment（修订）率可能说明入口澄清不足；零 amendment 也可能说明团队在聊天里偷偷改目标，需要抽检事件。
+可观察运行中的重要合同修订率、验收项未执行比例、完成后发现的不变量缺口、豁免逾期率，以及合同字段到证据的覆盖。每项说明统计窗口和分母；修订少未必表示入口清楚，也可能是团队在聊天中改了目标却未登记。
 
-当任务探索性极强且没有稳定 verifier（验证器）时，可选择 research brief + 人工 review（评审），而不是伪造精确合同。Agent SDD 的适用边界，是组织能否说明谁拥有目标和什么结果算可接受。
+探索性任务可以采用研究简报与人工评审，将完成条件定义为资料与分析交付，并明确结论尚未验证。规范驱动交付的适用前提，是组织能说明谁拥有目标、允许哪些动作，以及什么证据足以接受结果。

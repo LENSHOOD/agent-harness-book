@@ -1,0 +1,7 @@
+Turn cancellation
+├── model request cancellation
+├── active tool cancellation
+│   ├── process group termination
+│   └── remote job cancel request
+├── child agent cancellation
+└── pending approval invalidation

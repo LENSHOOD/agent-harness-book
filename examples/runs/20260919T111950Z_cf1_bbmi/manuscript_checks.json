@@ -1,0 +1,932 @@
+{
+  "kind": "current manuscript parse/schema/reference protocol gate; not production certification",
+  "exit_code": 0,
+  "checks": [
+    {
+      "name": "parse:manuscript/appendices/E_machine_readable_contracts.md:7",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/appendices/E_machine_readable_contracts.md:43",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/appendices/E_machine_readable_contracts.md:104",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/04_the_coding_agent_turn.md:51",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:52",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/12_observability_traces_and_eval_operations.md:74",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/13_claude_code_thin_loop_thick_runtime.md:53",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/14_openai_codex_protocolized_agent_core.md:51",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/18_product_comparison_and_architecture_spectrum.md:68",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/19_evolution_is_an_engineering_control_loop.md:34",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/21_cross_task_memory_skills_and_experience.md:65",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/22_harness_evolution_prompts_tools_context_and_workflows.md:27",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/23_model_evolution_from_trajectories.md:111",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/24_governed_evolution_loop.md:27",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/24_governed_evolution_loop.md:108",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/25_three_end_to_end_cases.md:25",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/25_three_end_to_end_cases.md:90",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/25_three_end_to_end_cases.md:138",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/25_three_end_to_end_cases.md:206",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:37",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:87",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:118",
+      "passed": true
+    },
+    {
+      "name": "parse:manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:166",
+      "passed": true
+    },
+    {
+      "name": "structured_blocks_present",
+      "passed": true
+    },
+    {
+      "name": "unique_current_Task_schema",
+      "passed": true
+    },
+    {
+      "name": "unique_current_message_schema",
+      "passed": true
+    },
+    {
+      "name": "Task_valid",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Task_input_refs_''_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_input_refs_' \\t\\n'_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "' \\t\\n' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_deliverables_''_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_deliverables_' \\t\\n'_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "' \\t\\n' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_invariants_''_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_invariants_' \\t\\n'_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "' \\t\\n' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_forbidden_actions_''_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_forbidden_actions_' \\t\\n'_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "' \\t\\n' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_checks_''_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_checks_' \\t\\n'_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "' \\t\\n' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Task_unknown_budget_field_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "Additional properties are not allowed ('unlimited' was unexpected)"
+        ]
+      }
+    },
+    {
+      "name": "Task_negative_budget_rejected",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "-1 is less than the minimum of 0"
+        ]
+      }
+    },
+    {
+      "name": "Task_empty_task_id",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty"
+        ]
+      }
+    },
+    {
+      "name": "Task_empty_tenant",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty"
+        ]
+      }
+    },
+    {
+      "name": "Task_empty_contract_version",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty"
+        ]
+      }
+    },
+    {
+      "name": "Task_empty_commit_authority",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty"
+        ]
+      }
+    },
+    {
+      "name": "message_root_explicit_Action_ref",
+      "passed": true
+    },
+    {
+      "name": "Definitions_root_rejects_invalid_0",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "None is not of type 'object'"
+        ]
+      }
+    },
+    {
+      "name": "Definitions_root_rejects_invalid_1",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'action_id' is a required property",
+          "'attempt_id' is a required property",
+          "'actor' is a required property",
+          "'type' is a required property",
+          "'resource' is a required property",
+          "'side_effect_class' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "Definitions_root_rejects_invalid_2",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'arbitrary text' is not of type 'object'"
+        ]
+      }
+    },
+    {
+      "name": "Definitions_root_rejects_invalid_3",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "[] is not of type 'object'"
+        ]
+      }
+    },
+    {
+      "name": "Action_valid_via_root_ref",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Action_REVERSIBLE_requires_normalized_args_ref",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'normalized_args_ref' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "Action_REVERSIBLE_requires_idempotency_key",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'idempotency_key' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "Action_COMPENSATABLE_requires_normalized_args_ref",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'normalized_args_ref' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "Action_COMPENSATABLE_requires_idempotency_key",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'idempotency_key' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "Action_IRREVERSIBLE_requires_normalized_args_ref",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'normalized_args_ref' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "Action_IRREVERSIBLE_requires_idempotency_key",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'idempotency_key' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "Action_empty_action_id",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_blank_action_id",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'  ' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_empty_attempt_id",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_blank_attempt_id",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'  ' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_empty_actor",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_blank_actor",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'  ' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_empty_type",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_blank_type",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'  ' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_empty_resource",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_blank_resource",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'  ' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_empty_side_effect_class",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' is not one of ['NONE', 'REVERSIBLE', 'COMPENSATABLE', 'IRREVERSIBLE']"
+        ]
+      }
+    },
+    {
+      "name": "Action_blank_side_effect_class",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'  ' is not one of ['NONE', 'REVERSIBLE', 'COMPENSATABLE', 'IRREVERSIBLE']"
+        ]
+      }
+    },
+    {
+      "name": "Action_empty_normalized_args_ref",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_blank_normalized_args_ref",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'  ' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_empty_idempotency_key",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_blank_idempotency_key",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'  ' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Action_read_only_valid",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Policy_ALLOW",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Policy_DENY",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "CONSTRAINED_ALLOW_valid",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "CONSTRAINED_ALLOW_requires_constraints",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'constraints' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "CONSTRAINED_ALLOW_empty_constraints",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "{} should be non-empty"
+        ]
+      }
+    },
+    {
+      "name": "REQUIRE_APPROVAL_valid",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "REQUIRE_APPROVAL_requires_approval_request_id",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'approval_request_id' is a required property"
+        ]
+      }
+    },
+    {
+      "name": "REQUIRE_APPROVAL_empty_approval_request_id",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'' should be non-empty",
+          "'' does not match '\\\\S'"
+        ]
+      }
+    },
+    {
+      "name": "Observation_OK",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Observation_DENIED",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Observation_ERROR",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Observation_TIMEOUT",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Observation_UNKNOWN_EFFECT",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Observation_CANCELLED",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Observation_PENDING",
+      "passed": true,
+      "detail": {
+        "expected": "accept",
+        "errors": []
+      }
+    },
+    {
+      "name": "Observation_invalid_status",
+      "passed": true,
+      "detail": {
+        "expected": "reject",
+        "errors": [
+          "'BUSINESS_COMPLETE' is not one of ['OK', 'DENIED', 'ERROR', 'TIMEOUT', 'UNKNOWN_EFFECT', 'CANCELLED', 'PENDING']"
+        ]
+      }
+    },
+    {
+      "name": "current_protocol:run_turn",
+      "passed": true
+    },
+    {
+      "name": "current_protocol:attempt_completion",
+      "passed": true
+    },
+    {
+      "name": "current_protocol:commit_effect_safely",
+      "passed": true
+    },
+    {
+      "name": "current_protocol:recover",
+      "passed": true
+    },
+    {
+      "name": "current_protocol:cancel",
+      "passed": true
+    },
+    {
+      "name": "current_protocol:appendix_run_loop",
+      "passed": true
+    },
+    {
+      "name": "entry_exists:examples/run_examples.py",
+      "passed": true
+    },
+    {
+      "name": "entry_exists:examples/README.md",
+      "passed": true
+    },
+    {
+      "name": "entry_exists:requirements-examples.txt",
+      "passed": true
+    },
+    {
+      "name": "entry_documented:A_core_contracts",
+      "passed": true
+    },
+    {
+      "name": "entry_documented:25_three_end",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "structured_blocks": [
+    {
+      "file": "manuscript/appendices/E_machine_readable_contracts.md",
+      "line": 7,
+      "language": "json",
+      "sha256": "1751e7710a58f7414f0971bd48925a19c99adb7cdd4a45d3282f9ea42fc7b5ca"
+    },
+    {
+      "file": "manuscript/appendices/E_machine_readable_contracts.md",
+      "line": 43,
+      "language": "json",
+      "sha256": "a0b9d6ddf264072546a38fdf869b245c276c13a44917bb37170e8f4f3035e007"
+    },
+    {
+      "file": "manuscript/appendices/E_machine_readable_contracts.md",
+      "line": 104,
+      "language": "yaml",
+      "sha256": "c992a2b260beb32f4f24286f1127d94c79a15c61c793eefaa907e7f9683c307d"
+    },
+    {
+      "file": "manuscript/chapters/04_the_coding_agent_turn.md",
+      "line": 51,
+      "language": "yaml",
+      "sha256": "e4dc7f8ffd93cde6526cbf19cdebe827bc899ad3d3eb18254671be3f32b485b6"
+    },
+    {
+      "file": "manuscript/chapters/08_tools_aci_mcp_and_code_mode.md",
+      "line": 52,
+      "language": "json",
+      "sha256": "48fde447da24723128fba0d76a9c2c3ad12cb154b579add01024cab51c358e2f"
+    },
+    {
+      "file": "manuscript/chapters/12_observability_traces_and_eval_operations.md",
+      "line": 74,
+      "language": "json",
+      "sha256": "bd2e7d7eb359f29d04d937afca02299a87edff92ce6f6bb44150586a57b41339"
+    },
+    {
+      "file": "manuscript/chapters/13_claude_code_thin_loop_thick_runtime.md",
+      "line": 53,
+      "language": "yaml",
+      "sha256": "86a76e4bf35302e7721ecb8c19a34b3812203988b3e938977fb43086791eb689"
+    },
+    {
+      "file": "manuscript/chapters/14_openai_codex_protocolized_agent_core.md",
+      "line": 51,
+      "language": "json",
+      "sha256": "189067240553f415d5d4f605859b5c272f15ba5c542c991a25f660a44a192f92"
+    },
+    {
+      "file": "manuscript/chapters/18_product_comparison_and_architecture_spectrum.md",
+      "line": 68,
+      "language": "yaml",
+      "sha256": "3d6b552a27a55f41128d735f4cda7aa9ae728fe1363198452b082a1da56a4027"
+    },
+    {
+      "file": "manuscript/chapters/19_evolution_is_an_engineering_control_loop.md",
+      "line": 34,
+      "language": "yaml",
+      "sha256": "5134ddb7c051ef481f6750d7a6f1bdd1debb53b1abbac33576211526d4d93e8a"
+    },
+    {
+      "file": "manuscript/chapters/21_cross_task_memory_skills_and_experience.md",
+      "line": 65,
+      "language": "yaml",
+      "sha256": "80494a969e8afc5b2c0990cd9b8fedb8c7b242300cd03aee3586465a7e8e64bb"
+    },
+    {
+      "file": "manuscript/chapters/22_harness_evolution_prompts_tools_context_and_workflows.md",
+      "line": 27,
+      "language": "json",
+      "sha256": "b5d7b797da23b5c5a1286aa8f72961c24c0507d56caf234f10ed999f4aeae5b1"
+    },
+    {
+      "file": "manuscript/chapters/23_model_evolution_from_trajectories.md",
+      "line": 111,
+      "language": "yaml",
+      "sha256": "51ca53f722614553ea053c9575244d109e43a4a478af668226312b6a3a9a5f42"
+    },
+    {
+      "file": "manuscript/chapters/24_governed_evolution_loop.md",
+      "line": 27,
+      "language": "yaml",
+      "sha256": "98ff007a7c608635ccb70fb67c6617e0c708c6ac15c1b869fe1e71648e2dc63a"
+    },
+    {
+      "file": "manuscript/chapters/24_governed_evolution_loop.md",
+      "line": 108,
+      "language": "json",
+      "sha256": "5b7ae2ea9b486969f333d63eb1bd12f4d2abd9b59b8626e8e2144cfa860f3298"
+    },
+    {
+      "file": "manuscript/chapters/25_three_end_to_end_cases.md",
+      "line": 25,
+      "language": "json",
+      "sha256": "85255b6b207011f7dfa12a5a152a1288fa08d07df73e2d5f5a5538de66d53978"
+    },
+    {
+      "file": "manuscript/chapters/25_three_end_to_end_cases.md",
+      "line": 90,
+      "language": "yaml",
+      "sha256": "542cbcdc6f83216384a1d1b4a837076d989119283dbec07d5fe7df7ca9787dda"
+    },
+    {
+      "file": "manuscript/chapters/25_three_end_to_end_cases.md",
+      "line": 138,
+      "language": "json",
+      "sha256": "40d827b6ec2285c01983657f8d2b59ce51c8d641287a06984dcd9a738bf253e0"
+    },
+    {
+      "file": "manuscript/chapters/25_three_end_to_end_cases.md",
+      "line": 206,
+      "language": "yaml",
+      "sha256": "3dc7b232e5fa3a651c4ad7bd3631f1284a25ad11e33d8ebb77e5fffd4d0393bf"
+    },
+    {
+      "file": "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md",
+      "line": 37,
+      "language": "yaml",
+      "sha256": "e229967b227c2ad390b17491b2df749e5f1af30d7c1bff8ff4d8da5ac066eb28"
+    },
+    {
+      "file": "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md",
+      "line": 87,
+      "language": "json",
+      "sha256": "c6cc312bd0ad75c0864dd407d977eab9f96925870ccb7355e9b3f9d3aa83bb20"
+    },
+    {
+      "file": "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md",
+      "line": 118,
+      "language": "yaml",
+      "sha256": "48b30fc0a3a25b3d9c12f3f85b17e523ff2b26d8ac4e58f2b6956982a7eea2ed"
+    },
+    {
+      "file": "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md",
+      "line": 166,
+      "language": "json",
+      "sha256": "b2b6eae17cc98f2583932791a6c4f96e19fad03a8fde6c75dff875171999bc06"
+    }
+  ],
+  "protocols": {
+    "run_turn": {
+      "file": "manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md",
+      "line": 198,
+      "sha256": "d1bb86f76b99f7d2ba44be4f8a6b13168259dc4cdda67565a7488b3c6657cf74"
+    },
+    "attempt_completion": {
+      "file": "manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md",
+      "line": 182,
+      "sha256": "0012c8dd9103d97d673bce71e9ed79ac3aa21d5160562ecaf7cb904f472b1f73"
+    },
+    "commit_effect_safely": {
+      "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+      "line": 112,
+      "sha256": "3c1194be95b42d0e192ce8e2541af3e5edbb8185c1ab195a3e431ea4b66a8ab7"
+    },
+    "recover": {
+      "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+      "line": 157,
+      "sha256": "e1220447d6e8b25ad6c2b38eff0719d0e0fe1934c4135110ee0f6410961d51f2"
+    },
+    "cancel": {
+      "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+      "line": 157,
+      "sha256": "e1220447d6e8b25ad6c2b38eff0719d0e0fe1934c4135110ee0f6410961d51f2"
+    },
+    "appendix_run_loop": {
+      "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+      "line": 54,
+      "sha256": "54362b2392c9abb6d6ca7afc0d562e2791fde2b66cdae0e3a3c9dca8a21594cf"
+    }
+  },
+  "literal_control_flow_execution": "examples/tests/test_manuscript_flow.py via examples/run_examples.py"
+}

@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Check that prose rewrites preserve machine-sensitive manuscript content."""
+"""Mechanical comparison only: headings, URLs, fences, numeric tokens and length.
+
+A PASS is NOT semantic equivalence or factual verification. Use only when an
+editorial change explicitly intends those mechanical properties to stay fixed;
+correctness revisions may legitimately change them. CJK counts include fences.
+"""
 
 from __future__ import annotations
 

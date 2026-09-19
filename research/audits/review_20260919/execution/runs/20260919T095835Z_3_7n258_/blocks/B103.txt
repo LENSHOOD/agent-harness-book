@@ -1,0 +1,9 @@
+User → Control: submit contract
+Control → Workspace: create worktree@8f31b6e
+Control → Runtime: start(task, lease, budget)
+Runtime ↔ Workspace: search/edit/test
+Runtime → Control: candidate patch + self-report
+Control → Verifier: clean checkout + apply sealed patch
+Verifier → Control: checks + hashes + logs
+Control → Reviewer: diff + contract + evidence
+Reviewer → Git host: create PR (human merge remains)

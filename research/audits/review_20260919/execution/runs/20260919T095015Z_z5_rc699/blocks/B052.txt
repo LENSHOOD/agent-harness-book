@@ -1,0 +1,5 @@
+L4 Business Actions  支付、工单、发布、客户数据
+L3 Domain Tools      SQL、仓库、观测、文档、浏览器
+L2 Generic Compute   shell、Python、文件、HTTP
+L1 Protocol Adapters MCP、OpenAPI、CLI、SDK、RPC
+L0 Execution Control policy、credential、sandbox、ledger

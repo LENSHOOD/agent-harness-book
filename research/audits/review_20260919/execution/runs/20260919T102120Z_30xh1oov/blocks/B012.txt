@@ -1,0 +1,6 @@
+ObservedState   可追溯到环境或用户消息的事实
+Hypothesis      模型尚未验证的解释
+Goal            用户或上层系统定义的结果条件
+Commitment      已批准并正在执行的目标/约束
+Plan            当前可替换的动作建议
+ExecutionState  已开始、等待、取消、失败或完成

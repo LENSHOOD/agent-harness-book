@@ -1,6 +1,6 @@
 # 第十五章 Cursor：IDE 原生上下文与云端 Agent
 
-> 资料截面：2026-08-27。Cursor 的实现并非完全开源，本章区分官方披露与本书的架构归纳。
+> 资料截面：2026-09-19。依据已存档的官方工程文章与发布说明，区分 IDE、本地执行、云端 Agent、自管 worker 和 Projects beta；本轮没有审计专有的云端循环、选择器或压缩器源码，也没有同条件产品实测。
 
 Cursor 的差异化不是“也能调用 shell”，而是把编辑器状态、代码检索、终端、模型选择和远程执行组织成连续体验。它展示了 Harness 的另一条路线：不是先设计通用 runtime 再接 UI，而是从开发者工作流反向塑造上下文与工具。
 
@@ -8,37 +8,44 @@ Cursor 的差异化不是“也能调用 shell”，而是把编辑器状态、�
 
 Cursor 把较少信息静态塞入 prompt（提示语输入），让 Agent 按需检索更多上下文。官方列出的做法包括：把长工具输出写入文件、把历史会话作为可搜索文件、按需加载 skill、把 MCP（Model Context Protocol）工具描述同步为目录，以及把集成终端输出映射为文件。[Dynamic context discovery](https://cursor.com/blog/dynamic-context-discovery) 这里的核心抽象不是“文件万能”。其要点是把大对象拆成有地址的外部状态。模型先看索引，再决定读取哪一部分内容。
 
-官方 A/B 测试（同一任务对比两套配置）报告称，在确实调用 MCP 工具的 run（运行实例）中，按需发现工具描述使总 Agent token 减少 46.9%。报告还指出结果会随已安装 MCP 的数量高度变化。[Dynamic context discovery](https://cursor.com/blog/dynamic-context-discovery) 这项结果属于厂商内部实验，不能外推成所有 Harness 的固定收益。更合适的用法是当作可复现实验假设，比较静态注入与目录发现条件下的 token、工具选择正确率和任务成功率。
+官方报告一项 A/B 对照实验：在确实调用 MCP 工具的运行中，按需发现工具描述使总 Agent token 减少 46.9%，结果随已安装 MCP 数量高度变化。[Dynamic context discovery](https://cursor.com/blog/dynamic-context-discovery) 本章未复核随机化单位、是否同任务配对及统计窗口，不能把 A/B 直接定义为“同一任务跑两套配置”。这项厂商结果可转成待测假设，不能外推成所有任务或 Harness 的固定收益。
 
-动态发现也有失效边界。若索引命名错误、文件过期，或 Agent 不知道该搜索什么，重要信息就会从“上下文噪声”变成“不可发现状态”。因此需要测量 context recall（上下文召回率）：完成任务所需的权威资料中，有多少在决策前被读取。这个指标不能被 token 下降替代，需配合任务成功率看（见第七章）。
+动态发现也有失效边界。若索引命名错误、文件过期，或 Agent 不知道该搜索什么，重要资料可能变得不可发现。作者建议另测上下文召回率：由独立标注确定任务所需权威资料，再统计决策前实际读取的比例。分母不能由 Agent 用自己读过的文件定义，也不能用 token 下降代替召回或完成结果（见第七章）。
 
 ## 2. Model-specific Harness
 
 Cursor 公开说明会按模型及版本定制 prompt（提示语）和工具格式。例如，不同模型在训练中熟悉的编辑动作不同。若用不熟悉的格式，推理成本会上升，错误更容易发生。模型切换时，Harness 也会切换到对应 profile，但新模型仍要消费前一个模型产生的历史上下文。[Harness evolution](https://cursor.com/blog/continually-improving-agent-harness) 这说明“模型无关 canonical action（标准动作语义）”与“模型面向的 tool view（工具视图）”应分成两层：平台内部语义保持稳定，模型看到的名称、schema（数据结构定义）、示例和返回压缩可以按 profile 编译。
 
-一个反例是为跨模型统一而强制所有模型使用同一编辑工具。接口看起来更整齐，但成功率和 token 可能下降。另一个极端是每个模型都有完全私有的 action（动作）语义，此时 trace（决策链路追踪）和 eval（评测）无法比较。更稳妥的边界是共享效果语义，同时允许表现形式变化（见第八章）。
+一个待测反例是强制不同模型使用同一编辑工具：成功率可能下降，token 消耗可能上升，实际方向取决于模型与任务。另一个极端是连动作产生的效果都使用私有语义，使追踪和评测难以比较。作者建议共享效果语义，同时允许模型看到的工具形式变化（见第八章）。
 
 ## 3. 在线信号与离线评测
 
 Cursor 披露其同时使用公开和内部 benchmark（基准测试）、在线 A/B、时延、token 效率、工具错误、cache hit（缓存命中率），以及代码在一段时间后仍被保留的 Keep Rate（留存率）。[Harness evolution](https://cursor.com/blog/continually-improving-agent-harness) 其中 Keep Rate 比“用户点击接受”更接近长期效用，但仍不是正确性的充分条件。用户可能没发现缺陷，而代码也可能因项目中止被保留。企业应把行为信号与确定性测试、事故记录和人工抽检组合，而不是让单一指标驱动进化决策（见第十九、二十四章）。
 
-## 4. 从前台审批到云端自治
+## 4. 自管 worker 移动的是工具执行位置
 
-Cursor Background Agents（后台 Agent）在隔离的 Ubuntu 机器中异步运行。它们默认可联网、可安装包并自动执行终端命令。官方安全说明明确提示这会带来 prompt injection（提示词注入）和数据外泄风险。[Background Agents](https://docs.cursor.com/background-agent) 本地前台 Agent 默认对敏感动作要求人工批准。远程后台执行则需要更强的环境、网络和凭证控制。[Agent security](https://docs.cursor.com/agent/security)
+9 月 2 日官方说明区分了两种云端 Agent 执行方式：默认每会话使用 Cursor 云端专用 VM；自管机器则在企业环境保存仓库工作副本、编辑文件和执行命令。`agent worker start` 建立出站 HTTPS 长连接，云端把工具调用发给 worker，worker 回传结果。可以连接个人机器，也可以使用团队资源池。[自管机器说明](https://cursor.com/blog/self-hosted-machines)
 
-这揭示了一个重要规律：交互模式变化会直接改变威胁模型。人坐在 IDE 前并不等于每一步都被可靠审查。无人值守云端也不应把所有命令都设为自动批准。平台需要按运行模式选择 policy profile（策略配置文件），并把出网 allowlist（白名单）、仓库权限、secret 注入和最大运行时长设成独立硬边界。
+自管 worker **仍由 Cursor 云端完成 Agent 循环、推理与规划**。工具输出可能含代码并回传，转录也可能在云端处理和存储；出站连接不等于数据不出网。这与“在企业内完整自部署模型和 Harness”是不同方案，不能共用一个“自托管”标签。[自管机器说明](https://cursor.com/blog/self-hosted-machines)
 
-## 5. Hooks 与企业控制点
-
-Cursor hooks 通过 stdio JSON 在 Agent 生命周期前后运行。它们可观察、可阻断，也可修改部分行为，并支持项目、用户和企业层配置。[Hooks](https://docs.cursor.com/hooks) 这类点位适合接入格式化、PII（个人身份信息）/secret 扫描、SQL 写入门禁和审计。
-但要注意：某些事件是 fire-and-forget（发送即忘），云端早期只读探索阶段也不运行全部 hooks。集成方必须逐事件确认是否可阻断，不能因为“支持 hooks”就认为已具备完整策略控制。
+以下是根据公开流程构造的失败边界，未实跑：
 
 ```text
-IDE state → context index → model-specific tool view
-         → local or cloud execution → diff/terminal feedback
-         → online signal + offline eval → harness release
+云端规划 → 经出站通道下发工具调用 → 内网 worker 读取仓库并运行命令
+         ← 工具输出回传（可能带代码、日志或内网数据）
+         → 云端继续推理；转录可能在云端存储
 ```
+
+例如 worker 在内部服务旁运行测试，失败日志包含敏感字段。即使仓库磁盘与进程都在内网，该字段仍可能随工具结果进入云端。作者建议在采用前确定可回传的数据类别、日志处理和凭证范围；如任务要求完全离线或禁止这种数据流，这条部署路线不满足约束。不能用“没有入站端口”代替数据流验收。
+
+## 5. Projects beta 扩展了工作关系
+
+9 月 10 日发布的 Projects 处于 beta，并逐步开放。官方描述的协调 Agent 负责规划、创建和管理实现 Agent，并把成果交给用户检查；项目维护跨云端与本地机器同步的文件，积累研究与产物，还支持 subscriptions、事件触发和周期运行。需要本机测试时，协调者可启动本地 Agent。[Projects 发布说明](https://cursor.com/changelog)
+
+这扩大了共享上下文和持续执行的范围，但官方关于长期工作与大量委派的描述并非本书的可靠性测量。作者建议先验证一条具体链：触发事件进入项目，协调者委派，实现者更新共享文件，后续 Agent 读取该版本。若错误测试说明被同步，后续工作可能反复复用它；检查点应包括文件来源、版本、撤销传播、并发预算和停止条件，而不只是“协调者还在运行”。
+
+Cursor hooks通过stdio JSON与处理程序交换数据。当前文档区分IDE、云端和自管worker：云端仅运行命令型hook，一些早期只读探索阶段不加载hook；事件覆盖和sessionStart/sessionEnd触发点也有差别。文档还说明，命令hook以2退出会阻断，其他非零退出通常按失败放行；权限hook以0退出但返回非法JSON或不合schema时另有阻断规则。因此不能把“装了前置hook”当作所有路径默认拒绝的安全保证。[Hooks](https://cursor.com/cn/docs/hooks) 以上是文档契约，本书没有逐运行面实测；缺少可靠提交前阻断或结构化证据时，应保留人工审阅或限制自动写入。
 
 ## 6. 设计判断
 
-Cursor 最可迁移的经验是：上下文应可发现、工具应按模型适配、产品反馈应进入 Harness 评测。其局限在于专有实现使企业难以独立验证内部选择器和压缩器。平台接入时应优先获取结构化事件、workspace revision（工作区版本）、diff（差异）、命令结果和策略决定。若只能获得 UI 结果，就应将其定位为开发者工具，而不是企业任务运行时的唯一事实源。
+作者从 Cursor 提炼出的原则是：上下文可发现、工具按模型适配、产品反馈进入评测。自管 worker 提供执行位置控制，Projects 提供更长的工作组织，两者都没有开放完整云端实现。采用时应分别衡量数据回传、共享上下文错误扩散、任务结果和人工介入；不能由 IDE 体验、Keep Rate 或一个低 token 指标直接推导平台级适配结论。

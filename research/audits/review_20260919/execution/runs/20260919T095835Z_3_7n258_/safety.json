@@ -1,0 +1,124 @@
+{
+  "approval_first": {
+    "events": [
+      [
+        "namespace(id='action-0', kind='REQUIRE_APPROVAL')",
+        "Decision(kind='REQUIRE_APPROVAL', reason='policy', constraints=(), capability=None)"
+      ]
+    ],
+    "effects": [],
+    "suspended": [
+      "checkpoint"
+    ]
+  },
+  "approval_stale": {
+    "events": [
+      [
+        "namespace(id='action-0', kind='ALLOW')",
+        "Decision(kind='ALLOW', reason='policy', constraints=(), capability=None)"
+      ],
+      [
+        {
+          "action_id": "action-0",
+          "status": "OK"
+        }
+      ],
+      [
+        "namespace(id='action-1', kind='REQUIRE_APPROVAL')",
+        "Decision(kind='REQUIRE_APPROVAL', reason='policy', constraints=(), capability=None)"
+      ],
+      [
+        {
+          "action_id": "action-0",
+          "status": "OK"
+        }
+      ]
+    ],
+    "effects": [
+      "action-0"
+    ],
+    "suspended": [
+      "checkpoint"
+    ]
+  },
+  "DENY": {
+    "effects": [
+      "0"
+    ],
+    "trace": [
+      "check_cancel"
+    ],
+    "cancelled": false
+  },
+  "approval_batch": {
+    "effects": [
+      "1"
+    ],
+    "trace": [
+      "check_cancel",
+      "suspended_helper_returned"
+    ],
+    "cancelled": false
+  },
+  "cancel_in_batch": {
+    "effects": [
+      "0",
+      "1"
+    ],
+    "trace": [
+      "check_cancel"
+    ],
+    "cancelled": true
+  },
+  "race": {
+    "calls": [
+      [
+        "key1",
+        {
+          "amount": 10
+        }
+      ],
+      [
+        "key1",
+        {
+          "amount": 10
+        }
+      ]
+    ],
+    "ledger": {
+      "effect1": {
+        "status": "COMMITTED"
+      }
+    }
+  },
+  "corrected_effect_store": {
+    "effects": [
+      [
+        "concurrent",
+        "{\"amount\": 20}"
+      ],
+      [
+        "lost",
+        "{\"amount\": 10}"
+      ]
+    ],
+    "ledger": [
+      [
+        "concurrent",
+        "{\"amount\": 20}",
+        "COMMITTED"
+      ],
+      [
+        "lost",
+        "{\"amount\": 10}",
+        "COMMITTED"
+      ]
+    ]
+  },
+  "limitations": [
+    "Faithful helpers are deterministic and explicit; absence of an outer/helper guard is a conditional counterexample, not a vendor exploit.",
+    "Cancellation/recovery is a state simulation, not an OS process-tree or remote IAM validation.",
+    "Corrected target supplies atomic key uniqueness and argument binding; a local ledger alone cannot guarantee exactly-once remote effects.",
+    "Actual process death, streaming reconnect, compaction, model drift, multi-agent orphan handling are not tested."
+  ]
+}

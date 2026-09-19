@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "sources": 37,
+  "evidence": 37,
+  "html_h2_exact": 10,
+  "source_hashes_and_excerpts": "PASS",
+  "baseline": "a1ed264462d9b61c260c1dc417243303bfc60b66",
+  "manuscript_diff": "",
+  "warnings": [
+    "Original HTML validator misclassifies Chinese as emoji: U+24C2..U+1F251.",
+    "Original word counter splits on whitespace; its short Chinese summary warning is not a length measurement.",
+    "URL checker returned 405 for HN and 403 for Zhihu; both were read with ego-browser and captured.",
+    "PNG files rendered; image tool returned current model does not support image input. PDF visual acceptance is NOT complete."
+  ]
+}

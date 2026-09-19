@@ -1,0 +1,66 @@
+{
+  "task": {
+    "id": 1,
+    "state": "NEEDS_RECONCILIATION",
+    "budget": 10,
+    "spent": 2,
+    "cancel_requested": 0
+  },
+  "ledger": [
+    {
+      "action_id": "a1",
+      "key": "key1",
+      "binding": "0e3638e2042818e16bdd4566d2a37830dbdf33ab95312c7535cd725149bb5d65",
+      "payload": "{\"action_id\": \"a1\", \"key\": \"key1\", \"target\": \"account/one\", \"args\": {\"amount\": 7}, \"cost\": 1, \"tenant\": \"teaching\"}",
+      "status": "COMMITTED",
+      "cost": 1,
+      "approved": 0
+    },
+    {
+      "action_id": "a2",
+      "key": "key2",
+      "binding": "f59eb09438c34dd40b099a602f9a6e9eb9161aabbadccc0d09cce289c0c9b9d7",
+      "payload": "{\"action_id\": \"a2\", \"key\": \"key2\", \"target\": \"account/two\", \"args\": {\"amount\": 7}, \"cost\": 1, \"tenant\": \"teaching\"}",
+      "status": "UNKNOWN",
+      "cost": 1,
+      "approved": 0
+    }
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "kind": "AUTHORIZE",
+      "detail": "ALLOW"
+    },
+    {
+      "seq": 2,
+      "kind": "EXECUTE_RESERVED",
+      "detail": "key1"
+    },
+    {
+      "seq": 3,
+      "kind": "AUTHORIZE",
+      "detail": "ALLOW"
+    },
+    {
+      "seq": 4,
+      "kind": "EXECUTE_RESERVED",
+      "detail": "key2"
+    },
+    {
+      "seq": 5,
+      "kind": "RECEIPT_ERROR",
+      "detail": "TimeoutError"
+    },
+    {
+      "seq": 6,
+      "kind": "UNKNOWN",
+      "detail": "key2"
+    },
+    {
+      "seq": 7,
+      "kind": "COMMITTED",
+      "detail": "key1"
+    }
+  ]
+}

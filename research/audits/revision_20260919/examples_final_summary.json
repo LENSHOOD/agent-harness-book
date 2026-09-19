@@ -1,0 +1,1268 @@
+{
+  "summary": {
+    "kind": "executable local reference; NOT vendor replication, real model evaluation, or production safety proof",
+    "exit_code": 0,
+    "failures": [],
+    "pytest": {
+      "tests": 156,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "exit_semantics": {
+      "0": "positives pass and intended negatives rejected",
+      "1": "real regression or environment/dependency error"
+    },
+    "run_directory": "publishing/work/final-examples/20260919T122125Z_8nbv7an2",
+    "historical_audit": "untouched; old exit 1 still means historical failing probes",
+    "source_unchanged_during_run": true
+  },
+  "manuscript_checks": {
+    "kind": "current manuscript parse/schema/reference protocol gate; not production certification",
+    "exit_code": 0,
+    "checks": [
+      {
+        "name": "parse:manuscript/appendices/E_machine_readable_contracts.md:7",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/appendices/E_machine_readable_contracts.md:43",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/appendices/E_machine_readable_contracts.md:104",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/04_the_coding_agent_turn.md:51",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:52",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/12_observability_traces_and_eval_operations.md:74",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/13_claude_code_thin_loop_thick_runtime.md:53",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/14_openai_codex_protocolized_agent_core.md:51",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/18_product_comparison_and_architecture_spectrum.md:68",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/19_evolution_is_an_engineering_control_loop.md:34",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/21_cross_task_memory_skills_and_experience.md:65",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/22_harness_evolution_prompts_tools_context_and_workflows.md:27",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/23_model_evolution_from_trajectories.md:111",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/24_governed_evolution_loop.md:27",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/24_governed_evolution_loop.md:108",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/25_three_end_to_end_cases.md:25",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/25_three_end_to_end_cases.md:90",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/25_three_end_to_end_cases.md:138",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/25_three_end_to_end_cases.md:206",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:37",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:87",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:118",
+        "passed": true
+      },
+      {
+        "name": "parse:manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:166",
+        "passed": true
+      },
+      {
+        "name": "structured_blocks_present",
+        "passed": true
+      },
+      {
+        "name": "unique_current_Task_schema",
+        "passed": true
+      },
+      {
+        "name": "unique_current_message_schema",
+        "passed": true
+      },
+      {
+        "name": "Task_valid",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Task_input_refs_''_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_input_refs_' \\t\\n'_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_deliverables_''_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_deliverables_' \\t\\n'_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_invariants_''_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_invariants_' \\t\\n'_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_forbidden_actions_''_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_forbidden_actions_' \\t\\n'_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_checks_''_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_checks_' \\t\\n'_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_unknown_budget_field_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "Additional properties are not allowed ('unlimited' was unexpected)"
+          ]
+        }
+      },
+      {
+        "name": "Task_negative_budget_rejected",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "-1 is less than the minimum of 0"
+          ]
+        }
+      },
+      {
+        "name": "Task_empty_task_id",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_blank_task_id",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_empty_tenant",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_blank_tenant",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_empty_contract_version",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_blank_contract_version",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_empty_commit_authority",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Task_blank_commit_authority",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "' \\t\\n' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "message_root_explicit_Action_ref",
+        "passed": true
+      },
+      {
+        "name": "Definitions_root_rejects_invalid_0",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "None is not of type 'object'"
+          ]
+        }
+      },
+      {
+        "name": "Definitions_root_rejects_invalid_1",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'action_id' is a required property",
+            "'attempt_id' is a required property",
+            "'actor' is a required property",
+            "'type' is a required property",
+            "'resource' is a required property",
+            "'side_effect_class' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "Definitions_root_rejects_invalid_2",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'arbitrary text' is not of type 'object'"
+          ]
+        }
+      },
+      {
+        "name": "Definitions_root_rejects_invalid_3",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "[] is not of type 'object'"
+          ]
+        }
+      },
+      {
+        "name": "Action_valid_via_root_ref",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Action_REVERSIBLE_requires_normalized_args_ref",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'normalized_args_ref' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "Action_REVERSIBLE_requires_idempotency_key",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'idempotency_key' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "Action_COMPENSATABLE_requires_normalized_args_ref",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'normalized_args_ref' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "Action_COMPENSATABLE_requires_idempotency_key",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'idempotency_key' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "Action_IRREVERSIBLE_requires_normalized_args_ref",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'normalized_args_ref' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "Action_IRREVERSIBLE_requires_idempotency_key",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'idempotency_key' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "Action_empty_action_id",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_blank_action_id",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'  ' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_empty_attempt_id",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_blank_attempt_id",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'  ' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_empty_actor",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_blank_actor",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'  ' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_empty_type",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_blank_type",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'  ' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_empty_resource",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_blank_resource",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'  ' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_empty_side_effect_class",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' is not one of ['NONE', 'REVERSIBLE', 'COMPENSATABLE', 'IRREVERSIBLE']"
+          ]
+        }
+      },
+      {
+        "name": "Action_blank_side_effect_class",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'  ' is not one of ['NONE', 'REVERSIBLE', 'COMPENSATABLE', 'IRREVERSIBLE']"
+          ]
+        }
+      },
+      {
+        "name": "Action_empty_normalized_args_ref",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_blank_normalized_args_ref",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'  ' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_empty_idempotency_key",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_blank_idempotency_key",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'  ' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Action_read_only_valid",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Policy_ALLOW",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Policy_DENY",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "CONSTRAINED_ALLOW_valid",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "CONSTRAINED_ALLOW_requires_constraints",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'constraints' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "CONSTRAINED_ALLOW_empty_constraints",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "{} should be non-empty"
+          ]
+        }
+      },
+      {
+        "name": "REQUIRE_APPROVAL_valid",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "REQUIRE_APPROVAL_requires_approval_request_id",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'approval_request_id' is a required property"
+          ]
+        }
+      },
+      {
+        "name": "REQUIRE_APPROVAL_empty_approval_request_id",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'' should be non-empty",
+            "'' does not match '\\\\S'"
+          ]
+        }
+      },
+      {
+        "name": "Observation_OK",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Observation_DENIED",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Observation_ERROR",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Observation_TIMEOUT",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Observation_UNKNOWN_EFFECT",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Observation_CANCELLED",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Observation_PENDING",
+        "passed": true,
+        "detail": {
+          "expected": "accept",
+          "errors": []
+        }
+      },
+      {
+        "name": "Observation_invalid_status",
+        "passed": true,
+        "detail": {
+          "expected": "reject",
+          "errors": [
+            "'BUSINESS_COMPLETE' is not one of ['OK', 'DENIED', 'ERROR', 'TIMEOUT', 'UNKNOWN_EFFECT', 'CANCELLED', 'PENDING']"
+          ]
+        }
+      },
+      {
+        "name": "current_protocol:run_turn",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:attempt_completion",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:commit_effect_safely",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:recover",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:cancel",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:appendix_run_loop",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:minimal_loop",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:delegate",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:integrate",
+        "passed": true
+      },
+      {
+        "name": "current_protocol:frontier_search",
+        "passed": true
+      },
+      {
+        "name": "entry_exists:examples/run_examples.py",
+        "passed": true
+      },
+      {
+        "name": "entry_exists:examples/README.md",
+        "passed": true
+      },
+      {
+        "name": "entry_exists:requirements-examples.txt",
+        "passed": true
+      },
+      {
+        "name": "entry_documented:A_core_contracts",
+        "passed": true
+      },
+      {
+        "name": "entry_documented:25_three_end",
+        "passed": true
+      }
+    ],
+    "failures": [],
+    "structured_blocks": [
+      {
+        "file": "manuscript/appendices/E_machine_readable_contracts.md",
+        "line": 7,
+        "language": "json",
+        "sha256": "d7a0dfc817d2816e3532f58fd9a8350eaa8823bfd6b5f74e40abc817d4b1e280"
+      },
+      {
+        "file": "manuscript/appendices/E_machine_readable_contracts.md",
+        "line": 43,
+        "language": "json",
+        "sha256": "a0b9d6ddf264072546a38fdf869b245c276c13a44917bb37170e8f4f3035e007"
+      },
+      {
+        "file": "manuscript/appendices/E_machine_readable_contracts.md",
+        "line": 104,
+        "language": "yaml",
+        "sha256": "c992a2b260beb32f4f24286f1127d94c79a15c61c793eefaa907e7f9683c307d"
+      },
+      {
+        "file": "manuscript/chapters/04_the_coding_agent_turn.md",
+        "line": 51,
+        "language": "yaml",
+        "sha256": "e4dc7f8ffd93cde6526cbf19cdebe827bc899ad3d3eb18254671be3f32b485b6"
+      },
+      {
+        "file": "manuscript/chapters/08_tools_aci_mcp_and_code_mode.md",
+        "line": 52,
+        "language": "json",
+        "sha256": "48fde447da24723128fba0d76a9c2c3ad12cb154b579add01024cab51c358e2f"
+      },
+      {
+        "file": "manuscript/chapters/12_observability_traces_and_eval_operations.md",
+        "line": 74,
+        "language": "json",
+        "sha256": "bd2e7d7eb359f29d04d937afca02299a87edff92ce6f6bb44150586a57b41339"
+      },
+      {
+        "file": "manuscript/chapters/13_claude_code_thin_loop_thick_runtime.md",
+        "line": 53,
+        "language": "yaml",
+        "sha256": "86a76e4bf35302e7721ecb8c19a34b3812203988b3e938977fb43086791eb689"
+      },
+      {
+        "file": "manuscript/chapters/14_openai_codex_protocolized_agent_core.md",
+        "line": 51,
+        "language": "json",
+        "sha256": "189067240553f415d5d4f605859b5c272f15ba5c542c991a25f660a44a192f92"
+      },
+      {
+        "file": "manuscript/chapters/18_product_comparison_and_architecture_spectrum.md",
+        "line": 68,
+        "language": "yaml",
+        "sha256": "3d6b552a27a55f41128d735f4cda7aa9ae728fe1363198452b082a1da56a4027"
+      },
+      {
+        "file": "manuscript/chapters/19_evolution_is_an_engineering_control_loop.md",
+        "line": 34,
+        "language": "yaml",
+        "sha256": "5134ddb7c051ef481f6750d7a6f1bdd1debb53b1abbac33576211526d4d93e8a"
+      },
+      {
+        "file": "manuscript/chapters/21_cross_task_memory_skills_and_experience.md",
+        "line": 65,
+        "language": "yaml",
+        "sha256": "80494a969e8afc5b2c0990cd9b8fedb8c7b242300cd03aee3586465a7e8e64bb"
+      },
+      {
+        "file": "manuscript/chapters/22_harness_evolution_prompts_tools_context_and_workflows.md",
+        "line": 27,
+        "language": "json",
+        "sha256": "b5d7b797da23b5c5a1286aa8f72961c24c0507d56caf234f10ed999f4aeae5b1"
+      },
+      {
+        "file": "manuscript/chapters/23_model_evolution_from_trajectories.md",
+        "line": 111,
+        "language": "yaml",
+        "sha256": "51ca53f722614553ea053c9575244d109e43a4a478af668226312b6a3a9a5f42"
+      },
+      {
+        "file": "manuscript/chapters/24_governed_evolution_loop.md",
+        "line": 27,
+        "language": "yaml",
+        "sha256": "98ff007a7c608635ccb70fb67c6617e0c708c6ac15c1b869fe1e71648e2dc63a"
+      },
+      {
+        "file": "manuscript/chapters/24_governed_evolution_loop.md",
+        "line": 108,
+        "language": "json",
+        "sha256": "5b7ae2ea9b486969f333d63eb1bd12f4d2abd9b59b8626e8e2144cfa860f3298"
+      },
+      {
+        "file": "manuscript/chapters/25_three_end_to_end_cases.md",
+        "line": 25,
+        "language": "json",
+        "sha256": "85255b6b207011f7dfa12a5a152a1288fa08d07df73e2d5f5a5538de66d53978"
+      },
+      {
+        "file": "manuscript/chapters/25_three_end_to_end_cases.md",
+        "line": 90,
+        "language": "yaml",
+        "sha256": "542cbcdc6f83216384a1d1b4a837076d989119283dbec07d5fe7df7ca9787dda"
+      },
+      {
+        "file": "manuscript/chapters/25_three_end_to_end_cases.md",
+        "line": 138,
+        "language": "json",
+        "sha256": "40d827b6ec2285c01983657f8d2b59ce51c8d641287a06984dcd9a738bf253e0"
+      },
+      {
+        "file": "manuscript/chapters/25_three_end_to_end_cases.md",
+        "line": 206,
+        "language": "yaml",
+        "sha256": "3dc7b232e5fa3a651c4ad7bd3631f1284a25ad11e33d8ebb77e5fffd4d0393bf"
+      },
+      {
+        "file": "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md",
+        "line": 37,
+        "language": "yaml",
+        "sha256": "e229967b227c2ad390b17491b2df749e5f1af30d7c1bff8ff4d8da5ac066eb28"
+      },
+      {
+        "file": "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md",
+        "line": 87,
+        "language": "json",
+        "sha256": "c6cc312bd0ad75c0864dd407d977eab9f96925870ccb7355e9b3f9d3aa83bb20"
+      },
+      {
+        "file": "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md",
+        "line": 118,
+        "language": "yaml",
+        "sha256": "48b30fc0a3a25b3d9c12f3f85b17e523ff2b26d8ac4e58f2b6956982a7eea2ed"
+      },
+      {
+        "file": "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md",
+        "line": 166,
+        "language": "json",
+        "sha256": "b2b6eae17cc98f2583932791a6c4f96e19fad03a8fde6c75dff875171999bc06"
+      }
+    ],
+    "protocols": {
+      "run_turn": {
+        "file": "manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md",
+        "line": 198,
+        "sha256": "6649442180215c09e335cac172205522cc66e8f9e5fca4b46c8d754aa50915fd"
+      },
+      "attempt_completion": {
+        "file": "manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md",
+        "line": 182,
+        "sha256": "ff5fde1e7540658e87140dd68a050c3b5b3a4f827ee4fd9519178d625f9e9570"
+      },
+      "commit_effect_safely": {
+        "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+        "line": 118,
+        "sha256": "3c1194be95b42d0e192ce8e2541af3e5edbb8185c1ab195a3e431ea4b66a8ab7"
+      },
+      "recover": {
+        "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+        "line": 163,
+        "sha256": "e1220447d6e8b25ad6c2b38eff0719d0e0fe1934c4135110ee0f6410961d51f2"
+      },
+      "cancel": {
+        "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+        "line": 163,
+        "sha256": "e1220447d6e8b25ad6c2b38eff0719d0e0fe1934c4135110ee0f6410961d51f2"
+      },
+      "appendix_run_loop": {
+        "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+        "line": 54,
+        "sha256": "2722638558177e5f593bca8a2f0492be401d24687dc55bced7fcc4b94abe3725"
+      },
+      "minimal_loop": {
+        "file": "manuscript/chapters/01_from_control_loop_to_agent_runtime.md",
+        "line": 144,
+        "sha256": "7ba3bc56c012516f3844ff13d22909704dd167423209a7c15ddf53b77b553bc1",
+        "statement_anchor": "for step in range(max_steps):",
+        "syntax_translations": []
+      },
+      "delegate": {
+        "file": "manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md",
+        "line": 258,
+        "sha256": "4e8946d22a268dd3ba9c541c744c3e2d183d9123dcf2b38bde7e4454c3097295",
+        "syntax_translations": [
+          [
+            "assert spec.objective is bounded",
+            "assert objective_is_bounded(spec.objective)"
+          ],
+          [
+            "assert spec.expected_output_schema exists",
+            "assert spec.expected_output_schema is not None"
+          ],
+          [
+            "assert spec.acceptance_checks not empty",
+            "assert spec.acceptance_checks"
+          ],
+          [
+            "except error:",
+            "except Exception as error:"
+          ]
+        ]
+      },
+      "integrate": {
+        "file": "manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md",
+        "line": 258,
+        "sha256": "4e8946d22a268dd3ba9c541c744c3e2d183d9123dcf2b38bde7e4454c3097295"
+      },
+      "frontier_search": {
+        "file": "manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md",
+        "line": 35,
+        "sha256": "c2b1bc3a29d3a81cb177891015b287b7674c9fdd2af8ec325958d85cf9eb4354",
+        "statement_anchor": "frontier = queue([(baseline_state, depth=0)])",
+        "syntax_translations": [
+          [
+            "paid(kind, operation):",
+            "def paid(kind, operation):"
+          ],
+          [
+            "(baseline_state, depth=0)",
+            "(baseline_state, 0)"
+          ],
+          [
+            "progressed = false",
+            "progressed = False"
+          ],
+          [
+            "progressed = true",
+            "progressed = True"
+          ]
+        ]
+      }
+    },
+    "literal_control_flow_execution": "examples/tests/test_manuscript_flow.py via examples/run_examples.py"
+  },
+  "source_manifest": {
+    "examples/run_examples.py": "dbc6085ee6d9a4f769ee2ed3944f6a433dbdfde1a35c381e97b8024f02389793",
+    "examples/src/__init__.py": "0b6e23eb9d8d8a943ec749903cb15ba2af00400ff17fa41828ba11d88091b38e",
+    "examples/src/evolution.py": "0f1b71c55f7da56eda7909b118561f3e5648073661603d4c7c33a93732612b49",
+    "examples/src/extended_manuscript.py": "a75a97a8309882ee116106831378477931f4727cffc0913a0776059c77bfcf0a",
+    "examples/src/git_case.py": "ac99429295eee4b558064977c6df2c0aa0899d5b25eee999f9937bdf23ac5296",
+    "examples/src/manuscript.py": "ceffed880f0191c7d9b3eb79169f2a7cf9e053e5d8a5704b5cd2d505066f1312",
+    "examples/src/negative_windows.py": "7923a9c131cec37abb69bebf5bbe0798696ac7640efb69357f6bad142355ca82",
+    "examples/src/policy.py": "8d248f755a12850d7637ae3d269fd88e5bc47f54ddb28d94e95ed40bc4005fb5",
+    "examples/src/runtime.py": "2ffac54ac7ae19e77d135d6371924b18f575d9c47584ca9ca22f0cbf61aa5fb3",
+    "examples/src/sql_case.py": "32b0091b783d31aaca2e872b89e75b9977d1450fdd34524ac1d28a408349ba9a",
+    "examples/src/window.py": "11ad3d06e0d552c54faaeab199e44de105ff2a1d03ed9b5e6da38a9c6710ae81",
+    "examples/src/window_helpers.py": "55755c4c4336155590e3f949a0071fe33314867cf5c130861ba340bb7c831db0",
+    "examples/tests/conftest.py": "0795d9d2943c075d4a20e8cf6b0c34c38d8cd28f23b419649488f7f1c3fb71c1",
+    "examples/tests/dst_contract.py": "ac90f1eba0d2df38ef27a47ba7ab8878e85dcff883dfe5173172ea2fa2a97118",
+    "examples/tests/test_evolution.py": "740614ef9e3be834770b5a99836007ca3115740e84711679c036419077a0c92d",
+    "examples/tests/test_git.py": "31735f80efb1fb6d7364886909ab17a74d5e5d0202ddca1a1010ab0137d45c29",
+    "examples/tests/test_manuscript_additional_flow.py": "9afe53798933a757df0e432b5388d4c94e47c183a8f50eb424ec0825243b7cd3",
+    "examples/tests/test_manuscript_flow.py": "b0420a55959997f84c8979d44e6f7a59ef5b260b83bfe8fdb177c63c9611d54f",
+    "examples/tests/test_runtime.py": "54c6ed646d426e194b7582017150d5595c6717069300cf40017cc04493e53925",
+    "examples/tests/test_runtime_review_regressions.py": "fd9067ec8d7f56fbe2d635aae2580d598c64ff01692612025d0ce7ea32931761",
+    "examples/tests/test_sql.py": "397dbcbb61d6fa91aa9c419bf515c4da4e3c9cb83c83fd75d36e748b484c7aef",
+    "manuscript/appendices/A_core_contracts_and_pseudocode.md": "0d8ded19998fa58e6c0c047c01302364e61bfef329db8a07451d659764f8f37c",
+    "manuscript/appendices/B_architecture_review_checklist.md": "36aebf5b208448367e3c6435330ff567a6fdb97ffd7e40a70cc5d76063f686b5",
+    "manuscript/appendices/C_glossary.md": "edd7d03de02a0a8fbd215b748f7f9dc5532adba4f55486f3bd2ba4e82092875f",
+    "manuscript/appendices/D_concept_index.md": "74ba94c9a8bb7a1b99515ed847c192a9f4e6da0bd1e7cdfb2fc6ef9871c27f53",
+    "manuscript/appendices/E_machine_readable_contracts.md": "e209529c0d4b5b2abd947700c66edb35ff0188044e040e92679c166bb559bb5f",
+    "manuscript/chapters/00_preface.md": "da3a1184bc9efda5f75053ae4d1de08c4035555b3edff110050a494d9602118d",
+    "manuscript/chapters/01_from_control_loop_to_agent_runtime.md": "0aab101c3109eb173f0d356331f1f3bf574387c7c878f29274927b12af6863dd",
+    "manuscript/chapters/02_the_autonomous_agent_boom.md": "d44e711af1b1e0bc95a641f5c0eb88d7b561d53185a31fd9a34982cef2287b7b",
+    "manuscript/chapters/03_interface_is_part_of_intelligence.md": "bc666bd383d80f27848b0809a0383afc8d20f469c154fbc6183cf5c082b41d9d",
+    "manuscript/chapters/04_the_coding_agent_turn.md": "b1bbfba72ceda15b844331ea7e7f692af798272f5d2b246ae5af33e6ee146480",
+    "manuscript/chapters/05_system_model_and_responsibility_boundaries.md": "4d8b7fb8801a9e28966d92b0206d255a678244a5a3522d564221198164b60f21",
+    "manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md": "c9ee7793f0167072d7f3eb32a4ceb421fc783615d699a3e5318bfc9f5669ff23",
+    "manuscript/chapters/07_context_cache_compaction_and_memory.md": "014d44b11d4c7327adc2da1ccd81b2d00f3e0a4593843155c6fc84fb3ab8f4de",
+    "manuscript/chapters/08_tools_aci_mcp_and_code_mode.md": "b7d5c3700cd0229e7585a607a7847c0fe22b4d0c6d69666b72c8e5ab7bd789a8",
+    "manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md": "d8fc487c6ca92d36f2d27e41d169f8a112eaaad15ff4b0493f01c9e3b3b3c8f6",
+    "manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md": "205a91fd30a5ac318bce56c9a612d5e8c2091c2eadf65cefe7942e4c37433b58",
+    "manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md": "ffcf1c33363560b1f8109a045d4d0c7cac356c04e4d49669feb570b6f3d846a1",
+    "manuscript/chapters/12_observability_traces_and_eval_operations.md": "2f31e9e2d23762f3409e75f7150c6bb2857355ca790c6a6c617d322b2d8d6634",
+    "manuscript/chapters/13_claude_code_thin_loop_thick_runtime.md": "7cf6ea2bfc74dae470eff268c1653a756922ba42370d70b83dad4ea6e6805485",
+    "manuscript/chapters/14_openai_codex_protocolized_agent_core.md": "fb2eee0526d2281cad4dfda79606755dd2d197e14827b64ea7ab9e8023e305fd",
+    "manuscript/chapters/15_cursor_ide_native_context_and_cloud_agents.md": "5ec2634aa070f5fa1dfce01019d2535adde253307d0cde1604403fa758ef1e7e",
+    "manuscript/chapters/16_deepseek_harness_composable_runtime.md": "0f95e2d52f8fb406bb85dcca66b2e0268cbc432879d61e6af51d09b66d66974f",
+    "manuscript/chapters/17_openhands_agent_runtime_separation.md": "764520958736ba6e7c24089a544d20d309a10db402054a6e50c959f586a07693",
+    "manuscript/chapters/18_product_comparison_and_architecture_spectrum.md": "91c85f6ce9a38da6ff108c1fc548695a733239d9ef58c2bcda95268606657dc9",
+    "manuscript/chapters/19_evolution_is_an_engineering_control_loop.md": "703853e06b9a16c5a9e85b5d296b7c8858e5be7da36f9978cf142a312a675fa5",
+    "manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md": "e71099d2ca3b6b6286fd0ba98139c591da88778a843031e3ea9eacd9fa4f5a5d",
+    "manuscript/chapters/21_cross_task_memory_skills_and_experience.md": "febfb241f1ea3d11206cb84018e471d0a95552306db8bfaa165daf5fcf41057e",
+    "manuscript/chapters/22_harness_evolution_prompts_tools_context_and_workflows.md": "e139828a0a9386ed110121cdb7f1c9a477211da3cece5e6630483651b78777e7",
+    "manuscript/chapters/23_model_evolution_from_trajectories.md": "cb673f07e262790c8883ba3858a6fa10af2dc863fc96e08536d2389d823f9c01",
+    "manuscript/chapters/24_governed_evolution_loop.md": "c6e500df977480178829691c92b0c551dc536dfd1201c3dd18f3a712fa7c2248",
+    "manuscript/chapters/25_three_end_to_end_cases.md": "ce76210e8b76be6f699a7e4f33238aa223d9f7a60322d84205976418dd6b7570",
+    "manuscript/chapters/26_next_generation_enterprise_harness_architecture.md": "525a7f943ae6d97bdae6841f2aa1f5b0807b9eb0169b6b7eb7091dce2e408e4f",
+    "manuscript/chapters/27_agent_sdd_specification_driven_delivery.md": "37a459d21f7acaaa9c8d1eb3428d5102168fedb8bd2376346f31e1c7f7e6a228",
+    "manuscript/chapters/28_maturity_model_and_build_vs_buy.md": "4ef3e641745fd938435002e20ad66e2d94402d4fa741475c9402357fc9f5dae8",
+    "manuscript/chapters/29_from_vendor_agents_to_owned_runtime.md": "f1eebfd2e153a1b2cc670d50eec04c8ede6767c4b6c964aa7f27b715ca1d865a",
+    "manuscript/chapters/30_outlook_harness_os_and_evolving_agent_organizations.md": "f9edf0755f143eb54d5f7d3bc7ef5d320a7a8e80386ffc7c7d6f8a7924acc71e",
+    "manuscript/executive_brief.md": "230321f08fcba2ca7a4400b866191d27ba5eeb6f1af9e99b1d03f7e7d0a00b7a",
+    "manuscript/parts/01_history.md": "48f3b341e08a2e80642999bc6b9ae070cb4144ae845645daba60d360b2aedb57",
+    "manuscript/parts/02_principles.md": "491d89f03fce4244bcbd9c73be093edf2c2011cb1407e1cbfbb952dc7d931219",
+    "manuscript/parts/03_products.md": "ac11c0aeca88aa1944ff6783a5c0cbe46da25a027449c305e0a544205d1ce953",
+    "manuscript/parts/04_evolution.md": "d5ac49a8cad57ba167b5126e8f3d272217b6c2354fa7ee2d5ed1f27cf6122eb7",
+    "manuscript/parts/05_practice.md": "2a3f1c1be35cfbed90b9ec36792b3c06b490368ac792708f24e68d38e12b680f",
+    "publishing/scripts/check_examples.py": "c2ae1aab5ccf5dd9680f85a962ab4f7a0d2bcbacc7bbb38f3be43271406dc3b4",
+    "requirements-examples.txt": "2f2489ee146edd73b5a2f2df7e99abf64aea5bad42561b2c72d3c97828364f56"
+  },
+  "artifact_hashes": {
+    "candidate.patch": "31f0241cb18406dfb3db45bc72e0389810347a8de961411da330928c587fdd27",
+    "check_examples.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "check_examples.stdout.log": "3ab265c2b22211d2f16c926a3138bcd27d6c3c63d6d46501a9f7bf4b5cddef6c",
+    "commands.json": "9a457b8c57a149dbbec31c21ac33a4f628173983893a49b46136fd0383fe25a9",
+    "environment.json": "3a703d302b1e83288bf3389f3c5b66a68221130afd4b2152d0e392adeddc93c2",
+    "evolution.json": "210244a06f976134bcf0e77fc11b1efb5d1f605ac685c82b30e7056a499b8926",
+    "evolution_trials.json": "433f6dcf9611da9b6c5d175cd25fae41ad953985c9ba367cf4d169fd47684b98",
+    "final_test.sqlite": "32c17a0e1bc504a4ab6c14d895ca0d5cacb7b3bba1f84f764c2477c1078e0e14",
+    "git.json": "c5c7ed59fc70d76cddd8a44407dfbbdc3e3d588a99a04495911a023e05ece368",
+    "hardcoded.patch": "1a7c8314474220eedfc748e93d383fa1a964a5ab01a3cc9a8f5132fe2cf9f80a",
+    "literal_appendix_feedback_development_repair.json": "7079a1de40307f0f2f8dee72da159e99f909dfe830466ef2ec6d5d4b91d9808a",
+    "literal_appendix_feedback_feedback_budget_exhausted.json": "667d045d416f9986cba5e295b6f524da0197654e981c9ddf796e7830218189e2",
+    "literal_appendix_feedback_not_repairable.json": "667d045d416f9986cba5e295b6f524da0197654e981c9ddf796e7830218189e2",
+    "literal_appendix_feedback_receiver_denied.json": "667d045d416f9986cba5e295b6f524da0197654e981c9ddf796e7830218189e2",
+    "literal_appendix_feedback_repair_budget_exhausted.json": "b016d44e325f33e56eaed055f62c069d1de089906cbe173d0749cbab0119dcf6",
+    "literal_appendix_feedback_sealed_final_test.json": "667d045d416f9986cba5e295b6f524da0197654e981c9ddf796e7830218189e2",
+    "literal_appendix_loop.json": "ee4543500cea7c2d195fd9a006d5ca7353b99a963a8d1bc783c12543b9429e96",
+    "literal_candidate_data_use_development_repair.json": "f88663644e25dc34a298ffa15d077433150aae01ec43459ce90619fef99cb13c",
+    "literal_candidate_data_use_feedback_budget_exhausted.json": "1ad77fb21cc8b5b99f9abf2abbd630009827fdf8fcbe82ae95e5ab054b839bc8",
+    "literal_candidate_data_use_not_repairable.json": "b9723cd537b54377e49d9afbb7d76f4c718af019e7907603f074aaa8b94d66dc",
+    "literal_candidate_data_use_receiver_denied.json": "20280350ddf435b30674724c332c7d7a5e2776e9fa4a4f27966ef0728904711d",
+    "literal_candidate_data_use_repair_budget_exhausted.json": "861245190e66a4a38e0aa19f1714fd62e17ed6c6abf882941ec4aa3193ea5cec",
+    "literal_candidate_data_use_sealed_final_test.json": "8901c1b6b3f831473516a1c512f02aca6abe860f15e7ae86a6509ce8342519d9",
+    "literal_candidate_data_use_sealed_pass.json": "5cad008e7d2ba9e828263919809d25155d52f7e9e23a9accf1765893bea743fd",
+    "literal_commit_EXECUTING_stale_False.json": "ef43a60ab4f22a44c58b767d2df6a8ddbfa7cef916b6ca99ff9772547e99208b",
+    "literal_commit_INTENT_RECORDED_absent_False.json": "d81d05eac8e6b03ac1f9116e247546b1f8056fbde5913af184912db72c1f0144",
+    "literal_commit_INTENT_RECORDED_absent_True.json": "43ef5dad6238826400fa5d7869f8d71596a67019c77f4d52c572917db75826b4",
+    "literal_commit_INTENT_RECORDED_unavailable_False.json": "9435be9d07db28c4573f563025ff3c90a3eda82d8618f7afe4096043090a1a4f",
+    "literal_commit_UNKNOWN_EFFECT_committed_False.json": "075cba5e88a082ea6430bffe46106a710958a270584153a9431025d32344d354",
+    "literal_commit_UNKNOWN_EFFECT_stale_False.json": "ef43a60ab4f22a44c58b767d2df6a8ddbfa7cef916b6ca99ff9772547e99208b",
+    "literal_completion_ALLOW_False_COMMITTED_True.json": "20a6411fba82fa4790773f7d1e1bfcb13e644a835d401944bde1d0727d27938a",
+    "literal_completion_ALLOW_True_COMMITTED_False.json": "d7d1dcb93401171f034fca68925192b299fca14f3f70bc2b9ab0b7abc5035caa",
+    "literal_completion_ALLOW_True_COMMITTED_True.json": "b2b1254feb6cef00fa11fb84914cb13438d42ac7c96ae2f5afda29d43ff124ad",
+    "literal_completion_ALLOW_True_PENDING_True.json": "81f0be566b0b8f41851efc0e34e323dd4da6ff116b4b9b7ed70f2aa134e62a2d",
+    "literal_completion_ALLOW_True_UNKNOWN_EFFECT_True.json": "81f0be566b0b8f41851efc0e34e323dd4da6ff116b4b9b7ed70f2aa134e62a2d",
+    "literal_completion_DENY_True_COMMITTED_True.json": "defdb7f6d9106e68a1ce4a6dd1fe7f44355940ad37c0ee6ae527a8109fe9e673",
+    "literal_completion_REQUIRE_APPROVAL_True_COMMITTED_True.json": "bca9e89da2f3a7db315f645d8497f69fe81d02b987643dc1461faef2f6ccb9b8",
+    "literal_completion_UNRECOGNIZED_True_COMMITTED_True.json": "5fd37f07a371e26bd790af0ee57ae6ea946af21b2d0083c744456502f648c1c0",
+    "literal_completion_feedback_development_repair.json": "aee1572ac3d4bad83b1aaad6f06fed287a1c6a939d412d021d8c48726a7ad6e8",
+    "literal_completion_feedback_feedback_budget_exhausted.json": "f8e4c9b070c8574226bc9155d87218ec2ec960b124061bdfc933531229164146",
+    "literal_completion_feedback_receiver_denied.json": "f8e4c9b070c8574226bc9155d87218ec2ec960b124061bdfc933531229164146",
+    "literal_completion_feedback_repair_budget_exhausted.json": "d3f8527cc3332c6a51204ca3380c31a79f3dffee116e4ffe799e679988960d98",
+    "literal_completion_feedback_sealed_final_test.json": "f8e4c9b070c8574226bc9155d87218ec2ec960b124061bdfc933531229164146",
+    "literal_delegate_approval.json": "a19e00907797d51f46b842e2f0a71dedd16022949c1ecac74cc601b220ea5e5f",
+    "literal_delegate_budget_exhausted.json": "6ada0dfc9015645cc598cdc84835c63396963fc39d0fb777f3f079961df13097",
+    "literal_delegate_child_cancelled.json": "66c905226114900e41abbda8165d180381f378563aa24f35d87c33082cd20dbb",
+    "literal_delegate_child_timeout.json": "129b8e6e43ff5481318f7839d34b7417ddcf0c83c9323baad5b32ede352a17a8",
+    "literal_delegate_cleanup_unresolved.json": "94c94a59dbf396138030f5247fa826ef8996771e055633095cd0c854f86f5aae",
+    "literal_delegate_constrained.json": "8204fcd2941c0ceb50e01b85302a27f021bb407fc4c7116b8c2edcad7d8f60c1",
+    "literal_delegate_constraint_rejected.json": "a95be37ba6c4948a90c41baaa3ae5954b34503aa6e10abdad742b7f0671d54bf",
+    "literal_delegate_deny.json": "2f6a6f76be5e7d7f6bcde2f38a79591b9687ca02b56ab26e467c378384019b5a",
+    "literal_delegate_expired.json": "006be5a5b9d7d3b85123d26340e4d7b5ad2ea084e93133b80549693b29f3272d",
+    "literal_delegate_parent_cancelled.json": "006be5a5b9d7d3b85123d26340e4d7b5ad2ea084e93133b80549693b29f3272d",
+    "literal_delegate_success.json": "339b43cb3bf67d3358e280c153d3a5c72ab9f5a408266216176e5882b4265b51",
+    "literal_delegate_unknown_decision.json": "1759d189c6eae3a6d5893ad45cfa0e8dcb76e41d7d1e302130e8706ebd26648e",
+    "literal_delegate_verification_fault.json": "3381bb26014a0497fd4cf395efdff62b2b95ea9297b6af78d796d5d38d291109",
+    "literal_delegate_workspace_fault.json": "51350c71e8f8820dc691b4b0d52e8665e1d62aa0b7b9391e31a27d59e0f2f902",
+    "literal_frontier_budget_before_generate.json": "c6c09c3b81495af5c8fd1d62b7c42060be66d15c3fecc38043c269b6e407580a",
+    "literal_frontier_budget_mid_execute.json": "252ed8b4056b7e268de23ca6e872065d1c5fd038236b1503efd937ae73f61c0d",
+    "literal_frontier_budget_mid_verify.json": "c0f5307419c52212f7caaa77d4464c1aba5edfe017bec859c32b0f828a015661",
+    "literal_frontier_cancel.json": "b295238b64d8934df1f56d1bedca6766068dcf5bf4464daf8f6a9962d2be3c13",
+    "literal_frontier_depth_limit.json": "4cd2d296009f34798abdfaeba2ca46edad2d0ab1d2e1fb5e7da17a84305354c3",
+    "literal_frontier_duplicate.json": "d0422fcdf5be8105279c13519b5d22694008149b0e4c4d3179de80c3e53796c0",
+    "literal_frontier_empty.json": "71b50ca5ffdd6f203e124d4f57f4f82dc6b8c16b6ebbc30ef59c0b1f28283512",
+    "literal_frontier_execute_fault.json": "10e9fe07e775a384b680f74c8b92fa8b2ca58cfcd789c2a7c49da4bfc2d87f2a",
+    "literal_frontier_expansion_limit.json": "6fd916f0f4a9e595f4b0706c6db46df1659e6b9c33600217a1ba420900d06c9b",
+    "literal_frontier_generate_fault.json": "20aad2d0595908417b94b05882bf13af34b4a8df55e7eac77b7cb82b0e76d50c",
+    "literal_frontier_integrity_after_verified.json": "bc1ff5c7fdca9065804566db2e2544b09cfeed4233dbb48c363a36f8c45c1f42",
+    "literal_frontier_integrity_alarm.json": "f2aec47d6649475e678f5f808881338c4d90cba4cd3bd1af266345f37da6e863",
+    "literal_frontier_normal.json": "376f268627a9a7c6586f076d9a9af7a1ac4b7d65ae0c1cc8e62f9902aeadcbea",
+    "literal_frontier_pause.json": "fdfab21c29291843d7dd4a9b1f1f169eecf98d97615d465026932f7962adc918",
+    "literal_frontier_retained_verified.json": "0cf8c633f4d7df6080fb8cb3892c934e280a36fbfb22534a2a4dcdb76815ecca",
+    "literal_frontier_stalled_limit.json": "77d16f01240c17fabc471bd2c5aebf3545b5e04c2d56fab9ef8f1ef8a83ce4cb",
+    "literal_frontier_static_frontier.json": "761d5ceef80761113918b55c21341c169fe62d1da854ee122f537a25de476cd3",
+    "literal_frontier_unknown_effect.json": "e56d5bbe731c32becab81521d2242e2557955c09856ce96ee32d9748a17ff85b",
+    "literal_frontier_verifier_fault.json": "a32e02de3876276d7be065b5de1825d3bde18406a4edfe6147baefaa87ef719c",
+    "literal_integrate_conflict.json": "a670ade9a99412f1af6aa998456985f53fcf5d96d5a6610125b21b98e749b88e",
+    "literal_integrate_expired.json": "7ba81681bb490f31edafacd01edc4ba6d3d865867c0fcad25fccf798be115f84",
+    "literal_integrate_gate_fault.json": "4d84d2dbd56742536cad2209ec9239cc58e14e402fd995f5f95ac6ef98689595",
+    "literal_integrate_merge_fault.json": "1a3ebb780097a1a1a56f295d8daf6d2d4450d82d42fd72a8a7df9d13a302a9a7",
+    "literal_integrate_parent_rejects.json": "b4ba6c71b374be56b180b3e37f86ec45f12b7413544d17074a1d82c5bd627311",
+    "literal_integrate_success.json": "de08fd8079401d46698c332adb9a281e7bbd4baa9386d57544f5da8ef2c39f14",
+    "literal_integrate_unverified.json": "7ba81681bb490f31edafacd01edc4ba6d3d865867c0fcad25fccf798be115f84",
+    "literal_minimal_loop_budget_stop.json": "3cf9ac5f146808c700de35fa654d148df666741e6be0fe7366413451d66ab0f5",
+    "literal_minimal_loop_cancel.json": "136944e4531bdaf8fcb53f3a09979afe0beebefb8d37dc9878e0986e1e8f0347",
+    "literal_minimal_loop_candidate.json": "8cb39ab2d2da15d26a6ab4a9ad9be518bc83fc5d3fb0ea77993df21a9fe804f9",
+    "literal_minimal_loop_max_steps.json": "792af329eb06b169598de4639b6f64d5315d49bef4689586ef37ee0348b92d23",
+    "literal_minimal_loop_model_fault.json": "5624570139630e6d63b0007aa2c713d6f71e894443a8c5faaf1d2d6a59a65076",
+    "literal_minimal_loop_pause.json": "4ea6430d031c0051f79d597c03451d11b503f5bd3c7ea7648fedfd95a002735c",
+    "literal_minimal_loop_static_budget.json": "6a5e01beb8a2efb6e6ea2805c102cf30b19b91bddeb7d56a969661700c7c9e28",
+    "literal_minimal_loop_tool_fault.json": "941f68eaf05068ae3f4299637ab94090056dc830a9c861b0b4b378f25f90db0e",
+    "literal_minimal_loop_write_rejected.json": "2c9c8a411c0593659bbb09453637651bd845d0b3239ff0a9d1f9eb10aa3ff840",
+    "literal_recover.json": "58c9304ac206ca7ef2fa88af926505f018e6ede112d4b0068b7535420c099132",
+    "literal_run_turn_exception.json": "d78e38609d408311becdb1d6075b42999ddf9e1f07eb77971bb90a9e977f9979",
+    "literal_run_turn_ok.json": "881ec3474d43bcfc9e20ccd079bb6c6ebb1cf4f010e2e24e0bbdfd93a68e4cf3",
+    "literal_run_turn_pending.json": "35b8ac97701d34158b8cc0989d017748d58a359bb6657d04e73e4df93d63a87c",
+    "literal_run_turn_unknown.json": "9f4de585a17f846842051fc713869097d065587af9eebc5e89c917dde7b04f32",
+    "manuscript_checks.json": "202f6d902073d60bb716aedc5407e72675bbf466c454f00d78ef0851268587cb",
+    "pytest.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pytest.stdout.log": "f6ed5e14dcca67aa9ed8a45f9f4cb8e376e80d8ca0423429d2076a7fe41fa766",
+    "review_F01_aggregate_False.json": "a5a28ed869fdcc53803f7c52510f4ef2a13909834a4e47769119c71ebee63267",
+    "review_F01_aggregate_True.json": "6a063299f275ea8c34da5ebb42d23f78863e5f790d7d3c0da5536ea15b1ee7d7",
+    "review_F01_new_key_False.json": "bee34a2d64f7e35bd6b2bcb69eb2bf940cb1f080b6c65b77fd6550191becbd76",
+    "review_F01_new_key_True.json": "bee34a2d64f7e35bd6b2bcb69eb2bf940cb1f080b6c65b77fd6550191becbd76",
+    "review_F02_connected_appendix_loop_lease_busy.json": "84e2f2835ab982ad7d1c4c8b57999cc6f411344ccdd0d3566339ac4545b09062",
+    "review_F02_connected_appendix_loop_lookup_unavailable.json": "3676663220251a024deffd4aac331a025eb6f40eda7056f54110e78c4153b8b6",
+    "review_F02_connected_run_turn_lease_busy.json": "129151122f1334a4d61b60903e7b5738fde461cf4973c0f97249c1baf3eda954",
+    "review_F02_connected_run_turn_lookup_unavailable.json": "11f0886e02c681994f2d98a7b2c5a9aa68a03382703bfb4c891befe188188e91",
+    "review_F03_stale_reconciliation.json": "09e0bc365955a5242c0c1d2289d1e59e81b94b52039c1c94e4b432e83baa6295",
+    "review_F04_identity_False.json": "7b6e3e8162042e6e5d23e92b71d44ef4f01e82722cf42ad8a93ee6eef5f53934",
+    "review_F04_identity_True.json": "30f7abba82fae205c84df17cd8eb4251d290867a0aea220c058fa6e7aebbc4ed",
+    "review_F05_wire_ALLOW_defaults.json": "eade9fc8c5b5ceb96674f9b046dea91adcdab611d824c6b86631f952188fd69e",
+    "review_F05_wire_CONSTRAINED_ALLOW_defaults.json": "5197cf56fdb5f3208df34af739a63f1af8aacbc5792505c06a13e75b35c4eded",
+    "review_F05_wire_DENY_defaults.json": "630a6ac9ddd786435cf361aa1e24eac23ff9e7ce4674f93c2641925e7da37856",
+    "review_F05_wire_DENY_reason.json": "7e3fc718d54e158d0eb37dc59f06ff6b5486d4c01ca500a3fb43671bbb161a9d",
+    "review_F06_denial_history.json": "3d45a167dbe5500d9317bf412626896288d96e0bf4ab8e440fe1729f89e8e5ac",
+    "runtime_budget.json": "220ff8203d0d58dc8a4afdce7f14a3728e692463532332cc00a6cb80420115cc",
+    "runtime_concurrency.json": "00f1951cfceb588cce00fcafb3480ddd3fffd9e0fbbba5856c561f52194e3821",
+    "runtime_receipt_loss.json": "9dedbc40690615dc6a1aafd3ff824b546ffb6bdfc600cfaa4889fe98c3208fcb",
+    "snapshot.sqlite": "66bca4ae2410190230da162af55c14ae90e237a51a5fbda7eff80581f4f1c1e3",
+    "source_manifest.json": "f975347278996b0d918eff1ab97b634c43087c852184eb4bcce2a8bb0556611b",
+    "sql.json": "de57be1e50e89b49556f0031603a6ef1d9f5d1f88d415b75e888f505d36c3d63",
+    "sql_internal_restricted_fixture.json": "c7e436e8b0826f4177602994545ca9f336c1738cde8932847b00ba56077d490d",
+    "sql_public_fixture.json": "18cf7652ff5dde119944e2ae3368a748063ffffd1a96ceaeb3827d78d10cdfd3",
+    "summary.json": "e7ebd52f57a51409404ed570f7602c5797a3a1f69afc66b6e42ab0ccf0f93834",
+    "summary.md": "7cafdaa1a079ef48b7253e65b12dde09a035c09e199f82d9f22a33e6ed81783f",
+    "tests.xml": "8f357068d366143f2650bf5f00b74cc3825824b11b7b559857da82e59b727945",
+    "untracked_omitted.patch": "4a66f89e27b7ebacbc54849f55fbcd505ef28c2f9ef374cf07c999d598bdab10"
+  }
+}

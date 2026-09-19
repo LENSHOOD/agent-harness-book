@@ -1,0 +1,2 @@
+model_stop       模型本轮不再请求动作
+task_completion  外部完成契约已经满足

@@ -1,0 +1,8 @@
+base snapshot
+  ├─ workspace A → patch A + evidence A
+  ├─ workspace B → patch B + evidence B
+  └─ workspace C → patch C + evidence C
+                    ↓
+             merge workspace
+                    ↓
+             full-system verification

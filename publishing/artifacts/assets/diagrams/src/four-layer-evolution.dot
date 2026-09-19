@@ -4,22 +4,25 @@ digraph G {
   edge [fontname="PingFang SC", fontsize=9, color="#4F7487", fontcolor="#34596B", arrowsize=0.7];
 
   observe [label="验证过的轨迹与事故", fillcolor="#E8F3F8"];
-  attribute [label="归因\nModel × Harness × Environment"];
+  attribute [label="提出原因假设\n模型 / Harness / 环境"];
   l1 [label="L1 任务内适应\n计划、候选、repair"];
   l2 [label="L2 跨任务经验\nmemory、skill"];
   l3 [label="L3 Harness 版本\nprompt、tools、workflow"];
   l4 [label="L4 模型参数\n权重、adapter、训练配方"];
-  eval [label="隔离评价\nheld-out、多 trial、硬门"];
-  release [label="Shadow → Canary → Release", fillcolor="#EAF5ED"];
+  eval [label="开发验证与候选选择\n固定分母 / 成本 / 风险门"];
+  final [label="冻结候选后独立终测\n不反馈调试"];
+  release [label="按变更范围启用\n任务内 / 跨任务灰度", fillcolor="#EAF5ED"];
   rollback [label="Lineage / Rollback / Revoke", fillcolor="#FFF5E8"];
 
   observe -> attribute;
   attribute -> l1 [label="当前任务"];
   attribute -> l2 [label="重复经验"];
   attribute -> l3 [label="系统性 Harness 缺陷"];
-  attribute -> l4 [label="跨 Harness 稳定残差"];
+  attribute -> l4 [label="可检验的参数更新假设"];
   l1 -> eval; l2 -> eval; l3 -> eval; l4 -> eval;
-  eval -> release [label="hard gates pass"];
+  eval -> final [label="需要泛化声明时"];
+  final -> release [label="预注册门槛通过"];
+  eval -> release [label="任务内候选经业务检查", style=dashed];
   eval -> rollback [label="reject / quarantine"];
   release -> observe [label="post-release evidence", constraint=false];
   release -> rollback [label="regression"];

@@ -1,0 +1,5 @@
+read_set / write_set
+side_effect_class
+concurrency_group
+idempotency_support
+ordering_requirements

@@ -1,0 +1,33 @@
+{
+  "python": "3.13.13 (main, May 10 2026, 19:20:37) [Clang 22.1.3 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "sqlite": "3.50.4",
+  "executable": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/.venv/bin/python",
+  "kind": "local reference models; not commercial Agent replication",
+  "model_API_calls": 0,
+  "external_business_writes": 0,
+  "git_commits": 0,
+  "dependencies": {
+    "jsonschema": "4.26.0",
+    "PyYAML": "6.0.3",
+    "pytest": "9.1.1"
+  },
+  "git": "git version 2.54.0 (Apple Git-157)",
+  "timezone_files": {
+    "UTC": {
+      "sha256": "8b85846791ab2c8a5463c83a5be3c043e2570d7448434d41398969ed47e3e6f2"
+    },
+    "America/New_York": {
+      "sha256": "e9ed07d7bee0c76a9d442d091ef1f01668fee7c4f26014c0a868b19fe6c18a95"
+    },
+    "Europe/Berlin": {
+      "sha256": "5ee475f71a0fc1a32faeb849f8c39c6e7aa66d6d41ec742b97b3a7436b3b0701"
+    },
+    "Australia/Lord_Howe": {
+      "sha256": "a323c5433991a963eb497b7da4d1d09848bf3ef5f5d64d9c9649f388e4bab9df"
+    },
+    "Asia/Shanghai": {
+      "sha256": "64ffc2e43a94435a043c040d1d3af7e92d031adc78e7737af1861baa4eeef3e6"
+    }
+  }
+}

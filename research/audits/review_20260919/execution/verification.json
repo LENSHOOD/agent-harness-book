@@ -1,0 +1,52 @@
+{
+  "current_run": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T102120Z_30xh1oov",
+  "compared_run": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T095940Z_b_il6ikt",
+  "same_checks": false,
+  "same_sql_snapshots": true,
+  "same_evolution_metrics": true,
+  "previous_checks_compared": 147,
+  "added_checks": [
+    "B014_budget_exhausted_terminates",
+    "B014_fault_preserved_without_retry_or_fake_observation",
+    "B014_injected_tool_fault_unhandled",
+    "B014_normal_tool_then_final",
+    "B014_static_budget_source_terminates",
+    "B014_validation_rejects_before_execute",
+    "B014_zero_budget_terminates",
+    "B078_bad_provenance_no_merge",
+    "B078_budget_reject_before_spawn",
+    "B078_child_cancelled_no_merge",
+    "B078_child_pass_not_parent_success",
+    "B078_conflict_requires_resolution_without_merge",
+    "B078_delegate_attenuate_merge_parent_verify",
+    "B078_injected_child_timeout_unhandled",
+    "B078_invalid_spec_before_spawn",
+    "B078_timeout_releases_unused_reservation_in_source",
+    "B078_unverified_child_rejected_at_integration",
+    "B091_injected_verifier_fault_unhandled",
+    "B091_mid_batch_budget_exhaustion_graceful_return",
+    "B091_normal_progress_nondomination_hard_gate",
+    "B091_outer_budget_guard_prevents_batch_overspend",
+    "B091_static_frontier_budget_source_terminates",
+    "B091_strict_helper_limits_actual_spend",
+    "B091_verifier_fault_has_no_fabricated_score",
+    "B091_zero_budget_no_branch_escalates"
+  ],
+  "removed_checks": [],
+  "changed_previous_checks": [],
+  "severity_reclassifications": [
+    {
+      "name": "SQL_raw_SQLite",
+      "before": "P2",
+      "after": "DIALECT_MISMATCH"
+    }
+  ],
+  "same_git_patch_results": true,
+  "matrix_rows": 120,
+  "artifact_hashes_checked": 441,
+  "skipped_missing_rebuildable_files": [],
+  "generated_dependencies_ignored": true,
+  "necessary_evidence_not_ignored": true,
+  "mismatches": [],
+  "interpretation": "Compare shared preexisting probes; added probes are not independently repeated by this comparison. Severity reclassifications explicit. No stochastic-model/environment claim."
+}

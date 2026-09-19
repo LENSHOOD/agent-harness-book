@@ -1,0 +1,11 @@
+CompletionContract {
+  goal                 // 用户真正想改变什么
+  deliverables[]       // 必须产生的 artifact 或外部状态
+  invariants[]         // 全程和完成后都不得破坏的条件
+  acceptance_checks[]  // 可以怎样判定成功
+  evidence_required[]  // 交付时必须附带什么证据
+  authority            // 谁能修改契约、豁免检查、批准提交
+  budgets              // 时间、token、费用、尝试、风险预算
+  freshness            // 输入与检查允许多旧
+  stop_policy          // 成功、失败、阻塞、升级的条件
+}

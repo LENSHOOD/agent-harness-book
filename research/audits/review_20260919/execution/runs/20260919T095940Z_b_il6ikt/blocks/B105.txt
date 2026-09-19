@@ -1,0 +1,19 @@
+evidence_package:
+  id: EP-REPO-2048-A3
+  contract: CC-REPO-2048-v3
+  input_revision: git:8f31b6e
+  runtime: codex-app-server@pinned-2026w34
+  harness_profile: code-medium-v4
+  candidate:
+    patch: artifact:sha256:4b2a...
+    changed_files: [src/time/window.py, tests/time/test_dst.py]
+  verification:
+    environment: image:sha256:91c7...
+    results:
+      - {check: fail_to_pass, status: pass, log: artifact:sha256:a11e...}
+      - {check: pass_to_pass, status: pass, total: 482, log: artifact:sha256:b71d...}
+      - {check: allowed_write_scope, status: pass}
+  policy:
+    decisions: artifact:sha256:29fd...
+    denied_actions: 0
+  final_authority: human_code_owner

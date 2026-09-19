@@ -1,0 +1,4 @@
+intent → versioned contract → identity/workspace → runtime
+→ observable actions/effects → sealed candidate
+→ independent verification → approval/commit
+→ evidence + telemetry → eval/evolution

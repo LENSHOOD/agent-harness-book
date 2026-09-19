@@ -1,0 +1,6 @@
+agent workspace       可修改源码与允许的配置
+visible checks        可运行，用于快速反馈
+trusted evaluator     只读/隔离，Agent 无修改权限
+held-out checks       不进入模型上下文
+access audit          记录文件、网络与 evaluator 访问
+reference recompute   不信任 Agent 自报的分数

@@ -1,10 +1,10 @@
 # 第十章 验证、完成契约与证据包
 
-> 证据声明：产品与 benchmark 事实维护至 2026-08-28；设计结论是作者基于公开材料的综合推断。
+> 证据声明：本章复核至2026-09-19；历史benchmark数字按所引论文/公告的版本解释。完成门是作者参考设计，其能力取决于明确列出的检查与后端条件。
 
-对 `Agent`（智能代理）来说，最危险的一句话往往不是某条错误命令，而是“已经完成”。错误命令通常会有明显失败；而过早宣布完成，可能把半成品送进代码库、把错误数字写进管理报告，或让外部工作流继续执行。语言模型擅长生成语义上像结论的文本，但任务完成是环境中的客观事实。`Harness`（托管执行系统）必须把二者分开：模型只负责编写完成提案，只有独立完成门可以确认完成。
+Agent过早说“已经完成”，可能把半成品送进代码库、把错误数字写进管理报告，或让后续工作流继续执行。对这类需要外部事实支撑的任务，Harness应先接收候选，再按任务契约验收。普通对话的交付可以就是回答本身；需要独立服务、隔离环境还是人工判断，应按风险决定，不能把每次会话停止都强行送进一个重型完成门。
 
-本章的核心结论是：可靠 `Agent` 的最终产物不是一段回答，而是“交付物 + 可重放证据 + 未决风险”。验证不是循环结束时附带跑一次测试，而是从任务受理开始，就参与计划、权限、工具、状态和停止条件设计的控制面。
+对可审计任务，交付应包含产物、可核对证据和未决风险。输入、工具或模型不允许精确重放时，应说明能复建哪些结果、保留哪些原始记录。验证从任务受理开始参与设计，不只是结束时临时补跑一次测试。
 
 ## 1. Stop、Answer、Success 与 Commit 是四件事
 
@@ -13,7 +13,7 @@
 ```text
 MODEL_STOPPED      模型本轮停止生成
 ANSWER_PROPOSED    Agent 提交解释或候选交付物
-SUCCESS_VERIFIED   独立检查证明验收条件达到
+SUCCESS_VERIFIED   契约规定的检查已通过；不保证检查之外的全部正确性
 EFFECT_COMMITTED   经策略门允许，副作用对目标系统生效
 ```
 
@@ -23,7 +23,7 @@ EFFECT_COMMITTED   经策略门允许，副作用对目标系统生效
 
 ## 2. 完成契约从任务入口开始
 
-自然语言目标通常没有足够精度直接驱动执行。Harness 在任务受理阶段应把它编译成一个可版本化的完成契约（completion contract）：
+自然语言目标通常还缺少可以执行和验收的细节。任务受理时，平台与有权负责人把这些细节整理为一个有版本的完成契约：
 
 ```text
 CompletionContract {
@@ -59,7 +59,7 @@ CompletionContract {
 
 ### 3.1 确定性检查
 
-确定性检查包括类型、schema、编译、lint、单元测试、约束求解、数值对账、签名、哈希和资源版本检查。它们便宜、可重复、适合回归门，但只能证明已编码的断言。测试本身可能太窄、太宽、过时或依赖不稳定环境。
+确定性检查包括类型、schema、编译、lint、单元测试、约束求解和数值对账。签名、哈希与资源版本检查另回答“谁签署、内容是否变动、对应哪个输入”，不证明业务含义正确。这些检查的成本与可重复性因环境而异，结论也只覆盖已经编码的断言；测试仍可能太窄、过时或依赖不稳定环境。
 
 ### 3.2 环境与结果检查
 
@@ -114,7 +114,8 @@ pass^k = p^k
 agent workspace       可修改源码与允许的配置
 visible checks        可运行，用于快速反馈
 trusted evaluator     只读/隔离，Agent 无修改权限
-held-out checks       不进入模型上下文
+private validation    隔离检查，可按预定规则返回有限修复反馈
+sealed final test     独立终测，不用于候选调试或自适应选择
 access audit          记录文件、网络与 evaluator 访问
 reference recompute   不信任 Agent 自报的分数
 ```
@@ -166,11 +167,15 @@ READY_TO_COMMIT
   └─ denied/expired ─────────────→ BLOCKED
 
 COMMITTING
-  ├─ effect confirmed ───────────→ VERIFIED_COMPLETE
+  ├─ effect confirmed ───────────→ VERIFYING_POSTCONDITIONS
   └─ uncertain outcome ──────────→ RECONCILING
+
+VERIFYING_POSTCONDITIONS
+  ├─ business checks pass ───────→ VERIFIED_COMPLETE
+  └─ failed/unknown ─────────────→ COMMITTED_BUT_UNVERIFIED
 ```
 
-其中 `RECONCILING` 很关键。网络超时不代表外部操作失败：请求可能已在服务端生效。系统先按幂等键和目标状态回读，不能直接重放。`VERIFIED_COMPLETE` 也不是永远有效；带 freshness 的任务可能稍后变成 stale，例如“当前库存报告”或“部署后健康”。
+网络超时后，请求可能已在目标系统生效，因此RECONCILING先回读状态，不直接重放。部署API返回成功后，健康检查仍可能失败；这时保留“已提交、尚未验收”的状态，由有权主体决定补偿或升级，不能假装什么都没发生。若合同只要求保存一份报告，持久保存确认本身可以是最后检查，不需要人为制造额外外部提交。带时效的验收结果只对记录的观察窗口成立。
 
 参考伪代码如下：
 
@@ -179,13 +184,13 @@ function attempt_completion(run, candidate):
     contract = load_pinned_contract(run.contract_version)
     snapshot = seal_candidate(candidate)
 
-    results = []
-    for check in contract.acceptance_checks:
+    results = CheckResults()
+    for check in contract.pre_commit_checks:
         verifier = trusted_registry.resolve(check.version)
         results += verifier.run(
             candidate=snapshot,
             clean_environment=check.environment_digest,
-            hidden_inputs=check.held_out_ref
+            validation_inputs=check.validation_input_ref
         )
 
     if results.has_integrity_violation():
@@ -196,20 +201,39 @@ function attempt_completion(run, candidate):
         return REVIEW_REQUIRED
 
     if results.mandatory_failed():
-        if repair_budget_remaining(run):
+        if results.feedback_allowed and repair_budget_remaining(run):
             return REPAIRING(results.minimal_diagnostics())
         return BLOCKED_OR_FAILED
 
     package = build_evidence_package(run, snapshot, results)
-    decision = policy.evaluate_commit(package)
-    if decision.requires_approval:
-        return AWAITING_APPROVAL(package)
+    if not contract.requires_external_commit:
+        persist_delivery_and_evidence(snapshot, package)
+        return VERIFIED_COMPLETE
 
-    effect = commit_idempotently(snapshot, decision.capability)
-    return reconcile_and_attest(effect, package)
+    decision = decode_policy_decision(policy.evaluate_commit(package))
+    if decision.decision == REQUIRE_APPROVAL:
+        persist_approval_bound_to_candidate(package, snapshot.hash)
+        return AWAITING_APPROVAL
+    if decision.decision not in {ALLOW, CONSTRAINED_ALLOW}:
+        return BLOCKED
+    if not constraints_enforceable(package, decision):
+        return BLOCKED
+
+    effect = commit_with_live_authority_and_effect_ledger(snapshot, decision)
+    if effect.status in {UNKNOWN_EFFECT, PENDING}:
+        return RECONCILING
+    if not effect.is_confirmed:
+        return record_commit_failure(effect, package)
+    postconditions = verify_target_state(contract.post_commit_checks, effect)
+    persist_post_commit_evidence(package, effect, postconditions)
+    if not postconditions.passed:
+        return COMMITTED_BUT_UNVERIFIED
+    return VERIFIED_COMPLETE
 ```
 
-向 `Agent` 回传“最小诊断”是为了让它修复问题，又不泄露 held-out 内容。若直接暴露每个隐藏断言，反复修复会把 held-out 逐步变成可见训练集。
+这里的results是CheckResults集合，具有完整性、模糊信号和必需项判定方法，不是普通数组。检查器版本、输入和环境固定；进入审批后，候选hash、环境和契约变化会使旧批准失效。提交helper还须在实际发送前检查撤权、取消和约束，并处理未知副作用，不能只凭前面的一次策略判断。
+
+能返回修复诊断的私有检查集承担验证集职责。最小诊断可以减少泄漏，但多轮PASS/FAIL和诊断仍会影响候选选择，因此不能同时被称为从未参与选型的密封终测。终测由独立服务在预注册时机使用并记录访问次数；一旦拿它继续调试，就应登记暴露并重新建立终测证据。业务验收不一定使用隐藏题，但必须如实标明数据用途。
 
 ## 9. 三类案例
 
@@ -259,8 +283,8 @@ function attempt_completion(run, candidate):
 
 ## 11. 企业落地清单
 
-一个可投入生产的完成子系统至少应具备：版本化 Completion Contract；候选 artifact sealing；独立 verifier registry；可重放环境；visible 与 held-out 棋离；grader 校准与多 trial 统计；effect ledger 和幂等提交；证据包与签名；waiver/approval 流程；benchmark 退役与污染治理；以及对 verifier 篡改、测试投机和假完成的专项红队评测。
+完成子系统应按风险选择机制：版本化契约、候选封存、检查器登记、固定或可复建环境、验证/终测隔离、评分校准、效果账本、批准与例外记录。需要签名时先定义信任根和验证者；需要多轮模型评测时定义样本和重复单位。对高风险动作再做验收器篡改、测试投机和假完成演练。机制是否足够，以本组织的威胁模型和任务合同检验，不按组件数量判定生产成熟度。
 
 组织还应把“验证失败”视为产品数据。失败可能说明 Agent 不够强，也可能说明任务不可解、规范含糊、环境损坏或 grader 错误。Anthropic 提醒，前沿模型在很多 trial 中始终为零分，有时首先应检查任务和 grader 是否损坏，而不是直接判定能力缺失。[Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
-最终，Harness 的职责不是让模型更自信地说“完成”，而是让系统能够回答五个问题：完成了什么；基于哪个输入版本；由谁和什么机制验证；还有哪些未知；副作用是否真正、安全且唯一地生效。只有当这些问题有机器可读、可审计的答案时，`Agent` 才从会工作的助手变成可以托付工作的运行时。
+业务交付时，系统应能回答五个问题：完成了什么，基于哪个输入版本，谁用什么检查验收，还有哪些未知，以及已经发生哪些外部效果。回答不了的部分应保留为未验证项，不能由模型的自信叙述补齐。

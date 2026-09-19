@@ -1,0 +1,6 @@
+governance plane（候选不可写）
+  identity/policy root ─ eval registry ─ held-out vault
+  experiment service ─ release controller ─ audit/rollback
+                         │ proposal / signed release
+evolvable plane（有界可变）
+  task strategy ─ memory/skills ─ harness profiles ─ model profiles

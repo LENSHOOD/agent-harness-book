@@ -1,0 +1,9 @@
+Raw Event Log ───────────────┐
+Canonical Task State ────────┤
+Project Knowledge / Rules ───┤
+Memory Stores ───────────────┼→ Context Compiler → Model View
+Skill & Tool Catalog ────────┤        │
+Environment Index ───────────┤        ├→ token/cost manifest
+Policy View ─────────────────┘        └→ provenance manifest
+
+Large payloads → Artifact Store ← pointers in model view

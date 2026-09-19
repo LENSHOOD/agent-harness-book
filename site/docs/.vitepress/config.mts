@@ -60,7 +60,7 @@ export default defineConfig({
           { text: '术语表', link: '/appendices/C_glossary' },
           { text: '概念索引', link: '/appendices/D_concept_index' },
           { text: '机器可读契约', link: '/appendices/E_machine_readable_contracts' },
-          { text: '完整参考文献', link: '/references' }
+          { text: '已核验参考文献', link: '/references' }
         ]
       }
     ],

@@ -1,0 +1,9 @@
+                 Control Plane
+          policy / catalog / release
+                    │
+                    ▼
+User ───────→ Harness Data Plane ───────→ Model
+                    │
+                    ▼
+              Execution Plane
+          sandbox / browser / APIs

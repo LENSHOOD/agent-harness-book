@@ -1,0 +1,11 @@
+default sandbox
+  ├── read project
+  ├── write workspace
+  ├── run approved executables
+  └── no network
+
+step-up request
+  ├── exact extra path/domain
+  ├── reason and duration
+  ├── one action/session scope
+  └── audit + revoke

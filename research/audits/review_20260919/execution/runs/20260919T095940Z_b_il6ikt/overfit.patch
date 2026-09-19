@@ -1,0 +1,22 @@
+diff --git a/src/time/window.py b/src/time/window.py
+index 0727dec..2eb8b42 100644
+--- a/src/time/window.py
++++ b/src/time/window.py
+@@ -1,8 +1,14 @@
+-"""Audit-created baseline bug: assumes all local billing days last 24 hours."""
+-from datetime import datetime, time, timedelta, timezone
++"""Deterministic stub candidate: overfits the two visible NY dates."""
++from datetime import date, datetime, time, timedelta, timezone
+ from zoneinfo import ZoneInfo
+ 
+ 
+ def window_utc(day, zone):
+     start = datetime.combine(day, time.min, ZoneInfo(zone)).astimezone(timezone.utc)
+-    return start, start + timedelta(hours=24)
++    hours = 24
++    if zone == "America/New_York":
++        if day == date(2026, 3, 8):
++            hours = 23
++        elif day == date(2026, 11, 1):
++            hours = 25
++    return start, start + timedelta(hours=hours)

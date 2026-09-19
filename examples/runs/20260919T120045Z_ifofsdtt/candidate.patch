@@ -1,0 +1,28 @@
+diff --git a/src/window.py b/src/window.py
+index db71a67..881fe12 100644
+--- a/src/window.py
++++ b/src/window.py
+@@ -1,6 +1,9 @@
+-from datetime import datetime, time, timedelta, timezone
++"""Half-open UTC interval for a local civil date (supported-midnight domain)."""
++from datetime import datetime, time, timezone
+ from zoneinfo import ZoneInfo
++from .window_helpers import civil_end
++
+ 
+ def window_utc(day, zone):
+-    start = datetime.combine(day, time.min, ZoneInfo(zone)).astimezone(timezone.utc)
+-    return start, start + timedelta(hours=24)
++    tz = ZoneInfo(zone)
++    return datetime.combine(day, time.min, tz).astimezone(timezone.utc), civil_end(day, tz).astimezone(timezone.utc)
+diff --git a/src/window_helpers.py b/src/window_helpers.py
+new file mode 100644
+index 0000000..9860d9e
+--- /dev/null
++++ b/src/window_helpers.py
+@@ -0,0 +1,5 @@
++from datetime import datetime, time, timedelta
++
++
++def civil_end(day, tz):
++    return datetime.combine(day + timedelta(days=1), time.min, tz)

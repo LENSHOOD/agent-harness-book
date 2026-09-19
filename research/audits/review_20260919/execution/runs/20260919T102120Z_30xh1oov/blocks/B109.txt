@@ -1,0 +1,15 @@
+evidence_package:
+  id: EP-DATA-771-R2
+  contract: CC-DATA-771-v5
+  semantic_model: net_subscription_revenue_v4
+  snapshot: warehouse:2026-08-03T02:00:00Z
+  query_bundle: artifact:sha256:77ac...
+  aggregates: artifact:sha256:19be...
+  narrative: artifact:sha256:ae20...
+  verification:
+    metric_definition: pass
+    snapshot_consistency: pass
+    finance_reconciliation: {status: pass, delta_cny: "0.02"}
+    low_count_suppression: pass
+    numeric_claim_links: {linked: 37, unlinked: 0}
+  approvals: [data_owner, finance_analytics_owner]

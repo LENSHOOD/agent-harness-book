@@ -1,0 +1,2475 @@
+{
+  "cases": {
+    "B014": {
+      "normal": {
+        "case": "normal",
+        "source": "B014",
+        "helper_contracts": {
+          "budget_available": "Budget.__bool__ is remaining>0; predicate itself never spends",
+          "model": "deterministic; spends one unit on each decision",
+          "validate": "return original allowed read call; raise ValueError otherwise",
+          "execute": "return observation; injected OSError propagates, no hidden retry",
+          "context.append": "ordinary list append; no implicit error observation",
+          "watchdog": "external source-line guard, max240 line events/2s; AUDIT_ABORTED is not source termination"
+        },
+        "result": {
+          "outcome": "RETURNED",
+          "value": {
+            "observed": 42
+          },
+          "exception": null
+        },
+        "model_calls": 2,
+        "remaining": 0,
+        "effects": [
+          "read"
+        ],
+        "context": [
+          {
+            "value": 42
+          }
+        ],
+        "trace": [
+          {
+            "helper": "model",
+            "call": 1,
+            "budget": 1
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 2,
+            "budget": 0
+          }
+        ]
+      },
+      "zero_budget": {
+        "case": "zero_budget",
+        "source": "B014",
+        "helper_contracts": {
+          "budget_available": "Budget.__bool__ is remaining>0; predicate itself never spends",
+          "model": "deterministic; spends one unit on each decision",
+          "validate": "return original allowed read call; raise ValueError otherwise",
+          "execute": "return observation; injected OSError propagates, no hidden retry",
+          "context.append": "ordinary list append; no implicit error observation",
+          "watchdog": "external source-line guard, max240 line events/2s; AUDIT_ABORTED is not source termination"
+        },
+        "result": {
+          "outcome": "RETURNED",
+          "value": null,
+          "exception": null
+        },
+        "model_calls": 0,
+        "remaining": 0,
+        "effects": [],
+        "context": [],
+        "trace": []
+      },
+      "budget_exhausted": {
+        "case": "budget_exhausted",
+        "source": "B014",
+        "helper_contracts": {
+          "budget_available": "Budget.__bool__ is remaining>0; predicate itself never spends",
+          "model": "deterministic; spends one unit on each decision",
+          "validate": "return original allowed read call; raise ValueError otherwise",
+          "execute": "return observation; injected OSError propagates, no hidden retry",
+          "context.append": "ordinary list append; no implicit error observation",
+          "watchdog": "external source-line guard, max240 line events/2s; AUDIT_ABORTED is not source termination"
+        },
+        "result": {
+          "outcome": "RETURNED",
+          "value": null,
+          "exception": null
+        },
+        "model_calls": 2,
+        "remaining": 0,
+        "effects": [
+          "read",
+          "read"
+        ],
+        "context": [
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          }
+        ],
+        "trace": [
+          {
+            "helper": "model",
+            "call": 1,
+            "budget": 1
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 2,
+            "budget": 0
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          }
+        ]
+      },
+      "invalid_call": {
+        "case": "invalid_call",
+        "source": "B014",
+        "helper_contracts": {
+          "budget_available": "Budget.__bool__ is remaining>0; predicate itself never spends",
+          "model": "deterministic; spends one unit on each decision",
+          "validate": "return original allowed read call; raise ValueError otherwise",
+          "execute": "return observation; injected OSError propagates, no hidden retry",
+          "context.append": "ordinary list append; no implicit error observation",
+          "watchdog": "external source-line guard, max240 line events/2s; AUDIT_ABORTED is not source termination"
+        },
+        "result": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "ValueError",
+          "message": "schema/allowlist rejected tool before execute",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/01_from_control_loop_to_agent_runtime.md:150[translation]\", line 8, in minimal_loop\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 97, in validate\n    raise ValueError(\"schema/allowlist rejected tool before execute\")\nValueError: schema/allowlist rejected tool before execute\n"
+        },
+        "model_calls": 1,
+        "remaining": 1,
+        "effects": [],
+        "context": [],
+        "trace": [
+          {
+            "helper": "model",
+            "call": 1,
+            "budget": 1
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "forbidden"
+            }
+          }
+        ]
+      },
+      "tool_fault": {
+        "case": "tool_fault",
+        "source": "B014",
+        "helper_contracts": {
+          "budget_available": "Budget.__bool__ is remaining>0; predicate itself never spends",
+          "model": "deterministic; spends one unit on each decision",
+          "validate": "return original allowed read call; raise ValueError otherwise",
+          "execute": "return observation; injected OSError propagates, no hidden retry",
+          "context.append": "ordinary list append; no implicit error observation",
+          "watchdog": "external source-line guard, max240 line events/2s; AUDIT_ABORTED is not source termination"
+        },
+        "result": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "OSError",
+          "message": "injected read failure",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/01_from_control_loop_to_agent_runtime.md:150[translation]\", line 9, in minimal_loop\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 103, in execute\n    raise OSError(\"injected read failure\")\nOSError: injected read failure\n"
+        },
+        "model_calls": 1,
+        "remaining": 1,
+        "effects": [],
+        "context": [],
+        "trace": [
+          {
+            "helper": "model",
+            "call": 1,
+            "budget": 1
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          }
+        ]
+      },
+      "static_budget": {
+        "case": "static_budget",
+        "source": "B014",
+        "helper_contracts": {
+          "budget_available": "Budget.__bool__ is remaining>0; predicate itself never spends",
+          "model": "does NOT spend; always requests read (weak-contract counterexample)",
+          "validate": "return original allowed read call; raise ValueError otherwise",
+          "execute": "return observation; injected OSError propagates, no hidden retry",
+          "context.append": "ordinary list append; no implicit error observation",
+          "watchdog": "external source-line guard, max240 line events/2s; AUDIT_ABORTED is not source termination"
+        },
+        "result": {
+          "outcome": "AUDIT_ABORTED",
+          "value": null,
+          "exception": "ExecutionLimit",
+          "message": "AUDIT_WATCHDOG: source did not finish within 241 line events / 2s",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/01_from_control_loop_to_agent_runtime.md:150[translation]\", line 2, in minimal_loop\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 55, in trace\n    raise ExecutionLimit(f\"AUDIT_WATCHDOG: source did not finish within {lines} line events / 2s\")\nExecutionLimit: AUDIT_WATCHDOG: source did not finish within 241 line events / 2s\n"
+        },
+        "model_calls": 40,
+        "remaining": 2,
+        "effects": [
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read",
+          "read"
+        ],
+        "context": [
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          },
+          {
+            "value": 42
+          }
+        ],
+        "trace": [
+          {
+            "helper": "model",
+            "call": 1,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 2,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 3,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 4,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 5,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 6,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 7,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 8,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 9,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 10,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 11,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 12,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 13,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 14,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 15,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 16,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 17,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 18,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 19,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 20,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 21,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 22,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 23,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 24,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 25,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 26,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 27,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 28,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 29,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 30,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 31,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 32,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 33,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 34,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 35,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 36,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 37,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 38,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 39,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          },
+          {
+            "helper": "model",
+            "call": 40,
+            "budget": 2
+          },
+          {
+            "helper": "validate",
+            "call": {
+              "tool": "read"
+            }
+          },
+          {
+            "helper": "execute"
+          }
+        ]
+      }
+    },
+    "B078": {
+      "normal": {
+        "case": "normal",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "RETURNED",
+          "value": {
+            "artifact": {
+              "value": 42,
+              "producer": "child-1",
+              "schema": "int-value-v1"
+            },
+            "checks": {
+              "passed": true,
+              "expires_at": 10
+            },
+            "usage": {
+              "units": 1
+            }
+          },
+          "exception": null
+        },
+        "integrated": {
+          "outcome": "RETURNED",
+          "value": {
+            "status": "VERIFIED",
+            "candidate": {
+              "values": [
+                42
+              ]
+            }
+          },
+          "exception": null
+        },
+        "remaining_budget": 1,
+        "spawned": [
+          {
+            "snapshot": {
+              "objective": "bounded one-file observation"
+            },
+            "capability": {
+              "resources": [
+                "repo"
+              ],
+              "tools": [
+                "read"
+              ],
+              "expiry": 5,
+              "can_delegate": false
+            },
+            "workspace": {
+              "workspace": "child-only-memory",
+              "inputs": [
+                "repo@pinned"
+              ]
+            },
+            "lease": {
+              "units": 2,
+              "cancelled": false
+            }
+          }
+        ],
+        "merged": [
+          [
+            {
+              "artifact": {
+                "value": 42,
+                "producer": "child-1",
+                "schema": "int-value-v1"
+              },
+              "checks": {
+                "passed": true,
+                "expires_at": 10
+              },
+              "usage": {
+                "units": 1
+              }
+            }
+          ]
+        ],
+        "trace": [
+          "attenuate",
+          "reserve",
+          "spawn",
+          "await_or_cancel",
+          "validate_schema_and_provenance",
+          "verify_subtask",
+          "reject_unverified_or_expired",
+          "merge_in_clean_environment"
+        ]
+      },
+      "invalid_spec": {
+        "case": "invalid_spec",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "AssertionError",
+          "message": "",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:249[translation]\", line 4, in delegate\nAssertionError\n"
+        },
+        "integrated": null,
+        "remaining_budget": 3,
+        "spawned": [],
+        "merged": [],
+        "trace": []
+      },
+      "budget_reject": {
+        "case": "budget_reject",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "BudgetExhausted",
+          "message": "reservation exceeds remaining parent budget",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:249[translation]\", line 14, in delegate\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 148, in reserve\n    raise BudgetExhausted(\"reservation exceeds remaining parent budget\")\nBudgetExhausted: reservation exceeds remaining parent budget\n"
+        },
+        "integrated": null,
+        "remaining_budget": 3,
+        "spawned": [],
+        "merged": [],
+        "trace": [
+          "attenuate",
+          "reserve"
+        ]
+      },
+      "child_timeout": {
+        "case": "child_timeout",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "TimeoutError",
+          "message": "injected child deadline exhausted after one bounded attempt",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:249[translation]\", line 27, in delegate\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 159, in await_or_cancel\n    raise TimeoutError(\"injected child deadline exhausted after one bounded attempt\")\nTimeoutError: injected child deadline exhausted after one bounded attempt\n"
+        },
+        "integrated": null,
+        "remaining_budget": 1,
+        "spawned": [
+          {
+            "snapshot": {
+              "objective": "bounded one-file observation"
+            },
+            "capability": {
+              "resources": [
+                "repo"
+              ],
+              "tools": [
+                "read"
+              ],
+              "expiry": 5,
+              "can_delegate": false
+            },
+            "workspace": {
+              "workspace": "child-only-memory",
+              "inputs": [
+                "repo@pinned"
+              ]
+            },
+            "lease": {
+              "units": 2,
+              "cancelled": false
+            }
+          }
+        ],
+        "merged": [],
+        "trace": [
+          "attenuate",
+          "reserve",
+          "spawn",
+          "await_or_cancel"
+        ]
+      },
+      "child_cancelled": {
+        "case": "child_cancelled",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "ChildCancelled",
+          "message": "cancelled before child produced an artifact",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:249[translation]\", line 27, in delegate\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 161, in await_or_cancel\n    raise ChildCancelled(\"cancelled before child produced an artifact\")\nChildCancelled: cancelled before child produced an artifact\n"
+        },
+        "integrated": null,
+        "remaining_budget": 1,
+        "spawned": [
+          {
+            "snapshot": {
+              "objective": "bounded one-file observation"
+            },
+            "capability": {
+              "resources": [
+                "repo"
+              ],
+              "tools": [
+                "read"
+              ],
+              "expiry": 5,
+              "can_delegate": false
+            },
+            "workspace": {
+              "workspace": "child-only-memory",
+              "inputs": [
+                "repo@pinned"
+              ]
+            },
+            "lease": {
+              "units": 2,
+              "cancelled": false
+            }
+          }
+        ],
+        "merged": [],
+        "trace": [
+          "attenuate",
+          "reserve",
+          "spawn",
+          "await_or_cancel"
+        ]
+      },
+      "bad_provenance": {
+        "case": "bad_provenance",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "InvalidChild",
+          "message": "schema or producer binding rejected",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:249[translation]\", line 28, in delegate\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 169, in validate_artifact\n    raise InvalidChild(\"schema or producer binding rejected\")\nInvalidChild: schema or producer binding rejected\n"
+        },
+        "integrated": null,
+        "remaining_budget": 1,
+        "spawned": [
+          {
+            "snapshot": {
+              "objective": "bounded one-file observation"
+            },
+            "capability": {
+              "resources": [
+                "repo"
+              ],
+              "tools": [
+                "read"
+              ],
+              "expiry": 5,
+              "can_delegate": false
+            },
+            "workspace": {
+              "workspace": "child-only-memory",
+              "inputs": [
+                "repo@pinned"
+              ]
+            },
+            "lease": {
+              "units": 2,
+              "cancelled": false
+            }
+          }
+        ],
+        "merged": [],
+        "trace": [
+          "attenuate",
+          "reserve",
+          "spawn",
+          "await_or_cancel",
+          "validate_schema_and_provenance"
+        ]
+      },
+      "unverified": {
+        "case": "unverified",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "RETURNED",
+          "value": {
+            "artifact": {
+              "value": 0,
+              "producer": "child-1",
+              "schema": "int-value-v1"
+            },
+            "checks": {
+              "passed": false,
+              "expires_at": 10
+            },
+            "usage": {
+              "units": 1
+            }
+          },
+          "exception": null
+        },
+        "integrated": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "InvalidChild",
+          "message": "unverified/expired result rejected before merge",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:249[translation]\", line 33, in integrate\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 179, in reject\n    raise InvalidChild(\"unverified/expired result rejected before merge\")\nInvalidChild: unverified/expired result rejected before merge\n"
+        },
+        "remaining_budget": 1,
+        "spawned": [
+          {
+            "snapshot": {
+              "objective": "bounded one-file observation"
+            },
+            "capability": {
+              "resources": [
+                "repo"
+              ],
+              "tools": [
+                "read"
+              ],
+              "expiry": 5,
+              "can_delegate": false
+            },
+            "workspace": {
+              "workspace": "child-only-memory",
+              "inputs": [
+                "repo@pinned"
+              ]
+            },
+            "lease": {
+              "units": 2,
+              "cancelled": false
+            }
+          }
+        ],
+        "merged": [],
+        "trace": [
+          "attenuate",
+          "reserve",
+          "spawn",
+          "await_or_cancel",
+          "validate_schema_and_provenance",
+          "verify_subtask",
+          "reject_unverified_or_expired"
+        ]
+      },
+      "conflict": {
+        "case": "conflict",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "RETURNED",
+          "value": {
+            "artifact": {
+              "value": 42,
+              "producer": "child-1",
+              "schema": "int-value-v1"
+            },
+            "checks": {
+              "passed": true,
+              "expires_at": 10
+            },
+            "usage": {
+              "units": 1
+            }
+          },
+          "exception": null
+        },
+        "integrated": {
+          "outcome": "RETURNED",
+          "value": {
+            "status": "RESOLUTION_REQUIRED",
+            "conflicts": [
+              "overlapping-write"
+            ]
+          },
+          "exception": null
+        },
+        "remaining_budget": 1,
+        "spawned": [
+          {
+            "snapshot": {
+              "objective": "bounded one-file observation"
+            },
+            "capability": {
+              "resources": [
+                "repo"
+              ],
+              "tools": [
+                "read"
+              ],
+              "expiry": 5,
+              "can_delegate": false
+            },
+            "workspace": {
+              "workspace": "child-only-memory",
+              "inputs": [
+                "repo@pinned"
+              ]
+            },
+            "lease": {
+              "units": 2,
+              "cancelled": false
+            }
+          }
+        ],
+        "merged": [],
+        "trace": [
+          "attenuate",
+          "reserve",
+          "spawn",
+          "await_or_cancel",
+          "validate_schema_and_provenance",
+          "verify_subtask",
+          "reject_unverified_or_expired"
+        ]
+      },
+      "parent_gate_fail": {
+        "case": "parent_gate_fail",
+        "source": "B078",
+        "helper_contracts": {
+          "assertions": "bounded=nonempty objective under100 chars; schema exists means not None; checks nonempty; assertions enabled",
+          "attenuate": "intersect resources/tools; min expiry; delegation logical AND; never expand parent rights",
+          "scheduler.reserve": "reject insufficient budget/cancelled parent before spawn; decrement parent by reservation; no automatic release",
+          "runtime.spawn": "logical memory workspace; no real subprocess/subagent; child spends1 <= lease2",
+          "child.await_or_cancel": "one finite operation; normal return or explicit timeout/cancel exception; no sleeps/retry",
+          "validate_schema_and_provenance": "tiny fixture schema + producer check; raises on rejection (not a false sentinel)",
+          "verify_subtask": "return passed/expiry checks; failed checks do not count as parent success",
+          "reject_unverified_or_expired": "raise InvalidChild before merge; ignore-return caller requires this raising contract",
+          "detect/merge/parent_gate": "conflict -> RESOLUTION_REQUIRED without merge; otherwise merge then independent gate can BLOCK",
+          "watchdog": "same external finite source-line guard as B014"
+        },
+        "delegated": {
+          "outcome": "RETURNED",
+          "value": {
+            "artifact": {
+              "value": 42,
+              "producer": "child-1",
+              "schema": "int-value-v1"
+            },
+            "checks": {
+              "passed": true,
+              "expires_at": 10
+            },
+            "usage": {
+              "units": 1
+            }
+          },
+          "exception": null
+        },
+        "integrated": {
+          "outcome": "RETURNED",
+          "value": {
+            "status": "BLOCKED",
+            "candidate": {
+              "values": [
+                42
+              ]
+            }
+          },
+          "exception": null
+        },
+        "remaining_budget": 1,
+        "spawned": [
+          {
+            "snapshot": {
+              "objective": "bounded one-file observation"
+            },
+            "capability": {
+              "resources": [
+                "repo"
+              ],
+              "tools": [
+                "read"
+              ],
+              "expiry": 5,
+              "can_delegate": false
+            },
+            "workspace": {
+              "workspace": "child-only-memory",
+              "inputs": [
+                "repo@pinned"
+              ]
+            },
+            "lease": {
+              "units": 2,
+              "cancelled": false
+            }
+          }
+        ],
+        "merged": [
+          [
+            {
+              "artifact": {
+                "value": 42,
+                "producer": "child-1",
+                "schema": "int-value-v1"
+              },
+              "checks": {
+                "passed": true,
+                "expires_at": 10
+              },
+              "usage": {
+                "units": 1
+              }
+            }
+          ]
+        ],
+        "trace": [
+          "attenuate",
+          "reserve",
+          "spawn",
+          "await_or_cancel",
+          "validate_schema_and_provenance",
+          "verify_subtask",
+          "reject_unverified_or_expired",
+          "merge_in_clean_environment"
+        ]
+      }
+    },
+    "B091": {
+      "normal": {
+        "case": "normal",
+        "source": "B091",
+        "helper_contracts": {
+          "budget": "remaining>0 Boolean; source contains no decrement",
+          "select": "pop first frontier state (explicit progress contract)",
+          "propose_distinct_hypotheses": "finite list; max3 branches; no hidden loop",
+          "execute_in_isolated_branch": "check remaining and debit1 before each branch; raise BudgetExhausted if zero",
+          "external_verifier": "hard_pass from value=42; deterministic utility/cost; injected exception propagates",
+          "retain_if_nondominated": "update separate result archive by utility/cost within hard-gate class; no hidden frontier insertion",
+          "best_candidate_that_passes_hard_gates": "return highest-utility hard-pass candidate or NEEDS_ESCALATION when none",
+          "watchdog": "outside source:240 line events/2s; records AUDIT_ABORTED, not a successful source stop"
+        },
+        "result": {
+          "outcome": "RETURNED",
+          "value": "better",
+          "exception": null
+        },
+        "initial_budget": 3,
+        "remaining": 0,
+        "executed": [
+          "fails",
+          "good",
+          "better"
+        ],
+        "scores": [
+          {
+            "candidate": "fails",
+            "hard_pass": false,
+            "utility": 99,
+            "cost": 1
+          },
+          {
+            "candidate": "good",
+            "hard_pass": true,
+            "utility": 4,
+            "cost": 1
+          },
+          {
+            "candidate": "better",
+            "hard_pass": true,
+            "utility": 5,
+            "cost": 1
+          }
+        ],
+        "retained": [
+          {
+            "candidate": "fails",
+            "score": {
+              "hard_pass": false,
+              "utility": 99,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "better",
+            "score": {
+              "hard_pass": true,
+              "utility": 5,
+              "cost": 1
+            }
+          }
+        ],
+        "trace": [
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:fails",
+          "external_verifier",
+          "retain_if_nondominated",
+          "execute:good",
+          "external_verifier",
+          "retain_if_nondominated",
+          "execute:better",
+          "external_verifier",
+          "retain_if_nondominated",
+          "best_candidate_that_passes_hard_gates"
+        ]
+      },
+      "zero_budget": {
+        "case": "zero_budget",
+        "source": "B091",
+        "helper_contracts": {
+          "budget": "remaining>0 Boolean; source contains no decrement",
+          "select": "pop first frontier state (explicit progress contract)",
+          "propose_distinct_hypotheses": "finite list; max3 branches; no hidden loop",
+          "execute_in_isolated_branch": "check remaining and debit1 before each branch; raise BudgetExhausted if zero",
+          "external_verifier": "hard_pass from value=42; deterministic utility/cost; injected exception propagates",
+          "retain_if_nondominated": "update separate result archive by utility/cost within hard-gate class; no hidden frontier insertion",
+          "best_candidate_that_passes_hard_gates": "return highest-utility hard-pass candidate or NEEDS_ESCALATION when none",
+          "watchdog": "outside source:240 line events/2s; records AUDIT_ABORTED, not a successful source stop"
+        },
+        "result": {
+          "outcome": "RETURNED",
+          "value": "NEEDS_ESCALATION",
+          "exception": null
+        },
+        "initial_budget": 0,
+        "remaining": 0,
+        "executed": [],
+        "scores": [],
+        "retained": [],
+        "trace": [
+          "best_candidate_that_passes_hard_gates"
+        ]
+      },
+      "strict_budget": {
+        "case": "strict_budget",
+        "source": "B091",
+        "helper_contracts": {
+          "budget": "remaining>0 Boolean; source contains no decrement",
+          "select": "pop first frontier state (explicit progress contract)",
+          "propose_distinct_hypotheses": "finite list; max3 branches; no hidden loop",
+          "execute_in_isolated_branch": "check remaining and debit1 before each branch; raise BudgetExhausted if zero",
+          "external_verifier": "hard_pass from value=42; deterministic utility/cost; injected exception propagates",
+          "retain_if_nondominated": "update separate result archive by utility/cost within hard-gate class; no hidden frontier insertion",
+          "best_candidate_that_passes_hard_gates": "return highest-utility hard-pass candidate or NEEDS_ESCALATION when none",
+          "watchdog": "outside source:240 line events/2s; records AUDIT_ABORTED, not a successful source stop"
+        },
+        "result": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "BudgetExhausted",
+          "message": "candidate helper refuses next branch; outer for has no budget check",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md:35[translation]\", line 7, in frontier_search\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 246, in execute\n    raise BudgetExhausted(\"candidate helper refuses next branch; outer for has no budget check\")\nBudgetExhausted: candidate helper refuses next branch; outer for has no budget check\n"
+        },
+        "initial_budget": 1,
+        "remaining": 0,
+        "executed": [
+          "fails"
+        ],
+        "scores": [
+          {
+            "candidate": "fails",
+            "hard_pass": false,
+            "utility": 99,
+            "cost": 1
+          }
+        ],
+        "retained": [
+          {
+            "candidate": "fails",
+            "score": {
+              "hard_pass": false,
+              "utility": 99,
+              "cost": 1
+            }
+          }
+        ],
+        "trace": [
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:fails",
+          "external_verifier",
+          "retain_if_nondominated",
+          "execute:good"
+        ]
+      },
+      "accounting_only_budget": {
+        "case": "accounting_only_budget",
+        "source": "B091",
+        "helper_contracts": {
+          "budget": "remaining>0 Boolean; source contains no decrement",
+          "select": "pop first frontier state (explicit progress contract)",
+          "propose_distinct_hypotheses": "finite list; max3 branches; no hidden loop",
+          "execute_in_isolated_branch": "decrement only, may go negative",
+          "external_verifier": "hard_pass from value=42; deterministic utility/cost; injected exception propagates",
+          "retain_if_nondominated": "update separate result archive by utility/cost within hard-gate class; no hidden frontier insertion",
+          "best_candidate_that_passes_hard_gates": "return highest-utility hard-pass candidate or NEEDS_ESCALATION when none",
+          "watchdog": "outside source:240 line events/2s; records AUDIT_ABORTED, not a successful source stop"
+        },
+        "result": {
+          "outcome": "RETURNED",
+          "value": "better",
+          "exception": null
+        },
+        "initial_budget": 1,
+        "remaining": -2,
+        "executed": [
+          "fails",
+          "good",
+          "better"
+        ],
+        "scores": [
+          {
+            "candidate": "fails",
+            "hard_pass": false,
+            "utility": 99,
+            "cost": 1
+          },
+          {
+            "candidate": "good",
+            "hard_pass": true,
+            "utility": 4,
+            "cost": 1
+          },
+          {
+            "candidate": "better",
+            "hard_pass": true,
+            "utility": 5,
+            "cost": 1
+          }
+        ],
+        "retained": [
+          {
+            "candidate": "fails",
+            "score": {
+              "hard_pass": false,
+              "utility": 99,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "better",
+            "score": {
+              "hard_pass": true,
+              "utility": 5,
+              "cost": 1
+            }
+          }
+        ],
+        "trace": [
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:fails",
+          "external_verifier",
+          "retain_if_nondominated",
+          "execute:good",
+          "external_verifier",
+          "retain_if_nondominated",
+          "execute:better",
+          "external_verifier",
+          "retain_if_nondominated",
+          "best_candidate_that_passes_hard_gates"
+        ]
+      },
+      "verifier_fault": {
+        "case": "verifier_fault",
+        "source": "B091",
+        "helper_contracts": {
+          "budget": "remaining>0 Boolean; source contains no decrement",
+          "select": "pop first frontier state (explicit progress contract)",
+          "propose_distinct_hypotheses": "finite list; max3 branches; no hidden loop",
+          "execute_in_isolated_branch": "check remaining and debit1 before each branch; raise BudgetExhausted if zero",
+          "external_verifier": "hard_pass from value=42; deterministic utility/cost; injected exception propagates",
+          "retain_if_nondominated": "update separate result archive by utility/cost within hard-gate class; no hidden frontier insertion",
+          "best_candidate_that_passes_hard_gates": "return highest-utility hard-pass candidate or NEEDS_ESCALATION when none",
+          "watchdog": "outside source:240 line events/2s; records AUDIT_ABORTED, not a successful source stop"
+        },
+        "result": {
+          "outcome": "EXCEPTION",
+          "value": null,
+          "exception": "RuntimeError",
+          "message": "injected independent verifier failure",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md:35[translation]\", line 8, in frontier_search\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 254, in verify\n    raise RuntimeError(\"injected independent verifier failure\")\nRuntimeError: injected independent verifier failure\n"
+        },
+        "initial_budget": 3,
+        "remaining": 2,
+        "executed": [
+          "fails"
+        ],
+        "scores": [],
+        "retained": [],
+        "trace": [
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:fails",
+          "external_verifier"
+        ]
+      },
+      "static_budget_frontier": {
+        "case": "static_budget_frontier",
+        "source": "B091",
+        "helper_contracts": {
+          "budget": "remaining>0 Boolean; source contains no decrement",
+          "select": "return first WITHOUT removal",
+          "propose_distinct_hypotheses": "finite list; max3 branches; no hidden loop",
+          "execute_in_isolated_branch": "does not spend (weak contract)",
+          "external_verifier": "hard_pass from value=42; deterministic utility/cost; injected exception propagates",
+          "retain_if_nondominated": "update separate result archive by utility/cost within hard-gate class; no hidden frontier insertion",
+          "best_candidate_that_passes_hard_gates": "return highest-utility hard-pass candidate or NEEDS_ESCALATION when none",
+          "watchdog": "outside source:240 line events/2s; records AUDIT_ABORTED, not a successful source stop"
+        },
+        "result": {
+          "outcome": "AUDIT_ABORTED",
+          "value": null,
+          "exception": "ExecutionLimit",
+          "message": "AUDIT_WATCHDOG: source did not finish within 241 line events / 2s",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 68, in capture\n    value = bounded_call(fn, *args)\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 60, in bounded_call\n    return fn(*args)\n  File \"manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md:35[translation]\", line 6, in frontier_search\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/remaining_pseudocode.py\", line 55, in trace\n    raise ExecutionLimit(f\"AUDIT_WATCHDOG: source did not finish within {lines} line events / 2s\")\nExecutionLimit: AUDIT_WATCHDOG: source did not finish within 241 line events / 2s\n"
+        },
+        "initial_budget": 3,
+        "remaining": 3,
+        "executed": [
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same",
+          "same"
+        ],
+        "scores": [
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          },
+          {
+            "candidate": "same",
+            "hard_pass": true,
+            "utility": 1,
+            "cost": 1
+          }
+        ],
+        "retained": [
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          },
+          {
+            "candidate": "same",
+            "score": {
+              "hard_pass": true,
+              "utility": 1,
+              "cost": 1
+            }
+          }
+        ],
+        "trace": [
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated",
+          "select",
+          "propose_distinct_hypotheses",
+          "execute:same",
+          "external_verifier",
+          "retain_if_nondominated"
+        ]
+      }
+    }
+  },
+  "scope": "Actual Python execution of minimally translated manuscript control flow with deterministic helper doubles; no vendor runtime",
+  "syntax_changes": {
+    "B014": "wrap original block in def minimal_loop; no source-body changes",
+    "B078": "function->def; three assertions translated to Python predicates, no added control flow",
+    "B091": "wrap original block in def frontier_search; no source-body changes"
+  },
+  "limits": "21 scenarios; every helper finite; outside watchdog bounds non-progress loops. No empirical model, budget threshold or production isolation claim.",
+  "interpretation": "P2 findings are explicit missing helper/termination/cleanup contracts. B014 itself disclaims being an enterprise harness; do not call these vendor exploits."
+}

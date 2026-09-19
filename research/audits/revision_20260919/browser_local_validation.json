@@ -1,0 +1,54 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "title": "Agent Harness",
+      "url": "http://localhost:4173/agent-harness-book/",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "missing_images": [],
+      "contains_expected": true,
+      "js_exceptions": [],
+      "observation": "Reloaded current book page after draining events from prior research pages"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "title": "第六章 Agent Loop：从 while 循环到持久状态机 | Agent Harness",
+      "url": "http://localhost:4173/agent-harness-book/chapters/06_agent_loop_as_a_durable_state_machine",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "missing_images": [],
+      "contains_expected": true,
+      "js_exceptions": [],
+      "observation": "Reloaded current book page after draining events from prior research pages"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "title": "第十五章 Cursor：IDE 原生上下文与云端 Agent | Agent Harness",
+      "url": "http://localhost:4173/agent-harness-book/chapters/15_cursor_ide_native_context_and_cloud_agents",
+      "width": 375,
+      "scrollWidth": 375,
+      "missing_images": [],
+      "contains_expected": true,
+      "js_exceptions": [],
+      "observation": "Reloaded current book page after draining events from prior research pages"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "title": "已核验参考文献 | Agent Harness",
+      "url": "http://localhost:4173/agent-harness-book/references",
+      "width": 375,
+      "scrollWidth": 375,
+      "missing_images": [],
+      "contains_expected": true,
+      "js_exceptions": [],
+      "observation": "Reloaded current book page after draining events from prior research pages"
+    }
+  }
+]

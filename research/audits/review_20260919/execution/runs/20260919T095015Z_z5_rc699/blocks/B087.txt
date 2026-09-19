@@ -1,0 +1,7 @@
+user/task → agent controller → Action → EventStream
+                                  ↓
+                              Runtime API
+                                  ↓
+                         shell/browser/files
+                                  ↓
+             Observation → EventStream → next decision

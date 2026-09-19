@@ -1,0 +1,32 @@
+def attempt_completion(run, candidate):
+    contract = load_pinned_contract(run.contract_version)
+    snapshot = seal_candidate(candidate)
+
+    results = Results()
+    for check in contract.acceptance_checks:
+        verifier = trusted_registry.resolve(check.version)
+        results += verifier.run(
+            candidate=snapshot,
+            clean_environment=check.environment_digest,
+            hidden_inputs=check.held_out_ref
+        )
+
+    if results.has_integrity_violation():
+        quarantine(run)
+        return FAILED
+
+    if results.has_ambiguous_or_flaky_signal():
+        return REVIEW_REQUIRED
+
+    if results.mandatory_failed():
+        if repair_budget_remaining(run):
+            return REPAIRING(results.minimal_diagnostics())
+        return BLOCKED_OR_FAILED
+
+    package = build_evidence_package(run, snapshot, results)
+    decision = policy.evaluate_commit(package)
+    if decision.requires_approval:
+        return AWAITING_APPROVAL(package)
+
+    effect = commit_idempotently(snapshot, decision.capability)
+    return reconcile_and_attest(effect, package)

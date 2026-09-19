@@ -1,0 +1,5 @@
+Subject      user, agent, service identity
+Action       canonical tool/action + normalized args
+Resource     repo, path, API object, environment
+Context      task, tenant, time, risk, prior approvals
+Provenance   model, skill, MCP server, originating content

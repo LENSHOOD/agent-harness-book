@@ -1,0 +1,7 @@
+raw event graph
+→ consent/tenant/data-class filter
+→ outcome verification
+→ near-duplicate and contamination check
+→ causal segment labeling
+→ train/validation/test split by task lineage
+→ immutable dataset snapshot

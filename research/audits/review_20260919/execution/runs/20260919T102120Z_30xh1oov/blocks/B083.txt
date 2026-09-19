@@ -1,0 +1,3 @@
+client request: thread/start, turn/start, turn/cancel
+server stream: item/start, item/update, item/completed, turn/completed
+server request: approval or user input

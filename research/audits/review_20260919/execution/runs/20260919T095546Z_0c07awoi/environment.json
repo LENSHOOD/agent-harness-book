@@ -1,0 +1,82 @@
+{
+  "timestamp_utc": "2026-09-19T09:55:46.881306+00:00",
+  "python": "3.13.13 (main, May 10 2026, 19:20:37) [Clang 22.1.3 ]",
+  "executable": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "sqlite": "3.50.4",
+  "git": "git version 2.54.0 (Apple Git-157)",
+  "bash": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)",
+  "source_HEAD": "a1ed264462d9b61c260c1dc417243303bfc60b66",
+  "source_status": "?? research/audits/review_20260919/\n",
+  "dependencies": {
+    "jsonschema": "4.26.0",
+    "PyYAML": "6.0.3",
+    "pytest": "9.1.1",
+    "referencing": "0.37.0",
+    "rpds-py": "2026.6.3",
+    "attrs": "26.1.0"
+  },
+  "dependency_manifest_sha256": "be8c5d045280b84240f5baaf8d0f78eb88ba6d868bad83b60b950eac0863ac78",
+  "requirements_sha256": "97bfa038a7484ceeebbcb332990913357b912f2ef3ba884d4d9f5bca80e6391b",
+  "original_venv": {
+    "name": "original_venv_packages",
+    "argv": [
+      "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+      "-B",
+      "-c",
+      "import sys,json,importlib.metadata; print(sys.version); print(json.dumps(sorted((d.metadata['Name'],d.version) for d in importlib.metadata.distributions())))"
+    ],
+    "cwd": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822",
+    "exit_code": 0,
+    "stdout": "3.13.13 (main, May 10 2026, 19:20:37) [Clang 22.1.3 ]\n[[\"Markdown\", \"3.10.3\"], [\"brotli\", \"1.2.0\"], [\"cffi\", \"2.1.1\"], [\"charset-normalizer\", \"3.5.1\"], [\"cryptography\", \"50.0.0\"], [\"cssselect2\", \"0.9.0\"], [\"fonttools\", \"4.63.0\"], [\"pdfminer.six\", \"20260107\"], [\"pdfplumber\", \"0.11.10\"], [\"pillow\", \"12.3.0\"], [\"pycparser\", \"3.0\"], [\"pydyf\", \"0.12.1\"], [\"pypdf\", \"6.16.1\"], [\"pypdfium2\", \"5.13.0\"], [\"pyphen\", \"0.18.1\"], [\"reportlab\", \"5.0.1\"], [\"tinycss2\", \"1.5.1\"], [\"tinyhtml5\", \"2.1.0\"], [\"weasyprint\", \"69.0\"], [\"webencodings\", \"0.6.1\"], [\"zopfli\", \"0.4.3\"]]\n",
+    "stderr": "",
+    "stdout_file": "commands/005_original_venv_packages.stdout.log",
+    "stderr_file": "commands/005_original_venv_packages.stderr.log"
+  },
+  "original_venv_pip_exit": 1,
+  "scripts_sha256": {
+    "additional_counterexamples.py": "d0bd161c34191bf104febaeec592211623c6e0949803924d3fcdbdee87fd656a",
+    "auditlib.py": "b0de7bafa9db4720610f3029be39539ed47745aedd1f2069ecd21ba302af870c",
+    "bootstrap.py": "d198588ceb7655f051637927947dcbd551be0f3132c2456ebdf4508ef5f3fbfb",
+    "evolution_case.py": "60d494ded4b731ba3de7580629379583dd2a5453aeed454ef50bb50de75dbff3",
+    "fixtures/cheating_window.py": "e7d4647b58f97b37572b6ecb5fa13aaa08c5bee2bec0a5e116297c3ff4eafa6a",
+    "fixtures/corrected_window.py": "b94f7aa019f0ae80ae1f149082eeec9ad55a17e60b078a142688ec64c6c66793",
+    "fixtures/dependent_window.py": "fd4b000f21688e6b3a71e6df2760e74538843701191bc0312d56358f75dc97a0",
+    "fixtures/hidden/test_contract.py": "2d0b070bc9d3a53d612766d83a098557081380f445da49dd33de3919e1b55b90",
+    "fixtures/repo/src/time/window.py": "83eb9a256377a954e8d0be8fd4e131a8edcdc395aa349647cea32f728ca57f15",
+    "fixtures/repo/tests/time/test_dst.py": "28be1f8ded6e142afb9236adc82022ed95d64243c2a6990f93034ad144455731",
+    "fixtures/repo/tests/time/test_ordinary.py": "fad44fa5875cad45f580ce7ccb4eccecda3a485876c1b9f5d472f4d65e8edbaf",
+    "fixtures/window_helpers.py": "55755c4c4336155590e3f949a0071fe33314867cf5c130861ba340bb7c831db0",
+    "inventory.py": "3082edc0f30d2c1dd4645aecdb33f43a5da7d202bea4fbcec48bdbe07c4d9c08",
+    "repo_case.py": "acecaaaa6d363147826bb830c40918156551a5e4124162963959e33bcf3a31f3",
+    "run.sh": "455543964de716d20c1d6b91ce841beafcbf15564eef50b1d34d891d71f26bea",
+    "run_all.py": "38c0bd9dcd9c0ebe5ffeafc0dfcf9fa2585400b5636c24ea66950f160f299cdb",
+    "safety_models.py": "7ad86270c957006dd11f94d934b2f51f0fe83e9b8a31271542c26c44cdbee98b",
+    "sql_case.py": "6c5291e223e69f42dcdade23ad52cda8adacc0d5090e21515471c7455dbcf50b",
+    "structured.py": "3249608f25872349fadc5b8b78fe1a786212114bb1fe47541b0ba9fe2fe25970"
+  },
+  "timezone_files": {
+    "America/New_York": {
+      "path": "/usr/share/zoneinfo/America/New_York",
+      "sha256": "e9ed07d7bee0c76a9d442d091ef1f01668fee7c4f26014c0a868b19fe6c18a95"
+    },
+    "Europe/Berlin": {
+      "path": "/usr/share/zoneinfo/Europe/Berlin",
+      "sha256": "5ee475f71a0fc1a32faeb849f8c39c6e7aa66d6d41ec742b97b3a7436b3b0701"
+    },
+    "Australia/Lord_Howe": {
+      "path": "/usr/share/zoneinfo/Australia/Lord_Howe",
+      "sha256": "a323c5433991a963eb497b7da4d1d09848bf3ef5f5d64d9c9649f388e4bab9df"
+    },
+    "UTC": {
+      "path": "/usr/share/zoneinfo/UTC",
+      "sha256": "8b85846791ab2c8a5463c83a5be3c043e2570d7448434d41398969ed47e3e6f2"
+    }
+  },
+  "network": "Python sockets blocked; subprocesses only local git, bash, pytest",
+  "deterministic_provider": true,
+  "model_API_calls": 0,
+  "external_writes": 0,
+  "new_git_commits": 0,
+  "git_fixture_baseline": "write-tree only"
+}

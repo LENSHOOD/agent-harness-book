@@ -1,0 +1,17 @@
+{
+  "contract_id": "CC-REPO-2048-v3",
+  "task": "修复 DST 边界下的重复扣款时间窗计算",
+  "workspace": {"repo": "payments", "commit": "8f31b6e"},
+  "allowed_writes": ["src/time/**", "tests/time/**"],
+  "forbidden": ["delete_tests", "change_ledger_rules", "push", "deploy"],
+  "deliverables": ["git_patch", "change_explanation", "verification_results"],
+  "checks": [
+    "tests/time/test_dst.py::test_fall_back_window",
+    "tests/time/test_dst.py::test_spring_forward_window",
+    "pytest tests/time",
+    "lint",
+    "no_pass_to_pass_regression"
+  ],
+  "budgets": {"wall_minutes": 30, "model_usd": 8, "max_tool_calls": 120},
+  "commit_authority": "human_code_owner"
+}

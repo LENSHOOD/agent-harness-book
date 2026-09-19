@@ -1,0 +1,2 @@
+intent → ambiguity/materiality detection → contract draft
+→ authority confirmation → executable checks → run

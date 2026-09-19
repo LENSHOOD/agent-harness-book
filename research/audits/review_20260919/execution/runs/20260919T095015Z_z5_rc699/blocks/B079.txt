@@ -1,0 +1,7 @@
+TraceEvent {
+  run_id, span_id, parent_id, type, timestamp
+  actor, model, tool, policy_version
+  input_refs[], output_refs[]
+  state_before, state_after
+  cost, latency, status, error_class
+}

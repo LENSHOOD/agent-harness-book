@@ -1,0 +1,169 @@
+# 全书逐块覆盖矩阵
+
+SHA-256 按 fenced 内容原始 UTF-8 字节（含末尾换行），不含 fence；行号是开 fence。编号按路径排序。
+
+可运行代码是输入类别，不代表执行成功。未验证项可能已完成 JSON/YAML 原样解析；这不代表运行语义已验证。
+
+|ID|file:line|language|SHA-256|classification|覆盖|解析|实测检查 PASS/FAIL|限制|
+|---|---|---|---|---|---|---|---|---|
+|B001|manuscript/appendices/A_core_contracts_and_pseudocode.md:9|text|cbd64a4d16b20b56e5b5a22fdff2176aabc5cbfc49f99996f0697a087fa16df5|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B002|manuscript/appendices/A_core_contracts_and_pseudocode.md:52|text|49eda020fda066650f7c7f2838234335d869114773907530994f9f1ec3ca5063|pseudocode|设计示意|NOT_APPLICABLE|{'PASS': 4, 'FAIL': 2}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B003|manuscript/appendices/A_core_contracts_and_pseudocode.md:91|text|2140554bf5c2d6937a744c0d451dea29fe04e7033381e163762b39343a7923aa|pseudocode|设计示意|NOT_APPLICABLE|{'PASS': 8, 'FAIL': 5}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B004|manuscript/appendices/A_core_contracts_and_pseudocode.md:125|text|384ad07fd75e67eced727c18124ae227926f4ae84c5150439ee34d9b6d4347c8|pseudocode|设计示意|NOT_APPLICABLE|{'PASS': 3, 'FAIL': 1}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B005|manuscript/appendices/A_core_contracts_and_pseudocode.md:154|text|9ce4d516286bcbc65e4d39d2c97949ecf7d7bdafeed480dbd1df97f832af9dee|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B006|manuscript/appendices/E_machine_readable_contracts.md:7|json|077318820386425138ed24a86c5a904866cf254a0a0e35e589fc7972d0690e6e|json_schema|仅schema验证|PASS|{'PASS': 20, 'FAIL': 2}|元schema及合成正反实例；未验证权限、来源、artifact或业务语义|
+|B007|manuscript/appendices/E_machine_readable_contracts.md:40|json|c09d6ccac096e17aac13d9a06c2112709c0d7b477edd59afec3de67b2e24ab16|json_schema|仅schema验证|PASS|{'PASS': 19, 'FAIL': 7}|元schema及合成正反实例；未验证权限、来源、artifact或业务语义|
+|B008|manuscript/appendices/E_machine_readable_contracts.md:86|yaml|c992a2b260beb32f4f24286f1127d94c79a15c61c793eefaa907e7f9683c307d|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B009|manuscript/chapters/00_preface.md:16|text|73afde4ef95e72a54af8c9b2f3370116e2d4cbdc5c1ddc738dde9ada00a7b29e|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B010|manuscript/chapters/01_from_control_loop_to_agent_runtime.md:6|text|291c41ebd6049a40dfce3c7f36ba7a8fd1fa763920c5dc6d547f70016cbbaeb5|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B011|manuscript/chapters/01_from_control_loop_to_agent_runtime.md:26|text|63273187d1ac2da9ec6c48ecdd59e32dab1f09937b1058a0540b86235aec3ff4|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B012|manuscript/chapters/01_from_control_loop_to_agent_runtime.md:75|text|8a2ff2191aa728fccc417780c34b1c02da452ee5868d8d33f2080191c4d0df4b|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B013|manuscript/chapters/01_from_control_loop_to_agent_runtime.md:133|text|fcab7e4c4093bbcc2fe8e2e1a66305b8db8303c240ca3aaff4c7b7180ddf9cb4|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B014|manuscript/chapters/01_from_control_loop_to_agent_runtime.md:150|text|504b8c844ccfc50a1e65d6439f9c36d7ffd8239b35a7fc9900c8695f007c109f|pseudocode|未验证|NOT_APPLICABLE|{}|仅设计伪代码，未翻译执行；无实现/依赖语义|
+|B015|manuscript/chapters/01_from_control_loop_to_agent_runtime.md:199|text|90405b21e70d7bebd3c829b3f6f24c1d21beb9f59ecd0516be90aa53397895ba|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B016|manuscript/chapters/02_the_autonomous_agent_boom.md:14|text|318a0d7668ed38e7a1e96039e7d36706136c4872eeb166be7727b68abbd7dd08|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B017|manuscript/chapters/02_the_autonomous_agent_boom.md:107|text|04ea109c3962d7f613381d9564deebb7a5bed851e1955e9f7d23097c076cb65c|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B018|manuscript/chapters/02_the_autonomous_agent_boom.md:215|text|2a6b3119024174db283c40973d33596e39c946dc3cacef5e9098285dd01ed38a|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B019|manuscript/chapters/03_interface_is_part_of_intelligence.md:15|text|aad2d12e84517c707936fc6295351d179e507dd833088a8f1e9dd6e0f0d83b53|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B020|manuscript/chapters/03_interface_is_part_of_intelligence.md:64|text|9a0251a868fb1fb9f5c1ce034f311e8d86139b280a03dbb52db38d2604010836|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B021|manuscript/chapters/03_interface_is_part_of_intelligence.md:93|text|eb3215a71b6d2dfe183c3b244b85e653a0b90170d298045e866ac1c855ba4114|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B022|manuscript/chapters/03_interface_is_part_of_intelligence.md:130|text|1954503c0d64c663c4b9b48d59b8dee696b46c57773bc264794b704f340f672b|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B023|manuscript/chapters/04_the_coding_agent_turn.md:9|text|34962b33e00db7ee8f7b2a45c97b1993b05195c9df6191acb8d026eb36383dfb|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B024|manuscript/chapters/04_the_coding_agent_turn.md:51|yaml|e4dc7f8ffd93cde6526cbf19cdebe827bc899ad3d3eb18254671be3f32b485b6|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B025|manuscript/chapters/05_system_model_and_responsibility_boundaries.md:7|text|da9c56e8a904ed04eabced7c5bba19ee73a04d74739afe11278054989eb7ecf2|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B026|manuscript/chapters/05_system_model_and_responsibility_boundaries.md:30|text|b811a4648aa1941be809218b0196ddbe6a63c88899122709348ffe882d3914d7|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B027|manuscript/chapters/05_system_model_and_responsibility_boundaries.md:105|text|52c612d2aecc328ca2eac1501d494051a9edbe441334f8388fb616fdfb86b240|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B028|manuscript/chapters/05_system_model_and_responsibility_boundaries.md:134|text|198f9f0b7d64c9c903a4e6dd50b40043cb4dd334ac6cddcd91f121b547adf827|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B029|manuscript/chapters/05_system_model_and_responsibility_boundaries.md:156|text|5ff7f25d2ecc903aecbaedbf88a432a74d6509ea9641122d3490c4f7a0467813|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B030|manuscript/chapters/05_system_model_and_responsibility_boundaries.md:187|text|1b7a34353095eaaf601b6e1fab2b1938d76ad002dc4012657a2d062c4a999eae|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B031|manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md:11|text|8707cff5f0235affc26c4bb3bce482f9fee0ceb73972933a252a0d52e9536965|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B032|manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md:26|text|f61c9836136b3ef2762023373dd52924c6320f856f2a5ed5edb8ab845c54a95e|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B033|manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md:55|text|15343aec86db29a1f24ac910501ae6461ed13de943a5a2935b24e4c82fb16f53|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B034|manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md:76|text|9c47da54b2ff38914c7c4248d105afa366b07403abb28a337b483d13172d4af1|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B035|manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md:96|text|35d348a7e35536a95f7c0488a4ce7a93dfa29aaec2421a3557f427ab3a6d66dd|design_illustration|设计示意|NOT_APPLICABLE|{'PASS': 2}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B036|manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md:128|text|5d9c76060d354d4a0648c16c3570b16b4234c6d7e0961dd31257323d4a3075ba|design_illustration|设计示意|NOT_APPLICABLE|{'PASS': 1}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B037|manuscript/chapters/06_agent_loop_as_a_durable_state_machine.md:198|text|32588c6056043b9cce0765b0e589a0064d8b7f9765b2a9f0fdae680f48502835|pseudocode|设计示意|NOT_APPLICABLE|{'FAIL': 3, 'PASS': 2}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B038|manuscript/chapters/07_context_cache_compaction_and_memory.md:9|text|46f70663ad0356246e9a9b40dd7600047014b4a5118f5b0bdd039790e2091142|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B039|manuscript/chapters/07_context_cache_compaction_and_memory.md:29|text|98293e9dd2ab587228d7503e4d885a13b8ad05773b7f27a1c219006e2f622bf4|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B040|manuscript/chapters/07_context_cache_compaction_and_memory.md:73|text|3921337afeea14d919afd492bbc6528657f6fe5cc973c92d5ac33beb86d10e6d|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B041|manuscript/chapters/07_context_cache_compaction_and_memory.md:86|text|c94d615522c0fe03e9de92322159ddf3ac992cf54db81e1b04dd1f97f5771768|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B042|manuscript/chapters/07_context_cache_compaction_and_memory.md:103|text|eb343a8dabbf508d3ab7c14a355b0950212e1da858e5b2e3d4797a6b09a4daff|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B043|manuscript/chapters/07_context_cache_compaction_and_memory.md:159|text|678c6c4979dc25d5626a549d40992ca139ded25760baea69d944df59eeff8d21|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B044|manuscript/chapters/07_context_cache_compaction_and_memory.md:213|text|65e005f085c9a0a1e3f3b6c7928ec92d144633a710396518f57e992621b1bbb1|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B045|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:11|text|c71bdaeaae3080b7d5970e867d8817f496d02d71ac6d43c9fd455428bd09e21d|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B046|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:26|text|0bcdee709ee6ae6b232b53c6b27b79faccc11a56c672b4176c14ac7de557eb67|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B047|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:52|json|48fde447da24723128fba0d76a9c2c3ad12cb154b579add01024cab51c358e2f|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B048|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:72|text|08a18929dce455b2da6b49deede72dd2b45d4852795053b84e82341390e5fe46|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B049|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:123|text|6935e13edec1de71184c00c5b826aef420573c44dbc7a4928f64ddb7e45a15b3|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B050|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:173|text|09dac2c7d7ea315e4251e8a9bbc9bece484e8169cbd2bbd2f3147f1b36a0527d|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B051|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:200|text|317256bc21a5beead6c6687f790a618efbed3f9e54b6298da175dcaaa255faf5|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B052|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:234|text|7f705900b9fa62bbcf2bb981cef71b77bdc7ef4a543f4854ab561dc04807ba79|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B053|manuscript/chapters/08_tools_aci_mcp_and_code_mode.md:246|text|0ef447e957dbf4e3b04c472405b0c425e16c519f12f2a1165bc551c39368d2b8|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B054|manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md:12|text|b48408b43998b1bf9888ecf0d53626e195b34c88a193671c0a8840ed2891f13e|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B055|manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md:44|text|ab89e8528237f10d85af6fb51b4f819259c27b199d33330a59624917fe56a106|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B056|manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md:81|text|477e4bff8db90866c552244ecec616d4f2b9bb47735e63b80f7cf6816cfce79b|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B057|manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md:98|text|df52e04c7c48e94422d16d3e7b6d44c64e5a655b8ed7c1195c716036b6811227|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B058|manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md:134|text|65d92517cee2602885beb3f2df3c9254bb8c16a44fe2671b41b720b188e267be|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B059|manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md:184|text|37ccace824a15cea7e6ae0495ebc2bfb97432f4ac46cea0d6caffb6457aee772|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B060|manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md:205|text|8a1c5ea2371013a125ad5e218de0a897e80c974af9205bcd7e49a5b89cf5d1fd|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B061|manuscript/chapters/09_permissions_sandbox_credentials_and_supply_chain.md:243|text|18b97002fa1d03d275829bca478b776b3ed7e58b20194f0d084b861a69caa27e|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B062|manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md:13|text|75c4bbf8e3dc6046292240780ee0a712af29028f3b3e1bf9e0a3b466d116d3d0|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B063|manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md:28|text|cf138cc797438e356c6e3bc4a4562b66bd68d0180e9f9b145e12c8861c1dc00b|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B064|manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md:50|text|af2f7106811be428892a9820e3e29953d532406cbb0529ce68a0d3348352829d|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B065|manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md:96|text|176cb3740a50e91270598113354598cb6e92105c952ab50b230c8013f97422a7|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B066|manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md:113|text|a7f86b7be9d3493ef1fa7d2c722c34a9de34f381d2da719d88b2d92b9f2361e0|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B067|manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md:128|text|d4e3c512aa9d559f2e06a8649bc66da4edfc4b8b632f0ab52600a26ff7d701e2|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B068|manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md:152|text|da0d8ed1cc21da7f4b28a7423ef0931c46f109c2f4c0fc6024e7d7c1f0ea00b1|design_illustration|设计示意|NOT_APPLICABLE|{'FAIL': 1, 'PASS': 1}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B069|manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md:177|text|b15103da0fc526357c8a6eab44957fcb3ad268ae05f7a96f15883381cbe248de|pseudocode|设计示意|NOT_APPLICABLE|{'FAIL': 1, 'PASS': 2}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B070|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:11|text|f2985b0a532ac57ec53e8b9c9fb377798e21d26847681daf301f5fc2771c8ce6|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B071|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:43|text|8b8762a5098ab6a9b1954650dc3dbeae304c671619805a7444c1695f2ffff620|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B072|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:63|text|efb940b990e880032028373b4f8a705158e74b958d23ad47091670c73359a9c4|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B073|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:93|text|3024f8d06328a419ea27c4d95d446dab2ed8495aecf28aef56897289d145c904|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B074|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:120|text|8bf09d96e48a7c08069bd37f179d004f2d56e80b92524ac51fe92a92240d4cfc|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B075|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:142|text|5a8db305be5a5528a2487b46033af8bdfc712d95ec21ce68b4936d6329e1b66e|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B076|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:186|text|0549451f48ecbe17c297429ca34e69ccdfcc8948e9f907ed7342591789130801|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B077|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:210|text|2e379f624473837185a898d806885fc902fe00ffdd7535710d28cb1b6050a891|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B078|manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md:249|text|e48bb20dbceaa2f434d51e5572592c1acf250d66f2c656bcce788c8392767aca|pseudocode|未验证|NOT_APPLICABLE|{}|仅设计伪代码，未翻译执行；无实现/依赖语义|
+|B079|manuscript/chapters/12_observability_traces_and_eval_operations.md:9|text|11ff5bd06abda5a20d24abe497155aa78365793851b6e57d9a508ca7baa90b55|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B080|manuscript/chapters/12_observability_traces_and_eval_operations.md:41|text|26ade535215864e4bdc52a4dc84d537b096cb8cc833553e63a9860c1bc437fd0|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B081|manuscript/chapters/12_observability_traces_and_eval_operations.md:70|json|bd2e7d7eb359f29d04d937afca02299a87edff92ce6f6bb44150586a57b41339|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B082|manuscript/chapters/13_claude_code_thin_loop_thick_runtime.md:42|yaml|86a76e4bf35302e7721ecb8c19a34b3812203988b3e938977fb43086791eb689|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B083|manuscript/chapters/14_openai_codex_protocolized_agent_core.md:11|text|59e35086bb76e34dbf4604ecd5985ead6990c1e4853091fcc968f8fae8cd3077|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B084|manuscript/chapters/14_openai_codex_protocolized_agent_core.md:45|json|189067240553f415d5d4f605859b5c272f15ba5c542c991a25f660a44a192f92|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B085|manuscript/chapters/15_cursor_ide_native_context_and_cloud_agents.md:36|text|7d4835589fb32375c18a57a695d06f2e1be132effc2856f5ab8277c82af19c4f|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B086|manuscript/chapters/16_deepseek_harness_composable_runtime.md:11|text|4948916b1b23525b100236f3b12d9f10590f43a3c8d73e7ef3bf6c3109823662|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B087|manuscript/chapters/17_openhands_agent_runtime_separation.md:9|text|0dd70159e95aaf5f2b8baca7558c921ea45d68d6f169b32d4e70ddab6528210d|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B088|manuscript/chapters/18_product_comparison_and_architecture_spectrum.md:46|yaml|3d6b552a27a55f41128d735f4cda7aa9ae728fe1363198452b082a1da56a4027|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B089|manuscript/chapters/19_evolution_is_an_engineering_control_loop.md:24|yaml|b927711d63f831f434234569423d67360e250be7314b5d2e61e0df0859714ced|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B090|manuscript/chapters/19_evolution_is_an_engineering_control_loop.md:65|text|c567a12486f585cf57b90d6eb85177a47d268f51eb14897ae88b34cb3df961bb|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B091|manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md:35|text|a0f4a1546a42d529a6ffbe153e2b24587b1630b8a7487cdabe624ab57d68b158|pseudocode|未验证|NOT_APPLICABLE|{}|仅设计伪代码，未翻译执行；无实现/依赖语义|
+|B092|manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md:55|text|e22a18979f49fea772532ea4158b3c503cbb8c8d55c368016e0172b12091740c|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B093|manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md:94|yaml|bd4f7d9c24a61507856be707aa4b5d451bb4ea03fe0f82db921cb31c732f0339|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B094|manuscript/chapters/21_cross_task_memory_skills_and_experience.md:31|text|2f98e319d7c75f814a8fcb8611ad02c7bfb51df5ca940e39638330715532e587|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B095|manuscript/chapters/21_cross_task_memory_skills_and_experience.md:49|yaml|80494a969e8afc5b2c0990cd9b8fedb8c7b242300cd03aee3586465a7e8e64bb|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B096|manuscript/chapters/22_harness_evolution_prompts_tools_context_and_workflows.md:27|json|b5d7b797da23b5c5a1286aa8f72961c24c0507d56caf234f10ed999f4aeae5b1|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B097|manuscript/chapters/23_model_evolution_from_trajectories.md:50|yaml|51ca53f722614553ea053c9575244d109e43a4a478af668226312b6a3a9a5f42|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B098|manuscript/chapters/23_model_evolution_from_trajectories.md:71|text|2e04e0d5e2308b6d34fb1f2bd03e6e25d99cc9dd633e471efc7b77f927ce0fb7|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B099|manuscript/chapters/24_governed_evolution_loop.md:9|text|9f6373f5040f209fdd3c29cd89afc49c082bdde7b2e9c363c0ada9914c20c898|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B100|manuscript/chapters/24_governed_evolution_loop.md:24|yaml|7cf5db2c7687be06f5e534a51f5f6dd02390a41c184dfee9fbe37654ea966df9|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B101|manuscript/chapters/24_governed_evolution_loop.md:53|json|d4158299a7cd512a63c1abeddf94436479f2a93f3f238c947e64253829f592c7|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B102|manuscript/chapters/25_three_end_to_end_cases.md:15|json|9689934a268280e9a9142dba4b92b22f7cf35cfd217b0d66cc33216f7012855a|structured_example|未验证|PASS|{'PASS': 5, 'FAIL': 2}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B103|manuscript/chapters/25_three_end_to_end_cases.md:39|text|5b3c9c4a13dbea74374f1c61dc4d7d81aab2880cde2ba5cd613c623645fb88e3|design_illustration|设计示意|NOT_APPLICABLE|{'FAIL': 2, 'PASS': 6}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B104|manuscript/chapters/25_three_end_to_end_cases.md:53|bash|08a5168e8e428285718d755869e4176a9df315fe815a0935cf802f08868f808f|executable_requires_fixture|可运行代码|NOT_APPLICABLE|{'FAIL': 5, 'PASS': 2}|已原样尝试但失败；适配/fixture结果另列，不能声称原样可运行|
+|B105|manuscript/chapters/25_three_end_to_end_cases.md:63|yaml|6eac63101d45b6acc765045e4e6ab45ae073ad20575a50fa04b96a26f5cbab15|structured_example|未验证|PASS|{'PASS': 3}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B106|manuscript/chapters/25_three_end_to_end_cases.md:97|json|c7eb47b26b82c7eb7cdade5a57306257fc3f33c15379a4da8d2f9d350d1aa5a8|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B107|manuscript/chapters/25_three_end_to_end_cases.md:115|sql|37c4bb8dc71e8ba22bf0c7c1781c03b0cd397ca131659091a099187f2aa7f8c9|dialect_specific_sql|可运行代码|NOT_APPLICABLE|{'FAIL': 6, 'PASS': 7}|已原样尝试但失败；适配/fixture结果另列，不能声称原样可运行|
+|B108|manuscript/chapters/25_three_end_to_end_cases.md:131|text|6bfe61617f8caa0c57e871cd031a159d02a0287c703eac50b60bdca341f210a3|design_illustration|设计示意|NOT_APPLICABLE|{'PASS': 2}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B109|manuscript/chapters/25_three_end_to_end_cases.md:142|yaml|10badd99314931787fdaf3679d29790222fda40de0eb64d25e3d9ee0567ed3b3|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B110|manuscript/chapters/25_three_end_to_end_cases.md:172|yaml|3dc7b232e5fa3a651c4ad7bd3631f1284a25ad11e33d8ebb77e5fffd4d0393bf|structured_example|未验证|PASS|{'PASS': 9, 'FAIL': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B111|manuscript/chapters/25_three_end_to_end_cases.md:198|text|5928f2d0ef2a7fbfa83c72634d90fb2abbc2b3c558833449033eff1364607530|design_illustration|设计示意|NOT_APPLICABLE|{'FAIL': 1, 'PASS': 8}|已进行限定语义模拟，非原样可执行/非生产实现|
+|B112|manuscript/chapters/25_three_end_to_end_cases.md:212|json|2469d0b75939ffab1261fef04edb838a8077a23f2f1aae3a8cd44c69c7dec0a2|structured_example|未验证|PASS|{'PASS': 9, 'FAIL': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B113|manuscript/chapters/25_three_end_to_end_cases.md:239|text|314fb5e744e53e5a5f4b8e0ca025a247bde4f3c26773165149ac493b2e0754bb|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B114|manuscript/chapters/26_next_generation_enterprise_harness_architecture.md:9|text|85520bc91d490279712aa1ca32b85f7eecdb974babe315ca87c447ef7281bbf1|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B115|manuscript/chapters/26_next_generation_enterprise_harness_architecture.md:26|text|f53b27f48cb41c1a87cbe6ff4b438f89c6fa4a19cd57c86672ea496d322bd481|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B116|manuscript/chapters/26_next_generation_enterprise_harness_architecture.md:76|text|20e0dae83b77e952049c02a8b0b115348bb381b6ff519c21420832cbc5ef94cf|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B117|manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:22|text|1ecf74fc8ed04cd8ddd218290ddedc036439b7853ee62f129c37eec381069d49|design_illustration|设计示意|NOT_APPLICABLE|{}|图/公式/接口草图不具备独立运行语义，未做经验性验证|
+|B118|manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:35|yaml|d61286f4a944b3a155ed96f60575e98facfd79c1a6d1126fe2cbad160105325d|structured_example|未验证|PASS|{'PASS': 4, 'FAIL': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B119|manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:67|yaml|4bb0cefa0b60e51841c0ac261365179cd70ef065d961d7f00db6e10c0a87d6a5|structured_example|未验证|PASS|{'PASS': 4, 'FAIL': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+|B120|manuscript/chapters/27_agent_sdd_specification_driven_delivery.md:92|json|b2b6eae17cc98f2583932791a6c4f96e19fad03a8fde6c75dff875171999bc06|structured_example|未验证|PASS|{'PASS': 1}|原样格式解析已执行；运行语义/供应商接口未验证|
+
+## 每块检查名
+
+- B002: A_DENY_zero_execution, A_approval_first_observation_defined, A_approval_does_not_reuse_prior_observation, corrected_deny_pending_unknown_zero_execution, corrected_approval_revalidate_revocation_and_cancellation, corrected_approval_explicit_observation
+- B003: A_sequential_repeat_idempotent_with_strong_lookup, A_lost_response_exception_normalized, A_lost_response_marks_unknown, A_lost_response_recovery_strong_lookup_no_duplicate, A_nondefinitive_return_marks_unknown, A_stale_lookup_setup_timeout, A_retry_with_stale_lookup_exactly_once, A_concurrent_lookup_then_execute_exactly_once, corrected_lost_response_recorded_unknown, corrected_unknown_unavailable_lookup_not_retried, corrected_recover_lost_once, corrected_target_atomic_idempotency_under_race, corrected_key_args_collision_rejected
+- B004: A_cancel_order_and_quiescence, A_recover_terminal_cancelled_does_not_resume, corrected_cancel_committed_effect_retained_no_resume, corrected_resume_fresh_policy_and_credentials
+- B006: parse_B006, metaschema_B006, Task_valid, Task_missing_task_id, Task_missing_tenant, Task_missing_contract_version, Task_missing_risk, Task_missing_deliverables, Task_missing_checks, Task_missing_commit_authority, Task_invalid_risk_8, Task_invalid_task_id_9, Task_invalid_checks_10, Task_invalid_deliverables_11, Task_invalid_tenant_12, Task_invalid_extra_13, Task_invalid_budget_14, Task_invalid_budget_15, Task_invalid_budget_16, Task_invalid_budget_17, Task_empty_check_string_rejected, Task_unknown_budget_field_rejected
+- B007: parse_B007, metaschema_B007, Action_valid, Action_missing_action_id, Action_missing_attempt_id, Action_missing_actor, Action_missing_type, Action_missing_resource, Action_missing_side_effect_class, PolicyDecision_valid, PolicyDecision_missing_action_id, PolicyDecision_missing_decision, PolicyDecision_missing_policy_version, Observation_valid, Observation_missing_action_id, Observation_missing_status, Action_invalid_side_effect, Policy_invalid_decision, Observation_invalid_status, Definitions_root_rejects_invalid_0, Definitions_root_rejects_invalid_1, Definitions_root_rejects_invalid_2, Definitions_root_rejects_invalid_3, Irreversible_requires_idempotency_key, Action_empty_id_rejected, Constrained_allow_requires_constraints
+- B008: parse_B008
+- B024: parse_B024
+- B035: A_cancel_order_and_quiescence, corrected_cancel_committed_effect_retained_no_resume
+- B036: CH6_corrected_unknown_does_not_replay_for_compensation
+- B037: CH6_DENY, CH6_approval_batch, CH6_cancel_in_batch, corrected_deny_pending_unknown_zero_execution, corrected_approval_revalidate_revocation_and_cancellation
+- B047: parse_B047
+- B068: R02_confirmed_effect_failed_health_not_verified_complete, R02_corrected_postcommit_health_gate
+- B069: CH10_DENY_zero_commit, CH10_approval_zero_commit, corrected_deny_pending_unknown_zero_execution
+- B081: parse_B081
+- B082: parse_B082
+- B084: parse_B084
+- B088: parse_B088
+- B089: parse_B089
+- B093: parse_B093
+- B095: parse_B095
+- B096: parse_B096
+- B097: parse_B097
+- B100: parse_B100
+- B101: parse_B101
+- B102: parse_B102, DST_baseline_visible_contract, DST_baseline_ordinary, DST_overfit_visible, DST_overfit_hidden, DST_repaired_visible, DST_repaired_hidden
+- B103: DST_baseline_visible_contract, DST_overfit_visible, DST_overfit_hidden, DST_overfit_sealed_clean_scope, DST_repaired_visible, DST_repaired_hidden, DST_repaired_sealed_clean_scope, git_clean_verifier_detects_omission_and_input_drift
+- B104: bash_original_directly_runnable, bash_with_pytest_source_tests_exist, bash_pipeline_propagates_git_failure, bash_pipefail_exposes_bad_revision, git_raw_diff_captures_untracked_required_newfile, git_sealed_patch_and_tested_input_are_same, git_clean_verifier_detects_omission_and_input_drift
+- B105: parse_B105, DST_overfit_sealed_clean_scope, DST_repaired_sealed_clean_scope
+- B106: parse_B106
+- B107: SQL_raw_SQLite, SQL_adapted_hand_calculation, SQL_k19_suppressed_k20_retained, SQL_suppressed_groups_reconcile_to_finance_without_bridge, SQL_DUPLICATE_money_not_doubled, SQL_NULL_refund_preserves_100_revenue, SQL_NULL_account_excludes_money, SQL_snapshot_half_open_version_boundary, SQL_gateway_rejects_snapshot_drift, SQL_gateway_accepts_pinned_snapshot, SQL_corrective_hand_calculation, SQL_date_bucket_boundaries, SQL_k_gate_guarantees_numeric_revenue
+- B108: SQL_gateway_rejects_snapshot_drift, SQL_gateway_accepts_pinned_snapshot
+- B109: parse_B109
+- B110: parse_B110, evolution_completed_only_ranking_truthful, evolution_denominator_cheat_rejected, evolution_missing_trials_not_dropped, evolution_frozen_evaluator_and_activation_enforced, evolution_candidate_passes_preregistered_synthetic_gates, evolution_sealed_test_once, evolution_rejected_candidate_no_release, evolution_running_task_version_sticky, evolution_critical_regression_rolls_back_entire_bundle
+- B111: evolution_completed_only_ranking_truthful, evolution_denominator_cheat_rejected, evolution_missing_trials_not_dropped, evolution_frozen_evaluator_and_activation_enforced, evolution_candidate_passes_preregistered_synthetic_gates, evolution_sealed_test_once, evolution_rejected_candidate_no_release, evolution_running_task_version_sticky, evolution_critical_regression_rolls_back_entire_bundle
+- B112: parse_B112, evolution_completed_only_ranking_truthful, evolution_denominator_cheat_rejected, evolution_missing_trials_not_dropped, evolution_frozen_evaluator_and_activation_enforced, evolution_candidate_passes_preregistered_synthetic_gates, evolution_sealed_test_once, evolution_rejected_candidate_no_release, evolution_running_task_version_sticky, evolution_critical_regression_rolls_back_entire_bundle
+- B118: parse_B118, CH27_cancel_time_semantics_ambiguity_exposed, CH27_live_state_guard_prevents_enqueue, CH27_claim_scope_and_invoice_both_fail_from_source_edit, CH27_independent_positive_and_three_negative_fixtures
+- B119: parse_B119, CH27_cancel_time_semantics_ambiguity_exposed, CH27_live_state_guard_prevents_enqueue, CH27_claim_scope_and_invoice_both_fail_from_source_edit, CH27_independent_positive_and_three_negative_fixtures
+- B120: parse_B120

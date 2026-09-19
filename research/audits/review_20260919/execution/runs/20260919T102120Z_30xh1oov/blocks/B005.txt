@@ -1,0 +1,9 @@
+CapabilitySet {
+  structured_events: yes/no
+  pause_for_approval: yes/no
+  resume: none/session/checkpoint
+  cancel: cooperative/process_tree
+  artifact_export: list of media types
+  workspace_isolation: local/worktree/container/vm/provider
+  raw_event_provenance: yes/no
+}

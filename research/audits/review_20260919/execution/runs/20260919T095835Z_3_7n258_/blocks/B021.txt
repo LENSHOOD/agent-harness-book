@@ -1,0 +1,5 @@
+               Action
+Agent/Controller ─────────→ Event Stream ─────────→ Runtime
+       ↑                         │                    │
+       │ State                   │ history            │ execute
+       └──────── Observation ←───┴────────────────────┘

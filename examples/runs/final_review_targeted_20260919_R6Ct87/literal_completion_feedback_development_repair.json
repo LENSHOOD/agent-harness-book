@@ -1,0 +1,18 @@
+{
+  "source": {
+    "file": "manuscript/chapters/10_verification_completion_contracts_and_evidence_packages.md",
+    "line": 182,
+    "sha256": "ff5fde1e7540658e87140dd68a050c3b5b3a4f827ee4fd9519178d625f9e9570"
+  },
+  "translation": "def attempt_completion(run, candidate):\n    contract = load_pinned_contract(run.contract_version)\n    snapshot = seal_candidate(candidate)\n\n    results = CheckResults()\n    for check in contract.pre_commit_checks:\n        verifier = trusted_registry.resolve(check.version)\n        results += verifier.run(\n            candidate=snapshot,\n            clean_environment=check.environment_digest,\n            validation_inputs=check.validation_input_ref\n        )\n\n    if results.has_integrity_violation():\n        quarantine(run)\n        return FAILED\n\n    if results.has_ambiguous_or_flaky_signal():\n        return REVIEW_REQUIRED\n\n    if results.mandatory_failed():\n        if results.feedback_allowed and repair_budget_remaining(run):\n            return REPAIRING(results.minimal_diagnostics())\n        return BLOCKED_OR_FAILED\n\n    package = build_evidence_package(run, snapshot, results)\n    if not contract.requires_external_commit:\n        persist_delivery_and_evidence(snapshot, package)\n        return VERIFIED_COMPLETE\n\n    decision = decode_policy_decision(policy.evaluate_commit(package))\n    if decision.decision == REQUIRE_APPROVAL:\n        persist_approval_bound_to_candidate(package, snapshot.hash)\n        return AWAITING_APPROVAL\n    if decision.decision not in {ALLOW, CONSTRAINED_ALLOW}:\n        return BLOCKED\n    if not constraints_enforceable(package, decision):\n        return BLOCKED\n\n    effect = commit_with_live_authority_and_effect_ledger(snapshot, decision)\n    if effect.status in {UNKNOWN_EFFECT, PENDING}:\n        return RECONCILING\n    if not effect.is_confirmed:\n        return record_commit_failure(effect, package)\n    postconditions = verify_target_state(contract.post_commit_checks, effect)\n    persist_post_commit_evidence(package, effect, postconditions)\n    if not postconditions.passed:\n        return COMMITTED_BUT_UNVERIFIED\n    return VERIFIED_COMPLETE\n",
+  "result": {
+    "status": "REPAIRING",
+    "diagnostics": {
+      "detail": "synthetic private diagnostic"
+    }
+  },
+  "events": [
+    "DISCLOSE_DIAGNOSTICS"
+  ],
+  "feedback_allowed": true
+}

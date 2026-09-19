@@ -1,0 +1,18 @@
+{
+  "source": {
+    "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+    "line": 54,
+    "sha256": "2722638558177e5f593bca8a2f0492be401d24687dc55bced7fcc4b94abe3725"
+  },
+  "translation": "def appendix_run_loop():\n    while attempt.active:\n        canonical_state = state_store.load(attempt.attempt_id)\n        if canonical_state.cancel_requested:\n            return cancel(attempt.attempt_id, USER_REQUEST)\n        if budget.exhausted:\n            return checkpoint_and_suspend(BUDGET_EXHAUSTED)\n        context = context_compiler.project(canonical_state, budget)\n        proposal = decide_with_reserved_model_budget(context, model_facing_tool_views)\n\n        if proposal.requests_action:\n            action = normalize_validate_and_assign_id(proposal.action)\n            decision = decode_policy_decision(policy.evaluate(action, current_authority_and_revocations()))\n            event_store.append(action, decision)\n\n            if decision.decision == REQUIRE_APPROVAL:\n                suspend_attempt_with_checkpoint(action, decision)\n                return WAITING_FOR_APPROVAL\n            if decision.decision not in {ALLOW, CONSTRAINED_ALLOW}:\n                observation = denied_observation(action.action_id, decision.reason_code)\n            elif not constraints_enforceable(action, decision):\n                observation = denied_observation(action.action_id, CONSTRAINT_UNAVAILABLE)\n            else:\n                if not reserve_action_budget(action):\n                    return checkpoint_and_suspend(BUDGET_EXHAUSTED)\n                try:\n                    observation = commit_effect_safely(action, decision.constraints)\n                finally:\n                    settle_action_budget_from_meter(action)\n\n            event_store.append(observation)\n            state_store.reduce(observation)\n            if observation.status == UNKNOWN_EFFECT:\n                return RECONCILE_REQUIRED\n            if observation.status == PENDING:\n                return WAITING_FOR_EFFECT\n            continue\n\n        if proposal.requests_user_input:\n            return WAITING_FOR_USER\n        if not proposal.has_candidate:\n            return TURN_STOPPED\n        candidate = seal(proposal.output, canonical_state.artifacts)\n        verification = completion_gate.verify(candidate, task.contract_version)\n        if verification.status == PASS:\n            return CANDIDATE_VERIFIED\n        if verification.feedback_allowed and verification.repairable and budget.consume_repair_attempt():\n            state_store.reduce(minimal_diagnostics(verification))\n        else:\n            return NEEDS_ESCALATION\n",
+  "result": "NEEDS_ESCALATION",
+  "events": [],
+  "contexts": [
+    []
+  ],
+  "meter": {
+    "calls": 1,
+    "consume_calls": 1,
+    "repair_remaining": 0
+  }
+}

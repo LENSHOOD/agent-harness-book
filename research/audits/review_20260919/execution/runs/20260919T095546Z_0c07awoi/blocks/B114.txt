@@ -1,0 +1,6 @@
+Experience       IDE / Web / CLI / API / business workflow
+Control Plane    task contract / scheduler / identity / policy / approval
+Agent Runtime    vendor adapter / loop / context / delegation
+Execution Plane  workspace / sandbox / tool gateway / credential broker
+Evidence Plane   artifacts / trace / verifier / effect ledger
+Evolution Plane  eval registry / mutation / experiment / release / rollback

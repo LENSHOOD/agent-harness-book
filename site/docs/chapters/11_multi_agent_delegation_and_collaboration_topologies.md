@@ -1,6 +1,6 @@
 # 第十一章 多 Agent、委派与协作拓扑
 
-> 证据声明：产品事实维护至 2026-08-28；架构原则为作者基于公开材料的综合推断。
+> 证据声明：原有产品资料截面为 2026-08-28，子代理上下文模式补至 2026-09-19 已抓取材料；架构原则为作者综合推断，厂商能力与论文结果不代表本书已实测。
 
 多 Agent 是个名字很容易误导人的概念。把同一个模型调用五次，再给每次调用贴上“架构师”“开发者”“审查者”这样的标签，不会自动组成一个真实团队。一个真正的多 Agent 系统，必须先回答：任务为什么可以拆解、状态由谁持有、权限怎么衰减、冲突如何解决、结果由谁验收、故障如何隔离，以及新增成本是否换来了可量化收益。
 
@@ -9,7 +9,7 @@
 ## 1. 先区分五种经常混淆的东西
 
 ```text
-tool call       主 Agent 调用一个确定性能力
+tool call       主 Agent 请求一个约定接口，内部可能含模型或外部服务
 subroutine      独立模型调用，返回结构化结果，不拥有任务
 subagent        有局部目标、状态、工具和预算的受托执行者
 handoff         当前责任主体把会话或工作流所有权转交给另一个 Agent
@@ -24,11 +24,11 @@ OpenAI 的官方架构把 manager 与 handoff 明确区分：manager 把专家 A
 
 多 Agent 的收益通常来自四种机制，而不是“角色扮演”本身。
 
-第一是并行搜索。多个 worker 可以同时在相互独立的假设空间、代码区域或数据源中搜索，缩短墙钟时间并提高覆盖率。第二是上下文隔离。每个 worker 只加载局部材料，因此有效信息密度通常高于把所有内容硬塞进一个上下文。第三是认知与工具异质性。不同模型、提示、工具或数据权限，会带来不同的错误分布。第四是独立验证。执行者和审查者分离，可降低同一假设在计划、执行和验收阶段连续被强化的风险。
+第一是并行搜索。多个 worker 可在不同假设、代码区域或数据源中同时工作，争取缩短墙钟时间并提高覆盖率。第二是上下文分工。局部任务可以只加载相关材料，延续已有调查的任务也可能需要父上下文，不能一律从空白开始。第三是模型与工具差异，它们可能带来不同错误分布，但多样性仍须测量。第四是验证分工，独立的信息路径与验收标准有助于减少共同偏差；仅分成两个角色并不足够。
 
-Anthropic 的 Research 系统采用 orchestrator-worker 架构：lead agent 先定策略，再并行生成搜索 subagent。其内部分析指出，在 BrowseComp 上，token 使用、工具调用数和模型选择共同解释了 95% 的性能方差，其中 token 使用本身占 80%。这支持了“多 Agent 主要在扩大可用推理与探索预算”的解释。[Anthropic Multi-Agent Research](https://www.anthropic.com/engineering/multi-agent-research-system)
+Anthropic 的 Research 系统采用 orchestrator-worker 架构：lead agent 先定策略，再并行生成搜索 subagent。其内部分析报告，在 BrowseComp 上，token 用量、工具调用数与模型选择联合解释了 95% 的性能方差；单独使用 token 用量也能解释 80%。这两项结果不是可相加的贡献份额，观察关联也不能确定因果，更不能据此排除协作结构的独立作用。[Anthropic Multi-Agent Research](https://www.anthropic.com/engineering/multi-agent-research-system)
 
-这也形成了一条去魅结论：有时多 Agent 只是更有组织地花更多 token。Anthropic 也报告，普通 Agent 大约用聊天的 4 倍 token，而多 Agent 系统大约是聊天的 15 倍。由此更合理的问题不是“多 Agent 是否更强”，而是在同样成本、时延和模型预算下，它是否优于更强的单 Agent、更多单 Agent 试跑，或确定性并行程序。
+这提示计算预算可能是重要关联因素。Anthropic 还报告其普通 Agent 和多 Agent 系统分别约使用聊天场景的 4 倍、15 倍 token；它们是特定系统的成本观察，不是通用比例。应固定任务与模型，在相同预算下比较单 Agent、多 Agent、重复试跑与确定性并行程序，才能判断新增协调是否有价值。
 
 ## 3. 何时不应使用多 Agent
 
@@ -52,7 +52,7 @@ DelegationValue ≈
   - coordination_latency
 ```
 
-这不是精确公式，而是决策框架。如果拆后的子任务无法定义独立输入、交付物和验收条件，就不应先委派，再期待 Agent 自己把职责链理顺。
+这是决策提示，不是可直接代数计算的收益公式：各项没有共同量纲和测量定义。如果拆后的子任务无法定义独立输入、交付物和验收条件，就应先澄清边界，而不是期待委派后自然形成职责链。
 
 ## 4. 四类基本拓扑
 
@@ -82,13 +82,13 @@ Handoff 适用于客服分流、领域升级和长期会话里的所有权转换
 
 ### 4.4 Blackboard / Event Graph
 
-多个 Agent 不直接维护长对话，而是通过共享 artifact store（制品仓库）、事件总线或任务图协作。AutoGen 早期以可对话 Agent 组合为核心，后续 0.4 架构转向 actor model（参与者模型），用消息、运行时和分层 API 提升模块化与扩展性。[AutoGen](https://www.microsoft.com/en-us/research/project/autogen/publications/)
+多个 Agent 不直接维护长对话，而是通过共享产物存储、事件总线或任务图协作。AutoGen 早期以可对话 Agent 组合为核心，后续 0.4 架构转向 actor model，用消息、运行时和分层 API 提升模块化与扩展性。[AutoGen](https://www.microsoft.com/en-us/research/project/autogen/publications/)
 
 共享黑板适合异步、长周期和跨语言执行，但要先解决 schema 演进、并发控制、重复消息、顺序、所有权和垃圾回收。把聊天历史当消息总线，通常只能得到难以恢复的分布式 prompt。
 
-## 5. 委派是一份受限合同
+## 5. 委派是一份受限契约
 
-好的 delegation packet（委派包）不是一句“研究一下这个主题”，而是可验证的局部合同：
+委派包应把“研究一下这个主题”细化为可验证的局部契约：
 
 ```text
 DelegationContract {
@@ -100,20 +100,25 @@ DelegationContract {
   acceptance_checks[]
   allowed_tools[]
   capability_scope
+  execution_identity
+  execution_authority_ref  // worker 执行权的可信授权依据
+  delegation_authority_ref // 调用者可委派此任务的授权依据
   context_policy
   budget {tokens, time, cost, tool_calls}
-  deadline
+  deadline              // 绝对时间；转换成 TTL 时显式计算剩余秒数
   can_delegate
   reporting_interval
   cancellation_token
 }
 ```
 
-父 Agent 不应把全部工具、凭证和记忆隐式地复制给子 Agent。委派权限要按衰减原则处理：子能力应是父能力的子集，具有更短 TTL、更窄资源和明确用途；默认 `can_delegate=false`。如果允许递归委派，要限制深度、扇出和总预算，避免委派树指数膨胀。
+父 Agent 不应把全部工具、凭证和记忆隐式地复制给子 Agent。转授自身权限时，子授权的动作、资源和期限不得超出可转授范围；专家若使用独立身份，则由可信策略服务分别检查其执行权、调用者的委派权和任务用途，不能让模型自行授予。默认 `can_delegate=false`；递归委派还要限制深度、扇出和整棵树的总预算。
 
-输入应保持最小。子 Agent 只拿到完成局部目标所需的上下文，不应自动看到全部私密会话。Context policy（上下文策略）要说明哪些是可信指令、哪些是不可信材料、哪些数据不能离开当前执行域。OpenAI handoff 的 `input_filter` 说明了同一问题在 SDK 层的具体落实：历史是否传递不是细节，而是隔离与连续性之间的架构选型。[OpenAI Handoffs](https://github.com/openai/openai-agents-python/blob/main/docs/handoffs.md)
+输入应限于局部目标所需材料，不应自动包含全部私密会话。上下文策略要说明哪些是可信指令、哪些是不可信材料、哪些数据不能离开当前执行域。OpenAI handoff 的 `input_filter` 提供了筛选历史输入的接口；传递多少历史，实际是在隔离与连续性之间作选择。[OpenAI Handoffs](https://github.com/openai/openai-agents-python/blob/main/docs/handoffs.md)
 
-## 6. 结果必须是 artifact，不是意见
+Deep Agents 在 2026-09-08 的文档中将这项选择显式化：isolated 仅接收任务说明；fork 继承父状态与历史，移除末尾委派调用，并把任务说明转成子代理消息，最终仍向父代理返回一个工具结果。[上下文模式](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness) 文档认为延续调查的 worker 可借此减少重复读取和利用缓存，独立 reviewer 则适合隔离上下文；这些收益不是本书实测结果。若父历史包含子角色无权接收的材料，应选可筛选的输入路径，不能因 fork 方便就扩大可见范围。
+
+## 6. 子结果应交付产物与证据
 
 如果 worker 只返回“我认为方案 A 更好”，manager 就没法可靠地做合并。Subagent 输出至少要包含结论、证据引用、生成的 artifact、验证结果、假设、置信度和未决问题。
 
@@ -152,7 +157,7 @@ base snapshot
 
 合并不是文本拼接。Harness 要检测文件级和语义冲突，决定执行顺序，并在组合状态上重跑验证。每个分支单独通过，不代表组合后仍然通过。
 
-数据库、工单和消息系统应使用 resource version（资源版本）、compare-and-swap（比较并交换）、事务、幂等键和 effect ledger（效果账本）。读任务可以并发，而写任务要按资源声明锁或序列化。锁不能靠模型的自然语言约定，而应由 runtime（运行时）强制执行。
+数据库、工单和消息系统应按可用语义选择资源版本、条件写入、事务、下游幂等键与副作用账本。读任务可以并发，冲突写入则要由运行时锁定、排序或拒绝。并非每个下游都支持幂等；结果未知时先对账，不能靠“可补偿”允许盲重放。
 
 ## 8. 错误如何在团队中传播
 
@@ -169,11 +174,13 @@ base snapshot
 - 循环 handoff 导致责任漂移并消耗预算；
 - verifier 只查局部结果，却没检查组合不变量。
 
-应对方式包括独立问题分解审查、来源级 provenance（血缘）、盲化并行、异质模型、反方角色、冲突保留和最终系统级验证。多数票只有在错误近似独立时才有价值；复制同一上下文和模型通常不满足这个假设。
+应对方式包括独立审查问题分解、保留来源记录、盲化并行、比较不同模型、保留冲突和系统级验证。多数票是否有益，取决于判断者准确性、错误相关性及聚合规则；近似独立不是获益的必要条件，独立本身也不充分。
+
+一个便于理解的充分条件是：三个判断者处理同一二元问题，正确与否独立同分布，每人正确概率为固定的 `p`，且 `0.5 < p < 1`。多数票正确率为 `3p² − 2p³`，高于 `p`；低于随机水平的独立判断者却可能被投票放大错误。现实中的相关错误仍可能留下聚合收益，完全重复的判断则不增加信息。模型与上下文共享程度要测量，最终以同预算聚合结果判断，不能把一致意见当作独立证据。
 
 ## 9. Debate、Critique 与 Ensemble
 
-“让多个 Agent 辩论”常被当成万能推理增强，但必须区分三种机制。Ensemble（集成）是独立生成候选，再由规则或 judge（裁决器）选择；Critique（批评）是让一个 Agent 针对候选找问题；debate（辩论）允许多轮互相影响。三者的成本和风险不一样。
+“让多个 Agent 辩论”包含几种不同机制：集成先分别生成候选，再由规则或评判器选择；批评让另一个 Agent 针对候选找问题；辩论则允许多轮互相影响。三者的成本和风险不同，不能混为一种增强手段。
 
 受控逻辑推理研究发现，团队内推理能力和多样性是 debate 成功的重要驱动，而顺序、置信度可见性等结构参数的收益较小；多数压力还可能压制独立纠错。[Can LLM Agents Really Debate?](https://arxiv.org/abs/2511.07784) 所以生产系统通常优先采用“先独立、后比较”：先避免锚定，再把候选暴露给针对性反驳。讨论轮数应由信息增益或分歧收敛决定，不应无限延长到形式共识。
 
@@ -191,21 +198,21 @@ global_budget
   └─ emergency reconciliation reserve
 ```
 
-不要把全部预算都给探索 worker，而在最后没有 token 和时间做验证。父 Agent 应在 dispatch（下发）前预留综合与验证预算。动态调度可按子任务价值、剩余不确定性和边际收益扩缩容：worker 重复返回同样信息时要停止扩展；关键分歧未解决时增加独立路径。
+父 Agent 应在派发前预留综合与验证预算，避免探索用完资源后无力验收。动态调度可按子任务价值、剩余不确定性和边际收益调整：重复返回同样信息时停止扩展，关键分歧未解决时再增加独立路径。
 
-取消必须向整棵委派树传播，但已发生的副作用不能简单“取消”。runtime 需要等待或回读在途 action（动作），执行补偿或标记人工处理。父 run 完成后仍在后台运行的 orphan worker（孤儿任务）会带来成本和安全漏洞。
+取消必须向整棵委派树传播，并立即停止继续派发；已发生的外部副作用不能随之消失。运行时应回读或等待在途动作，未知结果进入对账，已确认的错误效果再按授权补偿或交人工处理。父 run 结束后仍在后台运行的孤儿任务会继续消耗成本并扩大风险。
 
 ## 11. 权限、身份与责任链
 
-每个 Agent 应有独立 execution identity（执行身份），即使底层由同一模型服务承载。审计记录至少应包含 `principal_agent`、`delegated_by`、capability（能力）、资源范围、策略版本和 action。不要用共享管理员 token 让所有 worker 看起来像同一主体。
+每个 Agent 应有可区分的执行身份，即使底层由同一模型服务承载。审计记录至少包含 `principal_agent`、`delegated_by`、执行授权与委派授权的引用、资源范围、策略版本和动作。不要用共享管理员令牌让所有 worker 看起来像同一主体。
 
-Manager 对委派行为负责，但不能盲目信任 worker。子结果进入父上下文时仍是不可信输入，尤其当 worker 浏览网页、issue 或第三方 MCP（模型上下文协议）时。合并和提交需再经过父级 policy 与 verifier（校验器）。Handoff 如果转移了用户交互权，也不能自动转移超出接收者职责范围的资源权限。
+Manager 对委派行为负责，但不能盲目信任 worker。子结果进入父上下文时仍需核验来源，尤其是浏览网页、工单或第三方 MCP 后的结果。合并和提交要重新经过授权策略与验证器；转交用户交互权也不自动扩大接收者的资源权限。
 
-多 Agent 安全还有组合风险：两个看似独立允许的动作放在一起，可能就变成信息泄露或越权。一个 worker 读取私有数据，另一个 worker 向公共系统写入，若通过共享黑板连接，就会形成跨域泄漏。信息流策略必须追踪 provenance（血缘），不能只校验单次工具调用。
+多 Agent 安全还有组合风险：两个分别获准的动作连接起来，可能形成信息泄漏或越权。一个 worker 读取私有数据，另一个向公共系统写入，若通过共享黑板交换结果，就可能建立外泄路径。信息流策略应追踪来源记录、数据分类和后续用途；转授权限缩减并不能自动排除这类风险。
 
 ## 12. 可观测性：同时看到树和因果链
 
-单 Agent 的 trace（追踪）是序列，multi Agent 的 trace 是部分有序图。系统需要同时表达父子关系、消息关系、artifact 依赖和外部 effect（外部作用）：
+纯串行循环的轨迹可以展示为序列；只要存在并行工具、异步事件或多 Agent 协作，就应记录部分有序的因果图。决定偏序的是并发与依赖，不是 Agent 数量。显示时可以线性排序，但仍须保留父子、消息、产物依赖和外部副作用之间的关系：
 
 ```text
 run
@@ -230,7 +237,7 @@ run
 
 不要按虚构的“公司角色”来拆分，应按可隔离的 artifact 切分：一个 Agent 定位失败点，一个在独立 worktree 生成修复补丁，一个构造反例或补充测试，一个做安全审查。主 Agent 保留集成所有权。若多个修改触及同一核心模块，就应退化为串行执行，或改由单一 owner 实施，避免语义冲突。
 
-每个 worker 交付 patch hash、修改范围和局部测试；合并后在 clean workspace（干净工作区）里跑完整验收契约。代码 reviewer 不共享 implementer 的隐藏草稿，只看任务、diff（差异）和证据，以降低锚定风险。
+以 TASK2048 为教学例子，修复者继承已收集的错误现场，在独立工作区交付补丁哈希、修改范围和局部测试；审阅者只读取需求、补丁与证据。主 Agent 合并后若又改了文件，旧测试就不能继续为新版本作证，应在干净工作区重验；结果冲突时保留待解决状态，不按多数意见直接合并。这是设计示例，并非供应商实跑记录。
 
 ### 13.2 企业数据分析
 
@@ -240,57 +247,69 @@ run
 
 ### 13.3 自我进化 Agent
 
-候选生成、评测和发布要由不同责任主体完成。多个 mutation worker 并行提出 prompt、skill 或 policy 变体；可信 evaluator 在 held-out 集与安全集上评估；selection service（选择服务）按预注册规则挑选；release controller（发布控制器）做 canary（灰度）和回滚。
+候选生成、评测和发布要有不同责任边界。多个 worker 并行提出提示、技能或可变决策策略的候选；评测服务用验证集和安全检查筛选，选择服务按预定规则确定候选，再在预定时机进行密封终测。发布控制器负责灰度与版本回退。用于选择或修复的反馈不再属于独立终测证据。
 
-若候选 Agent 能通过委派影响 evaluator，那么所谓进化就失去独立门禁。委派图、数据血缘和权限配置要证明 candidate family（候选家族）没有接触 held-out 标签，也没有修改评分逻辑。多 Agent 在此的核心价值不是“群体智慧”，而是实现实验隔离和制衡。
+若候选 Agent 能通过委派修改评分逻辑，独立门禁就会失效。委派图、数据来源和权限记录应支持复查：候选家族看到了哪些反馈，密封集何时访问，裁判是否被候选改动。只隐藏标签仍不足以排除自适应泄漏，多 Agent 也不会自动建立实验独立性。
 
 ## 14. 一个最小参考实现
+
+以下是教学伪代码，未作为供应商实现实跑。它直接使用前述契约字段：`allowed_tools` 是工具集合，`capability_scope` 是资源与动作范围，`expected_output_schema` 是输出结构；`deadline` 为绝对时间，签发前换算剩余秒数。策略服务检查执行权与委派权，并限制最终期限；拒绝、待审批和未知决定均不启动子任务。
 
 ```text
 function delegate(parent, spec):
     assert spec.objective is bounded
-    assert spec.output_schema exists
+    assert spec.expected_output_schema exists
     assert spec.acceptance_checks not empty
+    ttl_seconds = seconds_until(spec.deadline, trusted_clock.now())
+    if ttl_seconds <= 0 or parent.cancelled:
+        return NOT_STARTED
+    decision = policy.authorize_delegation(parent.identity, spec, ttl_seconds)
+    if decision.decision not in {ALLOW, CONSTRAINED_ALLOW}:
+        return NOT_STARTED(decision.decision)
 
-    capability = attenuate(
-        parent.capability,
-        resources=spec.resources,
-        tools=spec.tools,
-        ttl=spec.deadline,
-        can_delegate=spec.can_delegate
-    )
+    resources = lifecycle.open_record(spec.subtask_id)
+    outcome = FAILED
+    try:
+        lease = resources.reserve(spec.budget, parent.allocatable_budget)
+        capability = resources.issue_bound_authorization(decision)
+        resources.enforce_constraints_or_fail(decision)
+        workspace = resources.create_isolated_workspace(spec.inputs)
+        context = build_context(spec.inputs, spec.context_policy)
+        child = resources.spawn(context, workspace, capability, lease)
+        result = child.await_or_cancel(spec.deadline, spec.cancellation_token)
+        artifact = validate_and_export(result, spec.expected_output_schema)
+        checks = verify_subtask(artifact, spec.acceptance_checks,
+                                budget=parent.verification_reserve)
+        outcome = SubagentResult(artifact, checks, resources.metered_usage)
+    except error:
+        outcome = FAILED_WITH_EVIDENCE(error, resources.event_refs)
+    finally:
+        cleanup = resources.close_or_quarantine()
 
-    lease = scheduler.reserve(
-        budget=spec.budget,
-        parent_budget=parent.remaining,
-        cancellation=parent.cancel_token
-    )
-
-    child = runtime.spawn(
-        snapshot=build_minimal_context(spec),
-        capability=capability,
-        workspace=create_isolated_workspace(spec.inputs),
-        lease=lease
-    )
-
-    result = child.await_or_cancel()
-    artifact = validate_schema_and_provenance(result)
-    checks = verify_subtask(artifact, spec.acceptance_checks)
-    return SubagentResult(artifact, checks, child.usage)
+    if not cleanup.closed:
+        return RECONCILIATION_REQUIRED(outcome, cleanup.record_ref)
+    return outcome
 
 function integrate(parent, results):
     reject_unverified_or_expired(results)
     conflicts = detect_semantic_and_resource_conflicts(results)
     if conflicts:
         return RESOLUTION_REQUIRED(conflicts)
-    candidate = merge_in_clean_environment(results)
-    return parent_completion_gate(candidate)
+    with managed_clean_workspace() as workspace:
+        candidate = merge_and_export_immutable(workspace, results)
+    return parent_completion_gate(candidate)  # 对合并版本重新验收
 ```
 
-这段伪代码的关键是：委派前先做缩权并预留预算，执行时隔离，返回时验 schema 与 provenance，合并时重新检查系统级不变量。Subagent 的“完成”只是父任务的一个候选输入。
+辅助函数承担明确前提。`reserve` 必须原子扣减父任务可分配额度，后者已扣除集成、验证与应急预留；每次模型或工具调用前检查租约，持续计入 token、费用、调用次数与时间，耗尽就停止派发。`spawn` 在启动时重查授权有效性，并将父取消与契约取消信号关联。`validate_and_export` 核验结构与来源引用，将持久产物导出后才允许清理工作区；来源可追溯仍不等于语义正确。
+
+资源操作必须先写入持久生命周期记录；创建超时但结果未知时，不能假定资源未产生。`close_or_quarantine` 在成功、创建失败、超时和取消路径都执行：逐项撤销授权、停止并回收子进程与后代，保存证据后清理工作区，再结算用量并归还未用预留。它须捕获各项清理错误，继续处理其余资源，并以结构化状态返回；任一资源或副作用未闭合，均返回 `closed=false`。未知副作用转对账，仍可能运行的资源保留额度与清理责任。进程崩溃后的回收器继续处理记录，合并工作区也须在异常时清理。缺少这些前提，这段教学代码就不是完整的恢复实现。
 
 ## 15. 设计原则总结
 
-第一，单 Agent 是默认值，多 Agent 需要证明增量价值。第二，按可验证 artifact 和依赖关系拆分任务，不按拟人角色拆分。第三，区分 subroutine、subagent 与 handoff，并显式记录责任所有权。第四，权限随委派衰减，状态与工作区默认隔离。第五，先独立探索，再比较和合并，避免过早共识。第六，所有子结果都要携带 provenance、验证和未决项。第七，局部通过不等于组合通过，合并后必须重验。第八，预算要覆盖整棵任务树并为验证预留。第九，用分布式系统方法处理取消、重试、背压和 orphan worker。第十，以同成本单 Agent 和多 trial baseline（多次单模型试跑基线）证明多 Agent 的真实收益。
+何时拆分：先以单 Agent 为基线，按可验证产物和依赖关系划分任务，区分子程序、子代理与责任转交。用同成本基线和重复试跑结果评估增量收益，并分别报告每组的模型、任务执行费、候选搜索费、验证费、重试费与人工接管成本。
+
+如何隔离：明确状态与工作区所有权，按工作关系选择上下文，分别核验执行权和委派权。探索需要独立性时避免过早共享判断；预算覆盖整棵任务树并为验证预留，取消、背压、重试与孤儿任务由运行时处理。
+
+如何合并验证：子结果携带产物、来源、检查结果、冲突与未决项。局部通过只是集成输入，合并版本仍要重验；未知副作用或清理未闭合时，保留待对账状态，不以一段“完成”摘要结束责任。
 
 多 Agent 的成熟标志不是屏幕上出现更多头像，而是组织能够精确回答：为什么要拆成这些执行者，每个执行者看到了什么、被允许做什么、产出了什么证据，冲突怎样处理，以及当某个执行者犯错时，系统为何仍能恢复。做到这些之后，“Agent 团队”才不再是 prompt theater，而是可治理的计算拓扑。

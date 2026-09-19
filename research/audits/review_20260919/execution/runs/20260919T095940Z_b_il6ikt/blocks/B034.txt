@@ -1,0 +1,9 @@
+event_id
+thread_id / turn_id / step_id / attempt_id
+sequence_or_cursor
+event_type
+timestamp
+payload_ref
+causation_id / correlation_id
+schema_version
+visibility_class

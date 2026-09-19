@@ -1,2 +1,12 @@
+# Captured output/patch evidence is byte-preserved. Whitespace can be meaningful
+# in a patch, and normalizing recorded stdout would invalidate its saved hash.
 *.pdf binary
 *.png binary
+*.sqlite binary
+*.sqlite-wal binary
+*.sqlite-shm binary
+examples/runs/** -whitespace
+research/audits/review_20260919/execution/runs/** -whitespace
+research/audits/review_20260919/vendor_probe/** -whitespace
+research/audits/review_20260919/*.log -whitespace
+research/audits/review_20260919/research_report.html -whitespace

@@ -11,7 +11,8 @@ digraph G {
   execution [label="Execution Runtime\n沙箱、工具、外部效果"];
   environment [label="Environment\n仓库、浏览器、数据库、SaaS"];
   evidence [label="Evidence & Feedback\n验证、归因、评测"];
-  commit [label="Commit authority\n业务副作用生效", fillcolor="#EAF5ED"];
+  commit [label="Commit authority\n批准具体业务提交", fillcolor="#EAF5ED"];
+  post [label="提交后验收\n已提交不等于已完成", fillcolor="#EAF5ED"];
 
   { rank=same; context; model; runtime; }
   { rank=same; policy; execution; }
@@ -27,4 +28,7 @@ digraph G {
   evidence -> context [label="diagnostic feedback", constraint=false];
   evidence -> commit [label="verified candidate"];
   policy -> commit [label="authority", constraint=false];
+  commit -> environment [label="执行已批准提交", constraint=false];
+  environment -> post [label="回读业务状态", constraint=false];
+  post -> evidence [label="后验结果", constraint=false];
 }

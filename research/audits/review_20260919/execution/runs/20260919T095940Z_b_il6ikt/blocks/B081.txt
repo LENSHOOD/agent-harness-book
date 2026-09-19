@@ -1,0 +1,19 @@
+{
+  "event_id": "evt_01J8Z7",
+  "run_id": "run_TASK2048_A3",
+  "span_id": "tool_017",
+  "parent_span_id": "turn_006",
+  "type": "tool.completed",
+  "timestamp": "2026-08-27T09:31:14.223Z",
+  "actor": "runtime:codex",
+  "tool": {"canonical": "repo.test", "provider": "exec_command", "version": "4"},
+  "policy_decision": "pd_8821",
+  "input": {"ref": "artifact:sha256:11ad...", "classification": "internal"},
+  "output": {"ref": "artifact:sha256:90bf...", "exit_code": 1},
+  "state": {"workspace_before": "git:8f31b6e", "workspace_after": "git:dirty:4e19..."},
+  "latency_ms": 18241,
+  "cost": {"compute_usd": 0.012},
+  "status": "error",
+  "error_class": "TEST_FAILURE",
+  "vendor_payload_ref": "secure-artifact:sha256:772e..."
+}

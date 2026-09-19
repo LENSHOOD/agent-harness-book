@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/openai/codex/git/trees/78245b47af2a7aafcabe025828ceecca69db4df1?recursive=1"
+  ],
+  "retrieved_at": "2026-09-19T09:43:38.854456+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "5963c2a46654d1b542a0788f262e745b3dd3589387760b1a5f5425504f90f485"
+}

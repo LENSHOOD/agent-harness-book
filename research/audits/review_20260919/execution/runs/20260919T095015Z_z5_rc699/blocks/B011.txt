@@ -1,0 +1,4 @@
+State        当前环境的结构化描述
+Goal         希望满足的终止条件
+Action       带前置条件和效果的环境操作
+Planner      搜索可行 Action 序列的控制器

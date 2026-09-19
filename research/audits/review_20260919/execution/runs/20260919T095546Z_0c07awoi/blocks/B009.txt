@@ -1,0 +1,1 @@
+Agent System Capability = Model × Harness × Environment × Feedback

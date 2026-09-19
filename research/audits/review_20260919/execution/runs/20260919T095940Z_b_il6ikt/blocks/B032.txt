@@ -1,0 +1,18 @@
+CREATED
+  ↓
+ASSEMBLING_CONTEXT
+  ↓
+WAITING_FOR_MODEL
+  ↓
+DECIDING
+  ├──→ WAITING_FOR_APPROVAL
+  ├──→ EXECUTING_TOOL
+  ├──→ WAITING_FOR_USER
+  ├──→ COMPACTING
+  └──→ VERIFYING
+             ├──→ COMPLETED
+             ├──→ NEEDS_REPAIR ─→ ASSEMBLING_CONTEXT
+             └──→ FAILED
+
+任意活动状态 ─→ CANCELLING ─→ CANCELLED
+任意活动状态 ─→ SUSPENDED ─→ 恢复点

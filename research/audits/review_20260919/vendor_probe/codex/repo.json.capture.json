@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/openai/codex"
+  ],
+  "retrieved_at": "2026-09-19T09:43:24.100927+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "807f4c0f0251b5a5998d15a4fa1b8c19143d2939d05c7336c6b8e17c5e9145c0"
+}

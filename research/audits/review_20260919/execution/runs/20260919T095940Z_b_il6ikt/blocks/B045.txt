@@ -1,0 +1,8 @@
+name
+description
+input_schema
+output_schema
+side_effect_class
+permission_requirements
+timeout/retry policy
+version

@@ -1,0 +1,110 @@
+{
+  "kind": "30 scripted trials; descriptive governance reference only",
+  "frozen": {
+    "model": "model-12",
+    "suite": "synthetic-10x3",
+    "environment": "local-v1",
+    "policy": "policy-9",
+    "evaluator": "fixed-evaluator-v1",
+    "sealed_test": "sealed-v1"
+  },
+  "frozen_sha256": "f406be3bcb68bcfda33489b1baf5954aa94b2c3443043409cbb74f85fe8c2c54",
+  "metrics": {
+    "baseline": {
+      "successes": 24,
+      "denominator": 30,
+      "rate": 0.8,
+      "completed_only_rate_for_negative_demo": 0.8,
+      "timeouts": 0,
+      "activation": 0,
+      "critical_failures": 0,
+      "security_violations": 0,
+      "cost": 30
+    },
+    "cheat": {
+      "successes": 18,
+      "denominator": 30,
+      "rate": 0.6,
+      "completed_only_rate_for_negative_demo": 0.9,
+      "timeouts": 10,
+      "activation": 28,
+      "critical_failures": 0,
+      "security_violations": 0,
+      "cost": 50
+    },
+    "candidate": {
+      "successes": 28,
+      "denominator": 30,
+      "rate": 0.9333333333333333,
+      "completed_only_rate_for_negative_demo": 0.9333333333333333,
+      "timeouts": 0,
+      "activation": 28,
+      "critical_failures": 0,
+      "security_violations": 0,
+      "cost": 30
+    },
+    "canary": {
+      "successes": 29,
+      "denominator": 30,
+      "rate": 0.9666666666666667,
+      "completed_only_rate_for_negative_demo": 0.9666666666666667,
+      "timeouts": 0,
+      "activation": 28,
+      "critical_failures": 1,
+      "security_violations": 0,
+      "cost": 30
+    }
+  },
+  "rejected_gate": {
+    "accepted": false,
+    "failures": [
+      "primary_metric"
+    ],
+    "metrics": {
+      "successes": 18,
+      "denominator": 30,
+      "rate": 0.6,
+      "completed_only_rate_for_negative_demo": 0.9,
+      "timeouts": 10,
+      "activation": 28,
+      "critical_failures": 0,
+      "security_violations": 0,
+      "cost": 50
+    }
+  },
+  "accepted_gate": {
+    "accepted": true,
+    "failures": [],
+    "metrics": {
+      "successes": 28,
+      "denominator": 30,
+      "rate": 0.9333333333333333,
+      "completed_only_rate_for_negative_demo": 0.9333333333333333,
+      "timeouts": 0,
+      "activation": 28,
+      "critical_failures": 0,
+      "security_violations": 0,
+      "cost": 30
+    }
+  },
+  "final_test": {
+    "candidate": "candidate-fixed-before-final-test",
+    "status": "PASS",
+    "fixture_only": true
+  },
+  "release_events": [
+    "REJECT_BEFORE_RELEASE",
+    "SHADOW",
+    "LOW_RISK_CANARY",
+    "STOP_NEW_CANDIDATE_TRAFFIC",
+    "ROLLBACK_FULL_BUNDLE"
+  ],
+  "final_bundle": [
+    "harness-42",
+    "model-12",
+    "memory-87",
+    "policy-9",
+    "fixed-evaluator-v1"
+  ],
+  "model_api_calls": 0
+}

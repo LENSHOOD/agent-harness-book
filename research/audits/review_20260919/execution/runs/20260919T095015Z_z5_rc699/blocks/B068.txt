@@ -1,0 +1,18 @@
+WORKING
+  ├─ candidate produced ─→ VERIFYING
+  ├─ budget/risk hit ────→ BLOCKED_OR_ESCALATED
+  └─ unrecoverable error → FAILED
+
+VERIFYING
+  ├─ all mandatory checks pass ─→ READY_TO_COMMIT
+  ├─ repairable failures ────────→ REPAIRING
+  ├─ ambiguous grader ───────────→ REVIEW_REQUIRED
+  └─ contract impossible ────────→ BLOCKED
+
+READY_TO_COMMIT
+  ├─ policy/approval pass ───────→ COMMITTING
+  └─ denied/expired ─────────────→ BLOCKED
+
+COMMITTING
+  ├─ effect confirmed ───────────→ VERIFIED_COMPLETE
+  └─ uncertain outcome ──────────→ RECONCILING

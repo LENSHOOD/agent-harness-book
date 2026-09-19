@@ -1,0 +1,25 @@
+commit_effect_safely(action, constraints):
+    effect = EffectIntent(
+        effect_id = stable_id(action.id),
+        idempotency_key = action.idempotency_key,
+        target = action.resource,
+        requested_operation = constrained(action, constraints),
+        status = INTENT_RECORDED
+    )
+    durable_store.insert_if_absent(effect)
+
+    prior = target_system.lookup(effect.idempotency_key)
+    if prior.is_committed:
+        outcome = observation_from(prior)
+        durable_store.mark_committed(effect.id, outcome.ref)
+        return outcome
+
+    durable_store.mark_executing(effect.id)
+    outcome = executor.execute(effect.requested_operation)
+
+    if outcome.is_definitive:
+        durable_store.mark_final(effect.id, outcome)
+        return outcome
+
+    durable_store.mark_unknown(effect.id)
+    return Observation(status=UNKNOWN_EFFECT, diagnostics=reconcile_required)

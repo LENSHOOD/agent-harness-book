@@ -1,0 +1,6 @@
+Harness Runtime
+├── Deterministic workflow node
+├── Model routing node
+├── Open-ended agent loop
+├── Human approval node
+└── External evaluator node

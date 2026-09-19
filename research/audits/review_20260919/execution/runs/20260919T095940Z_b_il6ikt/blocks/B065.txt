@@ -1,0 +1,2 @@
+pass@k = 1 - (1 - p)^k
+pass^k = p^k

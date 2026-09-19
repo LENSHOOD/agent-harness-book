@@ -1,0 +1,5 @@
+summary            短模型观察
+structured_content 可验证字段
+artifact_refs      大内容、文件、图像和日志引用
+provenance         来源、目标、时间、版本
+execution_meta     时延、attempt、request id、effect 状态

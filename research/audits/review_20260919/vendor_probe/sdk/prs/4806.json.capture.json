@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/OpenHands/software-agent-sdk/pulls/4806"
+  ],
+  "retrieved_at": "2026-09-19T09:49:07.883806+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "951b03d23a80ce2439cc4a7bcb307e3119daa74507b59dde8d229825bdc7097a"
+}

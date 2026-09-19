@@ -1,0 +1,10 @@
+{
+  "task_id": "TASK-2048",
+  "attempt_id": "A-03",
+  "runtime": "codex-app-server",
+  "runtime_version": "pinned-build",
+  "thread_id": "vendor-thread-ref",
+  "workspace_revision": "git:8f31...",
+  "policy_profile": "code-medium-v4",
+  "completion_contract": "cc:v7"
+}

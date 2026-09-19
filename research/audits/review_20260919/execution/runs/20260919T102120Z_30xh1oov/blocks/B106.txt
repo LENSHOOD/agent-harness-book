@@ -1,0 +1,13 @@
+{
+  "contract_id": "CC-DATA-771-v5",
+  "metric": "net_subscription_revenue_v4",
+  "period": ["2026-07-01", "2026-08-01"],
+  "comparison": "previous_month",
+  "currency": "CNY_at_monthly_finance_rate",
+  "snapshot": "warehouse:2026-08-03T02:00:00Z",
+  "allowed_dimensions": ["province", "plan", "channel"],
+  "prohibited_fields": ["email", "phone", "account_name", "raw_payment_token"],
+  "deliverables": ["analysis.md", "aggregates.parquet", "query_bundle", "evidence.yaml"],
+  "checks": ["metric_definition", "snapshot_consistency", "total_reconciliation", "k_anonymity_20"],
+  "commit_authority": "finance_analytics_owner"
+}

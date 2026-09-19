@@ -1,0 +1,27 @@
+{
+  "task": {
+    "id": 1,
+    "state": "AWAITING_APPROVAL",
+    "budget": 10,
+    "spent": 0,
+    "cancel_requested": 0
+  },
+  "ledger": [
+    {
+      "action_id": "a1",
+      "key": "key1",
+      "binding": "0e3638e2042818e16bdd4566d2a37830dbdf33ab95312c7535cd725149bb5d65",
+      "payload": "{\"action_id\": \"a1\", \"key\": \"key1\", \"target\": \"account/one\", \"args\": {\"amount\": 7}, \"cost\": 1, \"tenant\": \"teaching\"}",
+      "status": "AWAITING_APPROVAL",
+      "cost": 1,
+      "approved": 0
+    }
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "kind": "AUTHORIZE",
+      "detail": "REQUIRE_APPROVAL"
+    }
+  ]
+}

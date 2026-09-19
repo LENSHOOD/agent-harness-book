@@ -1,0 +1,8 @@
+comparison:
+  task_suite: repo-maintenance-v3
+  workspace_snapshot: fixed
+  trials_per_case: 5
+  budgets: {wall_minutes: 30, model_usd: 8}
+  permissions: code-medium-v4
+  verifier: clean-room-v6
+  report_slices: [task_type, repo_size, risk, runtime, model]

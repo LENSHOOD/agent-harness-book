@@ -1,0 +1,4 @@
+persist INTENT
+authorize exact action
+execute external effect
+persist OUTCOME

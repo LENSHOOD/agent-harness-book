@@ -1,0 +1,9 @@
+DelegationValue ≈
+  parallel_fraction
+  × context_separability
+  × diversity_gain
+  × task_value
+  - communication_cost
+  - merge_risk
+  - duplicated_work
+  - coordination_latency

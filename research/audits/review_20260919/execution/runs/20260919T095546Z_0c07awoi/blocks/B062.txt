@@ -1,0 +1,4 @@
+MODEL_STOPPED      模型本轮停止生成
+ANSWER_PROPOSED    Agent 提交解释或候选交付物
+SUCCESS_VERIFIED   独立检查证明验收条件达到
+EFFECT_COMMITTED   经策略门允许，副作用对目标系统生效

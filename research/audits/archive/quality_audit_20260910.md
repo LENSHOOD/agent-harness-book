@@ -1,0 +1,68 @@
+# 最终质量审计
+
+审计日期：2026-09-10
+
+适用内容版本：git `04ddae644751d1abff63a5ac931744b3fd68f27a`
+
+结论：**通过研究版发布门禁；不等同于同行评议学术出版。**
+
+## 1. 交付完整性
+
+- 1 篇序、30 章正文、5 个篇导言、5 个附录、研究方法与完整参考文献均已纳入统一构建。
+- 去除 fenced code 后，`manuscript/chapters + parts + appendices` 共 68,929 个中文正文字符，达到研究章程 6–10 万字下限。
+- 第 19–24 章“进化篇”共 13,558 个中文正文字符，占上述口径 20.949%，超过 20.8% 的评审缓冲要求，不再贴线达标。
+- 产品篇覆盖 Claude Code、Codex、Cursor、DeepSeek Harness/Cordis、OpenHands，并使用统一六轴比较与企业接入风险分析。
+- 实践篇包含三个端到端案例、完整合同/证据包实例、失败演练、企业 SLO、SDD、成熟度自评与迁移退出判据。
+- 附录 A–E 分别提供安全核心契约、可判定检查表、冻结术语本体、概念索引与机器可读 schema。
+
+## 2. 事实与证据
+
+- 来源 registry：84 条；持久化 evidence：71 条；`claims_v2.jsonl`：25 条人工定义的原子承重 claim；正文外部链接：69 条。
+- Registry 中 37 条 `verified` 来源已全部填写访问日期、版本、网页快照或 commit；其中 28 个被 25 条承重 claim 使用。其余 47 条为显式 `unverified` 的检索 backlog，不冒充承重证据；来源类型收敛为 academic paper、official documentation、official article、official repository、platform metadata 五类。
+- 原子 claim 分为 `historical_fact`、`research_result`、`vendor_claim`，全部绑定具体 source/evidence；厂商数字标出供应商口径，2026 年演化研究标出预印本边界。
+- `audit_claim_ledger.py` 已改为只读校验：不再根据 URL 自动推断事实类型，也不写回账本；同时校验 claim/source/evidence 引用完整性、严格类型支撑状态、正文链接登记、含括号 DOI 解析、verified 元数据完整性及 README registry 数量声明。
+- 本轮运行结果：`PASS`，25/25 原子承重 claim 为 `supported`，无未登记正文链接。
+- 旧 `claims.jsonl` 保留为迁移审计材料，不再作为发布门禁的事实账本。
+
+## 3. 构建与发布
+
+- 依赖由 `requirements.txt` 固定；PDF 由 ReportLab 直接从合并 Markdown 生成，不再依赖本机缺失的 GObject/WeasyPrint 运行时。
+- `prepare_site.py` 会先清理并重新同步 chapters、parts、appendices、assets 和下载文件，避免网页与 PDF 版本漂移。
+- `publishing/book_structure.json` 是 30 章标题的单一来源；构建脚本和 VitePress 侧边栏共同读取，CI 另以 `check_book_structure.py` 校验源稿 H1。
+- GitHub Actions 依次执行 claim audit、结构审计、合并书稿、生成 PDF、同步站点和 VitePress 构建；本地以同样顺序复现通过。
+- PDF 渲染启用 ReportLab invariant 模式并使用稳定书签键；CI 连续渲染两次并比较 SHA-256，拒绝时间戳、随机文档 ID 或书签键造成的字节漂移。
+- VitePress 构建完成；最终 dist 的错误 `/downloads/` 链接为 0，45 处完整版入口均为 `/agent-harness-book/downloads/agent_harness_book.pdf`。CI 在构建产物上设置正反双向门禁。
+
+## 4. PDF 验收
+
+- 完整版：135 页，A4，1,022,909 bytes；无替换字符或空白页。
+- 管理层版：14 页，A4，67,652 bytes。
+- PDF 书签含 5 个篇节点和 30 个章节点；篇层级为 0，所有章层级为 1，章节已正确嵌套。
+- 第 5、19、25 章三张 Graphviz 关系图已进入网页与 PDF；JSON/YAML 中的引号以最终 PDF 抽查确认未被渲染为 HTML 实体。
+- Latin 封面字体以 ReportLab 自带 TrueType 字体嵌入，避免默认未嵌入 Helvetica 在部分渲染器中不可见。
+- 抽查完整版封面、目录、表格/代码页、进化篇新增页、参考文献末页，以及管理层版首末页；未发现裁切、重叠、黑块、缺字或不可见标题。
+- 发布前在两个独立渲染进程中复测：完整版 SHA-256 均为 `213235d9fa6fe4f1d187db7d0c1bf94b554af079d899a2b50d33ce1adf44c08b`，管理层版均为 `ecdb0b526f5a3a912dce0e983b08f828f2398ac7986f3015167862f74e2fcd06`。
+
+## 5. Peer review 处置
+
+前两轮逐条判断见 `peer_review_disposition_20260828.md`，第三轮判断与修复见 `peer_review_disposition_round3_20260828.md`，第四轮验收与建议处置见 `peer_review_disposition_round4_20260828.md`。第五份独立记录 `审阅记录_第五轮闭环_20260828.md` 已复测第四轮全部处置，确认研究版无 P0/P1/P2 遗留，并接受对第四轮审阅自身两处偏差的更正；评审系列至此关闭。旧处置报告的 D-1 至 D-5 失实/漏报已在原报告文末公开勘误，未静默改写历史记录。
+
+## 6. 已知边界
+
+- 25 条原子 claim 是承重主张子集，不代表逐句学术事实核查；设计推导、规范性建议与非承重背景材料仍依赖正文限定和内联来源。
+- 产品章节以 2026-08-27 为资料截面，部分来源在 2026-08-28 复核；供应商功能、协议与安全边界会继续变化。
+- Self-Harness、GSME、Living-Harness、HSI 等 2026 年材料在本截面仍以预印本为主，缺少长期生产复现。
+- 厂商内部指标不外推为行业总体；未公开实现只作为推断或集成假设表达。
+- 正式 1.0 前仍须按 `research/maintenance/release_and_product_review_policy.md` 完成外部盲审，并持续巡检安全、训练数据治理和产品版本更新。
+
+## 7. 最终判定
+
+本修订稿已经满足“真实可追溯、结构完整、体系闭合、工程可落地、表述边界明确、发布可复现”的研究版要求。它可以进入公开阅读和同行反馈阶段；后续变更应继续由 claim audit、站点构建和 PDF 视觉抽查共同把关。
+
+## 8. 全文可读性复审
+
+- 2026-09-10 对序言、30 章、5 个篇导言和 5 个附录共 41 个文件做了逐篇复审，39 个文件完成表达改写，第 25、26 章因原文已经清楚而保持不变。
+- 改写后中文字符数为 68,929；超过 120 个字符的句子从 32 个降到 26 个。
+- `check_plain_language_integrity.py` 验证 41/41 文件的标题、链接、代码块和数字保持一致，单文件字数比为 0.965–1.194。
+- 事实账本、30 章结构、Git 补丁格式、PDF 双次确定性渲染、VitePress 生产构建和本地下载路径全部通过。
+- 详细证据与已知边界见 `plain_language_rewrite_20260910.md`。
