@@ -1,6 +1,6 @@
 # Harness 小书研究与写作进度
 
-更新时间：2026-09-19。状态：本轮研究、修订及本地验收完成，已进入提交和发布流程；线上状态以GitHub Actions为准。
+更新时间：2026-09-19。状态：本轮修订已通过PR #8合并发布，GitHub Pages部署与线上核验完成，记录见revision_20260919/deployment_receipt.json。
 
 ## 本轮完成
 

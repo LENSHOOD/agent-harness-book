@@ -1,0 +1,66 @@
+{
+  "date": "2026-09-19",
+  "content_commit": "d4c2f63e892f3f7275da7aef618f914353f33930",
+  "merge_commit": "1953883a490f87ba2a00d164376602dd1ab50455",
+  "pr": "https://github.com/LENSHOOD/agent-harness-book/pull/8",
+  "workflow": "https://github.com/LENSHOOD/agent-harness-book/actions/runs/35444317258",
+  "workflow_conclusion": "success",
+  "site": "https://lenshood.github.io/agent-harness-book/",
+  "homepage_http": 200,
+  "pdf_hashes_match": true,
+  "pdfs": {
+    "agent_harness_book.pdf": "bd63667df69c31b2d1fd3692a87e601c91bdeb7e2b371bacdffc3ddeeb091d6e",
+    "executive_brief.pdf": "8bed76b59b33e36810856d266a9d8ea4c7a4c63d3d62a0e2317b49dabeb16d6c"
+  },
+  "browser_checks": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "url": "https://lenshood.github.io/agent-harness-book/?rev=1953883",
+        "title": "Agent Harness",
+        "expected_text": true,
+        "width": 1280,
+        "scrollWidth": 1280,
+        "missing_images": [],
+        "exceptions": []
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "url": "https://lenshood.github.io/agent-harness-book/chapters/06_agent_loop_as_a_durable_state_machine?rev=1953883",
+        "title": "第六章 Agent Loop：从 while 循环到持久状态机 | Agent Harness",
+        "expected_text": true,
+        "width": 1280,
+        "scrollWidth": 1280,
+        "missing_images": [],
+        "exceptions": []
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "url": "https://lenshood.github.io/agent-harness-book/chapters/16_deepseek_harness_composable_runtime?rev=1953883",
+        "title": "第十六章 DeepSeek Harness：可组合、可逆的运行时 | Agent Harness",
+        "expected_text": true,
+        "width": 375,
+        "scrollWidth": 375,
+        "missing_images": [],
+        "exceptions": []
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "url": "https://lenshood.github.io/agent-harness-book/executive-brief?rev=1953883",
+        "title": "企业决策者精简版 | Agent Harness",
+        "expected_text": true,
+        "width": 375,
+        "scrollWidth": 375,
+        "missing_images": [],
+        "exceptions": []
+      }
+    }
+  ],
+  "scope": "Published book content and downloads verified. PDF visual acceptance remains not completed; no vendor/model-production certification."
+}
