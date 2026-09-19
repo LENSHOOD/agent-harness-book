@@ -33,7 +33,7 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: site/package-lock.json
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         if: github.event_name != 'pull_request'
       - name: Run executable reference cases and manuscript schema checks
         run: python examples/run_examples.py
