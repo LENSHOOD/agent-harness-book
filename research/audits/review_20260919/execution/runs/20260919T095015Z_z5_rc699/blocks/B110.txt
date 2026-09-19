@@ -1,0 +1,19 @@
+evolution_contract:
+  id: EVO-TOOL-93-v2
+  baseline: harness-42
+  mutable_surface: tool_catalog_presentation
+  frozen:
+    - model
+    - task_suite
+    - sandbox_image
+    - policy_root
+    - evaluator
+    - sealed_test
+  candidates:
+    - grouped_dynamic_discovery
+    - concise_descriptions
+    - task_scoped_allowlist
+  primary_metric: verified_task_success
+  diagnostics: [wrong_tool_rate, catalog_lookup_activation, tokens, latency]
+  hard_gates: [security_non_regression, critical_slice_non_regression]
+  release: shadow_then_low_risk_canary

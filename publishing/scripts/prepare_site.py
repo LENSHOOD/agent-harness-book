@@ -34,11 +34,13 @@ brief = brief.replace('[TOC]\n', '')
 (site / 'executive-brief.md').write_text(brief)
 
 sources = [json.loads(x) for x in (evidence / 'sources.jsonl').read_text().splitlines() if x.strip()]
-refs = ['# 完整参考文献', '', f'本书共登记 {len(sources)} 个主要来源。全书资料维护至 2026-08-28；快速变化的产品事实以各章章首声明为准。', '']
-for i, s in enumerate(sources, 1):
+cutoff = json.loads((root / 'publishing/book_structure.json').read_text())['sourceCutoff']
+verified = [s for s in sources if s.get('metadata_status') == 'verified' and s.get('core_claim_eligible', True)]
+refs = ['# 已核验参考文献', '', f'研究登记表共 {len(sources)} 项，其中 {len(verified)} 项已核验身份与版本且可用于技术事实引用的来源列于下方；其余待核验或社区发现线索保留在仓库。资料维护至 {cutoff}，产品行为以各章版本为准。来源身份核验不等于全文每个结论均被独立证明。', '']
+for i, s in enumerate(verified, 1):
     authors = s.get('authors') or '机构/作者未登记'
     year = s.get('year') or 'n.d.'
-    refs.append(f"{i}. {authors} ({year}). [{s['title']}]({s['raw_url']})")
+    refs.append(f"{i}. {authors} ({year}). [{s['title']}]({s['raw_url']})。版本：{s['version_or_commit']}；访问：{s['accessed_at']}。")
 (site / 'references.md').write_text('\n\n'.join(refs) + '\n')
 
 for name in ['agent_harness_book.pdf', 'executive_brief.pdf']:

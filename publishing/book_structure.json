@@ -1,6 +1,7 @@
 {
   "bookTitle": "Agent Harness：从执行脚手架到自我进化系统",
   "subtitle": "企业 Agent 平台架构与工程实践",
+  "sourceCutoff": "2026-09-19",
   "preface": {
     "slug": "00_preface",
     "title": "序：为什么现在需要一本 Harness 小书"

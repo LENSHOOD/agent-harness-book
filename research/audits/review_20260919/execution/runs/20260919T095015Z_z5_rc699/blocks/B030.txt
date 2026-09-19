@@ -1,0 +1,6 @@
+L6 Experience      CLI / IDE / Web / API / automation
+L5 Agent Patterns  loop / workflow / multi-agent / evaluator
+L4 Runtime State   task / session / event / context / memory
+L3 Governance      identity / policy / approval / audit
+L2 Execution       sandbox / tools / browser / connectors
+L1 Model Gateway   provider / routing / cache / quota

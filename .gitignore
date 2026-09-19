@@ -3,3 +3,5 @@ publishing/work/
 site/node_modules/
 site/docs/.vitepress/dist/
 .DS_Store
+__pycache__/
+*.py[cod]

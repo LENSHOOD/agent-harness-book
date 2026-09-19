@@ -1,0 +1,12 @@
+runtime_profile:
+  provider: anthropic-claude-code
+  version: pinned
+  permission_mode: policy_mediated
+  workspace: isolated
+  network: allowlist
+  completion_authority: external_verifier
+  export:
+    - session_id
+    - tool_events
+    - cost
+    - artifacts

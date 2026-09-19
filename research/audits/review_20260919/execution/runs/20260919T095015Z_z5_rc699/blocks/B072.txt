@@ -1,0 +1,3 @@
+                    ┌─ worker A
+user → manager ─────┼─ worker B → manager → verifier → result
+                    └─ worker C

@@ -1,0 +1,8 @@
+experiment:
+  hypothesis: dynamic_tool_discovery_reduces_selection_errors
+  primary_metric: verified_task_success
+  hard_gates: [no_security_regression, no_critical_slice_regression]
+  missing_trials: count_as_failure_unless_infrastructure_retried
+  test_visibility: sealed
+  promotion: shadow_then_5_percent_low_risk
+  rollback_trigger: any_severity_1_or_gate_breach

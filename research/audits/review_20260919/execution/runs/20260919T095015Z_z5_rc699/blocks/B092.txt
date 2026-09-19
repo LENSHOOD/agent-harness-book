@@ -1,0 +1,6 @@
+candidate → clean-room checks
+  ├─ pass → seal artifact
+  ├─ diagnostic failure → bounded repair context
+  ├─ flaky/infrastructure → retry outside candidate score
+  ├─ integrity alarm → quarantine
+  └─ no progress/budget exhausted → human escalation

@@ -2,14 +2,14 @@
 
 “Agent = Model + Harness”是一条有用的传播公式，但对企业架构仍然太粗。它容易让人把环境、验证与反馈也塞进 Harness，最终得到“除模型外一切都是 Harness”的不可操作定义。
 
-本书采用一个乘法式系统模型：
+本书采用一个乘法式系统模型。标题中的 Agent 是系统讨论的简称；严格说，乘式描述的是 Agent System 的整体表现，而非 Agent 这个执行角色：
 
 ```text
 Agent System Capability
     = Model × Harness × Environment × Feedback
 ```
 
-乘号表达的不是精确数学关系，而是互相制约。任何一项接近零，系统能力都会大幅下降。优秀模型放进贫乏工具和错误权限中无法完成任务；优秀 Harness 不能让模型解决超出其理解边界的问题；不可复现环境会让正确计划执行失败；没有外部反馈，系统无法分辨“生成了结果”和“结果真的有效”。
+乘号表达各环节相互制约，不是精确数学关系，四项也没有可直接相乘的度量。优秀模型可能因工具缺失或错误权限而失败；Harness 可以借工具、搜索和多次尝试改变可用信息与计算过程，但具体收益仍须实测，不能从这个隐喻推出通用能力上界。不可复现环境会让正确计划执行失败，错误反馈也会把“生成了结果”误判为“结果有效”。
 
 ![图 5-1 Agent System 的责任边界与反馈方向](../assets/diagrams/system-responsibility-boundary.png)
 
@@ -25,7 +25,7 @@ Agent System Capability
 
 模型不天然拥有持久状态、真实权限、可靠时钟、事务语义和外部世界真值。即便 API 提供 conversation id 或服务端工具，这些能力仍由模型之外服务提供。
 
-架构上应把模型看成一种概率性策略：
+架构上应把模型看成一种概率性决策策略，区别于规定哪些动作获准执行的授权策略：
 
 ```text
 proposal ~ Model(context, action_space, sampling_policy)
@@ -121,7 +121,7 @@ Harness Runtime
 
 ### 7.1 控制面
 
-管理配置、身份、策略、模型目录、工具目录、技能版本、实验、租户和发布。控制面决定“什么可以被运行”，但不进入每一步高频数据路径。
+管理配置、身份、授权策略、模型目录、工具目录、技能版本、实验、租户和发布。策略管理不必同步参与每次调用，但执行请求仍须经受信任的策略执行点校验；后者可以使用受控缓存或临时授权，不能跳过撤销、期限和动作绑定检查。
 
 ### 7.2 数据面
 
@@ -143,26 +143,26 @@ User ───────→ Harness Data Plane ───────→ Model
           sandbox / browser / APIs
 ```
 
-分平面不是为了追求微服务数量，而是建立不同信任边界。允许 Agent 修改数据面的临时计划，不代表允许它修改控制面的根权限；允许执行面持有短期凭证，不代表模型上下文可以读取凭证值。
+这些平面用于区分职责与信任边界，不要求各有独立服务。允许 Agent 修改数据面的临时计划，不代表允许它修改控制面的根权限；允许执行面持有短期凭证，不代表模型上下文可以读取凭证值。后文的证据面进一步归拢数据面中的产物、轨迹和检查记录；进化面则组织候选生成、评测和发布流程，发布权仍受控制面约束。它们是对职责的进一步拆分，不是另一套互斥拓扑。
 
 ## 8. 概率性建议与确定性约束
 
-企业 Harness 最重要的设计原则之一，是区分“希望模型遵守”与“系统保证不会违反”。
+企业 Harness 应区分“希望模型遵守”与“在明确配置和威胁模型下由软件强制执行”。后者也有覆盖边界，需要检验配置、实现和执行环境。
 
-系统提示中的“不要访问生产数据库”是概率性建议；网络策略和身份权限才是确定性约束。提示中的“修改前请询问”可能被误解；工具调用前的审批状态机才提供可审计保证。
+系统提示中的“不要访问生产数据库”帮助模型理解意图；网络策略和身份权限限制实际访问。提示中的“修改前请询问”可能被误解；审批状态机则记录授权主体、动作与有效期，并在执行时核对这些条件。
 
-可以把约束按强度排列：
+这些机制解决不同问题，应组合使用，不能排成一条相互替代的“证明强度”阶梯：
 
 ```text
-建议：prompt / tool description
-引导：workflow / mode / model routing
-检查：validator / policy decision
-限制：capability / IAM / network policy
-隔离：container / VM / separate account
-证明：external verification / signed audit
+理解意图：prompt / tool description
+组织流程：workflow / mode / model routing
+执行授权：policy decision / capability / IAM
+限制接触面：network policy / container / VM / separate account
+检查验收条件：external verification
+核验记录来源与完整性：signature / protected audit
 ```
 
-越靠近不可逆副作用，越应使用后面的机制。Prompt 仍然重要，因为它减少无效尝试和审批噪声，但不能承担安全根信任。
+签名能帮助核验谁签过哪份记录，不能证明记录中的业务判断正确；验证器也只检查已定义的条件。含主观判断的任务还应指定有权验收的人或服务。越靠近不可逆副作用，越需要把授权、隔离、验收和审计组合起来；提示仍可减少无效尝试，却不能独自承担安全边界。
 
 ## 9. Harness 的厚与薄
 
@@ -193,9 +193,19 @@ L2 Execution       sandbox / tools / browser / connectors
 L1 Model Gateway   provider / routing / cache / quota
 ```
 
-每层只依赖下层稳定契约。Experience 不直接执行 shell；Agent pattern 不直接读取生产凭证；模型 gateway 不负责业务完成判断；execution 不解释自然语言意图。
+六层是职责分区，编号不表示严格的调用依赖。执行层在提交时校验治理层签发的受限授权，并通过状态与审计接口记录结果；Agent pattern 调用模型网关，也读取任务状态。关键交互可以补成：
 
-这套分层仍允许单体实现。早期平台可以在一个进程中部署，但接口和状态所有权应从一开始分清，否则后续多租户、远程沙箱和多客户端接入会迫使系统整体重写。
+```text
+Agent Patterns → Runtime State / Model Gateway
+Agent Patterns → Governance: 请求动作授权
+Execution → Governance: 校验授权、期限、约束与资源版本
+Execution → Runtime State: 记录动作结果与待对账状态
+Runtime State / Execution → audit interface: 关联受保护证据
+```
+
+Experience 不直接执行 shell；Agent pattern 不直接读取生产凭证；模型网关不负责业务完成判断；执行器接受规范化动作，不自行解释自然语言意图。
+
+早期平台可以在同一进程或数据库中实现这些职责，但应分清接口、访问权限、状态所有权和保留规则。是否拆服务、拆数据库，应由隔离、规模和故障恢复要求决定。
 
 ## 11. 本书的统一分析模板
 

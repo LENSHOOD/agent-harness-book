@@ -1,0 +1,5 @@
+request → contract compiler → scheduler → runtime adapter
+   → policy-mediated tool gateway → sandbox/external systems
+   → event + effect ledger → candidate seal
+   → verifier → approval/commit → EvidencePackage
+   → telemetry/eval → governed evolution release

@@ -1,0 +1,11 @@
+SubagentResult {
+  subtask_id
+  status
+  claims[] {text, evidence_refs, confidence}
+  artifacts[] {uri, hash, type}
+  checks[]
+  assumptions[]
+  conflicts[]
+  unresolved[]
+  usage
+}

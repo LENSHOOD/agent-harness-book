@@ -1,0 +1,38 @@
+function delegate(parent, spec):
+    assert spec.objective is bounded
+    assert spec.output_schema exists
+    assert spec.acceptance_checks not empty
+
+    capability = attenuate(
+        parent.capability,
+        resources=spec.resources,
+        tools=spec.tools,
+        ttl=spec.deadline,
+        can_delegate=spec.can_delegate
+    )
+
+    lease = scheduler.reserve(
+        budget=spec.budget,
+        parent_budget=parent.remaining,
+        cancellation=parent.cancel_token
+    )
+
+    child = runtime.spawn(
+        snapshot=build_minimal_context(spec),
+        capability=capability,
+        workspace=create_isolated_workspace(spec.inputs),
+        lease=lease
+    )
+
+    result = child.await_or_cancel()
+    artifact = validate_schema_and_provenance(result)
+    checks = verify_subtask(artifact, spec.acceptance_checks)
+    return SubagentResult(artifact, checks, child.usage)
+
+function integrate(parent, results):
+    reject_unverified_or_expired(results)
+    conflicts = detect_semantic_and_resource_conflicts(results)
+    if conflicts:
+        return RESOLUTION_REQUIRED(conflicts)
+    candidate = merge_in_clean_environment(results)
+    return parent_completion_gate(candidate)

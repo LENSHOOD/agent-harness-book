@@ -1,0 +1,10 @@
+def frontier_search():
+    frontier = [baseline_state]
+    while budget and frontier:
+        state = select(frontier)
+        candidates = propose_distinct_hypotheses(state)
+        for c in candidates:
+            result = execute_in_isolated_branch(c)
+            score = external_verifier(result)
+            retain_if_nondominated(c, score)
+    return best_candidate_that_passes_hard_gates()

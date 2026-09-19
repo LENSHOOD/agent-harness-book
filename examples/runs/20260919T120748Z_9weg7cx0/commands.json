@@ -1,0 +1,29 @@
+[
+  {
+    "label": "pytest",
+    "argv": [
+      "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T120748Z_9weg7cx0/tests.xml",
+      "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/tests"
+    ],
+    "exit_code": 0
+  },
+  {
+    "label": "check_examples",
+    "argv": [
+      "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+      "-B",
+      "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/publishing/scripts/check_examples.py",
+      "--skip-flow-tests",
+      "--report",
+      "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T120748Z_9weg7cx0/manuscript_checks.json"
+    ],
+    "exit_code": 0
+  }
+]

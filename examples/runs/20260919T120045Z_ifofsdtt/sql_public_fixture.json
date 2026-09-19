@@ -1,0 +1,27 @@
+{
+  "as_of": "2026-08-03T02:00:00Z",
+  "groups": [
+    {
+      "month": "2026-06-01",
+      "province": "GD",
+      "plan": "pro",
+      "net": 1800,
+      "accounts": 20
+    },
+    {
+      "month": "2026-07-01",
+      "province": "GD",
+      "plan": "pro",
+      "net": 1800,
+      "accounts": 20
+    },
+    {
+      "month": "2026-07-01",
+      "province": "SH",
+      "plan": "basic",
+      "net": 500,
+      "accounts": 20
+    }
+  ],
+  "scope": "Partial disclosure; small groups suppressed. Not a finance total."
+}

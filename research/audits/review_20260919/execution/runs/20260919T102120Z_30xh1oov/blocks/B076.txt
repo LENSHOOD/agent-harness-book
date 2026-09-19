@@ -1,0 +1,5 @@
+global_budget
+  ├─ orchestration reserve
+  ├─ worker pools by risk/model/tool
+  ├─ verification reserve
+  └─ emergency reconciliation reserve

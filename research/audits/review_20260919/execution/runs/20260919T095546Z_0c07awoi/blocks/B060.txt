@@ -1,0 +1,4 @@
+PrivateRepo + PublicIssue → deny public write
+CustomerPII + ExternalModel → require approved gateway/redaction
+ProductionLog + LongTermMemory → aggregate or prohibit
+Secret + AnyModelContext → deny

@@ -1,0 +1,45 @@
+{
+  "manifest": {
+    "source_has_tests_time": false,
+    "source_has_src_time": false,
+    "fixture_has_tests_time": false,
+    "fixture_has_src_time": false,
+    "required_revision_exists": false,
+    "empty_artifacts": {
+      "candidate.patch": 0,
+      "changed-files.txt": 0
+    }
+  },
+  "original": {
+    "name": "bash_raw_original_environment",
+    "argv": [
+      "/bin/bash",
+      "-x"
+    ],
+    "cwd": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T095835Z_3_7n258_/original_bash_workspace",
+    "exit_code": 127,
+    "stdout": "",
+    "stderr": "+ git diff --binary 8f31b6e\nfatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n+ git diff --name-only 8f31b6e\n+ sort\nfatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n+ pytest -q tests/time\n/bin/bash: line 3: pytest: command not found\n",
+    "stdout_file": "commands/009_bash_raw_original_environment.stdout.log",
+    "stderr_file": "commands/009_bash_raw_original_environment.stderr.log"
+  },
+  "with_dependency": {
+    "name": "bash_raw_with_real_pytest_only",
+    "argv": [
+      "/bin/bash",
+      "-x"
+    ],
+    "cwd": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T095835Z_3_7n258_/original_bash_workspace",
+    "exit_code": 4,
+    "stdout": "\nno tests ran in 0.00s\n",
+    "stderr": "+ git diff --binary 8f31b6e\nfatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n+ git diff --name-only 8f31b6e\n+ sort\nfatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n+ pytest -q tests/time\nERROR: file or directory not found: tests/time\n\n",
+    "stdout_file": "commands/010_bash_raw_with_real_pytest_only.stdout.log",
+    "stderr_file": "commands/010_bash_raw_with_real_pytest_only.stderr.log"
+  },
+  "line_exit_codes": [
+    128,
+    0,
+    4
+  ],
+  "interpretation": "No code/tests or replacement commit were supplied to the original workspace. pytest supplied separately only to expose missing tests. No original runnable claim."
+}

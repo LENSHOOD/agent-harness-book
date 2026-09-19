@@ -1,0 +1,145 @@
+{
+  "cases": [
+    [
+      "request",
+      "initialize",
+      true
+    ],
+    [
+      "request",
+      "thread/start",
+      true
+    ],
+    [
+      "request",
+      "turn/start",
+      true
+    ],
+    [
+      "request",
+      "turn/interrupt",
+      true
+    ],
+    [
+      "request",
+      "turn/cancel",
+      false
+    ],
+    [
+      "notification",
+      "item/started",
+      true
+    ],
+    [
+      "notification",
+      "item/start",
+      false
+    ],
+    [
+      "notification",
+      "item/agentMessage/delta",
+      true
+    ],
+    [
+      "notification",
+      "item/update",
+      false
+    ],
+    [
+      "notification",
+      "item/completed",
+      true
+    ],
+    [
+      "notification",
+      "turn/completed",
+      true
+    ]
+  ],
+  "fixtures": [
+    {
+      "name": "initialize",
+      "kind": "request",
+      "expected": true,
+      "message": {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "vendor_protocol_audit",
+            "version": "2026.09.19"
+          },
+          "capabilities": {
+            "experimentalApi": false
+          }
+        }
+      }
+    },
+    {
+      "name": "interrupt_valid_not_sent",
+      "kind": "request",
+      "expected": true,
+      "message": {
+        "id": 2,
+        "method": "turn/interrupt",
+        "params": {
+          "threadId": "audit-thread-placeholder",
+          "turnId": "audit-turn-placeholder"
+        }
+      }
+    },
+    {
+      "name": "interrupt_missing_turn_id",
+      "kind": "request",
+      "expected": false,
+      "message": {
+        "id": 3,
+        "method": "turn/interrupt",
+        "params": {
+          "threadId": "audit-thread-placeholder"
+        }
+      }
+    },
+    {
+      "name": "invalid_cancel",
+      "kind": "request",
+      "expected": false,
+      "message": {
+        "id": 4,
+        "method": "turn/cancel",
+        "params": {
+          "threadId": "audit-thread-placeholder",
+          "turnId": "audit-turn-placeholder"
+        }
+      }
+    },
+    {
+      "name": "agent_delta_valid_not_received",
+      "kind": "notification",
+      "expected": true,
+      "message": {
+        "method": "item/agentMessage/delta",
+        "params": {
+          "threadId": "audit-thread-placeholder",
+          "turnId": "audit-turn-placeholder",
+          "itemId": "audit-item-placeholder",
+          "delta": "schema fixture only"
+        }
+      }
+    },
+    {
+      "name": "invalid_generic_update",
+      "kind": "notification",
+      "expected": false,
+      "message": {
+        "method": "item/update",
+        "params": {
+          "threadId": "audit-thread-placeholder",
+          "turnId": "audit-turn-placeholder",
+          "itemId": "audit-item-placeholder",
+          "delta": "schema fixture only"
+        }
+      }
+    }
+  ]
+}

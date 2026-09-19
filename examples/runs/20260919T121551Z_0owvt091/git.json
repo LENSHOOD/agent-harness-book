@@ -1,0 +1,505 @@
+{
+  "kind": "local reference, not vendor replication",
+  "baseline_tree": "89311be881de3d3a9e874a7c140b64abd5a23c13",
+  "candidate_tree": "f8cf4a1ae5df95bcd7981167564a2abcc958b75d",
+  "patch_sha256": "31f0241cb18406dfb3db45bc72e0389810347a8de961411da330928c587fdd27",
+  "tracked_changed_paths": [
+    "src/window.py",
+    "src/window_helpers.py"
+  ],
+  "untracked_before_seal": [
+    "src/window_helpers.py"
+  ],
+  "clean_apply": {
+    "exit": 0,
+    "tree": "f8cf4a1ae5df95bcd7981167564a2abcc958b75d",
+    "stdout": "............................                                             [100%]\n28 passed in 0.02s\n",
+    "stderr": ""
+  },
+  "missing_helper_rejected": {
+    "exit": 2,
+    "tree": "8724358d8e3c9ce07cbb158095b54aaea8f581a0",
+    "stdout": "\n==================================== ERRORS ====================================\n_______________________ ERROR collecting dst_contract.py _______________________\nImportError while importing test module '/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Users/xuhai.zhang/.local/share/uv/python/cpython-3.13.13-macos-aarch64-none/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:8: in <module>\n    from src.window import window_utc\nsrc/window.py:4: in <module>\n    from .window_helpers import civil_end\nE   ModuleNotFoundError: No module named 'src.window_helpers'\n=========================== short test summary info ============================\nERROR ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.04s\n",
+    "stderr": ""
+  },
+  "hardcoded_rejected": {
+    "exit": 1,
+    "tree": "70a649bd12388b81fa7a839dcc27577fee988b5a",
+    "stdout": "..FFFFFFFF.....FFFFFFFF.....                                             [100%]\n=================================== FAILURES ===================================\n___________________ test_duration[America/New_York-day2-23] ____________________\n\nzone = 'America/New_York', day = datetime.date(2025, 3, 9), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b332e50>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b332e50> = (datetime.datetime(2025, 3, 10, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2025, 3, 9, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n___________________ test_duration[America/New_York-day3-25] ____________________\n\nzone = 'America/New_York', day = datetime.date(2025, 11, 2), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b1eb8a0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b1eb8a0> = (datetime.datetime(2025, 11, 3, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2025, 11, 2, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n___________________ test_duration[America/New_York-day4-23] ____________________\n\nzone = 'America/New_York', day = datetime.date(2027, 3, 14), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b3321f0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b3321f0> = (datetime.datetime(2027, 3, 15, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2027, 3, 14, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n___________________ test_duration[America/New_York-day5-25] ____________________\n\nzone = 'America/New_York', day = datetime.date(2027, 11, 7), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b333b10>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b333b10> = (datetime.datetime(2027, 11, 8, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2027, 11, 7, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n_____________________ test_duration[Europe/Berlin-day6-23] _____________________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 3, 29), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b1e86f0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b1e86f0> = (datetime.datetime(2026, 3, 29, 23, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 3, 28, 23, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n_____________________ test_duration[Europe/Berlin-day7-25] _____________________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 10, 25), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b3b8810>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b3b8810> = (datetime.datetime(2026, 10, 25, 22, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 10, 24, 22, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n_________________ test_duration[Australia/Lord_Howe-day8-24.5] _________________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 4, 5), hours = 24.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (24.5 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b3b9290>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b3b9290> = (datetime.datetime(2026, 4, 5, 13, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 4, 4, 13, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n_________________ test_duration[Australia/Lord_Howe-day9-23.5] _________________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 10, 4), hours = 23.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23.5 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b3b9860>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b3b9860> = (datetime.datetime(2026, 10, 4, 13, 30, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 10, 3, 13, 30, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n__________ test_adjacent_half_open_windows[America/New_York-day2-23] ___________\n\nzone = 'America/New_York', day = datetime.date(2025, 3, 9), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2025, 3, 10, 4, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2025, 3, 10, 5, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n__________ test_adjacent_half_open_windows[America/New_York-day3-25] ___________\n\nzone = 'America/New_York', day = datetime.date(2025, 11, 2), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2025, 11, 3, 5, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2025, 11, 3, 4, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n__________ test_adjacent_half_open_windows[America/New_York-day4-23] ___________\n\nzone = 'America/New_York', day = datetime.date(2027, 3, 14), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2027, 3, 15, 4, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2027, 3, 15, 5, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n__________ test_adjacent_half_open_windows[America/New_York-day5-25] ___________\n\nzone = 'America/New_York', day = datetime.date(2027, 11, 7), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2027, 11, 8, 5, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2027, 11, 8, 4, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n____________ test_adjacent_half_open_windows[Europe/Berlin-day6-23] ____________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 3, 29), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2026, 3, 29, 22, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 3, 29, 23, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n____________ test_adjacent_half_open_windows[Europe/Berlin-day7-25] ____________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 10, 25), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2026, 10, 25, 23, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 25, 22, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n________ test_adjacent_half_open_windows[Australia/Lord_Howe-day8-24.5] ________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 4, 5), hours = 24.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2026, 4, 5, 13, 30, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 4, 5, 13, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n________ test_adjacent_half_open_windows[Australia/Lord_Howe-day9-23.5] ________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 10, 4), hours = 23.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2026, 10, 4, 13, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 4, 13, 30, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n=========================== short test summary info ============================\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[America/New_York-day2-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[America/New_York-day3-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[America/New_York-day4-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[America/New_York-day5-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[Europe/Berlin-day6-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[Europe/Berlin-day7-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[Australia/Lord_Howe-day8-24.5]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[Australia/Lord_Howe-day9-23.5]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[America/New_York-day2-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[America/New_York-day3-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[America/New_York-day4-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[America/New_York-day5-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[Europe/Berlin-day6-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[Europe/Berlin-day7-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[Australia/Lord_Howe-day8-24.5]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[Australia/Lord_Howe-day9-23.5]\n16 failed, 12 passed in 0.04s\n",
+    "stderr": ""
+  },
+  "post_seal_workspace_drift_ignored": true,
+  "new_commits": 0,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "init",
+        "-q"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "config",
+        "core.autocrlf",
+        "false"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "src"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "89311be881de3d3a9e874a7c140b64abd5a23c13\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--binary",
+        "89311be881de3d3a9e874a7c140b64abd5a23c13"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "diff --git a/src/window.py b/src/window.py\nindex db71a67..881fe12 100644\n--- a/src/window.py\n+++ b/src/window.py\n@@ -1,6 +1,9 @@\n-from datetime import datetime, time, timedelta, timezone\n+\"\"\"Half-open UTC interval for a local civil date (supported-midnight domain).\"\"\"\n+from datetime import datetime, time, timezone\n from zoneinfo import ZoneInfo\n+from .window_helpers import civil_end\n+\n \n def window_utc(day, zone):\n-    start = datetime.combine(day, time.min, ZoneInfo(zone)).astimezone(timezone.utc)\n-    return start, start + timedelta(hours=24)\n+    tz = ZoneInfo(zone)\n+    return datetime.combine(day, time.min, tz).astimezone(timezone.utc), civil_end(day, tz).astimezone(timezone.utc)\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--others",
+        "--exclude-standard"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "src/window_helpers.py\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "--",
+        "src/window.py",
+        "src/window_helpers.py"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only",
+        "89311be881de3d3a9e874a7c140b64abd5a23c13"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "src/window.py\nsrc/window_helpers.py\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--binary",
+        "89311be881de3d3a9e874a7c140b64abd5a23c13"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "diff --git a/src/window.py b/src/window.py\nindex db71a67..881fe12 100644\n--- a/src/window.py\n+++ b/src/window.py\n@@ -1,6 +1,9 @@\n-from datetime import datetime, time, timedelta, timezone\n+\"\"\"Half-open UTC interval for a local civil date (supported-midnight domain).\"\"\"\n+from datetime import datetime, time, timezone\n from zoneinfo import ZoneInfo\n+from .window_helpers import civil_end\n+\n \n def window_utc(day, zone):\n-    start = datetime.combine(day, time.min, ZoneInfo(zone)).astimezone(timezone.utc)\n-    return start, start + timedelta(hours=24)\n+    tz = ZoneInfo(zone)\n+    return datetime.combine(day, time.min, tz).astimezone(timezone.utc), civil_end(day, tz).astimezone(timezone.utc)\ndiff --git a/src/window_helpers.py b/src/window_helpers.py\nnew file mode 100644\nindex 0000000..9860d9e\n--- /dev/null\n+++ b/src/window_helpers.py\n@@ -0,0 +1,5 @@\n+from datetime import datetime, time, timedelta\n+\n+\n+def civil_end(day, tz):\n+    return datetime.combine(day + timedelta(days=1), time.min, tz)\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/candidate",
+      "exit": 0,
+      "stdout": "f8cf4a1ae5df95bcd7981167564a2abcc958b75d\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "init",
+        "-q"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-positive",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "config",
+        "core.autocrlf",
+        "false"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-positive",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "src"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-positive",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-positive",
+      "exit": 0,
+      "stdout": "89311be881de3d3a9e874a7c140b64abd5a23c13\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T121551Z_0owvt091/candidate.patch"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-positive",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--index",
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T121551Z_0owvt091/candidate.patch"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-positive",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--confcutdir=/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted",
+        "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-positive",
+      "exit": 0,
+      "stdout": "............................                                             [100%]\n28 passed in 0.02s\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-positive",
+      "exit": 0,
+      "stdout": "f8cf4a1ae5df95bcd7981167564a2abcc958b75d\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "init",
+        "-q"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-missing-helper",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "config",
+        "core.autocrlf",
+        "false"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-missing-helper",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "src"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-missing-helper",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-missing-helper",
+      "exit": 0,
+      "stdout": "89311be881de3d3a9e874a7c140b64abd5a23c13\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T121551Z_0owvt091/untracked_omitted.patch"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-missing-helper",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--index",
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T121551Z_0owvt091/untracked_omitted.patch"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-missing-helper",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--confcutdir=/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted",
+        "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-missing-helper",
+      "exit": 2,
+      "stdout": "\n==================================== ERRORS ====================================\n_______________________ ERROR collecting dst_contract.py _______________________\nImportError while importing test module '/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Users/xuhai.zhang/.local/share/uv/python/cpython-3.13.13-macos-aarch64-none/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:8: in <module>\n    from src.window import window_utc\nsrc/window.py:4: in <module>\n    from .window_helpers import civil_end\nE   ModuleNotFoundError: No module named 'src.window_helpers'\n=========================== short test summary info ============================\nERROR ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.04s\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-missing-helper",
+      "exit": 0,
+      "stdout": "8724358d8e3c9ce07cbb158095b54aaea8f581a0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "init",
+        "-q"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/bad-candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "config",
+        "core.autocrlf",
+        "false"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/bad-candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "src"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/bad-candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/bad-candidate",
+      "exit": 0,
+      "stdout": "89311be881de3d3a9e874a7c140b64abd5a23c13\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "src/window.py"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/bad-candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--binary",
+        "89311be881de3d3a9e874a7c140b64abd5a23c13"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/bad-candidate",
+      "exit": 0,
+      "stdout": "diff --git a/src/window.py b/src/window.py\nindex db71a67..1370a45 100644\n--- a/src/window.py\n+++ b/src/window.py\n@@ -1,6 +1,19 @@\n-from datetime import datetime, time, timedelta, timezone\n+\"\"\"Deliberately wrong candidates, kept so the regression gate must reject them.\"\"\"\n+from datetime import date, datetime, time, timedelta, timezone\n from zoneinfo import ZoneInfo\n \n-def window_utc(day, zone):\n+\n+def baseline(day, zone):\n     start = datetime.combine(day, time.min, ZoneInfo(zone)).astimezone(timezone.utc)\n     return start, start + timedelta(hours=24)\n+\n+\n+def window_utc(day, zone):\n+    start, _ = baseline(day, zone)\n+    hours = 24\n+    if zone == \"America/New_York\":\n+        if day == date(2026, 3, 8):\n+            hours = 23\n+        elif day == date(2026, 11, 1):\n+            hours = 25\n+    return start, start + timedelta(hours=hours)\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "init",
+        "-q"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-hardcoded",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "config",
+        "core.autocrlf",
+        "false"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-hardcoded",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "src"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-hardcoded",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-hardcoded",
+      "exit": 0,
+      "stdout": "89311be881de3d3a9e874a7c140b64abd5a23c13\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T121551Z_0owvt091/hardcoded.patch"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-hardcoded",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--index",
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T121551Z_0owvt091/hardcoded.patch"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-hardcoded",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--confcutdir=/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted",
+        "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-hardcoded",
+      "exit": 1,
+      "stdout": "..FFFFFFFF.....FFFFFFFF.....                                             [100%]\n=================================== FAILURES ===================================\n___________________ test_duration[America/New_York-day2-23] ____________________\n\nzone = 'America/New_York', day = datetime.date(2025, 3, 9), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b332e50>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b332e50> = (datetime.datetime(2025, 3, 10, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2025, 3, 9, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n___________________ test_duration[America/New_York-day3-25] ____________________\n\nzone = 'America/New_York', day = datetime.date(2025, 11, 2), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b1eb8a0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b1eb8a0> = (datetime.datetime(2025, 11, 3, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2025, 11, 2, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n___________________ test_duration[America/New_York-day4-23] ____________________\n\nzone = 'America/New_York', day = datetime.date(2027, 3, 14), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b3321f0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b3321f0> = (datetime.datetime(2027, 3, 15, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2027, 3, 14, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n___________________ test_duration[America/New_York-day5-25] ____________________\n\nzone = 'America/New_York', day = datetime.date(2027, 11, 7), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b333b10>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b333b10> = (datetime.datetime(2027, 11, 8, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2027, 11, 7, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n_____________________ test_duration[Europe/Berlin-day6-23] _____________________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 3, 29), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b1e86f0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b1e86f0> = (datetime.datetime(2026, 3, 29, 23, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 3, 28, 23, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n_____________________ test_duration[Europe/Berlin-day7-25] _____________________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 10, 25), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b3b8810>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b3b8810> = (datetime.datetime(2026, 10, 25, 22, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 10, 24, 22, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n_________________ test_duration[Australia/Lord_Howe-day8-24.5] _________________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 4, 5), hours = 24.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (24.5 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b3b9290>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b3b9290> = (datetime.datetime(2026, 4, 5, 13, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 4, 4, 13, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n_________________ test_duration[Australia/Lord_Howe-day9-23.5] _________________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 10, 4), hours = 23.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert start.tzinfo == end.tzinfo == timezone.utc\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23.5 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10b3b9860>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x10b3b9860> = (datetime.datetime(2026, 10, 4, 13, 30, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 10, 3, 13, 30, tzinfo=datetime.timezone.utc)).total_seconds\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:31: AssertionError\n__________ test_adjacent_half_open_windows[America/New_York-day2-23] ___________\n\nzone = 'America/New_York', day = datetime.date(2025, 3, 9), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2025, 3, 10, 4, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2025, 3, 10, 5, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n__________ test_adjacent_half_open_windows[America/New_York-day3-25] ___________\n\nzone = 'America/New_York', day = datetime.date(2025, 11, 2), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2025, 11, 3, 5, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2025, 11, 3, 4, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n__________ test_adjacent_half_open_windows[America/New_York-day4-23] ___________\n\nzone = 'America/New_York', day = datetime.date(2027, 3, 14), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2027, 3, 15, 4, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2027, 3, 15, 5, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n__________ test_adjacent_half_open_windows[America/New_York-day5-25] ___________\n\nzone = 'America/New_York', day = datetime.date(2027, 11, 7), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2027, 11, 8, 5, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2027, 11, 8, 4, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n____________ test_adjacent_half_open_windows[Europe/Berlin-day6-23] ____________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 3, 29), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2026, 3, 29, 22, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 3, 29, 23, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n____________ test_adjacent_half_open_windows[Europe/Berlin-day7-25] ____________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 10, 25), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2026, 10, 25, 23, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 25, 22, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n________ test_adjacent_half_open_windows[Australia/Lord_Howe-day8-24.5] ________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 4, 5), hours = 24.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2026, 4, 5, 13, 30, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 4, 5, 13, 0, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n________ test_adjacent_half_open_windows[Australia/Lord_Howe-day9-23.5] ________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 10, 4), hours = 23.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_half_open_windows(zone, day, hours):\n        start, end = window_utc(day, zone)\n        assert window_utc(day - timedelta(days=1), zone)[1] == start\n>       assert window_utc(day + timedelta(days=1), zone)[0] == end\nE       assert datetime.datetime(2026, 10, 4, 13, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 4, 13, 30, tzinfo=datetime.timezone.utc)\n\n/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py:38: AssertionError\n=========================== short test summary info ============================\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[America/New_York-day2-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[America/New_York-day3-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[America/New_York-day4-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[America/New_York-day5-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[Europe/Berlin-day6-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[Europe/Berlin-day7-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[Australia/Lord_Howe-day8-24.5]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_duration[Australia/Lord_Howe-day9-23.5]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[America/New_York-day2-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[America/New_York-day3-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[America/New_York-day4-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[America/New_York-day5-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[Europe/Berlin-day6-23]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[Europe/Berlin-day7-25]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[Australia/Lord_Howe-day8-24.5]\nFAILED ../../../../../../../../var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/trusted/dst_contract.py::test_adjacent_half_open_windows[Australia/Lord_Howe-day9-23.5]\n16 failed, 12 passed in 0.04s\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "write-tree"
+      ],
+      "cwd": "/var/folders/41/8k0szrqj01q_wxc4xh8vx9vc0000gp/T/harness-git-6dehk8ki/clean-hardcoded",
+      "exit": 0,
+      "stdout": "70a649bd12388b81fa7a839dcc27577fee988b5a\n",
+      "stderr": ""
+    }
+  ]
+}

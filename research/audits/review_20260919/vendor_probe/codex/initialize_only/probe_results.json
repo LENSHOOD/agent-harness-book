@@ -1,0 +1,59 @@
+{
+  "captured_at": "2026-09-19T10:08:45.658312+00:00",
+  "help_command": [
+    "/opt/homebrew/bin/codex",
+    "app-server",
+    "--help"
+  ],
+  "help_exit_code": 0,
+  "stdio_supported": true,
+  "mktemp_command": [
+    "mktemp",
+    "-d",
+    "/private/tmp/codex-vendor-init.XXXXXX"
+  ],
+  "temporary_directory": "/private/tmp/codex-vendor-init.Zm1Lqy",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-p",
+    "(version 1)\n(allow default)\n(deny network-outbound (remote ip \"*:*\"))\n(deny network-inbound (local ip \"*:*\"))\n(deny network-bind (local ip \"*:*\"))\n(deny file-write* (require-not (require-any (subpath \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/vendor_probe\") (subpath \"/private/tmp/codex-vendor-init.Zm1Lqy\") (literal \"/dev/null\"))))\n",
+    "/opt/homebrew/bin/codex",
+    "app-server",
+    "--stdio",
+    "-c",
+    "analytics.enabled=false",
+    "-c",
+    "feedback.enabled=false",
+    "-c",
+    "check_for_update_on_startup=false",
+    "-c",
+    "sqlite_home=\"/private/tmp/codex-vendor-init.Zm1Lqy/state\"",
+    "-c",
+    "log_dir=\"/private/tmp/codex-vendor-init.Zm1Lqy/logs\""
+  ],
+  "exit_code": 1,
+  "forced_stop": false,
+  "home_unchanged": true,
+  "codex_home_unchanged": true,
+  "ip_network": "deny inbound/outbound/bind",
+  "unix_ipc": "permitted within allowed writable paths",
+  "writable_paths": [
+    "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/vendor_probe",
+    "/private/tmp/codex-vendor-init.Zm1Lqy",
+    "/dev/null"
+  ],
+  "initialize_success": false,
+  "initialized_sent": false,
+  "methods_sent": [
+    "initialize"
+  ],
+  "initialize_response": null,
+  "temp_files": [
+    "state/logs_2.sqlite",
+    "state/memories_1.sqlite",
+    "state/state_5.sqlite",
+    "state/state_5.sqlite-wal",
+    "state/goals_1.sqlite",
+    "state/state_5.sqlite-shm"
+  ]
+}

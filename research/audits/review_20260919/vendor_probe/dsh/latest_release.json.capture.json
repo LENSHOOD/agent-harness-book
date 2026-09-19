@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/deepseek-ai/deepseek-harness/releases/latest"
+  ],
+  "retrieved_at": "2026-09-19T09:43:26.097467+00:00",
+  "exit_code": 1,
+  "stderr": "gh: Not Found (HTTP 404)\n",
+  "sha256": "d9e37600354c1839f6b22cebde497e9d14750d2401a06c9a51b1619baf991613"
+}

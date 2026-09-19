@@ -1,0 +1,47 @@
+{
+  "task": {
+    "id": 1,
+    "state": "VERIFYING",
+    "budget": 10,
+    "spent": 1,
+    "cancel_requested": 0
+  },
+  "ledger": [
+    {
+      "action_id": "a1",
+      "key": "key1",
+      "binding": "0e3638e2042818e16bdd4566d2a37830dbdf33ab95312c7535cd725149bb5d65",
+      "payload": "{\"action_id\": \"a1\", \"key\": \"key1\", \"target\": \"account/one\", \"args\": {\"amount\": 7}, \"cost\": 1, \"tenant\": \"teaching\"}",
+      "status": "COMMITTED",
+      "cost": 1,
+      "approved": 1
+    }
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "kind": "AUTHORIZE",
+      "detail": "REQUIRE_APPROVAL"
+    },
+    {
+      "seq": 2,
+      "kind": "APPROVAL_RECEIVED",
+      "detail": "key1"
+    },
+    {
+      "seq": 3,
+      "kind": "AUTHORIZE",
+      "detail": "ALLOW"
+    },
+    {
+      "seq": 4,
+      "kind": "EXECUTE_RESERVED",
+      "detail": "key1"
+    },
+    {
+      "seq": 5,
+      "kind": "COMMITTED",
+      "detail": "key1"
+    }
+  ]
+}

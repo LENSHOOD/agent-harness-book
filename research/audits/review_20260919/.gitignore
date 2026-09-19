@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+/tmp/
+
+# Retrieval caches stay local; the public index retains URLs, hashes and evidence excerpts.
+/retrieval/
+/vendor_probe/**/source/
+/vendor_probe/**/state/
+/vendor_probe/**/schema/
+/vendor_probe/**/schema_experimental/
+/vendor_probe/**/tree.json
+/vendor_probe/**/old_tree.json
+/vendor_probe/**/releases_page*.json
+/vendor_probe/**/compare.json
+/vendor_probe/**/diffs/
+/vendor_probe/**/commits/
+/vendor_probe/**/legacy_tree.json

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/extensions/tool-cordis/src/index.ts&since=2026-08-28T00:00:00Z&per_page=100"
+  ],
+  "retrieved_at": "2026-09-19T09:51:32.940311+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "c0ac3d325d73ef90c1f453e6c8d63e69fdf866f8579aeca9fff6674e403e5a22"
+}

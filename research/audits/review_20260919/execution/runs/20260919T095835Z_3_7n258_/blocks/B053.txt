@@ -1,0 +1,12 @@
+ToolContract {
+  id, version, model_views[]
+  input_schema, output_schema
+  side_effect: NONE | REVERSIBLE | COMMITTING
+  idempotency: NATURAL | KEYED | NONE
+  required_capabilities[]
+  data_classification
+  timeout_policy, retry_policy
+  concurrency_policy
+  result_projection
+  verifier
+}

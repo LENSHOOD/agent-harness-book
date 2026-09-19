@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/OpenHands/OpenHands/releases/tags/1.0.0"
+  ],
+  "retrieved_at": "2026-09-19T09:51:33.954077+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "2c994936d515485ee3428fb67b6a029ec69fc397fbe41ad04d13d89e1526f5f9"
+}

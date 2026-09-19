@@ -1,0 +1,79 @@
+{
+  "pdf_sha256": "7e13cbcfd5e3cc78a0049ba74ab7f02bc921e84ab05b8bec59f65a073b6a3c14",
+  "page_count": 10,
+  "pages": [
+    {
+      "page": 1,
+      "text_characters": 59,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 2,
+      "text_characters": 1713,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 3,
+      "text_characters": 1909,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 4,
+      "text_characters": 1777,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 5,
+      "text_characters": 1922,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 6,
+      "text_characters": 1315,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 7,
+      "text_characters": 1589,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 8,
+      "text_characters": 2723,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 9,
+      "text_characters": 3603,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    },
+    {
+      "page": 10,
+      "text_characters": 1380,
+      "empty": false,
+      "replacement_characters": 0,
+      "outside_page": 0
+    }
+  ],
+  "machine_checks_pass": true,
+  "visual_acceptance": "NOT_COMPLETED: current model cannot ingest rendered PNG images",
+  "use": "Convenience reading copy only. Markdown and execution evidence remain authoritative."
+}

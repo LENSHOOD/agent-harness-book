@@ -1,0 +1,5 @@
+tool call       主 Agent 调用一个确定性能力
+subroutine      独立模型调用，返回结构化结果，不拥有任务
+subagent        有局部目标、状态、工具和预算的受托执行者
+handoff         当前责任主体把会话或工作流所有权转交给另一个 Agent
+multi-agent     多个自治执行者通过明确协议共同改变任务状态

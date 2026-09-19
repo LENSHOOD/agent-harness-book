@@ -1,0 +1,8 @@
+repair_policy:
+  TEST_FAILURE:
+    max_hypotheses: 3
+    require: [failure_delta, changed_assumption]
+  POLICY_DENIED:
+    action: escalate_or_stop
+  UNKNOWN_EFFECT:
+    action: reconcile_before_resume

@@ -1,0 +1,9 @@
+who / delegated_by
+what canonical action
+which resource
+why / task reference
+policy version and decision
+approval identity and scope
+credential lease id
+sandbox profile
+effect outcome and verification

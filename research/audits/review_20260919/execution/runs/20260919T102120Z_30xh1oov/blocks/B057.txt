@@ -1,0 +1,5 @@
+authorized action
+  → credential broker
+  → short-lived scoped credential
+  → isolated executor
+  → redact output

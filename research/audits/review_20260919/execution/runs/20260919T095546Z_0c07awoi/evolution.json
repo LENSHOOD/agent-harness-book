@@ -1,0 +1,154 @@
+{
+  "kind": "controlled simulation with deterministic provider stub; no real model evolution or external release",
+  "frozen": {
+    "model": "model-12",
+    "task_suite": "synthetic-10x3",
+    "sandbox_image": "local-fixture-v1",
+    "policy_root": "policy-9",
+    "evaluator": "deterministic-gate-v1",
+    "sealed_test": "sealed-synthetic-v1"
+  },
+  "frozen_hash": "63f5d9e6c5c16639991d95e5c5e8831d046511b265331bf8e2d61cd095700c6e",
+  "pre_registered_ids": [
+    "t00-r0",
+    "t00-r1",
+    "t00-r2",
+    "t01-r0",
+    "t01-r1",
+    "t01-r2",
+    "t02-r0",
+    "t02-r1",
+    "t02-r2",
+    "t03-r0",
+    "t03-r1",
+    "t03-r2",
+    "t04-r0",
+    "t04-r1",
+    "t04-r2",
+    "t05-r0",
+    "t05-r1",
+    "t05-r2",
+    "t06-r0",
+    "t06-r1",
+    "t06-r2",
+    "t07-r0",
+    "t07-r1",
+    "t07-r2",
+    "t08-r0",
+    "t08-r1",
+    "t08-r2",
+    "t09-r0",
+    "t09-r1",
+    "t09-r2"
+  ],
+  "metrics": {
+    "baseline": {
+      "registered": 30,
+      "observed": 30,
+      "successes": 24,
+      "timeouts_after_retry": 0,
+      "missing_ids": [],
+      "duplicate_ids": false,
+      "all_registered_success_rate": 0.8,
+      "completed_only_rate": 0.8,
+      "wilson95_descriptive_only": [
+        0.6269430358685175,
+        0.9049489282271013
+      ],
+      "activation": 0,
+      "critical_failures": 0,
+      "security_violations": 0,
+      "cost_per_success": 1.25
+    },
+    "denominator_cheat": {
+      "registered": 30,
+      "observed": 30,
+      "successes": 18,
+      "timeouts_after_retry": 10,
+      "missing_ids": [],
+      "duplicate_ids": false,
+      "all_registered_success_rate": 0.6,
+      "completed_only_rate": 0.9,
+      "wilson95_descriptive_only": [
+        0.42320360253322475,
+        0.7540937188319815
+      ],
+      "activation": 28,
+      "critical_failures": 0,
+      "security_violations": 0,
+      "cost_per_success": 2.2222222222222223
+    },
+    "corrected": {
+      "registered": 30,
+      "observed": 30,
+      "successes": 28,
+      "timeouts_after_retry": 0,
+      "missing_ids": [],
+      "duplicate_ids": false,
+      "all_registered_success_rate": 0.9333333333333333,
+      "completed_only_rate": 0.9333333333333333,
+      "wilson95_descriptive_only": [
+        0.7867654163738308,
+        0.9815229762087295
+      ],
+      "activation": 28,
+      "critical_failures": 0,
+      "security_violations": 0,
+      "cost_per_success": 1.0714285714285714
+    }
+  },
+  "cheat_gate": {
+    "accepted": false,
+    "failures": [
+      "DENOMINATOR_INTEGRITY",
+      "PRIMARY_METRIC_REGRESSION"
+    ]
+  },
+  "valid_gate": {
+    "accepted": true,
+    "failures": []
+  },
+  "sealed": {
+    "candidate": "grouped-dynamic-stub",
+    "status": "PASS",
+    "kind": "deterministic sealed fixture"
+  },
+  "canary_metrics": {
+    "registered": 30,
+    "observed": 30,
+    "successes": 29,
+    "timeouts_after_retry": 0,
+    "missing_ids": [],
+    "duplicate_ids": false,
+    "all_registered_success_rate": 0.9666666666666667,
+    "completed_only_rate": 0.9666666666666667,
+    "wilson95_descriptive_only": [
+      0.8332960900859082,
+      0.9940914096183874
+    ],
+    "activation": 28,
+    "critical_failures": 1,
+    "security_violations": 0,
+    "cost_per_success": 1.0344827586206897
+  },
+  "release_events": [
+    "REJECT_BEFORE_RELEASE",
+    "SHADOW",
+    "LOW_RISK_CANARY",
+    "STOP_NEW_CANDIDATE_TRAFFIC",
+    "ROLLBACK_FULL_BUNDLE"
+  ],
+  "final_bundle": [
+    "harness-42",
+    "model-12",
+    "memory-87",
+    "policy-9",
+    "evaluator-5"
+  ],
+  "limitations": [
+    "No supplier/model API, stochastic trials, trained model, or production canary",
+    "Wilsons assume independent Bernoulli samples; scripted repeated tasks do not support that inference",
+    "No automatic significance or causal benefit claim; 240/228 book counts were not reproduced",
+    "Frozen registry and sealed vault are in-process controls, not adversarial OS isolation"
+  ]
+}

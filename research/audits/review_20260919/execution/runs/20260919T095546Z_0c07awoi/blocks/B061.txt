@@ -1,0 +1,15 @@
+Untrusted Context
+       ↓ taint/provenance
+Model proposes action
+       ↓
+Schema + semantic normalization
+       ↓
+Policy decision ─→ Human approval
+       ↓
+Scoped capability + credential lease
+       ↓
+OS/VM sandbox + egress proxy
+       ↓
+Effect ledger + output redaction
+       ↓
+External verification + audit

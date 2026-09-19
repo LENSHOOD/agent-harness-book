@@ -1,0 +1,17 @@
+# Reconstructible local third-party distributions and executable wrappers.
+/deps/
+/bin/
+
+# Python/pytest runtime caches (at any depth).
+__pycache__/
+.pytest_cache/
+*.py[cod]
+
+# Complete generated workspaces; authored fixtures/ are intentionally retained.
+/runs/**/original_bash_workspace/
+/runs/**/dst_agent_repo/
+/runs/**/dst_verifier_*/
+/runs/**/dst_input_drift/
+
+# Preserve run JSON, stdout/stderr, command logs, SQL databases, extracted blocks,
+# translations, sealed patches, artifact hashes, and dependency_manifest.json.

@@ -1,0 +1,27 @@
+specification:
+  id: SPEC-BILLING-214
+  owner: subscription-product
+  snapshot: git:8f2c9d1
+  invariant:
+    - cancelled_subscription_never_enqueued
+    - invoice_state_unchanged
+  intentionally_open:
+    - implementation_shape
+
+task:
+  task_id: TASK-BILLING-214-01
+  contract_version: v1
+  deliverables:
+    - patch_against_git_8f2c9d1
+    - evidence_package
+  allowed_writes:
+    - src/reminders/**
+    - tests/reminders/**
+  forbidden_actions:
+    - database_write
+    - message_send
+    - billing_state_change
+  budget:
+    wall_minutes: 30
+    max_actions: 80
+  commit_authority: billing-code-owner

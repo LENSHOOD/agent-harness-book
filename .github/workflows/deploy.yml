@@ -3,20 +3,23 @@ name: Deploy VitePress site to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -24,13 +27,16 @@ jobs:
           python-version: '3.12'
           cache: pip
       - name: Install publication dependencies
-        run: python -m pip install -r requirements.txt
+        run: python -m pip install -r requirements.txt -r requirements-examples.txt
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: site/package-lock.json
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
+      - name: Run executable reference cases and manuscript schema checks
+        run: python examples/run_examples.py
       - name: Validate evidence ledger
         run: python publishing/scripts/audit_claim_ledger.py
       - name: Validate canonical book structure
@@ -56,10 +62,15 @@ jobs:
           fi
           grep -R 'href="/agent-harness-book/downloads/agent_harness_book.pdf"' site/docs/.vitepress/dist
       - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request'
         with:
           path: site/docs/.vitepress/dist
 
   deploy:
+    if: github.event_name != 'pull_request'
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

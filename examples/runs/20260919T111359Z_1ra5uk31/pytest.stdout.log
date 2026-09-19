@@ -1,0 +1,346 @@
+.................FFFFFF......................................            [100%]
+=================================== FAILURES ===================================
+_ test_current_commit_effect_literal_control_flow[INTENT_RECORDED-absent-False] _
+
+status = 'INTENT_RECORDED', lookup = 'absent', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), <function evidence.<locals>.save at 0x1074dd8a0>)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+>       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+>   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+<current-manuscript-commit_effect_safely>:2: NameError
+_ test_current_commit_effect_literal_control_flow[INTENT_RECORDED-absent-True] _
+
+status = 'INTENT_RECORDED', lookup = 'absent', lose_response = True
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), <function evidence.<locals>.save at 0x1074ec4a0>)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+>       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+>   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+<current-manuscript-commit_effect_safely>:2: NameError
+_ test_current_commit_effect_literal_control_flow[UNKNOWN_EFFECT-stale-False] __
+
+status = 'UNKNOWN_EFFECT', lookup = 'stale', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), <function evidence.<locals>.save at 0x1074ee2a0>)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+>       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+>   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+<current-manuscript-commit_effect_safely>:2: NameError
+____ test_current_commit_effect_literal_control_flow[EXECUTING-stale-False] ____
+
+status = 'EXECUTING', lookup = 'stale', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), <function evidence.<locals>.save at 0x1074ed440>)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+>       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+>   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+<current-manuscript-commit_effect_safely>:2: NameError
+_ test_current_commit_effect_literal_control_flow[UNKNOWN_EFFECT-committed-False] _
+
+status = 'UNKNOWN_EFFECT', lookup = 'committed', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), <function evidence.<locals>.save at 0x107542340>)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+>       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+>   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+<current-manuscript-commit_effect_safely>:2: NameError
+_ test_current_commit_effect_literal_control_flow[INTENT_RECORDED-unavailable-False] _
+
+status = 'INTENT_RECORDED', lookup = 'unavailable', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), <function evidence.<locals>.save at 0x1074ef100>)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+>       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+>   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+<current-manuscript-commit_effect_safely>:2: NameError
+=========================== short test summary info ============================
+FAILED examples/tests/test_manuscript_flow.py::test_current_commit_effect_literal_control_flow[INTENT_RECORDED-absent-False]
+FAILED examples/tests/test_manuscript_flow.py::test_current_commit_effect_literal_control_flow[INTENT_RECORDED-absent-True]
+FAILED examples/tests/test_manuscript_flow.py::test_current_commit_effect_literal_control_flow[UNKNOWN_EFFECT-stale-False]
+FAILED examples/tests/test_manuscript_flow.py::test_current_commit_effect_literal_control_flow[EXECUTING-stale-False]
+FAILED examples/tests/test_manuscript_flow.py::test_current_commit_effect_literal_control_flow[UNKNOWN_EFFECT-committed-False]
+FAILED examples/tests/test_manuscript_flow.py::test_current_commit_effect_literal_control_flow[INTENT_RECORDED-unavailable-False]
+6 failed, 55 passed in 2.04s

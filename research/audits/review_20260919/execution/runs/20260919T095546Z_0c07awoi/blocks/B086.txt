@@ -1,0 +1,5 @@
+context
+ ├─ service dependency graph
+ ├─ typed event routes
+ ├─ plugin-owned effects
+ └─ lifecycle: load → reconcile → unload/rollback

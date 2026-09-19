@@ -1,0 +1,18 @@
+diff --git a/src/time/window.py b/src/time/window.py
+index 0727dec..b2980dd 100644
+--- a/src/time/window.py
++++ b/src/time/window.py
+@@ -1,8 +1,10 @@
+-"""Audit-created baseline bug: assumes all local billing days last 24 hours."""
++"""Audit-created correction under explicit civil-day semantics."""
+ from datetime import datetime, time, timedelta, timezone
+ from zoneinfo import ZoneInfo
+ 
+ 
+ def window_utc(day, zone):
+-    start = datetime.combine(day, time.min, ZoneInfo(zone)).astimezone(timezone.utc)
+-    return start, start + timedelta(hours=24)
++    tz = ZoneInfo(zone)
++    start = datetime.combine(day, time.min, tz).astimezone(timezone.utc)
++    end = datetime.combine(day + timedelta(days=1), time.min, tz).astimezone(timezone.utc)
++    return start, end

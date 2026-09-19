@@ -1,0 +1,12 @@
+最小 Agent：模型 + 工具 + while loop
+
+生产 Harness：
+  最小 Agent
+  + canonical state
+  + context lifecycle
+  + policy and sandbox
+  + durable execution
+  + observability
+  + verification
+  + human control
+  + evaluation and governance

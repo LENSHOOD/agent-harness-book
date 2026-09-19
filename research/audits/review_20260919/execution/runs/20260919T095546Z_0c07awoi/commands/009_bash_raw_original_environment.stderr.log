@@ -1,0 +1,11 @@
++ git diff --binary 8f31b6e
+fatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
++ git diff --name-only 8f31b6e
++ sort
+fatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
++ pytest -q tests/time
+/bin/bash: line 3: pytest: command not found

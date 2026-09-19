@@ -1,0 +1,1 @@
+{"id": 1, "method": "initialize", "params": {"clientInfo": {"name": "vendor_protocol_audit", "title": "Initialize-only audit", "version": "2026.09.19"}, "capabilities": {"experimentalApi": false}}}

@@ -1,0 +1,236 @@
+FFFFFFFFFFFFFFFF.                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_held_out_duration[America/New_York-day0-23] _______________
+
+zone = 'America/New_York', day = datetime.date(2025, 3, 9), hours = 23
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_held_out_duration(zone, day, hours):
+        start, end = window_utc(day, zone)
+>       assert (end - start).total_seconds() == hours * 3600
+E       assert 86400.0 == (23 * 3600)
+E        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10729d800>()
+E        +    where <built-in method total_seconds of datetime.timedelta object at 0x10729d800> = (datetime.datetime(2025, 3, 10, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2025, 3, 9, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds
+
+../../../fixtures/hidden/test_contract.py:25: AssertionError
+_______________ test_held_out_duration[America/New_York-day1-25] _______________
+
+zone = 'America/New_York', day = datetime.date(2025, 11, 2), hours = 25
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_held_out_duration(zone, day, hours):
+        start, end = window_utc(day, zone)
+>       assert (end - start).total_seconds() == hours * 3600
+E       assert 86400.0 == (25 * 3600)
+E        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10729dbf0>()
+E        +    where <built-in method total_seconds of datetime.timedelta object at 0x10729dbf0> = (datetime.datetime(2025, 11, 3, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2025, 11, 2, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds
+
+../../../fixtures/hidden/test_contract.py:25: AssertionError
+_______________ test_held_out_duration[America/New_York-day2-23] _______________
+
+zone = 'America/New_York', day = datetime.date(2027, 3, 14), hours = 23
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_held_out_duration(zone, day, hours):
+        start, end = window_utc(day, zone)
+>       assert (end - start).total_seconds() == hours * 3600
+E       assert 86400.0 == (23 * 3600)
+E        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10729d7a0>()
+E        +    where <built-in method total_seconds of datetime.timedelta object at 0x10729d7a0> = (datetime.datetime(2027, 3, 15, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2027, 3, 14, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds
+
+../../../fixtures/hidden/test_contract.py:25: AssertionError
+_______________ test_held_out_duration[America/New_York-day3-25] _______________
+
+zone = 'America/New_York', day = datetime.date(2027, 11, 7), hours = 25
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_held_out_duration(zone, day, hours):
+        start, end = window_utc(day, zone)
+>       assert (end - start).total_seconds() == hours * 3600
+E       assert 86400.0 == (25 * 3600)
+E        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10729e0a0>()
+E        +    where <built-in method total_seconds of datetime.timedelta object at 0x10729e0a0> = (datetime.datetime(2027, 11, 8, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2027, 11, 7, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds
+
+../../../fixtures/hidden/test_contract.py:25: AssertionError
+________________ test_held_out_duration[Europe/Berlin-day4-23] _________________
+
+zone = 'Europe/Berlin', day = datetime.date(2026, 3, 29), hours = 23
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_held_out_duration(zone, day, hours):
+        start, end = window_utc(day, zone)
+>       assert (end - start).total_seconds() == hours * 3600
+E       assert 86400.0 == (23 * 3600)
+E        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10729eb80>()
+E        +    where <built-in method total_seconds of datetime.timedelta object at 0x10729eb80> = (datetime.datetime(2026, 3, 29, 23, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 3, 28, 23, 0, tzinfo=datetime.timezone.utc)).total_seconds
+
+../../../fixtures/hidden/test_contract.py:25: AssertionError
+________________ test_held_out_duration[Europe/Berlin-day5-25] _________________
+
+zone = 'Europe/Berlin', day = datetime.date(2026, 10, 25), hours = 25
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_held_out_duration(zone, day, hours):
+        start, end = window_utc(day, zone)
+>       assert (end - start).total_seconds() == hours * 3600
+E       assert 86400.0 == (25 * 3600)
+E        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x107298ba0>()
+E        +    where <built-in method total_seconds of datetime.timedelta object at 0x107298ba0> = (datetime.datetime(2026, 10, 25, 22, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 10, 24, 22, 0, tzinfo=datetime.timezone.utc)).total_seconds
+
+../../../fixtures/hidden/test_contract.py:25: AssertionError
+____________ test_held_out_duration[Australia/Lord_Howe-day6-24.5] _____________
+
+zone = 'Australia/Lord_Howe', day = datetime.date(2026, 4, 5), hours = 24.5
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_held_out_duration(zone, day, hours):
+        start, end = window_utc(day, zone)
+>       assert (end - start).total_seconds() == hours * 3600
+E       assert 86400.0 == (24.5 * 3600)
+E        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10729dbf0>()
+E        +    where <built-in method total_seconds of datetime.timedelta object at 0x10729dbf0> = (datetime.datetime(2026, 4, 5, 13, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 4, 4, 13, 0, tzinfo=datetime.timezone.utc)).total_seconds
+
+../../../fixtures/hidden/test_contract.py:25: AssertionError
+____________ test_held_out_duration[Australia/Lord_Howe-day7-23.5] _____________
+
+zone = 'Australia/Lord_Howe', day = datetime.date(2026, 10, 4), hours = 23.5
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_held_out_duration(zone, day, hours):
+        start, end = window_utc(day, zone)
+>       assert (end - start).total_seconds() == hours * 3600
+E       assert 86400.0 == (23.5 * 3600)
+E        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x10729e580>()
+E        +    where <built-in method total_seconds of datetime.timedelta object at 0x10729e580> = (datetime.datetime(2026, 10, 4, 13, 30, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 10, 3, 13, 30, tzinfo=datetime.timezone.utc)).total_seconds
+
+../../../fixtures/hidden/test_contract.py:25: AssertionError
+__________ test_adjacent_windows_contiguous[America/New_York-day0-23] __________
+
+zone = 'America/New_York', day = datetime.date(2025, 3, 9), hours = 23
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_adjacent_windows_contiguous(zone, day, hours):
+        start, end = window_utc(day, zone)
+        next_start, _ = window_utc(day + timedelta(days=1), zone)
+        _, previous_end = window_utc(day - timedelta(days=1), zone)
+        assert previous_end == start
+>       assert end == next_start
+E       assert datetime.datetime(2025, 3, 10, 5, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2025, 3, 10, 4, 0, tzinfo=datetime.timezone.utc)
+
+../../../fixtures/hidden/test_contract.py:34: AssertionError
+__________ test_adjacent_windows_contiguous[America/New_York-day1-25] __________
+
+zone = 'America/New_York', day = datetime.date(2025, 11, 2), hours = 25
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_adjacent_windows_contiguous(zone, day, hours):
+        start, end = window_utc(day, zone)
+        next_start, _ = window_utc(day + timedelta(days=1), zone)
+        _, previous_end = window_utc(day - timedelta(days=1), zone)
+        assert previous_end == start
+>       assert end == next_start
+E       assert datetime.datetime(2025, 11, 3, 4, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2025, 11, 3, 5, 0, tzinfo=datetime.timezone.utc)
+
+../../../fixtures/hidden/test_contract.py:34: AssertionError
+__________ test_adjacent_windows_contiguous[America/New_York-day2-23] __________
+
+zone = 'America/New_York', day = datetime.date(2027, 3, 14), hours = 23
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_adjacent_windows_contiguous(zone, day, hours):
+        start, end = window_utc(day, zone)
+        next_start, _ = window_utc(day + timedelta(days=1), zone)
+        _, previous_end = window_utc(day - timedelta(days=1), zone)
+        assert previous_end == start
+>       assert end == next_start
+E       assert datetime.datetime(2027, 3, 15, 5, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2027, 3, 15, 4, 0, tzinfo=datetime.timezone.utc)
+
+../../../fixtures/hidden/test_contract.py:34: AssertionError
+__________ test_adjacent_windows_contiguous[America/New_York-day3-25] __________
+
+zone = 'America/New_York', day = datetime.date(2027, 11, 7), hours = 25
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_adjacent_windows_contiguous(zone, day, hours):
+        start, end = window_utc(day, zone)
+        next_start, _ = window_utc(day + timedelta(days=1), zone)
+        _, previous_end = window_utc(day - timedelta(days=1), zone)
+        assert previous_end == start
+>       assert end == next_start
+E       assert datetime.datetime(2027, 11, 8, 4, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2027, 11, 8, 5, 0, tzinfo=datetime.timezone.utc)
+
+../../../fixtures/hidden/test_contract.py:34: AssertionError
+___________ test_adjacent_windows_contiguous[Europe/Berlin-day4-23] ____________
+
+zone = 'Europe/Berlin', day = datetime.date(2026, 3, 29), hours = 23
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_adjacent_windows_contiguous(zone, day, hours):
+        start, end = window_utc(day, zone)
+        next_start, _ = window_utc(day + timedelta(days=1), zone)
+        _, previous_end = window_utc(day - timedelta(days=1), zone)
+        assert previous_end == start
+>       assert end == next_start
+E       assert datetime.datetime(2026, 3, 29, 23, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 3, 29, 22, 0, tzinfo=datetime.timezone.utc)
+
+../../../fixtures/hidden/test_contract.py:34: AssertionError
+___________ test_adjacent_windows_contiguous[Europe/Berlin-day5-25] ____________
+
+zone = 'Europe/Berlin', day = datetime.date(2026, 10, 25), hours = 25
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_adjacent_windows_contiguous(zone, day, hours):
+        start, end = window_utc(day, zone)
+        next_start, _ = window_utc(day + timedelta(days=1), zone)
+        _, previous_end = window_utc(day - timedelta(days=1), zone)
+        assert previous_end == start
+>       assert end == next_start
+E       assert datetime.datetime(2026, 10, 25, 22, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 25, 23, 0, tzinfo=datetime.timezone.utc)
+
+../../../fixtures/hidden/test_contract.py:34: AssertionError
+_______ test_adjacent_windows_contiguous[Australia/Lord_Howe-day6-24.5] ________
+
+zone = 'Australia/Lord_Howe', day = datetime.date(2026, 4, 5), hours = 24.5
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_adjacent_windows_contiguous(zone, day, hours):
+        start, end = window_utc(day, zone)
+        next_start, _ = window_utc(day + timedelta(days=1), zone)
+        _, previous_end = window_utc(day - timedelta(days=1), zone)
+        assert previous_end == start
+>       assert end == next_start
+E       assert datetime.datetime(2026, 4, 5, 13, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 4, 5, 13, 30, tzinfo=datetime.timezone.utc)
+
+../../../fixtures/hidden/test_contract.py:34: AssertionError
+_______ test_adjacent_windows_contiguous[Australia/Lord_Howe-day7-23.5] ________
+
+zone = 'Australia/Lord_Howe', day = datetime.date(2026, 10, 4), hours = 23.5
+
+    @pytest.mark.parametrize("zone,day,hours", CASES)
+    def test_adjacent_windows_contiguous(zone, day, hours):
+        start, end = window_utc(day, zone)
+        next_start, _ = window_utc(day + timedelta(days=1), zone)
+        _, previous_end = window_utc(day - timedelta(days=1), zone)
+        assert previous_end == start
+>       assert end == next_start
+E       assert datetime.datetime(2026, 10, 4, 13, 30, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 4, 13, 0, tzinfo=datetime.timezone.utc)
+
+../../../fixtures/hidden/test_contract.py:34: AssertionError
+=========================== short test summary info ============================
+FAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[America/New_York-day0-23]
+FAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[America/New_York-day1-25]
+FAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[America/New_York-day2-23]
+FAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[America/New_York-day3-25]
+FAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[Europe/Berlin-day4-23]
+FAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[Europe/Berlin-day5-25]
+FAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[Australia/Lord_Howe-day6-24.5]
+FAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[Australia/Lord_Howe-day7-23.5]
+FAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[America/New_York-day0-23]
+FAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[America/New_York-day1-25]
+FAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[America/New_York-day2-23]
+FAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[America/New_York-day3-25]
+FAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[Europe/Berlin-day4-23]
+FAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[Europe/Berlin-day5-25]
+FAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[Australia/Lord_Howe-day6-24.5]
+FAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[Australia/Lord_Howe-day7-23.5]
+16 failed, 1 passed in 0.04s

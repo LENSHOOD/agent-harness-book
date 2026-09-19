@@ -1,0 +1,4 @@
+observe → attribute → propose minimal candidate
+→ isolated multi-trial evaluation → hard gates
+→ shadow → canary → promote or rollback
+→ retain lineage and post-release evidence

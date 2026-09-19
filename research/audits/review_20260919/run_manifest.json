@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-19",
+  "mode": "ultradeep",
+  "book_baseline": "a1ed264462d9b61c260c1dc417243303bfc60b66",
+  "scope": "incremental online research, manuscript review, case execution; no publication",
+  "browser": "ego-browser / ego lite, TaskSpace 25",
+  "interval": {
+    "previous_cutoff": "2026-08-27/28",
+    "through": "2026-09-19"
+  },
+  "source_count": 37,
+  "search_captures": 22,
+  "limitations": [
+    "No exhaustive-web guarantee",
+    "Community reports are signals, not verified vendor bugs",
+    "Local mock/fixture checks do not reproduce vendor-model quality",
+    "Citations are version-scoped; metadata anomaly retained explicitly"
+  ]
+}

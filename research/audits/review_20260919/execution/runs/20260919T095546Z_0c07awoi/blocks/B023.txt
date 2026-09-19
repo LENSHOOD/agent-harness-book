@@ -1,0 +1,7 @@
+issue / specification
+        ↓
+repository snapshot → inspect → patch → execute checks
+        ↑                         ↓
+        └──── diagnostic feedback ┘
+                                  ↓
+                     reviewable candidate artifact

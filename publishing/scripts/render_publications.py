@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from html import escape
 from pathlib import Path
 import re
@@ -33,7 +34,7 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "publishing" / "artifacts"
 OUT.mkdir(exist_ok=True)
 
-SNAPSHOT = "2026-08-28"
+SNAPSHOT = json.loads((ROOT / 'publishing/book_structure.json').read_text())['sourceCutoff']
 # ReportLab otherwise embeds the wall-clock build time and a random document ID.
 # Invariant mode makes identical inputs produce byte-identical publication files.
 rl_config.invariant = 1

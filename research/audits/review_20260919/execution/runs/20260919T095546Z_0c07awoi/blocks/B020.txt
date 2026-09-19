@@ -1,0 +1,4 @@
+Capability   是否能完成所需动作
+Semantics    输入、输出和副作用是否定义清楚
+Learnability 模型能否从说明与反馈学会正确使用
+Governance   动作能否授权、审计、隔离和撤销

@@ -1,0 +1,6 @@
+evaluation_claim:
+  scope: enterprise-repo-maintenance-v3
+  system: model+harness+tools+sandbox
+  trials_per_task: 5
+  fixed: [task, revision, permissions, verifier, budget]
+  reports: [verified_success, reliability, cost, latency, human_load, safety]

@@ -1,0 +1,4 @@
+Authentication  谁在发起任务？
+Authorization   此身份可对什么对象做什么？
+Approval        此次具体动作是否需要人确认？
+Isolation       即使获准执行，进程还能触及什么？

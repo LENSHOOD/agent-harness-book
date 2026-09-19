@@ -1,0 +1,4 @@
+# Only the current reference examples/checker; no personal uv cache paths.
+jsonschema==4.26.0
+PyYAML==6.0.3
+pytest==9.1.1

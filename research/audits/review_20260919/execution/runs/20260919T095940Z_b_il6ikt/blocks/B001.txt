@@ -1,0 +1,36 @@
+Task {
+  id, tenant, contract_version, input_refs[], risk, budget,
+  requested_by, commit_authority, status
+}
+Attempt {
+  id, task_id, runtime, runtime_version, harness_profile,
+  workspace_ref, policy_profile, started_at, status
+}
+Action {
+  id, attempt_id, actor, type, normalized_args_ref,
+  resource, side_effect_class, idempotency_key, provenance
+}
+Observation {
+  action_id, status, structured_result, artifact_refs[],
+  diagnostics, environment_revision
+}
+Artifact {
+  uri, hash, media_type, producer, classification,
+  input_refs[], created_at, retention_policy
+}
+PolicyDecision {
+  action_id, decision, constraints, policy_version,
+  reason_code, approval_request_id?
+}
+Checkpoint {
+  attempt_id, state_version, event_offset, workspace_ref,
+  pending_effect_ids[], context_projection_ref
+}
+VerificationResult {
+  contract_version, verifier_version, checks[], status,
+  evidence_refs[], environment_ref
+}
+EvidencePackage {
+  task, attempt, inputs[], candidate, effects[], policies[],
+  verification, approvals[], final_commit?, lineage
+}

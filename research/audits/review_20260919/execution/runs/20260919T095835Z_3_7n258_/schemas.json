@@ -1,0 +1,1053 @@
+{
+  "validator": "jsonschema.Draft202012Validator",
+  "network": "disabled; local metaschemas only",
+  "cases": [
+    {
+      "name": "Task_valid",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": true,
+      "should_accept_for_probe": true,
+      "validation_errors": []
+    },
+    {
+      "name": "Task_missing_task_id",
+      "schema": "Task",
+      "instance": {
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'task_id' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Task_missing_tenant",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'tenant' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Task_missing_contract_version",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'contract_version' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Task_missing_risk",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'risk' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Task_missing_deliverables",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'deliverables' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Task_missing_checks",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'checks' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Task_missing_commit_authority",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ]
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'commit_authority' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_risk_8",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R5",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "risk"
+          ],
+          "schema_path": [
+            "properties",
+            "risk",
+            "enum"
+          ],
+          "message": "'R5' is not one of ['R0', 'R1', 'R2', 'R3', 'R4']"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_task_id_9",
+      "schema": "Task",
+      "instance": {
+        "task_id": "",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "task_id"
+          ],
+          "schema_path": [
+            "properties",
+            "task_id",
+            "minLength"
+          ],
+          "message": "'' should be non-empty"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_checks_10",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "checks"
+          ],
+          "schema_path": [
+            "properties",
+            "checks",
+            "minItems"
+          ],
+          "message": "[] should be non-empty"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_deliverables_11",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "deliverables"
+          ],
+          "schema_path": [
+            "properties",
+            "deliverables",
+            "minItems"
+          ],
+          "message": "[] should be non-empty"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_tenant_12",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": 1,
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "tenant"
+          ],
+          "schema_path": [
+            "properties",
+            "tenant",
+            "type"
+          ],
+          "message": "1 is not of type 'string'"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_extra_13",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human",
+        "extra": true
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "additionalProperties"
+          ],
+          "message": "Additional properties are not allowed ('extra' was unexpected)"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_budget_14",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human",
+        "budget": {
+          "max_actions": 0
+        }
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "budget",
+            "max_actions"
+          ],
+          "schema_path": [
+            "properties",
+            "budget",
+            "properties",
+            "max_actions",
+            "minimum"
+          ],
+          "message": "0 is less than the minimum of 1"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_budget_15",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human",
+        "budget": {
+          "wall_seconds": 0
+        }
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "budget",
+            "wall_seconds"
+          ],
+          "schema_path": [
+            "properties",
+            "budget",
+            "properties",
+            "wall_seconds",
+            "minimum"
+          ],
+          "message": "0 is less than the minimum of 1"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_budget_16",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human",
+        "budget": {
+          "model_usd": -1
+        }
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "budget",
+            "model_usd"
+          ],
+          "schema_path": [
+            "properties",
+            "budget",
+            "properties",
+            "model_usd",
+            "minimum"
+          ],
+          "message": "-1 is less than the minimum of 0"
+        }
+      ]
+    },
+    {
+      "name": "Task_invalid_budget_17",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human",
+        "budget": {
+          "max_actions": true
+        }
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "budget",
+            "max_actions"
+          ],
+          "schema_path": [
+            "properties",
+            "budget",
+            "properties",
+            "max_actions",
+            "type"
+          ],
+          "message": "True is not of type 'integer'"
+        }
+      ]
+    },
+    {
+      "name": "Task_empty_check_string_rejected",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          ""
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    },
+    {
+      "name": "Task_unknown_budget_field_rejected",
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human",
+        "budget": {
+          "wall_minutes": 30
+        }
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    },
+    {
+      "name": "Action_valid",
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE",
+        "idempotency_key": "k1"
+      },
+      "accepted": true,
+      "should_accept_for_probe": true,
+      "validation_errors": []
+    },
+    {
+      "name": "Action_missing_action_id",
+      "schema": "Action",
+      "instance": {
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE",
+        "idempotency_key": "k1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'action_id' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Action_missing_attempt_id",
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE",
+        "idempotency_key": "k1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'attempt_id' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Action_missing_actor",
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "attempt_id": "attempt1",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE",
+        "idempotency_key": "k1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'actor' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Action_missing_type",
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE",
+        "idempotency_key": "k1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'type' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Action_missing_resource",
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "side_effect_class": "IRREVERSIBLE",
+        "idempotency_key": "k1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'resource' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Action_missing_side_effect_class",
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "idempotency_key": "k1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'side_effect_class' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "PolicyDecision_valid",
+      "schema": "PolicyDecision",
+      "instance": {
+        "action_id": "a1",
+        "decision": "ALLOW",
+        "policy_version": "v1"
+      },
+      "accepted": true,
+      "should_accept_for_probe": true,
+      "validation_errors": []
+    },
+    {
+      "name": "PolicyDecision_missing_action_id",
+      "schema": "PolicyDecision",
+      "instance": {
+        "decision": "ALLOW",
+        "policy_version": "v1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'action_id' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "PolicyDecision_missing_decision",
+      "schema": "PolicyDecision",
+      "instance": {
+        "action_id": "a1",
+        "policy_version": "v1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'decision' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "PolicyDecision_missing_policy_version",
+      "schema": "PolicyDecision",
+      "instance": {
+        "action_id": "a1",
+        "decision": "ALLOW"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'policy_version' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Observation_valid",
+      "schema": "Observation",
+      "instance": {
+        "action_id": "a1",
+        "status": "OK"
+      },
+      "accepted": true,
+      "should_accept_for_probe": true,
+      "validation_errors": []
+    },
+    {
+      "name": "Observation_missing_action_id",
+      "schema": "Observation",
+      "instance": {
+        "status": "OK"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'action_id' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Observation_missing_status",
+      "schema": "Observation",
+      "instance": {
+        "action_id": "a1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [],
+          "schema_path": [
+            "required"
+          ],
+          "message": "'status' is a required property"
+        }
+      ]
+    },
+    {
+      "name": "Action_invalid_side_effect",
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "SEND",
+        "idempotency_key": "k1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "side_effect_class"
+          ],
+          "schema_path": [
+            "properties",
+            "side_effect_class",
+            "enum"
+          ],
+          "message": "'SEND' is not one of ['NONE', 'REVERSIBLE', 'COMPENSATABLE', 'IRREVERSIBLE']"
+        }
+      ]
+    },
+    {
+      "name": "Policy_invalid_decision",
+      "schema": "PolicyDecision",
+      "instance": {
+        "action_id": "a1",
+        "decision": "MAYBE",
+        "policy_version": "v1"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "decision"
+          ],
+          "schema_path": [
+            "properties",
+            "decision",
+            "enum"
+          ],
+          "message": "'MAYBE' is not one of ['ALLOW', 'DENY', 'REQUIRE_APPROVAL', 'CONSTRAINED_ALLOW']"
+        }
+      ]
+    },
+    {
+      "name": "Observation_invalid_status",
+      "schema": "Observation",
+      "instance": {
+        "action_id": "a1",
+        "status": "PASS"
+      },
+      "accepted": false,
+      "should_accept_for_probe": false,
+      "validation_errors": [
+        {
+          "path": [
+            "status"
+          ],
+          "schema_path": [
+            "properties",
+            "status",
+            "enum"
+          ],
+          "message": "'PASS' is not one of ['OK', 'DENIED', 'ERROR', 'TIMEOUT', 'UNKNOWN_EFFECT', 'CANCELLED']"
+        }
+      ]
+    },
+    {
+      "name": "Definitions_root_rejects_invalid_0",
+      "schema": "DefinitionsRoot",
+      "instance": {},
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    },
+    {
+      "name": "Definitions_root_rejects_invalid_1",
+      "schema": "DefinitionsRoot",
+      "instance": null,
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    },
+    {
+      "name": "Definitions_root_rejects_invalid_2",
+      "schema": "DefinitionsRoot",
+      "instance": "not an Action",
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    },
+    {
+      "name": "Definitions_root_rejects_invalid_3",
+      "schema": "DefinitionsRoot",
+      "instance": 123,
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    },
+    {
+      "name": "Irreversible_requires_idempotency_key",
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE"
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    },
+    {
+      "name": "Action_empty_id_rejected",
+      "schema": "Action",
+      "instance": {
+        "action_id": "",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE",
+        "idempotency_key": "k1"
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    },
+    {
+      "name": "Constrained_allow_requires_constraints",
+      "schema": "PolicyDecision",
+      "instance": {
+        "action_id": "a1",
+        "decision": "CONSTRAINED_ALLOW",
+        "policy_version": "v1"
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  ],
+  "cross_contract_compatibility": [
+    {
+      "source": "B102",
+      "accepted_as_Task": false,
+      "errors": [
+        "Additional properties are not allowed ('allowed_writes', 'budgets', 'contract_id', 'forbidden', 'task', 'workspace' were unexpected)",
+        "'task_id' is a required property",
+        "'tenant' is a required property",
+        "'contract_version' is a required property",
+        "'risk' is a required property"
+      ],
+      "interpretation": "Domain contract/evidence is not a Task wire instance; explicit adapter needed."
+    },
+    {
+      "source": "B106",
+      "accepted_as_Task": false,
+      "errors": [
+        "Additional properties are not allowed ('allowed_dimensions', 'comparison', 'contract_id', 'currency', 'metric', 'period', 'prohibited_fields', 'snapshot' were unexpected)",
+        "'task_id' is a required property",
+        "'tenant' is a required property",
+        "'contract_version' is a required property",
+        "'risk' is a required property"
+      ],
+      "interpretation": "Domain contract/evidence is not a Task wire instance; explicit adapter needed."
+    },
+    {
+      "source": "B112",
+      "accepted_as_Task": false,
+      "errors": [
+        "Additional properties are not allowed ('activation', 'approver', 'candidate', 'evaluation', 'evidence_package', 'mutation_hash', 'parent', 'release', 'rollback_bundle' were unexpected)",
+        "'task_id' is a required property",
+        "'tenant' is a required property",
+        "'contract_version' is a required property",
+        "'risk' is a required property",
+        "'deliverables' is a required property",
+        "'checks' is a required property",
+        "'commit_authority' is a required property"
+      ],
+      "interpretation": "Domain contract/evidence is not a Task wire instance; explicit adapter needed."
+    }
+  ],
+  "limitations": "Schema shape only; synthetic instances clearly separated from original manuscript JSON. E YAML is a skeleton, not JSON Schema."
+}

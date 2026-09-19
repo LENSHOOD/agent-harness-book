@@ -1,0 +1,4 @@
+metric contract → policy-rewritten SQL → snapshot query
+       ├─ aggregate artifact → deterministic reconciliation
+       └─ narrative draft   → claim-to-cell linkage + reviewer
+both pass → analyst approval → publish report

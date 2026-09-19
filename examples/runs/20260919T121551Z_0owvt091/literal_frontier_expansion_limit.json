@@ -1,0 +1,68 @@
+{
+  "kind": "current source control flow with declared deterministic helpers",
+  "source": {
+    "file": "manuscript/chapters/20_within_task_evolution_search_reflection_and_repair.md",
+    "line": 35,
+    "sha256": "c2b1bc3a29d3a81cb177891015b287b7674c9fdd2af8ec325958d85cf9eb4354",
+    "statement_anchor": "frontier = queue([(baseline_state, depth=0)])",
+    "syntax_translations": [
+      [
+        "paid(kind, operation):",
+        "def paid(kind, operation):"
+      ],
+      [
+        "(baseline_state, depth=0)",
+        "(baseline_state, 0)"
+      ],
+      [
+        "progressed = false",
+        "progressed = False"
+      ],
+      [
+        "progressed = true",
+        "progressed = True"
+      ]
+    ]
+  },
+  "translation": "def frontier_search():\n    def paid(kind, operation):\n        ticket = budget.reserve_upper_bound(kind)   # 不足则抛 BudgetExhausted\n        try:\n            return host.run_with_limits(operation, ticket)\n        finally:\n            budget.settle(ticket, measured_usage_or_reserved_upper_bound)\n\n    frontier = queue([(baseline_state, 0)])\n    visited = set()\n    verified = []\n    expansions = 0\n    stalled = 0\n    reason = \"frontier_empty\"\n\n    try:\n        while frontier and expansions < max_expansions and stalled < max_stalled:\n            state, depth = frontier.pop()           # 取出并移除\n            key = hash(state.artifact, state.environment, state.hypothesis)\n            if key in visited or depth >= max_depth:\n                continue\n            visited.add(key)\n            expansions += 1\n            progressed = False\n            candidates = paid(\"generate\", propose(state, max_children))\n            for c in candidates:                    # 结果数由宿主截在 max_children\n                result = paid(\"execute\", run_in_fresh_branch(c))\n                verdict = paid(\"verify\", development_checks(result))\n                record(c, result, verdict)\n                if verdict.integrity_alarm:\n                    raise IntegrityAlarm\n                if verdict.all_required_pass:\n                    verified.append(seal(c, verdict))\n                if verdict.comparable_progress and c.state_key not in visited:\n                    frontier.push((c.state, depth + 1))\n                    progressed = True\n            stalled = 0 if progressed else stalled + 1\n        reason = stop_reason(frontier, expansions, stalled)\n    except BudgetExhausted:\n        reason = \"budget_exhausted\"\n    except (IntegrityAlarm, UnknownEffect):\n        quarantine_and_reconcile()\n        return incomplete(\"integrity_or_effect_unresolved\")\n    except HostActionError as error:\n        reason = record_error_and_stop(error)\n\n    if verified:\n        return best_by_preregistered_rule(verified), reason\n    return incomplete(reason)                    # 空候选、全失败均不可宣称成功\n",
+  "result": {
+    "status": "INCOMPLETE",
+    "reason": "max_expansions"
+  },
+  "events": [
+    "POP:root:0",
+    "RESERVE:generate",
+    "DISPATCH:generate",
+    "GENERATE:root",
+    "SETTLE:generate:3",
+    "RESERVE:execute",
+    "DISPATCH:execute",
+    "EXECUTE:root+",
+    "SETTLE:execute:2",
+    "RESERVE:verify",
+    "DISPATCH:verify",
+    "VERIFY:root+",
+    "SETTLE:verify:1",
+    "RECORD:root+",
+    "PUSH:root+",
+    "POP:root+:1",
+    "RESERVE:generate",
+    "DISPATCH:generate",
+    "GENERATE:root+",
+    "SETTLE:generate:3",
+    "RESERVE:execute",
+    "DISPATCH:execute",
+    "EXECUTE:root++",
+    "SETTLE:execute:2",
+    "RESERVE:verify",
+    "DISPATCH:verify",
+    "VERIFY:root++",
+    "SETTLE:verify:1",
+    "RECORD:root++",
+    "PUSH:root++"
+  ],
+  "spent": 12,
+  "available": 8,
+  "deferred_operation_contract": "propose/run/check construct descriptors; only run_with_limits dispatches",
+  "limitation": "Pause/cancel are host errors; no OS pause/checkpoint or durable search recovery modeled."
+}

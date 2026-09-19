@@ -1,0 +1,13 @@
+{
+  "source": {
+    "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+    "line": 118,
+    "sha256": "3c1194be95b42d0e192ce8e2541af3e5edbb8185c1ab195a3e431ea4b66a8ab7"
+  },
+  "translation": "def commit_effect_safely(action, constraints):\n    tenant = trusted_tenant_for_attempt(action.attempt_id)\n    key = scoped_key(tenant, action.resource, action.idempotency_key)\n    args_hash = hash_normalized_operation(action, constraints)\n    effect = durable_store.bind_intent_once(key, args_hash)\n    lease = coordinator.try_claim_effect(effect.id)\n    if lease is None:\n        return Observation(action_id=action.action_id, status=PENDING)\n\n    try:\n        effect = durable_store.load(effect.id)\n        if effect.is_final:\n            return observation_from_recorded_outcome(action, effect)\n        prior = target_system.lookup_or_unknown(key)\n        if prior.is_committed_with(args_hash):\n            return persist_reconciled_outcome(action, effect, prior)\n        if effect.status in {EXECUTING, UNKNOWN_EFFECT}:\n            return persist_unknown(action, effect, RECONCILE_REQUIRED)\n        if prior.is_unavailable:\n            return Observation(action_id=action.action_id, status=PENDING)\n\n        # Check live cancellation/revocation after lookup, immediately before dispatch.\n        if not still_authorized_and_active(action, constraints, lease):\n            return persist_denied_outcome(action, effect)\n        durable_store.mark_executing_if_owned(effect.id, lease.fence)\n        try:\n            outcome = target_system.execute_idempotently(key, args_hash, action, constraints)\n        except ExecutionError as error:\n            return persist_unknown(action, effect, diagnostic(error))\n        if not outcome.is_definitive:\n            return persist_unknown(action, effect, RECONCILE_REQUIRED)\n        return persist_final_outcome(action, effect, outcome)\n    finally:\n        coordinator.release(lease)\n",
+  "events": [
+    "UNKNOWN_EFFECT",
+    "RELEASE"
+  ],
+  "status": "UNKNOWN_EFFECT"
+}

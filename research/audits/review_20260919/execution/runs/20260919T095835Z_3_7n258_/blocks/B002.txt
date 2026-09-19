@@ -1,0 +1,30 @@
+while attempt.active:
+    canonical_state = state_store.load(attempt.id)
+    context = context_compiler.project(canonical_state, budget)
+    proposal = model.decide(context, model_facing_tool_views)
+
+    if proposal.requests_action:
+        action = normalize_validate_and_assign_id(proposal.action)
+        decision = policy.evaluate(action, current_authority)
+        event_store.append(action, decision)
+
+        if decision == DENY:
+            observation = denied_observation(decision.reason)
+        elif decision == REQUIRE_APPROVAL:
+            suspend_attempt_with_checkpoint(action, decision)
+            continue_after_external_response()
+        else:
+            observation = commit_effect_safely(action, decision.constraints)
+
+        event_store.append(observation)
+        state_store.reduce(observation)
+        continue
+
+    candidate = seal(proposal.output, canonical_state.artifacts)
+    verification = completion_gate.verify(candidate, task.contract_version)
+    if verification.status == PASS:
+        return CANDIDATE_VERIFIED
+    if verification.repairable and budget.remaining:
+        state_store.reduce(minimal_diagnostics(verification))
+    else:
+        return NEEDS_ESCALATION

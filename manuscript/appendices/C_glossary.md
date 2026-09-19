@@ -1,39 +1,46 @@
 # 附录 C：术语与本体边界
 
-本书固定以下用法。产品文档可能采用不同名称，adapter（适配器）应做语义映射，而不是只做字符串对齐。
+本书固定以下用法。产品文档可能采用不同名称，适配器应映射含义，而非只替换字符串。
 
-- **Model**：接收有限上下文并生成文本或动作建议的概率性策略（policy）。它不天然拥有持久状态、权限和外部真值。
+- **Model**：接收有限上下文并生成文本或动作建议的概率性决策策略。它不天然拥有持久状态、权限和外部真值。
+- **Model policy / authorization policy**：分别为模型的决策策略与系统的授权策略；前者提出下一步，后者判断主体对资源可执行哪些动作。
 - **Agent**：在任务范围内由模型动态选择观察或动作的执行者。Agent 是系统角色，不等于单次模型调用。
 - **Agent System**：Model、Harness、Environment 与 Feedback 的完整组合，也是评估能力和风险的对象。
-- **Harness**：将任务、模型与环境组织成持续执行的逻辑控制系统，负责 loop（循环）、context（上下文）、tools（工具）、state（状态）、policy（策略）、verification（校验）、observability（可观测性）与 evolution governance（演进治理）。
+- **Harness**：组织模型、工具与环境执行任务的运行和治理机制，涵盖循环、上下文、状态、授权、验证、可观测性与进化治理；不暗示必须由外部服务托管。
 - **Agent Runtime**：承载 Agent loop、session 和模型交互的运行组件，例如供应商 CLI/core 或自研 loop。
 - **Execution Runtime**：实际运行命令、浏览器、代码或连接器的环境，例如容器、VM 或受控远程执行器。
 - **Environment**：Agent 可观察或改变的任务世界，包括 workspace、数据库、SaaS、日志和人类组织。它不等于一个 shell。
 - **Feedback**：用于调整系统对动作质量或任务质量判断的信号；Observation 只有进入评价链路时才成为 feedback。
 - **Workflow**：由代码预定义主要控制路径的执行结构。模型可在节点内被调用，但不拥有全部路由权。
-- **Control Plane**：拥有 task、identity、policy、调度、配置与发布权威的逻辑平面。
-- **Evidence Plane**：保存 artifact（产物）、trace（追踪）、effect 和独立验证结果的逻辑平面，不依赖聊天历史来证明完成。
-- **Evolution Plane**：生成、评价和发布 memory（记忆）、Harness 与 model 候选项的系统，并受治理平面约束。
+- **Control Plane**：控制面，管理身份、授权策略、目录、配置与发布；策略管理和请求时的授权执行要区分。
+- **Data Plane**：数据面，承载会话、事件、上下文、模型请求与任务推进。控制、数据、执行三平面是职责划分，不是严格调用栈或必须分库的部署要求。
+- **Execution Plane**：执行面，以受限身份运行工具和外部连接，在动作发生时核验授权并记录结果。
+- **Evidence Plane**：证据面，进一步归拢产物、轨迹、副作用账本和验证记录；记录可复查不等于记录中的语义已经正确。
+- **Evolution Plane**：进化面，组织记忆、Harness 与模型候选的生成、评价和发布流程。它跨越候选执行与证据处理，发布权仍受控制面约束。
 - **ACI**：Agent-Computer Interface，模型与计算环境之间的动作和观察接口。
-- **Action**：Agent 提议的规范化动作（action）。在授权与执行之前，它还不代表现实副作用。
-- **Observation**：动作、环境或策略返回的可观察结果，包含状态、诊断与 artifact 引用。
-- **Effect**：已经产生或可能产生外部权威状态变更的动作结果。
-- **Effect Ledger**：记录 effect intent（意图）、幂等键、提交状态、outcome 和 reconciliation（对账）过程的账本。
-- **CompletionContract**：目标、交付物、不变量、验收、证据、权限、预算与停止条件组成的版本化合同。
-- **Candidate**：Agent 提交给外部完成门的候选 artifact（产物）；尚未获得业务提交权。
-- **VerificationResult**：由特定 verifier（校验器）在固定环境下输出的结构化合同检查结果。
-- **EvidencePackage**：把输入、candidate、artifact、effect、policy、verification、approval 与最终提交串联起来的机器可读证据。
-- **Artifact**：有地址、hash、媒体类型、生产者和分类的持久化交付物或中间对象。
+- **Action**：Agent 提议的规范化动作。在授权与执行之前，它还不代表已发生的外部副作用。
+- **Observation**：动作、环境或策略返回的可观察结果，包含状态、诊断与产物引用。
+- **Effect**：外部副作用，即动作对外部权威状态的改变；包括预期的写入，不只指不良结果。是否已发生可以处于待确认状态。
+- **Effect Ledger**：副作用账本，记录意图、适用的幂等键、提交状态、结果与对账过程；有账本不等于下游自动去重。
+- **CompletionContract**：完成契约，规定目标、交付物、不变量、验收、证据、权限、预算、变更权与停止规则；取消或结束一轮不等于完成验收。
+- **Candidate**：提交给验收流程的候选产物，尚未因“自报完成”取得业务提交权。
+- **Verifier / judge / approver**：验证器检查定义好的条件；评判器可对语义质量评分；审批人或审批服务决定是否授权。三者职责不同。
+- **VerificationResult**：特定验证器在固定环境与候选版本上输出的结构化契约检查结果，不是完整正确性证明。
+- **EvidencePackage**：证据包，把输入、候选、产物、外部副作用、授权、验证、审批与最终提交关联起来的机器可读记录。
+- **Artifact**：产物，具有地址、哈希、媒体类型、生产者和分类的持久对象；在交付语境中可称交付物，与已发生的外部副作用区分。
 - **Checkpoint**：用于恢复的任务状态、事件 offset、workspace 与 pending effect 引用；不等于上下文摘要。
 - **Compaction**：将长上下文转换为可继续推理的较短表示，属于有损投影，不是长期记忆。
-- **Memory**：跨推理或跨任务保留的事实、情景、程序或策略状态；必须声明 scope（范围）、owner（责任人）和生命周期。
+- **Memory**：跨推理或跨任务保留的事实、情景、程序或决策经验；需声明范围、责任人和生命周期，根授权策略不由普通记忆改写。
 - **Skill**：按需加载的程序化知识包，可能包含指令、脚本和资源，属于软件供应链对象。
 - **Handoff**：将工作责任从一个 Agent 或节点转移给另一个，带出结构化目标、状态、artifact、权限和未决项。
-- **Capability lease**：绑定 actor（主体）、资源、动作、purpose（用途）、租户和 TTL 的临时授权。
-- **Held-out / sealed test**：候选不可见、由独立评价服务在预定时机使用的数据或检查集。
+- **Capability lease**：临时授权，也称能力租约，绑定主体、资源、动作、用途、租户与有效期；这里的 capability 指可执行权限，不是模型解题能力。
+- **Held-out set**：保留集，未直接用于生成或训练的数据或检查集的宽泛称呼。用于候选比较或修复反馈时，承担验证集职责，不自动具有独立终测资格。
+- **Validation set**：验证集，用于比较并选择候选模型、Harness 或配置。应固定任务口径，不能按候选表现临时挑题。
+- **Sealed test**：密封测试集，由独立服务在预定时机终测，事先固定反馈粒度、访问次数与停止规则；用于自适应修复后须记录暴露并重新界定用途。
 - **Canary**：在受限真实流量和限定影响范围内部署候选版本并持续监控。
 - **Harness evolution**：对 prompt、工具、上下文、路由、工作流或 runtime profile 的受控优化，不等同于模型权重训练。
 - **Reward hacking**：提高评分却偏离真实目标或破坏评价完整性的行为。
-- **Lineage**：追踪版本来源关系，覆盖父项、数据、mutation、实验、发布、事故和退役。
+- **Provenance**：来源记录，回答材料、结果或证据来自哪里，绑定生产者、时间、版本与原始引用；来源可追溯不等于内容正确。
+- **Lineage**：版本沿袭关系，回答版本怎样演变，覆盖父项、数据、修改、实验、发布、事故与退役。
 
-最容易混淆的三组边界是：Agent Runtime 决定下一步，Execution Runtime 执行动作；Memory 保存跨期经验，Compaction 只压缩当前上下文；Harness 可以包含 policy adapter（策略适配器），但根授权和 release authority（发布授权）不应由候选 Harness 自行修改。
+最容易混淆的三组边界是：Agent Runtime 组织下一步决策，Execution Runtime 执行动作；Memory 保存跨期经验，Compaction 压缩当前上下文；Harness 可以包含授权策略适配器，但根授权与发布权不能由候选 Harness 自行修改。签名核验来源和完整性，也不能替代这些语义边界。

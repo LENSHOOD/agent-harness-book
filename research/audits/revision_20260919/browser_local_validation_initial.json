@@ -1,0 +1,87 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "title": "Agent Harness",
+      "url": "http://localhost:4173/agent-harness-book/",
+      "contains_expected": true,
+      "width": 1280,
+      "scrollWidth": 1280,
+      "missing_images": [],
+      "pdf_links": [
+        "/agent-harness-book/downloads/agent_harness_book.pdf",
+        "/agent-harness-book/downloads/agent_harness_book.pdf"
+      ],
+      "js_exceptions": [
+        {
+          "method": "Runtime.exceptionThrown",
+          "params": {
+            "timestamp": 1789820327305.364,
+            "exceptionDetails": {
+              "exceptionId": 1,
+              "text": "Uncaught",
+              "lineNumber": 0,
+              "columnNumber": 52560,
+              "scriptId": "6",
+              "url": "https://cursor.com/docs-static/_next/static/chunks/0ouvk6hh5c3ij.js?dpl=dpl_1z48PbKig4dVDcghU8xGnLdq5vmF",
+              "exception": {
+                "type": "object",
+                "subtype": "error",
+                "className": "Error",
+                "description": "Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rX (https://cursor.com/docs-static/_next/static/chunks/0ouvk6hh5c3ij.js?dpl=dpl_1z48PbKig4dVDcghU8xGnLdq5vmF:1:52561)\n    at iu (https://cursor.com/docs-static/_next/static/chunks/0ouvk6hh5c3ij.js?dpl=dpl_1z48PbKig4dVDcghU8xGnLdq5vmF:1:103602)\n    at sd (https://cursor.com/docs-static/_next/static/chunks/0ouvk6hh5c3ij.js?dpl=dpl_1z48PbKig4dVDcghU8xGnLdq5vmF:1:144292)\n    at https://cursor.com/docs-static/_next/static/chunks/0ouvk6hh5c3ij.js?dpl=dpl_1z48PbKig4dVDcghU8xGnLdq5vmF:1:139178\n    at se (https://cursor.com/docs-static/_next/static/chunks/0ouvk6hh5c3ij.js?dpl=dpl_1z48PbKig4dVDcghU8xGnLdq5vmF:1:139279)\n    at s$ (https://cursor.com/docs-static/_next/static/chunks/0ouvk6hh5c3ij.js?dpl=dpl_1z48PbKig4dVDcghU8xGnLdq5vmF:1:165843)\n    at MessagePort.O (https://cursor.com/docs-static/_next/static/chunks/0ouvk6hh5c3ij.js?dpl=dpl_1z48PbKig4dVDcghU8xGnLdq5vmF:1:14002)",
+                "objectId": "3757831163224179743.1.1"
+              },
+              "executionContextId": 1
+            }
+          },
+          "sessionId": "B22ECE63A1A551F28D8C218F523BEE86"
+        }
+      ]
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "title": "第六章 Agent Loop：从 while 循环到持久状态机 | Agent Harness",
+      "url": "http://localhost:4173/agent-harness-book/chapters/06_agent_loop_as_a_durable_state_machine",
+      "contains_expected": true,
+      "width": 1280,
+      "scrollWidth": 1280,
+      "missing_images": [],
+      "pdf_links": [
+        "/agent-harness-book/downloads/agent_harness_book.pdf"
+      ],
+      "js_exceptions": []
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "title": "第十五章 Cursor：IDE 原生上下文与云端 Agent | Agent Harness",
+      "url": "http://localhost:4173/agent-harness-book/chapters/15_cursor_ide_native_context_and_cloud_agents",
+      "contains_expected": true,
+      "width": 375,
+      "scrollWidth": 375,
+      "missing_images": [],
+      "pdf_links": [
+        "/agent-harness-book/downloads/agent_harness_book.pdf"
+      ],
+      "js_exceptions": []
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "title": "已核验参考文献 | Agent Harness",
+      "url": "http://localhost:4173/agent-harness-book/references",
+      "contains_expected": true,
+      "width": 375,
+      "scrollWidth": 375,
+      "missing_images": [],
+      "pdf_links": [
+        "/agent-harness-book/downloads/agent_harness_book.pdf"
+      ],
+      "js_exceptions": []
+    }
+  }
+]

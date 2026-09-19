@@ -1,0 +1,11 @@
+{
+  "source": {
+    "file": "manuscript/appendices/A_core_contracts_and_pseudocode.md",
+    "line": 156,
+    "sha256": "e1220447d6e8b25ad6c2b38eff0719d0e0fe1934c4135110ee0f6410961d51f2"
+  },
+  "translation": "def recover(attempt_id):\n    lease = coordinator.acquire_single_owner(attempt_id)\n    try:\n        state = state_store.load(attempt_id)\n        if state.is_terminal:\n            return state.status\n        if state.cancel_requested:\n            return continue_cancellation_without_resuming_work(state)\n        checkpoint = state_store.latest_checkpoint(attempt_id)\n        state = replay_pure_events(checkpoint.state, checkpoint.event_offset)\n        for effect in state.pending_or_unknown_effects:\n            authoritative = target_system.lookup_or_unknown(effect.idempotency_key)\n            append_reconciliation_observation(effect, authoritative)\n        state = state_store.load(attempt_id)\n        if state.is_terminal or state.cancel_requested:\n            return state.status\n        if state.has_unknown_effects:\n            return RECONCILE_REQUIRED\n        policy = policy_store.load_current_compatible_version_and_revocations()\n        credentials = broker.issue_fresh_leases(allowed_capabilities(state, policy))\n        return resume_from_reconciled_state(state, policy, credentials)\n    finally:\n        coordinator.release(lease)\n\n",
+  "events": [
+    "RELEASE"
+  ]
+}

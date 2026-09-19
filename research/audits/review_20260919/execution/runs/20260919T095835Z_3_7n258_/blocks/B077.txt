@@ -1,0 +1,10 @@
+run
+ ├─ delegation span A
+ │   ├─ model/tool spans
+ │   └─ artifact A
+ ├─ delegation span B
+ │   ├─ model/tool spans
+ │   └─ artifact B
+ └─ merge span
+     ├─ consumes A,B
+     └─ verification + commit

@@ -1,0 +1,11 @@
+Context = compile(
+  system_contract,
+  policy_view,
+  task_state,
+  recent_events,
+  retrieved_knowledge,
+  active_skills,
+  tool_catalog,
+  environment_snapshot,
+  token_budget
+)

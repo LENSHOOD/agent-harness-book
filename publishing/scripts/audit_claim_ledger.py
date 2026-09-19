@@ -89,7 +89,11 @@ def validate() -> tuple[list[str], list[str], list[dict], dict]:
 
     source_by_id = {row["source_id"]: row for row in sources}
     evidence_by_id = {row["evidence_id"]: row for row in evidence}
-    source_by_url = {normalize_url(row["raw_url"]): row["source_id"] for row in sources}
+    source_by_url = {
+        normalize_url(url): row["source_id"]
+        for row in sources
+        for url in [row["raw_url"], *row.get("url_aliases", [])]
+    }
 
     if len(source_by_id) != len(sources):
         errors.append("sources.jsonl contains duplicate source_id values")
@@ -193,7 +197,7 @@ def validate() -> tuple[list[str], list[str], list[dict], dict]:
         link for link in manuscript_links if normalize_url(link) not in source_by_url
     )
     if unregistered:
-        warnings.append(
+        errors.append(
             f"{len(unregistered)} manuscript links are not registered sources; see report appendix"
         )
 
@@ -223,7 +227,7 @@ def write_report(errors: list[str], warnings: list[str], claims: list[dict], sta
     lines = [
         "# Claim Ledger 只读校验报告",
         "",
-        "> 本报告由 `audit_claim_ledger.py` 生成。脚本不推断 claim 类型，不写回 ledger。",
+        "> 本报告由 `audit_claim_ledger.py` 生成，只校验登记、元数据与引用关系。supported是逐项审阅结论，不是脚本通过网页访问或URL推断出的事实真值；不代表全文逐句或实验复现验收。",
         "",
         f"- 结论：{'FAIL' if errors else 'PASS'}",
         f"- 登记来源：{stats['sources']}",

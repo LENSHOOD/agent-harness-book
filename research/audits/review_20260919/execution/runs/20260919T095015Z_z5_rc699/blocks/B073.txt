@@ -1,0 +1,16 @@
+DelegationContract {
+  parent_run_id
+  subtask_id
+  objective
+  inputs[]              // 固定快照或资源引用
+  expected_output_schema
+  acceptance_checks[]
+  allowed_tools[]
+  capability_scope
+  context_policy
+  budget {tokens, time, cost, tool_calls}
+  deadline
+  can_delegate
+  reporting_interval
+  cancellation_token
+}

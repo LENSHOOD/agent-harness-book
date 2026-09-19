@@ -1,0 +1,2 @@
+Catalog summary → search(query, policy_scope) → candidate tools
+→ load exact schemas → model call → invoke

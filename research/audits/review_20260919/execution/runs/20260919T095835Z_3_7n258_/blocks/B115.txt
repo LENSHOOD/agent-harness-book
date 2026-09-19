@@ -1,0 +1,9 @@
+RuntimeAdapter {
+  negotiate(capability_requirements) -> CapabilitySet
+  start(task, workspace, policy_profile) -> Attempt
+  stream_events(attempt_id, after_offset)
+  respond_to_request(request_id, approval_or_input)
+  checkpoint(attempt_id)
+  cancel(attempt_id, reason)
+  collect_artifacts(attempt_id)
+}

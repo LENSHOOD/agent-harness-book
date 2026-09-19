@@ -1,0 +1,53 @@
+{
+  "health": {
+    "trace": [
+      "pre_commit_checks=PASS",
+      "effect=CONFIRMED",
+      "health=False",
+      "state=VERIFIED_COMPLETE"
+    ],
+    "state": "VERIFIED_COMPLETE",
+    "corrected": "COMMITTED_BUT_UNHEALTHY"
+  },
+  "compensation": {
+    "charges": [
+      [
+        1,
+        10
+      ],
+      [
+        2,
+        10
+      ]
+    ],
+    "failures": [
+      {
+        "phase": "initial_call",
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/additional_counterexamples.py\", line 46, in run\n    charge(lose_reply=True)\n    ~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/additional_counterexamples.py\", line 41, in charge\n    raise TimeoutError(\"charge committed; receipt lost\")\nTimeoutError: charge committed; receipt lost\n"
+      },
+      {
+        "phase": "compensate_duplicate",
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/additional_counterexamples.py\", line 57, in run\n    compensate(repeated_id)\n    ~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/additional_counterexamples.py\", line 44, in compensate\n    raise ConnectionError(\"defined compensation service unavailable\")\nConnectionError: defined compensation service unavailable\n"
+      }
+    ],
+    "corrected": {
+      "effect": "UNKNOWN_EFFECT",
+      "target_actual_charges": 1,
+      "lookup_available": false,
+      "compensation_available": false,
+      "retry_count": 0,
+      "state": "RECONCILE_OR_ESCALATE"
+    }
+  },
+  "chapter27": {
+    "original_runtime": "UNVERIFIED; no implementation",
+    "snapshot_pass": true,
+    "live_pass": false,
+    "claim": "ambiguity only, not unconditional reproduced original failure"
+  },
+  "statistics": {
+    "two_by_two_model_harness_experiment": "NOT_RUN",
+    "budget_gate_empirical_threshold": "NOT_ESTIMATED",
+    "why": "No real factorial trial or calibrated cost/quality data; deterministic gate simulation only."
+  }
+}

@@ -1,0 +1,833 @@
+{
+  "B006": {
+    "value": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.internal/harness/task-v1.schema.json",
+      "title": "Task",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "tenant",
+        "contract_version",
+        "risk",
+        "deliverables",
+        "checks",
+        "commit_authority"
+      ],
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tenant": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contract_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "risk": {
+          "enum": [
+            "R0",
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        "input_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deliverables": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "budget": {
+          "type": "object",
+          "properties": {
+            "wall_seconds": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "model_usd": {
+              "type": "number",
+              "minimum": 0
+            },
+            "max_actions": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "commit_authority": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B007": {
+    "value": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$defs": {
+        "Action": {
+          "type": "object",
+          "required": [
+            "action_id",
+            "attempt_id",
+            "actor",
+            "type",
+            "resource",
+            "side_effect_class"
+          ],
+          "properties": {
+            "action_id": {
+              "type": "string"
+            },
+            "attempt_id": {
+              "type": "string"
+            },
+            "actor": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "normalized_args_ref": {
+              "type": "string"
+            },
+            "resource": {
+              "type": "string"
+            },
+            "side_effect_class": {
+              "enum": [
+                "NONE",
+                "REVERSIBLE",
+                "COMPENSATABLE",
+                "IRREVERSIBLE"
+              ]
+            },
+            "idempotency_key": {
+              "type": "string"
+            }
+          }
+        },
+        "PolicyDecision": {
+          "type": "object",
+          "required": [
+            "action_id",
+            "decision",
+            "policy_version"
+          ],
+          "properties": {
+            "action_id": {
+              "type": "string"
+            },
+            "decision": {
+              "enum": [
+                "ALLOW",
+                "DENY",
+                "REQUIRE_APPROVAL",
+                "CONSTRAINED_ALLOW"
+              ]
+            },
+            "policy_version": {
+              "type": "string"
+            },
+            "reason_code": {
+              "type": "string"
+            },
+            "constraints": {
+              "type": "object"
+            }
+          }
+        },
+        "Observation": {
+          "type": "object",
+          "required": [
+            "action_id",
+            "status"
+          ],
+          "properties": {
+            "action_id": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "OK",
+                "DENIED",
+                "ERROR",
+                "TIMEOUT",
+                "UNKNOWN_EFFECT",
+                "CANCELLED"
+              ]
+            },
+            "artifact_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "diagnostics": {
+              "type": "object"
+            },
+            "environment_revision": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B008": {
+    "value": {
+      "evidence_package": {
+        "schema_version": "evidence-package/v1",
+        "package_id": "required",
+        "task": {
+          "task_id": "required",
+          "contract_version": "required"
+        },
+        "attempt": {
+          "attempt_id": "required",
+          "runtime": "required",
+          "runtime_version": "required",
+          "harness_profile": "required"
+        },
+        "inputs": [
+          {
+            "uri": "required",
+            "hash": "sha256-required"
+          }
+        ],
+        "candidate": {
+          "uri": "required",
+          "hash": "sha256-required"
+        },
+        "effects": [],
+        "policy_decisions": {
+          "artifact_ref": "required"
+        },
+        "verification": {
+          "verifier_version": "required",
+          "environment_ref": "required",
+          "status": "PASS|FAIL|INCONCLUSIVE",
+          "checks": []
+        },
+        "approvals": [],
+        "final_commit": null,
+        "lineage": {
+          "parent_attempt": "optional",
+          "model_version": "required",
+          "harness_bundle": "required"
+        }
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B024": {
+    "value": {
+      "evaluation_claim": {
+        "scope": "enterprise-repo-maintenance-v3",
+        "system": "model+harness+tools+sandbox",
+        "trials_per_task": 5,
+        "fixed": [
+          "task",
+          "revision",
+          "permissions",
+          "verifier",
+          "budget"
+        ],
+        "reports": [
+          "verified_success",
+          "reliability",
+          "cost",
+          "latency",
+          "human_load",
+          "safety"
+        ]
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B047": {
+    "value": {
+      "status": "failed",
+      "category": "invalid_argument",
+      "retryable": false,
+      "message": "line_end must be >= line_start",
+      "field_errors": [
+        {
+          "path": "line_end",
+          "code": "range"
+        }
+      ],
+      "suggested_fix": "Use line_end >= 42",
+      "effect_committed": false
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B081": {
+    "value": {
+      "event_id": "evt_01J8Z7",
+      "run_id": "run_TASK2048_A3",
+      "span_id": "tool_017",
+      "parent_span_id": "turn_006",
+      "type": "tool.completed",
+      "timestamp": "2026-08-27T09:31:14.223Z",
+      "actor": "runtime:codex",
+      "tool": {
+        "canonical": "repo.test",
+        "provider": "exec_command",
+        "version": "4"
+      },
+      "policy_decision": "pd_8821",
+      "input": {
+        "ref": "artifact:sha256:11ad...",
+        "classification": "internal"
+      },
+      "output": {
+        "ref": "artifact:sha256:90bf...",
+        "exit_code": 1
+      },
+      "state": {
+        "workspace_before": "git:8f31b6e",
+        "workspace_after": "git:dirty:4e19..."
+      },
+      "latency_ms": 18241,
+      "cost": {
+        "compute_usd": 0.012
+      },
+      "status": "error",
+      "error_class": "TEST_FAILURE",
+      "vendor_payload_ref": "secure-artifact:sha256:772e..."
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B082": {
+    "value": {
+      "runtime_profile": {
+        "provider": "anthropic-claude-code",
+        "version": "pinned",
+        "permission_mode": "policy_mediated",
+        "workspace": "isolated",
+        "network": "allowlist",
+        "completion_authority": "external_verifier",
+        "export": [
+          "session_id",
+          "tool_events",
+          "cost",
+          "artifacts"
+        ]
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B084": {
+    "value": {
+      "task_id": "TASK-2048",
+      "attempt_id": "A-03",
+      "runtime": "codex-app-server",
+      "runtime_version": "pinned-build",
+      "thread_id": "vendor-thread-ref",
+      "workspace_revision": "git:8f31...",
+      "policy_profile": "code-medium-v4",
+      "completion_contract": "cc:v7"
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B088": {
+    "value": {
+      "comparison": {
+        "task_suite": "repo-maintenance-v3",
+        "workspace_snapshot": "fixed",
+        "trials_per_case": 5,
+        "budgets": {
+          "wall_minutes": 30,
+          "model_usd": 8
+        },
+        "permissions": "code-medium-v4",
+        "verifier": "clean-room-v6",
+        "report_slices": [
+          "task_type",
+          "repo_size",
+          "risk",
+          "runtime",
+          "model"
+        ]
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B089": {
+    "value": {
+      "EvolutionEvidence": {
+        "可变对象": "被允许产生候选的表面",
+        "观测信号": "失败、成功、成本与安全数据",
+        "归因方法": "如何区分模型、Harness、环境与随机性",
+        "候选生成": "谁提出什么最小变化",
+        "评价隔离方式": "候选看不到什么、谁重算分数",
+        "门禁判据": "主要指标、硬约束、统计规则",
+        "发布方式": "变化影响哪些任务与租户",
+        "回滚粒度": "恢复到哪个一致版本",
+        "失败模式": "污染、投机、漂移与不可恢复风险"
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B093": {
+    "value": {
+      "repair_policy": {
+        "TEST_FAILURE": {
+          "max_hypotheses": 3,
+          "require": [
+            "failure_delta",
+            "changed_assumption"
+          ]
+        },
+        "POLICY_DENIED": {
+          "action": "escalate_or_stop"
+        },
+        "UNKNOWN_EFFECT": {
+          "action": "reconcile_before_resume"
+        }
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B095": {
+    "value": {
+      "skill_manifest": {
+        "id": "repo.release-notes",
+        "version": "3.2.1",
+        "owner": "dev-platform",
+        "allowed_tools": [
+          "repo.read",
+          "git.diff"
+        ],
+        "network": "deny",
+        "data_scope": "current_repository",
+        "expires_at": "2027-01-31",
+        "evidence_suite": "skill-release-notes-v5"
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B096": {
+    "value": {
+      "base": "harness-42",
+      "target": "tool_catalog.retrieval",
+      "pathology": "wrong_tool_when_catalog_gt_80",
+      "hypothesis": "static schemas overload selection",
+      "mutation": "server-grouped on-demand discovery",
+      "activation_beacon": "tool_catalog_lookup",
+      "rollback": "harness-42"
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B097": {
+    "value": {
+      "model_release": {
+        "id": "repo-agent-7b-r12",
+        "parent": "repo-agent-7b-r11",
+        "data_snapshot": "trajectories-2026w31-v4",
+        "harness_train": "h42",
+        "compatible_harnesses": [
+          "h42",
+          "h43"
+        ],
+        "eval_bundle": "enterprise-code-v9",
+        "rollback": "repo-agent-7b-r11+h42"
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B100": {
+    "value": {
+      "experiment": {
+        "hypothesis": "dynamic_tool_discovery_reduces_selection_errors",
+        "primary_metric": "verified_task_success",
+        "hard_gates": [
+          "no_security_regression",
+          "no_critical_slice_regression"
+        ],
+        "missing_trials": "count_as_failure_unless_infrastructure_retried",
+        "test_visibility": "sealed",
+        "promotion": "shadow_then_5_percent_low_risk",
+        "rollback_trigger": "any_severity_1_or_gate_breach"
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B101": {
+    "value": {
+      "release": "harness-43",
+      "parent": "harness-42",
+      "candidate": "mut-981",
+      "eval_report": "eval:2026w34:771",
+      "approvals": [
+        "product",
+        "security",
+        "runtime-owner"
+      ],
+      "canary": {
+        "slice": "low-risk-code",
+        "result": "pass"
+      },
+      "rollback_bundle": "harness-42+model-12+memory-87"
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B102": {
+    "value": {
+      "contract_id": "CC-REPO-2048-v3",
+      "task": "修复 DST 边界下的重复扣款时间窗计算",
+      "workspace": {
+        "repo": "payments",
+        "commit": "8f31b6e"
+      },
+      "allowed_writes": [
+        "src/time/**",
+        "tests/time/**"
+      ],
+      "forbidden": [
+        "delete_tests",
+        "change_ledger_rules",
+        "push",
+        "deploy"
+      ],
+      "deliverables": [
+        "git_patch",
+        "change_explanation",
+        "verification_results"
+      ],
+      "checks": [
+        "tests/time/test_dst.py::test_fall_back_window",
+        "tests/time/test_dst.py::test_spring_forward_window",
+        "pytest tests/time",
+        "lint",
+        "no_pass_to_pass_regression"
+      ],
+      "budgets": {
+        "wall_minutes": 30,
+        "model_usd": 8,
+        "max_tool_calls": 120
+      },
+      "commit_authority": "human_code_owner"
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B105": {
+    "value": {
+      "evidence_package": {
+        "id": "EP-REPO-2048-A3",
+        "contract": "CC-REPO-2048-v3",
+        "input_revision": "git:8f31b6e",
+        "runtime": "codex-app-server@pinned-2026w34",
+        "harness_profile": "code-medium-v4",
+        "candidate": {
+          "patch": "artifact:sha256:4b2a...",
+          "changed_files": [
+            "src/time/window.py",
+            "tests/time/test_dst.py"
+          ]
+        },
+        "verification": {
+          "environment": "image:sha256:91c7...",
+          "results": [
+            {
+              "check": "fail_to_pass",
+              "status": "pass",
+              "log": "artifact:sha256:a11e..."
+            },
+            {
+              "check": "pass_to_pass",
+              "status": "pass",
+              "total": 482,
+              "log": "artifact:sha256:b71d..."
+            },
+            {
+              "check": "allowed_write_scope",
+              "status": "pass"
+            }
+          ]
+        },
+        "policy": {
+          "decisions": "artifact:sha256:29fd...",
+          "denied_actions": 0
+        },
+        "final_authority": "human_code_owner"
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B106": {
+    "value": {
+      "contract_id": "CC-DATA-771-v5",
+      "metric": "net_subscription_revenue_v4",
+      "period": [
+        "2026-07-01",
+        "2026-08-01"
+      ],
+      "comparison": "previous_month",
+      "currency": "CNY_at_monthly_finance_rate",
+      "snapshot": "warehouse:2026-08-03T02:00:00Z",
+      "allowed_dimensions": [
+        "province",
+        "plan",
+        "channel"
+      ],
+      "prohibited_fields": [
+        "email",
+        "phone",
+        "account_name",
+        "raw_payment_token"
+      ],
+      "deliverables": [
+        "analysis.md",
+        "aggregates.parquet",
+        "query_bundle",
+        "evidence.yaml"
+      ],
+      "checks": [
+        "metric_definition",
+        "snapshot_consistency",
+        "total_reconciliation",
+        "k_anonymity_20"
+      ],
+      "commit_authority": "finance_analytics_owner"
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B109": {
+    "value": {
+      "evidence_package": {
+        "id": "EP-DATA-771-R2",
+        "contract": "CC-DATA-771-v5",
+        "semantic_model": "net_subscription_revenue_v4",
+        "snapshot": "warehouse:2026-08-03T02:00:00Z",
+        "query_bundle": "artifact:sha256:77ac...",
+        "aggregates": "artifact:sha256:19be...",
+        "narrative": "artifact:sha256:ae20...",
+        "verification": {
+          "metric_definition": "pass",
+          "snapshot_consistency": "pass",
+          "finance_reconciliation": {
+            "status": "pass",
+            "delta_cny": "0.02"
+          },
+          "low_count_suppression": "pass",
+          "numeric_claim_links": {
+            "linked": 37,
+            "unlinked": 0
+          }
+        },
+        "approvals": [
+          "data_owner",
+          "finance_analytics_owner"
+        ]
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B110": {
+    "value": {
+      "evolution_contract": {
+        "id": "EVO-TOOL-93-v2",
+        "baseline": "harness-42",
+        "mutable_surface": "tool_catalog_presentation",
+        "frozen": [
+          "model",
+          "task_suite",
+          "sandbox_image",
+          "policy_root",
+          "evaluator",
+          "sealed_test"
+        ],
+        "candidates": [
+          "grouped_dynamic_discovery",
+          "concise_descriptions",
+          "task_scoped_allowlist"
+        ],
+        "primary_metric": "verified_task_success",
+        "diagnostics": [
+          "wrong_tool_rate",
+          "catalog_lookup_activation",
+          "tokens",
+          "latency"
+        ],
+        "hard_gates": [
+          "security_non_regression",
+          "critical_slice_non_regression"
+        ],
+        "release": "shadow_then_low_risk_canary"
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B112": {
+    "value": {
+      "evidence_package": "EP-EVO-93-C7",
+      "parent": "harness-42",
+      "candidate": "grouped-dynamic-discovery-r4",
+      "mutation_hash": "sha256:09cd...",
+      "activation": {
+        "eligible_trials": 240,
+        "activated": 228
+      },
+      "evaluation": {
+        "report": "artifact:sha256:f810...",
+        "sealed_test_accessed_once": true,
+        "security_gate": "pass",
+        "critical_slices": "non_inferior"
+      },
+      "release": {
+        "mode": "canary",
+        "slice": "code-low-risk-5pct"
+      },
+      "rollback_bundle": "harness-42+model-12+memory-87",
+      "approver": "runtime-release-owner"
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B118": {
+    "value": {
+      "specification": {
+        "id": "SPEC-BILLING-214",
+        "owner": "subscription-product",
+        "snapshot": "git:8f2c9d1",
+        "invariant": [
+          "cancelled_subscription_never_enqueued",
+          "invoice_state_unchanged"
+        ],
+        "intentionally_open": [
+          "implementation_shape"
+        ]
+      },
+      "task": {
+        "task_id": "TASK-BILLING-214-01",
+        "contract_version": "v1",
+        "deliverables": [
+          "patch_against_git_8f2c9d1",
+          "evidence_package"
+        ],
+        "allowed_writes": [
+          "src/reminders/**",
+          "tests/reminders/**"
+        ],
+        "forbidden_actions": [
+          "database_write",
+          "message_send",
+          "billing_state_change"
+        ],
+        "budget": {
+          "wall_minutes": 30,
+          "max_actions": 80
+        },
+        "commit_authority": "billing-code-owner"
+      }
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B119": {
+    "value": {
+      "acceptance": [
+        {
+          "id": "compile",
+          "command": "make typecheck",
+          "required": true
+        },
+        {
+          "id": "reminder_regression",
+          "command": "pytest tests/reminders",
+          "required": true
+        },
+        {
+          "id": "sealed_cancelled_slice",
+          "verifier": "reminder-contract-v4",
+          "expect": "enqueued_count == 0"
+        },
+        {
+          "id": "invoice_integrity",
+          "verifier": "table-hash-compare",
+          "expect": "before_hash == after_hash"
+        },
+        {
+          "id": "scope_guard",
+          "verifier": "changed-path-policy",
+          "expect": "changed_paths subset_of allowed_writes"
+        }
+      ]
+    },
+    "error": null,
+    "runtime_verified": false
+  },
+  "B120": {
+    "value": {
+      "amendment": "AM-CC2048-02",
+      "from": "CC-REPO-2048-v3",
+      "change": {
+        "allowed_writes_add": [
+          "src/compat/date_adapter.py"
+        ]
+      },
+      "reason": "existing API compatibility layer is authoritative",
+      "impact": "adds one production file; verification suite unchanged",
+      "required_authority": "code_owner"
+    },
+    "error": null,
+    "runtime_verified": false
+  }
+}

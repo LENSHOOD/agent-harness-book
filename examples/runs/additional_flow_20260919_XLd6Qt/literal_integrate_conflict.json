@@ -1,0 +1,20 @@
+{
+  "kind": "current source control flow with declared deterministic helpers",
+  "source": {
+    "file": "manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md",
+    "line": 258,
+    "sha256": "4e8946d22a268dd3ba9c541c744c3e2d183d9123dcf2b38bde7e4454c3097295"
+  },
+  "translation": "def integrate(parent, results):\n    reject_unverified_or_expired(results)\n    conflicts = detect_semantic_and_resource_conflicts(results)\n    if conflicts:\n        return RESOLUTION_REQUIRED(conflicts)\n    with managed_clean_workspace() as workspace:\n        candidate = merge_and_export_immutable(workspace, results)\n    return parent_completion_gate(candidate)  # 对合并版本重新验收\n",
+  "result": {
+    "status": "RESOLUTION_REQUIRED",
+    "detail": [
+      [
+        "overlap"
+      ]
+    ]
+  },
+  "events": [
+    "CHECK_INPUTS"
+  ]
+}

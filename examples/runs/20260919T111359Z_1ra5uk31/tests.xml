@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="61" time="2.027" timestamp="2026-09-19T19:13:59.753173+08:00" hostname="zhangxuhais-MacBook-Pro.local"><testcase classname="examples.tests.test_evolution" name="test_denominator_freeze_activation_final_test_and_slice_rollback" time="0.004" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[missing-DENOMINATOR_INTEGRITY]" time="0.000" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[duplicate-DENOMINATOR_INTEGRITY]" time="0.000" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[extra-DENOMINATOR_INTEGRITY]" time="0.000" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[wrong_id-DENOMINATOR_INTEGRITY]" time="0.000" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[slice-TRIAL_INTEGRITY]" time="0.000" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[denominator-DENOMINATOR_INTEGRITY]" time="0.000" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[evaluator-FROZEN_EVALUATOR_CHANGED]" time="0.000" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[beacon-NOT_ACTIVATED]" time="0.000" /><testcase classname="examples.tests.test_evolution" name="test_evolution_negative_controls[activation-NOT_ACTIVATED]" time="0.000" /><testcase classname="examples.tests.test_git" name="test_real_git_seal_clean_apply_and_negative_candidates" time="1.461" /><testcase classname="examples.tests.test_git" name="test_historical_hardcode_is_not_a_general_fix" time="0.000" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_run_turn_literal_control_flow[ok]" time="0.012" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_run_turn_literal_control_flow[unknown]" time="0.012" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_run_turn_literal_control_flow[exception]" time="0.014" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_appendix_loop_returns_before_observation_after_approval" time="0.012" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_recover_terminal_cancelled_does_not_resume" time="0.007" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_commit_effect_literal_control_flow[INTENT_RECORDED-absent-False]" time="0.009"><failure message="NameError: name 'trusted_tenant_for_attempt' is not defined">status = 'INTENT_RECORDED', lookup = 'absent', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), &lt;function evidence.&lt;locals&gt;.save at 0x1074dd8a0&gt;)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+&gt;       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+&gt;   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+&lt;current-manuscript-commit_effect_safely&gt;:2: NameError</failure></testcase><testcase classname="examples.tests.test_manuscript_flow" name="test_current_commit_effect_literal_control_flow[INTENT_RECORDED-absent-True]" time="0.008"><failure message="NameError: name 'trusted_tenant_for_attempt' is not defined">status = 'INTENT_RECORDED', lookup = 'absent', lose_response = True
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), &lt;function evidence.&lt;locals&gt;.save at 0x1074ec4a0&gt;)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+&gt;       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+&gt;   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+&lt;current-manuscript-commit_effect_safely&gt;:2: NameError</failure></testcase><testcase classname="examples.tests.test_manuscript_flow" name="test_current_commit_effect_literal_control_flow[UNKNOWN_EFFECT-stale-False]" time="0.006"><failure message="NameError: name 'trusted_tenant_for_attempt' is not defined">status = 'UNKNOWN_EFFECT', lookup = 'stale', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), &lt;function evidence.&lt;locals&gt;.save at 0x1074ee2a0&gt;)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+&gt;       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+&gt;   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+&lt;current-manuscript-commit_effect_safely&gt;:2: NameError</failure></testcase><testcase classname="examples.tests.test_manuscript_flow" name="test_current_commit_effect_literal_control_flow[EXECUTING-stale-False]" time="0.007"><failure message="NameError: name 'trusted_tenant_for_attempt' is not defined">status = 'EXECUTING', lookup = 'stale', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), &lt;function evidence.&lt;locals&gt;.save at 0x1074ed440&gt;)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+&gt;       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+&gt;   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+&lt;current-manuscript-commit_effect_safely&gt;:2: NameError</failure></testcase><testcase classname="examples.tests.test_manuscript_flow" name="test_current_commit_effect_literal_control_flow[UNKNOWN_EFFECT-committed-False]" time="0.007"><failure message="NameError: name 'trusted_tenant_for_attempt' is not defined">status = 'UNKNOWN_EFFECT', lookup = 'committed', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), &lt;function evidence.&lt;locals&gt;.save at 0x107542340&gt;)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+&gt;       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+&gt;   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+&lt;current-manuscript-commit_effect_safely&gt;:2: NameError</failure></testcase><testcase classname="examples.tests.test_manuscript_flow" name="test_current_commit_effect_literal_control_flow[INTENT_RECORDED-unavailable-False]" time="0.006"><failure message="NameError: name 'trusted_tenant_for_attempt' is not defined">status = 'INTENT_RECORDED', lookup = 'unavailable', lose_response = False
+evidence = (PosixPath('/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/examples/runs/20260919T111359Z_1ra5uk31'), &lt;function evidence.&lt;locals&gt;.save at 0x1074ef100&gt;)
+
+    @pytest.mark.parametrize("status,lookup,lose_response", [
+        ("INTENT_RECORDED", "absent", False), ("INTENT_RECORDED", "absent", True),
+        ("UNKNOWN_EFFECT", "stale", False), ("EXECUTING", "stale", False),
+        ("UNKNOWN_EFFECT", "committed", False), ("INTENT_RECORDED", "unavailable", False),
+    ])
+    def test_current_commit_effect_literal_control_flow(status, lookup, lose_response, evidence):
+        source, metadata = function_source(fences(ROOT), "commit_effect_safely")
+        events = []
+        effect = NS(id="e1", is_final=False, status=status)
+        action = NS(action_id="a1", tenant="t", resource="target", idempotency_key="key")
+    
+        def persist(kind):
+            def fn(*args):
+                events.append(kind)
+                return NS(status=kind)
+            return fn
+    
+        def execute(*args):
+            events.append("EXECUTE")
+            if lose_response:
+                raise TimeoutError("receipt lost")
+            return NS(is_definitive=True)
+    
+        ns = {"scoped_key": lambda *a: "bound-key", "hash_normalized_operation": lambda *a: "bound-args",
+              "durable_store": NS(bind_intent_once=lambda *a: effect, load=lambda _: effect,
+                                  mark_executing_if_owned=lambda *a: events.append("MARK_EXECUTING")),
+              "coordinator": NS(try_claim_effect=lambda _: NS(fence=1), release=lambda _: events.append("RELEASE")),
+              "target_system": NS(lookup_or_unknown=lambda _: NS(is_unavailable=lookup == "unavailable",
+                                 is_committed_with=lambda h: lookup == "committed" and h == "bound-args"),
+                                  execute_idempotently=execute),
+              "Observation": NS, "persist_reconciled_outcome": persist("COMMITTED"),
+              "persist_unknown": persist("UNKNOWN_EFFECT"), "persist_final_outcome": persist("COMMITTED"),
+              "persist_denied_outcome": persist("DENIED"), "still_authorized_and_active": lambda *a: True,
+              "ExecutionError": TimeoutError, "diagnostic": str}
+&gt;       result = bounded_call(compile_function(source, "commit_effect_safely", ns), action, {})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/tests/test_manuscript_flow.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+examples/src/manuscript.py:103: in bounded_call
+    return function(*args)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+action = namespace(action_id='a1', tenant='t', resource='target', idempotency_key='key')
+constraints = {}
+
+&gt;   ???
+E   NameError: name 'trusted_tenant_for_attempt' is not defined
+
+&lt;current-manuscript-commit_effect_safely&gt;:2: NameError</failure></testcase><testcase classname="examples.tests.test_manuscript_flow" name="test_current_completion_literal_control_flow[DENY-True-COMMITTED-True-BLOCKED]" time="0.007" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_completion_literal_control_flow[UNRECOGNIZED-True-COMMITTED-True-BLOCKED]" time="0.007" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_completion_literal_control_flow[REQUIRE_APPROVAL-True-COMMITTED-True-AWAITING_APPROVAL]" time="0.007" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_completion_literal_control_flow[ALLOW-False-COMMITTED-True-VERIFIED_COMPLETE]" time="0.006" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_completion_literal_control_flow[ALLOW-True-UNKNOWN_EFFECT-True-RECONCILING]" time="0.007" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_completion_literal_control_flow[ALLOW-True-PENDING-True-RECONCILING]" time="0.007" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_completion_literal_control_flow[ALLOW-True-COMMITTED-False-COMMITTED_BUT_UNVERIFIED]" time="0.007" /><testcase classname="examples.tests.test_manuscript_flow" name="test_current_completion_literal_control_flow[ALLOW-True-COMMITTED-True-VERIFIED_COMPLETE]" time="0.006" /><testcase classname="examples.tests.test_runtime" name="test_deny_never_commits" time="0.002" /><testcase classname="examples.tests.test_runtime" name="test_approval_pauses_persistently_and_stops_batch" time="0.004" /><testcase classname="examples.tests.test_runtime" name="test_approval_is_reauthorized_under_current_policy" time="0.003" /><testcase classname="examples.tests.test_runtime" name="test_approval_requires_the_exact_argument_binding" time="0.002" /><testcase classname="examples.tests.test_runtime" name="test_runtime_key_and_action_identity_are_bound[changed0]" time="0.003" /><testcase classname="examples.tests.test_runtime" name="test_runtime_key_and_action_identity_are_bound[changed1]" time="0.004" /><testcase classname="examples.tests.test_runtime" name="test_runtime_key_and_action_identity_are_bound[changed2]" time="0.003" /><testcase classname="examples.tests.test_runtime" name="test_runtime_key_and_action_identity_are_bound[changed3]" time="0.004" /><testcase classname="examples.tests.test_runtime" name="test_runtime_key_and_action_identity_are_bound[changed4]" time="0.003" /><testcase classname="examples.tests.test_runtime" name="test_target_owns_atomic_uniqueness_even_with_two_control_planes" time="0.006" /><testcase classname="examples.tests.test_runtime" name="test_receipt_loss_records_unknown_then_authoritative_reconciliation" time="0.006" /><testcase classname="examples.tests.test_runtime" name="test_stale_or_missing_reconciliation_evidence_never_replays[stale]" time="0.004" /><testcase classname="examples.tests.test_runtime" name="test_stale_or_missing_reconciliation_evidence_never_replays[none]" time="0.005" /><testcase classname="examples.tests.test_runtime" name="test_stale_or_missing_reconciliation_evidence_never_replays[unavailable]" time="0.004" /><testcase classname="examples.tests.test_runtime" name="test_absence_after_crash_does_not_automatically_replay" time="0.004" /><testcase classname="examples.tests.test_runtime" name="test_concurrent_requests_execute_once_and_reserve_budget_once" time="0.110" /><testcase classname="examples.tests.test_runtime" name="test_cancel_is_terminal_after_restart_and_approval[False]" time="0.003" /><testcase classname="examples.tests.test_runtime" name="test_cancel_is_terminal_after_restart_and_approval[True]" time="0.005" /><testcase classname="examples.tests.test_runtime" name="test_cancel_in_batch_stops_remaining_work" time="0.006" /><testcase classname="examples.tests.test_runtime" name="test_unknown_effect_cancellation_stays_cancelling_until_reconciled" time="0.007" /><testcase classname="examples.tests.test_runtime" name="test_committed_is_not_business_complete" time="0.004" /><testcase classname="examples.tests.test_runtime" name="test_parallel_actions_cannot_overspend_budget" time="0.100" /><testcase classname="examples.tests.test_runtime" name="test_invalid_budget_cost_cannot_mint_capacity[-1]" time="0.003" /><testcase classname="examples.tests.test_runtime" name="test_invalid_budget_cost_cannot_mint_capacity[0]" time="0.002" /><testcase classname="examples.tests.test_runtime" name="test_invalid_budget_cost_cannot_mint_capacity[1.5]" time="0.002" /><testcase classname="examples.tests.test_runtime" name="test_invalid_budget_cost_cannot_mint_capacity[True]" time="0.001" /><testcase classname="examples.tests.test_sql" name="test_snapshot_dedupe_null_internal_reconciliation_and_suppression" time="0.004" /><testcase classname="examples.tests.test_sql" name="test_reject_snapshot_drift_and_false_public_total" time="0.002" /><testcase classname="examples.tests.test_sql" name="test_conflicting_deduplication_versions_are_not_arbitrarily_selected" time="0.001" /><testcase classname="examples.tests.test_sql" name="test_later_snapshot_has_explicit_different_total" time="0.003" /></testsuite></testsuites>

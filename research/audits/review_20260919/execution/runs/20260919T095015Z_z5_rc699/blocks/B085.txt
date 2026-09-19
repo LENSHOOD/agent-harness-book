@@ -1,0 +1,3 @@
+IDE state → context index → model-specific tool view
+         → local or cloud execution → diff/terminal feedback
+         → online signal + offline eval → harness release

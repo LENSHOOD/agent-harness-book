@@ -1,0 +1,8 @@
+{
+  "amendment": "AM-CC2048-02",
+  "from": "CC-REPO-2048-v3",
+  "change": {"allowed_writes_add": ["src/compat/date_adapter.py"]},
+  "reason": "existing API compatibility layer is authoritative",
+  "impact": "adds one production file; verification suite unchanged",
+  "required_authority": "code_owner"
+}

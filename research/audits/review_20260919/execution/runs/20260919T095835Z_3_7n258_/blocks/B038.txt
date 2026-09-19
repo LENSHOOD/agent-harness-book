@@ -1,0 +1,5 @@
+Working Context   当前模型请求实际看见的内容
+Conversation Log  用户、模型、工具交互的原始历史
+Canonical State   任务、约束、执行与副作用的权威状态
+Long-term Memory  跨会话复用的事实、偏好和经验
+Skills/Artifacts  可执行程序、流程、模板和文档资产

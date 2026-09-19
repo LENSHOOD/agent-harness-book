@@ -1,0 +1,1002 @@
+[
+  {
+    "name": "Task_empty_check_string_rejected",
+    "sources": [
+      "B006"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          ""
+        ],
+        "commit_authority": "human"
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "Task_unknown_budget_field_rejected",
+    "sources": [
+      "B006"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "Task",
+      "instance": {
+        "task_id": "T1",
+        "tenant": "local",
+        "contract_version": "v1",
+        "risk": "R2",
+        "deliverables": [
+          "patch"
+        ],
+        "checks": [
+          "hidden_dst"
+        ],
+        "commit_authority": "human",
+        "budget": {
+          "wall_minutes": 30
+        }
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "Definitions_root_rejects_invalid_0",
+    "sources": [
+      "B007"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "DefinitionsRoot",
+      "instance": {},
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "Definitions_root_rejects_invalid_1",
+    "sources": [
+      "B007"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "DefinitionsRoot",
+      "instance": null,
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "Definitions_root_rejects_invalid_2",
+    "sources": [
+      "B007"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "DefinitionsRoot",
+      "instance": "not an Action",
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "Definitions_root_rejects_invalid_3",
+    "sources": [
+      "B007"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "DefinitionsRoot",
+      "instance": 123,
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "Irreversible_requires_idempotency_key",
+    "sources": [
+      "B007"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "Action",
+      "instance": {
+        "action_id": "a1",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE"
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "Action_empty_id_rejected",
+    "sources": [
+      "B007"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "Action",
+      "instance": {
+        "action_id": "",
+        "attempt_id": "attempt1",
+        "actor": "stub",
+        "type": "send",
+        "resource": "local-simulator",
+        "side_effect_class": "IRREVERSIBLE",
+        "idempotency_key": "k1"
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "Constrained_allow_requires_constraints",
+    "sources": [
+      "B007"
+    ],
+    "model": "schema_only",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "schema": "PolicyDecision",
+      "instance": {
+        "action_id": "a1",
+        "decision": "CONSTRAINED_ALLOW",
+        "policy_version": "v1"
+      },
+      "accepted": true,
+      "should_accept_for_probe": false,
+      "validation_errors": []
+    }
+  },
+  {
+    "name": "bash_original_directly_runnable",
+    "sources": [
+      "B104"
+    ],
+    "model": "original",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "source_has_tests_time": false,
+      "source_has_src_time": false,
+      "fixture_has_tests_time": false,
+      "fixture_has_src_time": false,
+      "required_revision_exists": false,
+      "command": {
+        "name": "bash_raw_original_environment",
+        "argv": [
+          "/bin/bash",
+          "-x"
+        ],
+        "cwd": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T095015Z_z5_rc699/original_bash_workspace",
+        "exit_code": 127,
+        "stdout": "",
+        "stderr": "+ git diff --binary 8f31b6e\nfatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n+ git diff --name-only 8f31b6e\n+ sort\nfatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n+ pytest -q tests/time\n/bin/bash: line 3: pytest: command not found\n",
+        "stdout_file": "commands/009_bash_raw_original_environment.stdout.log",
+        "stderr_file": "commands/009_bash_raw_original_environment.stderr.log"
+      }
+    }
+  },
+  {
+    "name": "bash_with_pytest_source_tests_exist",
+    "sources": [
+      "B104"
+    ],
+    "model": "original_with_audit_dependency",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "name": "bash_raw_with_real_pytest_only",
+      "argv": [
+        "/bin/bash",
+        "-x"
+      ],
+      "cwd": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T095015Z_z5_rc699/original_bash_workspace",
+      "exit_code": 4,
+      "stdout": "\nno tests ran in 0.00s\n",
+      "stderr": "+ git diff --binary 8f31b6e\nfatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n+ git diff --name-only 8f31b6e\n+ sort\nfatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n+ pytest -q tests/time\nERROR: file or directory not found: tests/time\n\n",
+      "stdout_file": "commands/010_bash_raw_with_real_pytest_only.stdout.log",
+      "stderr_file": "commands/010_bash_raw_with_real_pytest_only.stderr.log"
+    }
+  },
+  {
+    "name": "bash_pipeline_propagates_git_failure",
+    "sources": [
+      "B104"
+    ],
+    "model": "original",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "name": "bash_original_line_2",
+      "argv": [
+        "/bin/bash",
+        "-c",
+        "git diff --name-only 8f31b6e | sort > changed-files.txt"
+      ],
+      "cwd": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T095015Z_z5_rc699/original_bash_workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "fatal: ambiguous argument '8f31b6e': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n",
+      "stdout_file": "commands/012_bash_original_line_2.stdout.log",
+      "stderr_file": "commands/012_bash_original_line_2.stderr.log"
+    }
+  },
+  {
+    "name": "SQL_raw_SQLite",
+    "sources": [
+      "B107"
+    ],
+    "model": "original",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "exception": "OperationalError",
+      "message": "near \"SYSTEM_TIME\": syntax error",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/auditlib.py\", line 34, in attempt\n    value = fn()\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/sql_case.py\", line 64, in <lambda>\n    _, raw_error = a.attempt(\"SQL_raw_SQLite\", lambda: query(block[\"raw\"]), sources=source,\n                                                       ~~~~~^^^^^^^^^^^^^^\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/sql_case.py\", line 61, in query\n    return [dict(row) for row in db.execute(sql)]\n                                 ~~~~~~~~~~^^^^^\nsqlite3.OperationalError: near \"SYSTEM_TIME\": syntax error\n"
+    }
+  },
+  {
+    "name": "SQL_suppressed_groups_reconcile_to_finance_without_bridge",
+    "sources": [
+      "B107"
+    ],
+    "model": "dialect_adapter",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "published": 4140,
+      "all_groups": 5090,
+      "suppressed": 950,
+      "assumption": "Finance total contains all groups. A suppression bridge or pre-suppression reconciliation is needed."
+    }
+  },
+  {
+    "name": "SQL_DUPLICATE_money_not_doubled",
+    "sources": [
+      "B107"
+    ],
+    "model": "dialect_adapter",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": [
+      {
+        "event_id": "jul-1",
+        "ingest_id": 2,
+        "recognized_revenue_cny": 100,
+        "refunds_cny": 10,
+        "account_id": "j1",
+        "net": 90
+      },
+      {
+        "event_id": "jul-20",
+        "ingest_id": 59,
+        "recognized_revenue_cny": 100,
+        "refunds_cny": null,
+        "account_id": "j20",
+        "net": null
+      },
+      {
+        "event_id": "jul-2",
+        "ingest_id": 80,
+        "recognized_revenue_cny": 100,
+        "refunds_cny": 20,
+        "account_id": "j2",
+        "net": 80
+      },
+      {
+        "event_id": "jul-1",
+        "ingest_id": 82,
+        "recognized_revenue_cny": 100,
+        "refunds_cny": 10,
+        "account_id": "j1",
+        "net": 90
+      },
+      {
+        "event_id": "null-account",
+        "ingest_id": 83,
+        "recognized_revenue_cny": 50,
+        "refunds_cny": 0,
+        "account_id": null,
+        "net": 50
+      },
+      {
+        "event_id": "null-revenue",
+        "ingest_id": 84,
+        "recognized_revenue_cny": null,
+        "refunds_cny": 0,
+        "account_id": "unknown-revenue",
+        "net": null
+      }
+    ]
+  },
+  {
+    "name": "SQL_NULL_refund_preserves_100_revenue",
+    "sources": [
+      "B107"
+    ],
+    "model": "dialect_adapter",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "assumption": "This probe interprets NULL refund as no refund; original contract does not specify NULL policy.",
+      "rows": [
+        {
+          "event_id": "jul-1",
+          "ingest_id": 2,
+          "recognized_revenue_cny": 100,
+          "refunds_cny": 10,
+          "account_id": "j1",
+          "net": 90
+        },
+        {
+          "event_id": "jul-20",
+          "ingest_id": 59,
+          "recognized_revenue_cny": 100,
+          "refunds_cny": null,
+          "account_id": "j20",
+          "net": null
+        },
+        {
+          "event_id": "jul-2",
+          "ingest_id": 80,
+          "recognized_revenue_cny": 100,
+          "refunds_cny": 20,
+          "account_id": "j2",
+          "net": 80
+        },
+        {
+          "event_id": "jul-1",
+          "ingest_id": 82,
+          "recognized_revenue_cny": 100,
+          "refunds_cny": 10,
+          "account_id": "j1",
+          "net": 90
+        },
+        {
+          "event_id": "null-account",
+          "ingest_id": 83,
+          "recognized_revenue_cny": 50,
+          "refunds_cny": 0,
+          "account_id": null,
+          "net": 50
+        },
+        {
+          "event_id": "null-revenue",
+          "ingest_id": 84,
+          "recognized_revenue_cny": null,
+          "refunds_cny": 0,
+          "account_id": "unknown-revenue",
+          "net": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "SQL_NULL_account_excludes_money",
+    "sources": [
+      "B107"
+    ],
+    "model": "dialect_adapter",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": [
+      {
+        "event_id": "jul-1",
+        "ingest_id": 2,
+        "recognized_revenue_cny": 100,
+        "refunds_cny": 10,
+        "account_id": "j1",
+        "net": 90
+      },
+      {
+        "event_id": "jul-20",
+        "ingest_id": 59,
+        "recognized_revenue_cny": 100,
+        "refunds_cny": null,
+        "account_id": "j20",
+        "net": null
+      },
+      {
+        "event_id": "jul-2",
+        "ingest_id": 80,
+        "recognized_revenue_cny": 100,
+        "refunds_cny": 20,
+        "account_id": "j2",
+        "net": 80
+      },
+      {
+        "event_id": "jul-1",
+        "ingest_id": 82,
+        "recognized_revenue_cny": 100,
+        "refunds_cny": 10,
+        "account_id": "j1",
+        "net": 90
+      },
+      {
+        "event_id": "null-account",
+        "ingest_id": 83,
+        "recognized_revenue_cny": 50,
+        "refunds_cny": 0,
+        "account_id": null,
+        "net": 50
+      },
+      {
+        "event_id": "null-revenue",
+        "ingest_id": 84,
+        "recognized_revenue_cny": null,
+        "refunds_cny": 0,
+        "account_id": "unknown-revenue",
+        "net": null
+      }
+    ]
+  },
+  {
+    "name": "SQL_snapshot_half_open_version_boundary",
+    "sources": [
+      "B107"
+    ],
+    "model": "dialect_adapter",
+    "status": "FAIL",
+    "severity": null,
+    "expected_reproduction": false,
+    "expected_failure": false,
+    "details": {
+      "snapshots": {
+        "2026-08-03T01:59:59Z": [
+          {
+            "month": "2026-06-01",
+            "province": "GD",
+            "plan": "pro",
+            "net_revenue_cny": 1800,
+            "accounts": 20
+          },
+          {
+            "month": "2026-07-01",
+            "province": "GD",
+            "plan": "pro",
+            "net_revenue_cny": 1850,
+            "accounts": 21
+          },
+          {
+            "month": "2026-07-01",
+            "province": "SH",
+            "plan": "basic",
+            "net_revenue_cny": 500,
+            "accounts": 20
+          }
+        ],
+        "2026-08-03T02:00:00Z": [
+          {
+            "month": "2026-06-01",
+            "province": "GD",
+            "plan": "pro",
+            "net_revenue_cny": 1800,
+            "accounts": 20
+          },
+          {
+            "month": "2026-07-01",
+            "province": "GD",
+            "plan": "pro",
+            "net_revenue_cny": 1840,
+            "accounts": 21
+          },
+          {
+            "month": "2026-07-01",
+            "province": "SH",
+            "plan": "basic",
+            "net_revenue_cny": 500,
+            "accounts": 20
+          }
+        ],
+        "2026-08-03T03:00:00Z": [
+          {
+            "month": "2026-06-01",
+            "province": "GD",
+            "plan": "pro",
+            "net_revenue_cny": 1800,
+            "accounts": 20
+          },
+          {
+            "month": "2026-07-01",
+            "province": "GD",
+            "plan": "pro",
+            "net_revenue_cny": 1700,
+            "accounts": 21
+          },
+          {
+            "month": "2026-07-01",
+            "province": "SH",
+            "plan": "basic",
+            "net_revenue_cny": 500,
+            "accounts": 20
+          }
+        ]
+      },
+      "expected_GD_July": [
+        1850,
+        1840,
+        1790
+      ]
+    }
+  },
+  {
+    "name": "SQL_k_gate_guarantees_numeric_revenue",
+    "sources": [
+      "B107"
+    ],
+    "model": "dialect_adapter",
+    "status": "FAIL",
+    "severity": "P2",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": [
+      20,
+      null
+    ]
+  },
+  {
+    "name": "A_approval_first_observation_defined",
+    "sources": [
+      "B002"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "exception": "UnboundLocalError",
+      "message": "cannot access local variable 'observation' where it is not associated with a value",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/auditlib.py\", line 34, in attempt\n    value = fn()\n  File \"manuscript/appendices/A_core_contracts_and_pseudocode.md:52[translation]\", line 20, in faithful_loop\nUnboundLocalError: cannot access local variable 'observation' where it is not associated with a value\n"
+    }
+  },
+  {
+    "name": "A_approval_does_not_reuse_prior_observation",
+    "sources": [
+      "B002"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "events": [
+        [
+          "namespace(id='action-0', kind='ALLOW')",
+          "Decision(kind='ALLOW', reason='policy', constraints=(), capability=None)"
+        ],
+        [
+          {
+            "action_id": "action-0",
+            "status": "OK"
+          }
+        ],
+        [
+          "namespace(id='action-1', kind='REQUIRE_APPROVAL')",
+          "Decision(kind='REQUIRE_APPROVAL', reason='policy', constraints=(), capability=None)"
+        ],
+        [
+          {
+            "action_id": "action-0",
+            "status": "OK"
+          }
+        ]
+      ],
+      "effects": [
+        "action-0"
+      ],
+      "suspended": [
+        "checkpoint"
+      ]
+    }
+  },
+  {
+    "name": "CH6_DENY",
+    "sources": [
+      "B037"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "effects": [
+        "0"
+      ],
+      "trace": [
+        "check_cancel"
+      ],
+      "cancelled": false
+    }
+  },
+  {
+    "name": "CH6_approval_batch",
+    "sources": [
+      "B037"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "effects": [
+        "1"
+      ],
+      "trace": [
+        "check_cancel",
+        "suspended_helper_returned"
+      ],
+      "cancelled": false
+    }
+  },
+  {
+    "name": "CH6_cancel_in_batch",
+    "sources": [
+      "B037"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "effects": [
+        "0",
+        "1"
+      ],
+      "trace": [
+        "check_cancel"
+      ],
+      "cancelled": true
+    }
+  },
+  {
+    "name": "CH10_DENY_zero_commit",
+    "sources": [
+      "B069"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "result": "VERIFIED_COMPLETE",
+      "effects": [
+        "candidate"
+      ],
+      "assumption": "All checks pass; commit helper does not itself enforce capability."
+    }
+  },
+  {
+    "name": "A_lost_response_exception_normalized",
+    "sources": [
+      "B003"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "exception": "TimeoutError",
+      "message": "target committed; response lost before durable outcome",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/auditlib.py\", line 34, in attempt\n    value = fn()\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/safety_models.py\", line 288, in <lambda>\n    a.attempt(\"A_lost_response_exception_normalized\", lambda: fn(action, ()), sources=[block_e],\n                                                              ~~^^^^^^^^^^^^\n  File \"manuscript/appendices/A_core_contracts_and_pseudocode.md:91[translation]\", line 18, in commit_effect_safely\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/safety_models.py\", line 131, in execute\n    raise TimeoutError(\"target committed; response lost before durable outcome\")\nTimeoutError: target committed; response lost before durable outcome\n"
+    }
+  },
+  {
+    "name": "A_lost_response_marks_unknown",
+    "sources": [
+      "B003"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "effect1": {
+        "status": "COMMITTED"
+      }
+    }
+  },
+  {
+    "name": "A_stale_lookup_setup_timeout",
+    "sources": [
+      "B003"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "exception": "TimeoutError",
+      "message": "target committed; response lost before durable outcome",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/auditlib.py\", line 34, in attempt\n    value = fn()\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/safety_models.py\", line 302, in <lambda>\n    a.attempt(\"A_stale_lookup_setup_timeout\", lambda: fn(action, ()), sources=[block_e],\n                                                      ~~^^^^^^^^^^^^\n  File \"manuscript/appendices/A_core_contracts_and_pseudocode.md:91[translation]\", line 18, in commit_effect_safely\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/safety_models.py\", line 131, in execute\n    raise TimeoutError(\"target committed; response lost before durable outcome\")\nTimeoutError: target committed; response lost before durable outcome\n"
+    }
+  },
+  {
+    "name": "A_retry_with_stale_lookup_exactly_once",
+    "sources": [
+      "B003"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "calls": [
+        [
+          "key1",
+          {
+            "amount": 10
+          }
+        ],
+        [
+          "key1",
+          {
+            "amount": 10
+          }
+        ]
+      ],
+      "ledger": {
+        "effect1": {
+          "status": "COMMITTED"
+        }
+      }
+    }
+  },
+  {
+    "name": "A_concurrent_lookup_then_execute_exactly_once",
+    "sources": [
+      "B003"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "calls": [
+        [
+          "key1",
+          {
+            "amount": 10
+          }
+        ],
+        [
+          "key1",
+          {
+            "amount": 10
+          }
+        ]
+      ],
+      "ledger": {
+        "effect1": {
+          "status": "COMMITTED"
+        }
+      }
+    }
+  },
+  {
+    "name": "A_recover_terminal_cancelled_does_not_resume",
+    "sources": [
+      "B004"
+    ],
+    "model": "faithful_simulation",
+    "status": "FAIL",
+    "severity": "P1",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "trace": [
+        "cancel_requested",
+        "cancel_children",
+        "terminate_process_tree",
+        "revoke",
+        "reconcile",
+        "mark_cancelled_when_quiescent",
+        "single_owner",
+        "resume"
+      ],
+      "status": "RUNNING",
+      "assumption": "Caller permits recover(cancelled); resume helper lacks terminal guard."
+    }
+  },
+  {
+    "name": "DST_baseline_visible_contract",
+    "sources": [
+      "B102",
+      "B103"
+    ],
+    "model": "audit_created_fixture",
+    "status": "FAIL",
+    "severity": "INJECTED",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "name": "dst_baseline_visible",
+      "argv": [
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/time/test_dst.py"
+      ],
+      "cwd": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T095015Z_z5_rc699/dst_agent_repo",
+      "exit_code": 1,
+      "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n____________________________ test_fall_back_window _____________________________\n\n    def test_fall_back_window():\n        start, end = window_utc(date(2026, 11, 1), \"America/New_York\")\n>       assert (end - start).total_seconds() == 25 * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x109248b70>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x109248b70> = (datetime.datetime(2026, 11, 2, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 11, 1, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\ntests/time/test_dst.py:8: AssertionError\n__________________________ test_spring_forward_window __________________________\n\n    def test_spring_forward_window():\n        start, end = window_utc(date(2026, 3, 8), \"America/New_York\")\n>       assert (end - start).total_seconds() == 23 * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x109249530>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x109249530> = (datetime.datetime(2026, 3, 9, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 3, 8, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\ntests/time/test_dst.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED tests/time/test_dst.py::test_fall_back_window - assert 86400.0 == (25 ...\nFAILED tests/time/test_dst.py::test_spring_forward_window - assert 86400.0 ==...\n2 failed in 0.01s\n",
+      "stderr": "",
+      "stdout_file": "commands/018_dst_baseline_visible.stdout.log",
+      "stderr_file": "commands/018_dst_baseline_visible.stderr.log"
+    }
+  },
+  {
+    "name": "DST_overfit_hidden",
+    "sources": [
+      "B102",
+      "B103"
+    ],
+    "model": "deterministic_stub",
+    "status": "FAIL",
+    "severity": "INJECTED",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "name": "dst_overfit_hidden",
+      "argv": [
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/fixtures/hidden/test_contract.py"
+      ],
+      "cwd": "/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/runs/20260919T095015Z_z5_rc699/dst_verifier_overfit",
+      "exit_code": 1,
+      "stdout": "FFFFFFFFFFFFFFFF.                                                        [100%]\n=================================== FAILURES ===================================\n_______________ test_held_out_duration[America/New_York-day0-23] _______________\n\nzone = 'America/New_York', day = datetime.date(2025, 3, 9), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_held_out_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x106fd16e0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x106fd16e0> = (datetime.datetime(2025, 3, 10, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2025, 3, 9, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n../../../fixtures/hidden/test_contract.py:25: AssertionError\n_______________ test_held_out_duration[America/New_York-day1-25] _______________\n\nzone = 'America/New_York', day = datetime.date(2025, 11, 2), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_held_out_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x106fd1620>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x106fd1620> = (datetime.datetime(2025, 11, 3, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2025, 11, 2, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n../../../fixtures/hidden/test_contract.py:25: AssertionError\n_______________ test_held_out_duration[America/New_York-day2-23] _______________\n\nzone = 'America/New_York', day = datetime.date(2027, 3, 14), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_held_out_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x106fd1710>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x106fd1710> = (datetime.datetime(2027, 3, 15, 5, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2027, 3, 14, 5, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n../../../fixtures/hidden/test_contract.py:25: AssertionError\n_______________ test_held_out_duration[America/New_York-day3-25] _______________\n\nzone = 'America/New_York', day = datetime.date(2027, 11, 7), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_held_out_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x106fd1bf0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x106fd1bf0> = (datetime.datetime(2027, 11, 8, 4, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2027, 11, 7, 4, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n../../../fixtures/hidden/test_contract.py:25: AssertionError\n________________ test_held_out_duration[Europe/Berlin-day4-23] _________________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 3, 29), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_held_out_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x106fd2ac0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x106fd2ac0> = (datetime.datetime(2026, 3, 29, 23, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 3, 28, 23, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n../../../fixtures/hidden/test_contract.py:25: AssertionError\n________________ test_held_out_duration[Europe/Berlin-day5-25] _________________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 10, 25), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_held_out_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (25 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x106fccba0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x106fccba0> = (datetime.datetime(2026, 10, 25, 22, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 10, 24, 22, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n../../../fixtures/hidden/test_contract.py:25: AssertionError\n____________ test_held_out_duration[Australia/Lord_Howe-day6-24.5] _____________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 4, 5), hours = 24.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_held_out_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (24.5 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x106fd23d0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x106fd23d0> = (datetime.datetime(2026, 4, 5, 13, 0, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 4, 4, 13, 0, tzinfo=datetime.timezone.utc)).total_seconds\n\n../../../fixtures/hidden/test_contract.py:25: AssertionError\n____________ test_held_out_duration[Australia/Lord_Howe-day7-23.5] _____________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 10, 4), hours = 23.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_held_out_duration(zone, day, hours):\n        start, end = window_utc(day, zone)\n>       assert (end - start).total_seconds() == hours * 3600\nE       assert 86400.0 == (23.5 * 3600)\nE        +  where 86400.0 = <built-in method total_seconds of datetime.timedelta object at 0x106fd29d0>()\nE        +    where <built-in method total_seconds of datetime.timedelta object at 0x106fd29d0> = (datetime.datetime(2026, 10, 4, 13, 30, tzinfo=datetime.timezone.utc) - datetime.datetime(2026, 10, 3, 13, 30, tzinfo=datetime.timezone.utc)).total_seconds\n\n../../../fixtures/hidden/test_contract.py:25: AssertionError\n__________ test_adjacent_windows_contiguous[America/New_York-day0-23] __________\n\nzone = 'America/New_York', day = datetime.date(2025, 3, 9), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_windows_contiguous(zone, day, hours):\n        start, end = window_utc(day, zone)\n        next_start, _ = window_utc(day + timedelta(days=1), zone)\n        _, previous_end = window_utc(day - timedelta(days=1), zone)\n        assert previous_end == start\n>       assert end == next_start\nE       assert datetime.datetime(2025, 3, 10, 5, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2025, 3, 10, 4, 0, tzinfo=datetime.timezone.utc)\n\n../../../fixtures/hidden/test_contract.py:34: AssertionError\n__________ test_adjacent_windows_contiguous[America/New_York-day1-25] __________\n\nzone = 'America/New_York', day = datetime.date(2025, 11, 2), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_windows_contiguous(zone, day, hours):\n        start, end = window_utc(day, zone)\n        next_start, _ = window_utc(day + timedelta(days=1), zone)\n        _, previous_end = window_utc(day - timedelta(days=1), zone)\n        assert previous_end == start\n>       assert end == next_start\nE       assert datetime.datetime(2025, 11, 3, 4, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2025, 11, 3, 5, 0, tzinfo=datetime.timezone.utc)\n\n../../../fixtures/hidden/test_contract.py:34: AssertionError\n__________ test_adjacent_windows_contiguous[America/New_York-day2-23] __________\n\nzone = 'America/New_York', day = datetime.date(2027, 3, 14), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_windows_contiguous(zone, day, hours):\n        start, end = window_utc(day, zone)\n        next_start, _ = window_utc(day + timedelta(days=1), zone)\n        _, previous_end = window_utc(day - timedelta(days=1), zone)\n        assert previous_end == start\n>       assert end == next_start\nE       assert datetime.datetime(2027, 3, 15, 5, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2027, 3, 15, 4, 0, tzinfo=datetime.timezone.utc)\n\n../../../fixtures/hidden/test_contract.py:34: AssertionError\n__________ test_adjacent_windows_contiguous[America/New_York-day3-25] __________\n\nzone = 'America/New_York', day = datetime.date(2027, 11, 7), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_windows_contiguous(zone, day, hours):\n        start, end = window_utc(day, zone)\n        next_start, _ = window_utc(day + timedelta(days=1), zone)\n        _, previous_end = window_utc(day - timedelta(days=1), zone)\n        assert previous_end == start\n>       assert end == next_start\nE       assert datetime.datetime(2027, 11, 8, 4, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2027, 11, 8, 5, 0, tzinfo=datetime.timezone.utc)\n\n../../../fixtures/hidden/test_contract.py:34: AssertionError\n___________ test_adjacent_windows_contiguous[Europe/Berlin-day4-23] ____________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 3, 29), hours = 23\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_windows_contiguous(zone, day, hours):\n        start, end = window_utc(day, zone)\n        next_start, _ = window_utc(day + timedelta(days=1), zone)\n        _, previous_end = window_utc(day - timedelta(days=1), zone)\n        assert previous_end == start\n>       assert end == next_start\nE       assert datetime.datetime(2026, 3, 29, 23, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 3, 29, 22, 0, tzinfo=datetime.timezone.utc)\n\n../../../fixtures/hidden/test_contract.py:34: AssertionError\n___________ test_adjacent_windows_contiguous[Europe/Berlin-day5-25] ____________\n\nzone = 'Europe/Berlin', day = datetime.date(2026, 10, 25), hours = 25\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_windows_contiguous(zone, day, hours):\n        start, end = window_utc(day, zone)\n        next_start, _ = window_utc(day + timedelta(days=1), zone)\n        _, previous_end = window_utc(day - timedelta(days=1), zone)\n        assert previous_end == start\n>       assert end == next_start\nE       assert datetime.datetime(2026, 10, 25, 22, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 25, 23, 0, tzinfo=datetime.timezone.utc)\n\n../../../fixtures/hidden/test_contract.py:34: AssertionError\n_______ test_adjacent_windows_contiguous[Australia/Lord_Howe-day6-24.5] ________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 4, 5), hours = 24.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_windows_contiguous(zone, day, hours):\n        start, end = window_utc(day, zone)\n        next_start, _ = window_utc(day + timedelta(days=1), zone)\n        _, previous_end = window_utc(day - timedelta(days=1), zone)\n        assert previous_end == start\n>       assert end == next_start\nE       assert datetime.datetime(2026, 4, 5, 13, 0, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 4, 5, 13, 30, tzinfo=datetime.timezone.utc)\n\n../../../fixtures/hidden/test_contract.py:34: AssertionError\n_______ test_adjacent_windows_contiguous[Australia/Lord_Howe-day7-23.5] ________\n\nzone = 'Australia/Lord_Howe', day = datetime.date(2026, 10, 4), hours = 23.5\n\n    @pytest.mark.parametrize(\"zone,day,hours\", CASES)\n    def test_adjacent_windows_contiguous(zone, day, hours):\n        start, end = window_utc(day, zone)\n        next_start, _ = window_utc(day + timedelta(days=1), zone)\n        _, previous_end = window_utc(day - timedelta(days=1), zone)\n        assert previous_end == start\n>       assert end == next_start\nE       assert datetime.datetime(2026, 10, 4, 13, 30, tzinfo=datetime.timezone.utc) == datetime.datetime(2026, 10, 4, 13, 0, tzinfo=datetime.timezone.utc)\n\n../../../fixtures/hidden/test_contract.py:34: AssertionError\n=========================== short test summary info ============================\nFAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[America/New_York-day0-23]\nFAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[America/New_York-day1-25]\nFAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[America/New_York-day2-23]\nFAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[America/New_York-day3-25]\nFAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[Europe/Berlin-day4-23]\nFAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[Europe/Berlin-day5-25]\nFAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[Australia/Lord_Howe-day6-24.5]\nFAILED ../../../fixtures/hidden/test_contract.py::test_held_out_duration[Australia/Lord_Howe-day7-23.5]\nFAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[America/New_York-day0-23]\nFAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[America/New_York-day1-25]\nFAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[America/New_York-day2-23]\nFAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[America/New_York-day3-25]\nFAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[Europe/Berlin-day4-23]\nFAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[Europe/Berlin-day5-25]\nFAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[Australia/Lord_Howe-day6-24.5]\nFAILED ../../../fixtures/hidden/test_contract.py::test_adjacent_windows_contiguous[Australia/Lord_Howe-day7-23.5]\n16 failed, 1 passed in 0.03s\n",
+      "stderr": "",
+      "stdout_file": "commands/027_dst_overfit_hidden.stdout.log",
+      "stderr_file": "commands/027_dst_overfit_hidden.stderr.log"
+    }
+  },
+  {
+    "name": "evolution_completed_only_ranking_truthful",
+    "sources": [
+      "B110",
+      "B111",
+      "B112"
+    ],
+    "model": "injected_bad_evaluator",
+    "status": "FAIL",
+    "severity": "INJECTED",
+    "expected_reproduction": true,
+    "expected_failure": true,
+    "details": {
+      "baseline": {
+        "registered": 30,
+        "observed": 30,
+        "successes": 24,
+        "timeouts_after_retry": 0,
+        "missing_ids": [],
+        "duplicate_ids": false,
+        "all_registered_success_rate": 0.8,
+        "completed_only_rate": 0.8,
+        "wilson95_descriptive_only": [
+          0.6269430358685175,
+          0.9049489282271013
+        ],
+        "activation": 0,
+        "critical_failures": 0,
+        "security_violations": 0,
+        "cost_per_success": 1.25
+      },
+      "cheat": {
+        "registered": 30,
+        "observed": 30,
+        "successes": 18,
+        "timeouts_after_retry": 10,
+        "missing_ids": [],
+        "duplicate_ids": false,
+        "all_registered_success_rate": 0.6,
+        "completed_only_rate": 0.9,
+        "wilson95_descriptive_only": [
+          0.42320360253322475,
+          0.7540937188319815
+        ],
+        "activation": 28,
+        "critical_failures": 0,
+        "security_violations": 0,
+        "cost_per_success": 2.2222222222222223
+      },
+      "naive_improvement": true,
+      "registered_improvement": false
+    }
+  }
+]

@@ -1,0 +1,9 @@
+Goal and acceptance criteria
+Confirmed constraints and approvals
+Observed facts with source pointers
+Workspace/environment changes
+Decisions and rationale
+Failed attempts and why
+Open questions and blockers
+Active plan and next action
+Pointers to raw history/artifacts

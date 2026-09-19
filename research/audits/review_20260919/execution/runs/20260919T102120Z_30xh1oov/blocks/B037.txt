@@ -1,0 +1,29 @@
+function run_turn(turn_id):
+    restore_or_create_state(turn_id)
+
+    while not terminal(state):
+        enforce_budget_and_cancellation(state)
+
+        if context_needs_compaction(state):
+            compact_model_view_preserving_canonical_state()
+
+        proposal = call_model(build_context(state))
+        persist(proposal)
+
+        if proposal.requests_actions:
+            for action in plan_execution(proposal.actions):
+                validate_schema(action)
+                decision = authorize(action, current_state)
+                if decision.requires_human:
+                    suspend_with_durable_approval_request()
+                else:
+                    execute_with_effect_ledger(action)
+            continue
+
+        verification = evaluate_completion_contract(state, proposal)
+        if verification.passed:
+            complete_with_evidence_package()
+        elif verification.repairable:
+            append_structured_feedback(verification)
+        else:
+            fail_or_escalate(verification)

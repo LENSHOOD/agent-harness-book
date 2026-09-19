@@ -1,0 +1,78 @@
+{
+  "groups": [
+    {
+      "month": "2026-06-01",
+      "province": "GD",
+      "plan": "pro",
+      "net": 1800,
+      "accounts": 20
+    },
+    {
+      "month": "2026-07-01",
+      "province": "BJ",
+      "plan": "basic",
+      "net": 950,
+      "accounts": 19
+    },
+    {
+      "month": "2026-07-01",
+      "province": "GD",
+      "plan": "pro",
+      "net": 1800,
+      "accounts": 20
+    },
+    {
+      "month": "2026-07-01",
+      "province": "SH",
+      "plan": "basic",
+      "net": 500,
+      "accounts": 20
+    }
+  ],
+  "total": 5050,
+  "finance_total": 5050,
+  "direct_total": 5050,
+  "disclosed_total": 4100,
+  "restricted_residual": 950,
+  "quarantined": [
+    {
+      "event_id": "null-account",
+      "month": "2026-07-01",
+      "province": "GD",
+      "plan": "pro",
+      "revenue": 50,
+      "refund": 0,
+      "account_id": null,
+      "valid_from": "2026-08-01T00:00:00Z",
+      "valid_to": null,
+      "region": "CN",
+      "reason": "NULL_ACCOUNT"
+    },
+    {
+      "event_id": "null-revenue",
+      "month": "2026-07-01",
+      "province": "GD",
+      "plan": "pro",
+      "revenue": null,
+      "refund": 0,
+      "account_id": "unknown-revenue",
+      "valid_from": "2026-08-01T00:00:00Z",
+      "valid_to": null,
+      "region": "CN",
+      "reason": "NULL_REVENUE"
+    },
+    {
+      "event_id": "not-month-start",
+      "month": "2026-07-31",
+      "province": "BOUNDARY",
+      "plan": "basic",
+      "revenue": 777,
+      "refund": 0,
+      "account_id": "not-month-start",
+      "valid_from": "2026-08-01T00:00:00Z",
+      "valid_to": null,
+      "region": "CN",
+      "reason": "NON_CANONICAL_MONTH"
+    }
+  ]
+}

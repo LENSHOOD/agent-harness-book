@@ -1,0 +1,8 @@
+model_release:
+  id: repo-agent-7b-r12
+  parent: repo-agent-7b-r11
+  data_snapshot: trajectories-2026w31-v4
+  harness_train: h42
+  compatible_harnesses: [h42, h43]
+  eval_bundle: enterprise-code-v9
+  rollback: repo-agent-7b-r11+h42

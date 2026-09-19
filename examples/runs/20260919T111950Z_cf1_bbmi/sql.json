@@ -1,0 +1,9 @@
+{
+  "kind": "synthetic SQLite reference; no BigQuery execution",
+  "fixture_rows": 88,
+  "snapshot": "2026-08-03T02:00:00Z",
+  "snapshot_sha256": "b67b67e7ce235b5b4bfb09f03230f481edb6fe506cb89acf806f9ed9b92014ff",
+  "dedupe": "exact duplicates only; conflicting versions reject",
+  "null_policy": "refund=0; unknown revenue/account quarantined",
+  "reconciliation": "full eligible scope before k=20 disclosure"
+}

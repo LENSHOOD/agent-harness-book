@@ -1,0 +1,9 @@
+{
+  "base": "harness-42",
+  "target": "tool_catalog.retrieval",
+  "pathology": "wrong_tool_when_catalog_gt_80",
+  "hypothesis": "static schemas overload selection",
+  "mutation": "server-grouped on-demand discovery",
+  "activation_beacon": "tool_catalog_lookup",
+  "rollback": "harness-42"
+}

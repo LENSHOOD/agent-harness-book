@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "clientInfo": {
+        "name": "vendor_protocol_audit",
+        "title": "Read-only protocol audit",
+        "version": "2026.09.19"
+      },
+      "capabilities": {
+        "experimentalApi": false
+      }
+    }
+  },
+  {
+    "method": "initialized"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "status": "failed",
+  "category": "invalid_argument",
+  "retryable": false,
+  "message": "line_end must be >= line_start",
+  "field_errors": [{"path": "line_end", "code": "range"}],
+  "suggested_fix": "Use line_end >= 42",
+  "effect_committed": false
+}

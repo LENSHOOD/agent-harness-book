@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/OpenHands/OpenHands/git/trees/0.62.0?recursive=1"
+  ],
+  "retrieved_at": "2026-09-19T09:51:34.290612+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "348056866eeccd42a5bdf505754ab3f41a1d50c0b03574f0d30128e6b9e743ee"
+}

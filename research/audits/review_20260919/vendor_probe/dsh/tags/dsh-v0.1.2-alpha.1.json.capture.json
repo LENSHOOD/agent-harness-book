@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/deepseek-ai/deepseek-harness/commits/dsh-v0.1.2-alpha.1"
+  ],
+  "retrieved_at": "2026-09-19T09:49:06.248196+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "0a8a3d08e1145ea8929bb05633792d1ec4e141d5cf3ec7ed1a6813b236347a4c"
+}

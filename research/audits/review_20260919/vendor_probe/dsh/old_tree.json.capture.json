@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/deepseek-ai/deepseek-harness/git/trees/cd5ef8148158c3a752a658978873241fdf8e2bbc?recursive=1"
+  ],
+  "retrieved_at": "2026-09-19T09:49:07.252939+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "06b53d213a7370c08373f6a294d7143367ec03bcb3096e960d7a9fb3f41b782d"
+}

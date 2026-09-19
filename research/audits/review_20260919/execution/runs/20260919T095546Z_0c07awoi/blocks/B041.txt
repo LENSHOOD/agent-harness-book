@@ -1,0 +1,4 @@
+[stable system + stable tools + stable project rules]
+[session history with append-only changes]
+[latest dynamic observations]
+[current user request]

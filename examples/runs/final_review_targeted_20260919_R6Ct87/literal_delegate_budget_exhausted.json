@@ -1,0 +1,66 @@
+{
+  "kind": "current source control flow with declared deterministic helpers",
+  "source": {
+    "file": "manuscript/chapters/11_multi_agent_delegation_and_collaboration_topologies.md",
+    "line": 258,
+    "sha256": "4e8946d22a268dd3ba9c541c744c3e2d183d9123dcf2b38bde7e4454c3097295",
+    "syntax_translations": [
+      [
+        "assert spec.objective is bounded",
+        "assert objective_is_bounded(spec.objective)"
+      ],
+      [
+        "assert spec.expected_output_schema exists",
+        "assert spec.expected_output_schema is not None"
+      ],
+      [
+        "assert spec.acceptance_checks not empty",
+        "assert spec.acceptance_checks"
+      ],
+      [
+        "except error:",
+        "except Exception as error:"
+      ]
+    ]
+  },
+  "translation": "def delegate(parent, spec):\n    assert objective_is_bounded(spec.objective)\n    assert spec.expected_output_schema is not None\n    assert spec.acceptance_checks\n    ttl_seconds = seconds_until(spec.deadline, trusted_clock.now())\n    if ttl_seconds <= 0 or parent.cancelled:\n        return NOT_STARTED\n    decision = policy.authorize_delegation(parent.identity, spec, ttl_seconds)\n    if decision.decision not in {ALLOW, CONSTRAINED_ALLOW}:\n        return NOT_STARTED(decision.decision)\n\n    resources = lifecycle.open_record(spec.subtask_id)\n    outcome = FAILED\n    try:\n        lease = resources.reserve(spec.budget, parent.allocatable_budget)\n        capability = resources.issue_bound_authorization(decision)\n        resources.enforce_constraints_or_fail(decision)\n        workspace = resources.create_isolated_workspace(spec.inputs)\n        context = build_context(spec.inputs, spec.context_policy)\n        child = resources.spawn(context, workspace, capability, lease)\n        result = child.await_or_cancel(spec.deadline, spec.cancellation_token)\n        artifact = validate_and_export(result, spec.expected_output_schema)\n        checks = verify_subtask(artifact, spec.acceptance_checks,\n                                budget=parent.verification_reserve)\n        outcome = SubagentResult(artifact, checks, resources.metered_usage)\n    except Exception as error:\n        outcome = FAILED_WITH_EVIDENCE(error, resources.event_refs)\n    finally:\n        cleanup = resources.close_or_quarantine()\n\n    if not cleanup.closed:\n        return RECONCILIATION_REQUIRED(outcome, cleanup.record_ref)\n    return outcome\n\n",
+  "result": {
+    "status": "FAILED_WITH_EVIDENCE",
+    "error": "BudgetExhausted",
+    "refs": [
+      "durable-lifecycle-record-fixture"
+    ]
+  },
+  "events": [
+    "AUTHORIZE:ALLOW",
+    "OPEN_RECORD",
+    "RESERVE",
+    "CLEANUP:REVOKE",
+    "CLEANUP:STOP_DESCENDANTS",
+    "CLEANUP:SAVE_EVIDENCE",
+    "CLEANUP:CLEAN_WORKSPACE",
+    "CLEANUP:SETTLE"
+  ],
+  "policy_schema": {
+    "file": "manuscript/appendices/E_machine_readable_contracts.md",
+    "line": 43,
+    "sha256": "a0b9d6ddf264072546a38fdf869b245c276c13a44917bb37170e8f4f3035e007"
+  },
+  "policy_packets": [
+    {
+      "packet": {
+        "action_id": "delegate:subtask-1",
+        "decision": "ALLOW",
+        "policy_version": "policy-v1"
+      },
+      "schema_errors": []
+    }
+  ],
+  "accounting": {
+    "allocatable": 3,
+    "reserved": 0,
+    "metered": 0,
+    "returned": 0,
+    "verification_reserve": 2
+  }
+}

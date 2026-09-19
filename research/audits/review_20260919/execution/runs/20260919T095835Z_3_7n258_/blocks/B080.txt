@@ -1,0 +1,8 @@
+production traces
+  → privacy filtering
+  → failure clustering
+  → curated eval candidates
+  → independent labeling
+  → regression/capability suites
+  → candidate harness evaluation
+  → canary → production

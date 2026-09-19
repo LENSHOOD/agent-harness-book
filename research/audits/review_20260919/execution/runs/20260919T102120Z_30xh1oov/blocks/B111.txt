@@ -1,0 +1,7 @@
+production traces (read-only)
+  → pathology cluster + human-confirmed hypothesis
+  → isolated candidate generation
+  → preflight(valid + activated)
+  → train/eval selection
+  → one sealed-test evaluation
+  → shadow → canary → promote/rollback

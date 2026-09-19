@@ -1,0 +1,212 @@
+{
+  "raw_error": {
+    "exception": "OperationalError",
+    "message": "near \"SYSTEM_TIME\": syntax error",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/auditlib.py\", line 34, in attempt\n    value = fn()\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/sql_case.py\", line 64, in <lambda>\n    _, raw_error = a.attempt(\"SQL_raw_SQLite\", lambda: query(block[\"raw\"]), sources=source,\n                                                       ~~~~~^^^^^^^^^^^^^^\n  File \"/Users/xuhai.zhang/Documents/doc/AI Workforce/research/Agent_Harness_Book_Research_20260822/research/audits/review_20260919/execution/sql_case.py\", line 61, in query\n    return [dict(row) for row in db.execute(sql)]\n                                 ~~~~~~~~~~^^^^^\nsqlite3.OperationalError: near \"SYSTEM_TIME\": syntax error\n"
+  },
+  "dialect": "SQLite 3.50.4",
+  "original_dialect": "Temporal warehouse SQL, BigQuery-like FOR SYSTEM_TIME AS OF; not SQLite; no vendor dialect certified offline",
+  "adaptation": "Remove FOR SYSTEM_TIME and DATE keyword; attach semantic SQLite DB with half-open as-of view",
+  "assumptions": [
+    "UTC ISO text versions, valid_from <= snapshot < valid_to",
+    "month normalized YYYY-MM-01",
+    "whole CNY integers already converted at finance rate; no FX/rounding verification",
+    "exact event/version duplicates are invalid",
+    "NULL rules not specified in manuscript",
+    "row/column IAM, causal narrative review, parquet publication not implemented"
+  ],
+  "fixture_count": 88,
+  "original_semantics": [
+    {
+      "month": "2026-06-01",
+      "province": "GD",
+      "plan": "pro",
+      "net_revenue_cny": 1800,
+      "accounts": 20
+    },
+    {
+      "month": "2026-07-01",
+      "province": "GD",
+      "plan": "pro",
+      "net_revenue_cny": 1840,
+      "accounts": 21
+    },
+    {
+      "month": "2026-07-01",
+      "province": "SH",
+      "plan": "basic",
+      "net_revenue_cny": 500,
+      "accounts": 20
+    }
+  ],
+  "manual_expected": [
+    {
+      "month": "2026-06-01",
+      "province": "GD",
+      "plan": "pro",
+      "net_revenue_cny": 1800,
+      "accounts": 20
+    },
+    {
+      "month": "2026-07-01",
+      "province": "GD",
+      "plan": "pro",
+      "net_revenue_cny": 1840,
+      "accounts": 21
+    },
+    {
+      "month": "2026-07-01",
+      "province": "SH",
+      "plan": "basic",
+      "net_revenue_cny": 500,
+      "accounts": 20
+    }
+  ],
+  "snapshots": {
+    "2026-08-03T01:59:59Z": [
+      {
+        "month": "2026-06-01",
+        "province": "GD",
+        "plan": "pro",
+        "net_revenue_cny": 1800,
+        "accounts": 20
+      },
+      {
+        "month": "2026-07-01",
+        "province": "GD",
+        "plan": "pro",
+        "net_revenue_cny": 1850,
+        "accounts": 21
+      },
+      {
+        "month": "2026-07-01",
+        "province": "SH",
+        "plan": "basic",
+        "net_revenue_cny": 500,
+        "accounts": 20
+      }
+    ],
+    "2026-08-03T02:00:00Z": [
+      {
+        "month": "2026-06-01",
+        "province": "GD",
+        "plan": "pro",
+        "net_revenue_cny": 1800,
+        "accounts": 20
+      },
+      {
+        "month": "2026-07-01",
+        "province": "GD",
+        "plan": "pro",
+        "net_revenue_cny": 1840,
+        "accounts": 21
+      },
+      {
+        "month": "2026-07-01",
+        "province": "SH",
+        "plan": "basic",
+        "net_revenue_cny": 500,
+        "accounts": 20
+      }
+    ],
+    "2026-08-03T03:00:00Z": [
+      {
+        "month": "2026-06-01",
+        "province": "GD",
+        "plan": "pro",
+        "net_revenue_cny": 1800,
+        "accounts": 20
+      },
+      {
+        "month": "2026-07-01",
+        "province": "GD",
+        "plan": "pro",
+        "net_revenue_cny": 1700,
+        "accounts": 21
+      },
+      {
+        "month": "2026-07-01",
+        "province": "SH",
+        "plan": "basic",
+        "net_revenue_cny": 500,
+        "accounts": 20
+      }
+    ]
+  },
+  "anomaly_contributions": [
+    {
+      "event_id": "jul-1",
+      "ingest_id": 2,
+      "recognized_revenue_cny": 100,
+      "refunds_cny": 10,
+      "account_id": "j1",
+      "net": 90
+    },
+    {
+      "event_id": "jul-20",
+      "ingest_id": 59,
+      "recognized_revenue_cny": 100,
+      "refunds_cny": null,
+      "account_id": "j20",
+      "net": null
+    },
+    {
+      "event_id": "jul-2",
+      "ingest_id": 80,
+      "recognized_revenue_cny": 100,
+      "refunds_cny": 20,
+      "account_id": "j2",
+      "net": 80
+    },
+    {
+      "event_id": "jul-1",
+      "ingest_id": 82,
+      "recognized_revenue_cny": 100,
+      "refunds_cny": 10,
+      "account_id": "j1",
+      "net": 90
+    },
+    {
+      "event_id": "null-account",
+      "ingest_id": 83,
+      "recognized_revenue_cny": 50,
+      "refunds_cny": 0,
+      "account_id": null,
+      "net": 50
+    },
+    {
+      "event_id": "null-revenue",
+      "ingest_id": 84,
+      "recognized_revenue_cny": null,
+      "refunds_cny": 0,
+      "account_id": "unknown-revenue",
+      "net": null
+    }
+  ],
+  "corrected": [
+    {
+      "month": "2026-06-01",
+      "province": "GD",
+      "plan": "pro",
+      "net_revenue_cny": 1800,
+      "accounts": 20
+    },
+    {
+      "month": "2026-07-01",
+      "province": "GD",
+      "plan": "pro",
+      "net_revenue_cny": 1800,
+      "accounts": 20
+    },
+    {
+      "month": "2026-07-01",
+      "province": "SH",
+      "plan": "basic",
+      "net_revenue_cny": 500,
+      "accounts": 20
+    }
+  ],
+  "published_original": 4140,
+  "all_groups_original": 5090,
+  "hand_calculation": "June 20*90=1800; July GD 18*90+80+NULL+duplicate90+anonymous50+NULL=1840; SH20*25=500; BJ19*50=950 suppressed. Correction GD18*90+80+100=1800."
+}

@@ -1,0 +1,19 @@
+diff --git a/src/time/window.py b/src/time/window.py
+index 0727dec..f239216 100644
+--- a/src/time/window.py
++++ b/src/time/window.py
+@@ -1,8 +1,10 @@
+-"""Audit-created baseline bug: assumes all local billing days last 24 hours."""
+-from datetime import datetime, time, timedelta, timezone
++"""Candidate that requires an untracked new helper file."""
++from datetime import datetime, time, timezone
+ from zoneinfo import ZoneInfo
++from window_helpers import civil_end
+ 
+ 
+ def window_utc(day, zone):
+-    start = datetime.combine(day, time.min, ZoneInfo(zone)).astimezone(timezone.utc)
+-    return start, start + timedelta(hours=24)
++    tz = ZoneInfo(zone)
++    start = datetime.combine(day, time.min, tz).astimezone(timezone.utc)
++    return start, civil_end(day, tz).astimezone(timezone.utc)

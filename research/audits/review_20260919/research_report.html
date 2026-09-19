@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Harness 增量研究 - Deep Research Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #1a1a1a;
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .header {
+            background: #003d5c;
+            color: white;
+            padding: 25px 40px;
+            border-bottom: 3px solid #002840;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-meta {
+            font-size: 13px;
+            color: #b8d4e6;
+            display: flex;
+            gap: 25px;
+        }
+
+        .metrics-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            border-bottom: 2px solid #003d5c;
+        }
+
+        .metric {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-right: 1px solid #d1d5db;
+            text-align: center;
+        }
+
+        .metric:last-child {
+            border-right: none;
+        }
+
+        .metric-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #003d5c;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 30px 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #003d5c;
+            margin: 32px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #003d5c;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            line-height: 1.3;
+        }
+
+        .subsection-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 24px 0 12px 0;
+            line-height: 1.4;
+        }
+
+        .executive-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #003d5c;
+        }
+
+        .executive-summary p {
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        p {
+            margin-bottom: 14px;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        /* Better paragraph spacing in content sections */
+        .content > p,
+        .section p {
+            margin-bottom: 16px;
+        }
+
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .finding-card {
+            background: #f8f9fa;
+            padding: 18px;
+            border-left: 3px solid #003d5c;
+        }
+
+        .finding-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #003d5c;
+            margin-bottom: 10px;
+        }
+
+        .finding-card p {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background: #003d5c;
+            color: white;
+            padding: 10px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        ul, ol {
+            margin: 16px 0 16px 28px;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            padding-left: 8px;
+        }
+
+        /* Nested lists */
+        li ul, li ol {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Better bullet/number spacing */
+        ol {
+            list-style-position: outside;
+            padding-left: 0;
+        }
+
+        ul {
+            list-style-position: outside;
+            padding-left: 0;
+        }
+
+        .key-insight {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-left: 3px solid #003d5c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .key-insight strong {
+            color: #003d5c;
+            font-weight: 600;
+        }
+
+        .citation {
+            color: #003d5c;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            position: relative;
+            padding: 2px 4px;
+            background: #f0f7fc;
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .citation:hover {
+            background: #003d5c;
+            color: white;
+        }
+
+        /* Attribution Gradients (2025 Enhancement) */
+        .citation-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            background: white;
+            border: 2px solid #003d5c;
+            box-shadow: 0 4px 12px rgba(0, 61, 92, 0.15);
+            padding: 12px;
+            min-width: 300px;
+            max-width: 500px;
+            z-index: 1000;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .citation:hover .citation-tooltip {
+            display: block;
+        }
+
+        .tooltip-title {
+            font-weight: 700;
+            color: #003d5c;
+            margin-bottom: 8px;
+            font-size: 13px;
+            border-bottom: 1px solid #d1d5db;
+            padding-bottom: 6px;
+        }
+
+        .tooltip-source {
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .tooltip-claim {
+            background: #f8f9fa;
+            padding: 8px;
+            margin-top: 8px;
+            border-left: 3px solid #003d5c;
+            font-size: 11px;
+        }
+
+        .tooltip-claim-label {
+            font-weight: 600;
+            color: #003d5c;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .evidence-chain {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #d1d5db;
+        }
+
+        .evidence-chain-label {
+            font-weight: 600;
+            color: #003d5c;
+            font-size: 11px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .evidence-step {
+            padding: 6px;
+            background: #f8f9fa;
+            margin-bottom: 4px;
+            font-size: 11px;
+            border-left: 2px solid #d1d5db;
+            padding-left: 8px;
+        }
+
+        .bibliography {
+            background: #f8f9fa;
+            padding: 30px;
+            margin-top: 40px;
+            border-left: 4px solid #003d5c;
+        }
+
+        .bibliography-content {
+            background: #f8f9fa;
+            padding: 20px 0;
+        }
+
+        .bib-entry {
+            margin-bottom: 18px;
+            padding-left: 50px;
+            text-indent: -50px;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .bib-number {
+            color: #003d5c;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .bib-entry a {
+            color: #003d5c;
+            word-wrap: break-word;
+            text-decoration: none;
+        }
+
+        .bib-entry a:hover {
+            text-decoration: underline;
+        }
+
+        .compact-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .compact-list li {
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .info-box {
+            background: white;
+            border: 1px solid #d1d5db;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .info-box h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #003d5c;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .highlight-stat {
+            font-weight: 700;
+            color: #003d5c;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        @media print {
+            .container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .metrics-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .findings-grid {
+                grid-template-columns: 1fr;
+            }
+            .compact-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+.container { max-width: 1050px; }
+h2 { color: #003d5c; margin: 32px 0 16px; }
+h3 { margin: 24px 0 12px; }
+table { border-collapse: collapse; width: 100%; margin: 18px 0; }
+td,th { padding: 10px; border: 1px solid #d1d5db; text-align: left; }
+th { background: #f8f9fa; }
+a { color:#005b82; overflow-wrap:anywhere; }
+.content { overflow-wrap: anywhere; }
+code { white-space: normal; }
+@media (max-width:700px) { .content,.header { padding:20px; } table { font-size:12px; } }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Agent Harness 增量研究</h1>
+            <div class="header-meta">
+                <span>2026-09-19</span>
+                <span>•</span>
+                <span>37 Sources</span>
+            </div>
+        </div>
+
+        
+
+        <div class="content">
+            <h1>Agent Harness 增量研究：哪些变化值得改进这本书</h1>
+<p>核验日期：2026-09-19。书稿基线：<code>a1ed264462d9b61c260c1dc417243303bfc60b66</code>。正文资料截面为 2026-08-27/28，上一轮表达改写发布于 2026-09-10。</p>
+<h2 class="section-title">Executive Summary — 结论</h2>
+<p>这段时间确实有值得纳入的变化，而且不只是又出现了几个 Agent 产品。最直接影响企业平台选型的，是托管 Harness 与自管执行环境开始分开提供：OpenAI 的 Agents API 已进入公测，Cursor 能把执行机器放到企业网络内，微软把可组合的 Harness 作为框架能力公开说明。平台现在要分别决定谁运行模型循环、谁运行工具、谁保存会话和证据，不能只问“买还是自研”。[1][2][5][8]</p>
+<p>自我进化研究也出现了更扎实的分工：HarnessDev评价模型能否造出可运行的Harness；HarnessEvolve用参考轨迹辅助诊断；JIT-Agent训练一个生成Harness的辅助模型；SoL-Pi把省钱作为搜索目标。这些研究同时暴露了边界：改进不总能迁移到另一模型，参考轨迹需要监督，降低token可能牺牲得分，单条演化轨迹不能证明长期可靠性。[9][11][12][23]</p>
+<p>这些材料总体支持本书重视执行、反馈和验证的方向，但要求降低几类过满的表述：复杂架构不必然优于简单循环；子代理不必然省钱；外置验证不等于验证独立；自托管沙箱不等于数据不出企业边界。对原书的修改应围绕这些具体条件展开，而不是追着产品名补一串新章节。[2][7][9][13]</p>
+<p>这份增量研究与本轮逐章审阅、案例运行报告配套使用。它没有把读过论文当作复现实验，也没有把社区故障报告当作确认漏洞。新增资料应先进入证据账本，再用于重写受影响段落；原书已确认的术语、协议和安全伪代码问题，优先级高于补充前沿材料。</p>
+<h2 class="section-title">Introduction — 范围与方法</h2>
+<p>本轮优先检索8月28日之后至9月19日的更新，并回查以前登记或遗漏的资料。检索覆盖官方产品文档、发布说明、固定版本源码、arXiv预印本、Hacker News、Reddit、Cursor论坛和中文社区。浏览统一使用ego lite；官方仓库另用GitHub只读API核对提交、合并和发布日。搜索结果只用于发现资料，进入结论的来源均打开了原文或固定源码。</p>
+<p>“新”有四种不同含义：首次发布、已有材料修订、旧稿漏收、本轮确认旧稿错误。本报告将它们分别标注。比如Agents API的公测日期有正式changelog支持；Microsoft页面的9月15日只是文档更新时间；ACP v2公告在7月，不能因为这次才查到就写成9月新协议。[1][8][16]</p>
+<p>已有五个主案例仍可保留。新增材料有的适合补入产品接入表，有的更适合放在上下文、评测和进化章节。这里的“业界更新”不是产品排行榜，也不声称穷尽所有网站或私有社区。具体查询、访问时间、页面正文哈希、短证据和来源版次见同目录的<code>retrieval/</code>、<code>sources.jsonl</code>、<code>evidence.jsonl</code>及<code>run_manifest.json</code>。</p>
+<h2 class="section-title">Main Analysis — 八项会影响书稿的变化</h2>
+<h3>1. 企业平台的采购对象开始拆成三个部分</h3>
+<p>OpenAI在9月10日将Agents API作为公测发布。官方文档把会话编排、上下文压缩和恢复交给托管Codex Harness；应用提供工具，并选择OpenAI托管或自托管执行环境。这比第十四章现有的exec、SDK、App Server三种接入面多了一个重要选项：平台可以不运行完整的本地Harness进程，而通过服务管理长会话。[1][2]</p>
+<p>但“执行放在自己的机器上”不能改写成“所有数据都留在自己机器上”。截至本次访问，Agents API文档明确它只支持美国数据驻留，不支持Zero Data Retention，选择自托管sandbox也不会改变这项限制。企业比较方案时需要同时画出控制流、工具输出流和持久会话存储位置。[2]</p>
+<p>Cursor 9月2日的自管机器说明给出了同一种边界的另一实现：worker在企业机器上编辑文件、运行命令，通过出站HTTPS通道与云端连接；推理和规划留在Cursor云端，工具输出可能包含代码并回传，转录也可能在云端处理和存储。因此，第十五章需要区分云端托管VM、自管worker以及完整自部署三种情况，不能只用“云Agent”概括。[5]</p>
+<p>Anthropic 4月的Managed Agents文章是上轮漏收的重要架构材料。它把持久会话、模型循环和执行沙箱分开，分别恢复、替换和扩展。9月的权限与压缩接口则是这条路线的近期延伸。[3][4]</p>
+<p>建议在第十八、二十六、二十九章加入一个共同的责任表：谁运行循环、谁持久化会话、谁保管凭证、谁执行工具、谁作最终业务验收。这个表应随具体产品版本填写，不用“托管/开源”两个标签替代。以上三个供应商案例相互印证的是分离责任的趋势，不是它们已具有等同的恢复语义或合规能力。[2][4][5]</p>
+<h3>2. 长会话的关键变成“运行中可调整”，而不只是恢复旧对话</h3>
+<p>OpenAI 9月3日的API更新包含异步工具调用、执行中的指令调整，以及保持缓存前缀的推理强度调整。它们改变了第六、七章需要讨论的事件：外部输入可能在一次响应尚未结束时到达，工具结果也可能分批返回。应用应定义取消、纠正、迟到结果和新旧指令版本如何排序，而不是假定严格的用户消息—模型响应交替。[1]</p>
+<p>Anthropic 9月14日增加显式请求会话压缩的beta能力，返回签名的compaction block；9月10日Managed Agents增加auto权限策略及逐调用的evaluation记录。签名能提供供应商定义的内容完整性，但不能证明压缩摘要在业务语义上没有漏掉约束；自动权限判断也不等于企业风险负责人已经授权一切动作。[3]</p>
+<p>ACP v2草案更直接地指出：prompt请求的响应不应拥有整段工作的生命周期。session可以继续产生事件，输入入队、调整指令和后台工作需要独立表达；消息与工具内容通过稳定ID更新。它是7月已出现的设计方向，仍需版本协商和功能开关，不能当作已经稳定部署的全行业协议。[16]</p>
+<p>这使原书区分task、attempt、session、turn的方向更重要，但也要求伪代码真的落实区别。“本轮输出结束”“取消请求已接收”“外部提交已确认”和“业务验收已通过”应是不同事件。尤其不能在正文强调这些区别，却在状态图里把effect confirmed直接连到最终成功。</p>
+<p>建议第六章补一条具体时间线：任务执行期间收到约束修订，旧工具调用仍在途，结果晚到；系统如何记录旧结果、阻止失效授权下的新动作、保留已产生副作用，并用新契约开始后续attempt。这个例子比再加几个状态名更能说明问题。[1][3][16]</p>
+<h3>3. 子代理应按工作关系选择上下文，框架也没有退出舞台</h3>
+<p>LangChain 9月8日公开了Deep Agents子代理的两种上下文模式。isolated从单独任务说明开始；fork继承父代理状态，并处理末尾委派调用，使子代理接着已有调查工作往下做。官方给出的实践区分很有用：修复执行者通常需要已有上下文；独立审阅者则应该避免继承父代理对结果的判断。[7]</p>
+<p>因此，“子代理用新上下文，所以能兼顾能力与成本”需要改成条件判断。独立研究可能适合隔离，但刚调查过的问题再交给完全空白的执行者，会重复搜索；反过来，把全部父轨迹交给审阅者，又可能带来锚定与敏感信息传播。父窗口缩小、全系统token减少和结果更可靠是三个不同指标。[7]</p>
+<p>Microsoft Harness文档展示了另一条可组合路线：沿用Agent Framework的聊天客户端、上下文提供者、会话和中间件，组合历史持久化、任务清单、模式、审批、观测及可选有界循环。它的意义是把常见运行能力做成可配置组合，不是宣布所有任务都应使用同一套最复杂配置。[8]</p>
+<p>LangSmith Engine的5月工程文也值得补回。它从简化轨迹筛出可疑样本，再深入调查，产出问题、评测器和回归样本，必要时交给独立修复代理。这里既有框架复用，也有明确的职责和可审查产物。[17]</p>
+<p>本书应继续保留“LangChain没有简单消失”的历史说明，并把LangGraph、Deep Agents以及Microsoft Harness放入当代架构比较的旁栏。没有必要把五个主案例扩成十几个同样篇幅的产品介绍；需要补的是“成品工具、可嵌入运行时、组合框架、托管Harness”这几个采购与设计层次。[7][8][17]</p>
+<h3>4. 自我进化开始被拆成可测任务，但远没有一个普遍有效的循环</h3>
+<p>HarnessDev把待评估对象从最终答案换成可运行的基础设施，分别测试从弱种子创建Harness，以及根据执行反馈修订已有Harness。论文发现模型可以造出有用系统，但在代码和搜索任务上仍与成熟参考实现有差距，演化收益并不稳定，换执行模型也会改变结果。更关键的是，Evolution每个创建模型—执行模型组合只有一条轨迹，最终未见任务评估又只覆盖SWE-Pro，不能由此证明长期泛化已解决。[9]</p>
+<p>HarnessEvolve补的是诊断信号：给执行代理正确答案，生成经过检查的参考轨迹，再和失败路径比较、聚类错误，提出跨prompt、skill、工具和执行逻辑的修改。质量门和性能门用于筛选候选。这为第二十二章提供了具体机制，但必须说清参考答案从哪里来；成功路径也不一定是唯一正确路径，第一处差异只能作为诊断线索，不能自动成为因果根因。[12]</p>
+<p>JIT-Agent则把生成Harness做成可训练能力。它使用固定四模块协议，并训练辅助模型来生成、修复和改进适合当前任务的Harness。这里“任务执行模型冻结”和“系统没有训练”不是一回事。本书四层分类可以保留，但应把它写成四类可变对象，允许一次方案同时训练生成器、更新运行策略与积累经验，而不是要求每项工作只能落在一层。[11]</p>
+<p>9月10日的Ecdysis通过跨任务失败聚合和多角色诊断，试图区分系统性Harness缺陷与对特定模型弱点的迎合。它使用“training”一词，但所述优化阶段固定任务模型参数与环境，更新的是Harness。其接受条件主要围绕训练集整体分数，不能直接等同本书要求的独立泛化、非劣和安全放行。[21]</p>
+<p>9月10日首发、15日修订的RSI路线图按改进过程的自主性分级。它和本书按修改对象划分的四层不是互斥理论：前者问“谁决定怎样改进和收集经验”，后者问“改了什么”。可以在第十九章用一张交叉表讲清，展望中保留递归改进方向，但不要用论文标题暗示人类已退出改进回路。[19]</p>
+<p>综合来看，自我进化章节最需要增加的是实验合同：冻结哪些组件、哪些数据能被看到、谁生成反馈、谁选择候选、终测用几次、训练/搜索费用怎么计算，以及换模型后是否重新验收。新论文提供了多种构造方法，同时也说明不能用一张平均分表替代这些问题。[9][11][12][21]</p>
+<h3>5. 评测正在从一个总分拆成机制、过程与最终结果</h3>
+<p>9月17日的Harness组件实证研究固定执行循环，改变规划、动作接口和上下文管理，形成176个配对设置。它发现上下文管理的价值随窗口收紧而增加；工具接口的取舍与模型使用shell的能力有关。规划对弱模型可能是准确率支撑，对强模型则可能主要降低重复操作。它没有证明“只留bash永远最好”，因为实验只用了三个尺度的Nemotron和一个Mistral，规划与动作接口消融又只在一个上下文设置下进行。[13]</p>
+<p>Google 9月9日的工程文强调行为评测：除了最终是否完成，还检查是否搜索实时事实、是否运行验证器、是否执行了预期的中间动作。文章也明确，复杂任务可以有多条正确路径，不能把固定工具序列当成唯一答案；单次模型运行有噪声，应观察批次结果，而且行为评测不能替代端到端评测。[30]</p>
+<p>这与本轮书稿验证直接相关。JSON能解析，只能说明语法有效；schema能接受数据，只能说明结构满足约束；调用了测试工具，仍不证明测试针对封存的候选；原子claim都标supported，也不证明引文真的支持每个分句。应把这些结果分别命名，不再合成一个没有分母的“全部通过”。</p>
+<p>书中已有的消融、配对实验、回归与独立验收思路值得保留，但需要可计算定义。2×2设计中的一个格子是一个条件均值，模型主效应、Harness主效应与交互项需要比较多个格子；“移除组件后掉分”是该实验条件下的证据，不是普遍必要性的证明。统计不显著也不等于非劣，零观测违规也不等于风险为零。</p>
+<p>建议第十二章分成三种清晰结果：契约/状态机检查、模型行为评测、业务终态评测。第二十四章另给候选选型与终测的数据隔离、重复试验和停止规则。这样的分工既吸收了最新工程实践，也能减少目前第十、十二、十九和二十四章的重复。[9][13][30]</p>
+<h3>6. 长时自治与效率优化成为单独目标，必须报告代价</h3>
+<p>Harness-of-Harness在现成coding harness外组织规划、实现、测试循环，要求小而可验证的增量，并将实现时测试与独立验收分离。它报告三轮后的相对增益，也提供同开发轮数的对照。但不同轮数、token、时间和评估费用仍需分别看，不能把“多跑了三轮的产物更完整”直接归因为某一个编排组件的效果。[10]</p>
+<p>SoL-Pi在大量环境回路中搜索后保留四种机制，涉及动作合并、压缩时机、观察结果处理和委派读取。它的具体工程启发在于：减少模型往返，比较缓存重写费用与未来节省，把长日志中的证据保留下来。但效率配置在GPT-5.6 Sol的EdgeBench结果中，从Pi的44.8分变为42.0分，保留93.7%的分数；这是质量—成本折中，而非严格无损。在Terminal-Bench的63个CPU任务上，文中Pi完成18项、SoL-Pi完成15项，同样不能只报更低费用。[23]</p>
+<p>Stellar Colosseum把长证明分为相互依赖的部分，先探索候选路线，再用针对性的反证和验证结果修复相关部分。它扩展了本书“委派—合并—重验”的例子：在研究任务中，需要检查结论间的依赖是否一起成立，而不是把独立段落简单拼接。论文中的研究成果和评测数字是作者报告，本轮没有复现证明或重跑大规模多Agent实验。[22]</p>
+<p>Cursor Projects则提供产品侧的对应实践：协调者委派、跨会话共享文件、事件触发与周期执行。产品所说的长期运行能力，仍需要企业自己定义预算、失败后停止条件、来源污染处理和提交权限。本书不宜把“能够持续运行”写成“长期任务可靠性已经解决”。[6]</p>
+<p>建议第十一、二十、二十二章统一费用口径：任务执行费用、候选搜索费用、评审/验证费用、失败重试费用和人工接管费用分别记录。一次探索产生的模型调用越多，越需要说明这份成本如何被后续复用摊薄。平均每小时省多少钱，只有在任务分布、利用率与计价条件明确时才有可迁移含义。[9][10][23]</p>
+<h3>7. 安全边界必须覆盖“运行时自己执行的配置”与持久记忆</h3>
+<p>HookPry研究的是生命周期hook的更新通道：已获信任的插件更新后，新增或改变事件绑定的命令，可能在模型看不见的时候由宿主执行。其威胁模型要求攻击者控制插件元数据、版本和hook配置，并依赖更新被采用及相应事件发生。它不意味着任意网页都能绕过全部沙箱，也不能据论文实验断言所有现有版本仍有同一漏洞。[14]</p>
+<p>对本书而言，关键补充不是再说一次“警惕提示注入”，而是承认有些危险动作根本不经过模型提议工具的那条路径。第九、十三、十六章应增加hook清单差异、更新后权限重新确认、执行身份、宿主与工作区隔离、审计记录及紧急撤销。把hook作为唯一安全边界会遗漏hook本身的执行权。[14]</p>
+<p>MemSecBench将记忆写入、后续任务引用、产生行为后果以及选择性删除放在同一组案例里考察。它是7月旧材料，但能补强第二十一章目前偏重“如何积累经验”的叙述：入库检查通过不等于未来读取安全；删除一条记忆也不等于其摘要、索引、派生skill或下游产物里的影响已消失。[15]</p>
+<p>社区资料可帮助设计回归场景。Cursor论坛的具体报告描述子代理没有按角色卡回应，以及此前出现过递归派生；发帖者并没有证明二者有相同根因。应把它转成待验证问题，例如角色身份是否只靠prompt、嵌套深度是否由外部控制、取消是否覆盖后代，不能据此宣布产品已发生权限穿透。[34]</p>
+<p>建议在第九、二十一、二十四章加入一个完整的“坏经验如何进入、何时被读到、如何撤回”的案例。测试应检查撤销后已有会话、缓存、检索索引和已派生能力的行为。安全评测的结果按攻击前提和版本报告，不能用单一成功率替代信任边界说明。[14][15]</p>
+<h3>8. 新接口会延伸到更多领域，但旧证据也需要重新绑定版本</h3>
+<p>HEART把LLM包装在工具接口里，让外层代理通过更自然的输入完成多步工具组合。这给第八章提供一个不同于直接暴露全部schema的选择，但它只是把模式解析和失败处理移到包装内，增加了一层模型调用和归因问题。不能把“外层看不到schema”解释为不再需要精确参数、权限检查或可审计结果。[18]</p>
+<p>Show-Harness用语义动作接口连接VLM与具体机器人解释器；openJiuwen则强调结构可组合与运行时适应两个方面。这些材料适合第三十章的展望或原理章的短反例，不必把以企业软件和知识任务为主的书突然变成机器人教材。尤其物理动作有不同的实时性、安全和验证要求，本文没有实际运行机器人。[20][31]</p>
+<p>与此同时，本轮回查发现原书引用版次有错误。GSME名称和v1文稿对应，但登记表把它记为v2；v2已经使用HarnessBank名称。相关机制有延续，不能因此把整篇研究说成无效，但书名、作者、版次、短证据和机制描述应统一到选定版本，再核对差异。[26][27]</p>
+<p>Self-Harness仍是8月20日的v3，Living-Harness仍是8月11日的v2，本轮没有发现新的版本。NLE官方资料确认全称是NetHack Learning Environment，HSI也把它和MiniHack作为复杂roguelike环境讨论；正文“非语言增强任务”是确实需要勘误的解释。[24][25][28][29]</p>
+<p>还有一篇十一系统源码综述值得追踪，但本次所见2609.00006页面的编号月份和提交日期不一致。它的检索信息不应直接被归为9月新发布。即使其特定代码样本中未发现通用Agent框架或向量检索，也只能描述那份样本，不能推断整个行业都没有这些实现。同期组件实证研究就明确使用LangGraph。[13][36]</p>
+<h2 class="section-title">Synthesis — 对全书主线的判断</h2>
+<p>全书最有价值的主线仍然成立：模型输出需要经过工具、状态、权限、反馈和验收，才能变成可靠工作。新材料强化了三件事：模型循环与执行环境可分别管理；改进对象可以是运行基础设施本身；质量、成本和风险必须一起衡量。[1][4][9][23]</p>
+<p>但本书目前常把一个合理工程方向写成普遍要求。例如“必须外置”“必然更好”“能够证明”“不可变治理平面”等表述，需要补出任务风险、模型能力、成本和威胁模型这些条件。教学用简化是必要的，简化后的伪代码却仍须保持正文声称的关键不变量，尤其拒绝就不能执行、未知提交不能盲重试、提交成功不能自动代表业务完成。</p>
+<p>四层进化最好保留为“本次改了什么”的分类，同时增加两条独立轴：改进决策由谁控制，以及效果用什么独立证据确认。这样既能容纳JIT-Agent训练生成器的混合方案，也不会把RSI自主性路线图误当成从记忆到模型的固定升级阶梯。[11][19]</p>
+<h2 class="section-title">Counterevidence Register — 反证与限制</h2>
+<table>
+<thead>
+<tr>
+<th>容易写过头的结论</th>
+<th>本轮证据要求的收窄</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>更复杂的Harness更强</td>
+<td>组件消融依赖模型、预算和任务，不能按模块数排名。[13]</td>
+</tr>
+<tr>
+<td>自我进化会持续增长</td>
+<td>HarnessDev显示轨迹波动和有限迁移，Evolution重复次数有限。[9]</td>
+</tr>
+<tr>
+<td>省token而质量不变</td>
+<td>SoL-Pi效率配置有明确得分让步；需写非劣界和置信区间。[23]</td>
+</tr>
+<tr>
+<td>自托管就不向外传数据</td>
+<td>执行环境位置、推理位置、持久存储和ZDR是不同问题。[2][5]</td>
+</tr>
+<tr>
+<td>参考轨迹能识别真正根因</td>
+<td>需要正确答案，合法路径可能不唯一，诊断还依赖评估代理。[12][35]</td>
+</tr>
+<tr>
+<td>社区好评证明谁最强</td>
+<td>Reddit任务集小且自报配置，HN存在分歧，不能当同条件榜单。[32][33]</td>
+</tr>
+<tr>
+<td>有权限hook即可安全</td>
+<td>hook更新及宿主执行本身也是攻击面。[14]</td>
+</tr>
+<tr>
+<td>metadata verified等于事实已核查</td>
+<td>当前引用脚本核查关系和字段，版次误配仍可能通过；GSME就是具体反例。[26][27]</td>
+</tr>
+</tbody>
+</table>
+<h2 class="section-title">Claims-Evidence Table — 关键结论如何复核</h2>
+<table>
+<thead>
+<tr>
+<th>结论</th>
+<th>直接证据</th>
+<th>对应书稿</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新增托管Codex Harness接入面</td>
+<td>API changelog的Sep 10条目与overview；两者来自同一供应商，不虚报为独立来源簇。[1][2]</td>
+<td>14、18、29</td>
+</tr>
+<tr>
+<td>执行环境与Harness管理应拆开</td>
+<td>OpenAI overview、Anthropic架构、Cursor自管机器三组官方资料。[2][4][5]</td>
+<td>5、9、26</td>
+</tr>
+<tr>
+<td>子代理需要选择上下文模式</td>
+<td>Deep Agents context modes原文；Google评测文和HarnessDev分别补充行为/泛化验收边界。[7][9][30]</td>
+<td>7、11、12</td>
+</tr>
+<tr>
+<td>进化不能只看开发集上涨</td>
+<td>HarnessDev、HarnessEvolve、SoL-Pi的不同方法与限制。[9][12][23]</td>
+<td>19—24</td>
+</tr>
+<tr>
+<td>当前框架能力仍在扩展</td>
+<td>Microsoft Harness、Deep Agents、LangSmith Engine。[7][8][17]</td>
+<td>2、18</td>
+</tr>
+<tr>
+<td>持久配置和记忆需要独立治理</td>
+<td>HookPry、MemSecBench，以及原书本轮安全伪代码负例。[14][15]</td>
+<td>9、21、24</td>
+</tr>
+<tr>
+<td>原书需要版次/译名勘误</td>
+<td>GSME v1/v2页面和NLE官方README。[26][27][28]</td>
+<td>19、22、附录C</td>
+</tr>
+</tbody>
+</table>
+<h2 class="section-title">Limitations — 本轮能确认到哪里</h2>
+<p>检索完成了有边界的广泛覆盖，没有办法证明已经“找遍全网”。登录墙、未索引页面、私有社区、当天稍后出现的更新及厂商未公开实现都不在确定覆盖范围。中文二手文章帮助发现方向，关键技术结论回到论文、文档或代码，不按转载次数提高可信度。</p>
+<p>论文大多是预印本。报告中的实验结论是作者在其任务、模型、费用口径下的结果，本轮只复核方法、结果和限制，没有重跑大规模训练、供应商完整业务流程、付费模型矩阵或机器人实验。书中案例的本地执行另有报告，不能把它替代论文复现。</p>
+<p>来源记录的“supported_as_scoped”只表示精确限定的来源主张有对应短证据。网页访问成功、元数据匹配和代码能执行，均不自动升级为生产可靠性证明。36项研究来源与官方仓库探针的原始证据分开保存，查询页面与同一论文的摘要/全文不重复算作独立证据簇。
+本轮另补查了BigQuery原方言：原书的时间旅行语法有官方依据，但查数周前的字面量需要考虑保留期，长久复现应保留物化快照或版本化数据。SQLite不支持这段语法本身不是证明原查询写错；原引擎执行未验证。[37]</p>
+<h2 class="section-title">Recommendations — 建议如何修改</h2>
+<p>第一步处理正确性：修补拒绝分支和未知副作用语义；改正ACI、NLE、validation等误译；修正Codex协议名和dsh虚拟机表述；把第25章补丁/SQL和第27章反例变成能够复现的成套案例。这些是已有内容的问题，不应等待新章节写完才处理。</p>
+<p>第二步补上当前架构：第十三至十八章按具体产品面与版本重新组织，加入托管Harness、自管worker、新OpenHands SDK和上下文模式。五个主案例保留，其他框架放在对照表或短旁栏；避免用未经同条件测试的“成熟”“成本高”作客观排名。</p>
+<p>第三步重写进化章节的实验说明：将HarnessDev、HarnessEvolve、JIT-Agent、Ecdysis和SoL-Pi放进各自机制的位置，补明数据用途、统计单位、选择偏差、费用和模型迁移。把“进化成立”从一句结论变成读者能运行的判定流程。</p>
+<p>最后才做文体编辑和发布。原则是先给情境，再说动作及原因，最后补术语；尽量统一中文名，将英文原名集中在首次出现和术语表。机械守恒、语义复核、案例执行和发布构建分别出结果，旧审计的错误通过公开勘误更正，而不是静默覆盖历史。</p>
+<h2 class="section-title">Methodology — 方法与复核入口</h2>
+<p>共保留20条主题检索和2条SQL方言补充查询快照；按正式发布说明、论文submission history、文档更新时间与GitHub固定commit区分日期。浏览任务共用ego lite空间25，检索与正文在读取后持久化；微软页面曾误取推广卡片，发现后已改为提取main正文并重新保存。</p>
+<p><code>compile_research.py</code>逐项验证短引文在捕获正文中存在，并复算正文SHA-256，再输出37条来源、37条证据和37条限定主张（36项研究资料，加1项案例方言资料）。该脚本不从URL或标题自动推导真实性。两个独立文稿审阅与一个新论文方法复核报告提供交叉意见，主代理再以原文和运行结果校准结论；它们不是外部人类同行盲审。</p>
+<p>另见<code>review_history_principles_style.md</code>、<code>review_products_evolution_structure.md</code>、<code>review_new_paper_methods.md</code>、<code>report_vendor_deltas.md</code>和<code>report_examples_execution.md</code>。示例执行的通过与失败以原始JSON、进程退出码和运行日志为准。</p>
+
+            <div class="bibliography">
+                
+                <h2 class="section-title">Bibliography — 参考资料</h2>
+<p class="bib-entry">[1] OpenAI (2026). "Changelog". 2026-09-10. https://developers.openai.com/api/docs/changelog (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[2] OpenAI (2026). "Agents API". snapshot 2026-09-19. https://developers.openai.com/api/docs/guides/agents-api/overview (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[3] Anthropic (2026). "Claude Platform release notes - Claude Platform Docs". 2026-09-03/10/14. https://docs.anthropic.com/en/release-notes/api (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[4] Anthropic (2026). "Scaling Managed Agents: Decoupling the brain from the hands \ Anthropic". 2026-04-08. https://www.anthropic.com/engineering/managed-agents (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[5] Cursor (2026). "在您自行管理的机器上运行云端智能体 · Cursor". 2026-09-02. https://cursor.com/blog/self-hosted-machines (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[6] Cursor (2026). "Cursor 最新动态 — 最新更新与发布说明". 2026-09-10. https://cursor.com/changelog (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[7] T. Bengre; C. Curme / LangChain (2026). "Organizing Context in a Multi-Agent Harness". 2026-09-08. https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[8] Microsoft (2026). "Agent Harness | Microsoft Learn". updated 2026-09-15. https://learn.microsoft.com/en-us/agent-framework/concepts/harness (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[9] Wu et al. (2026). "HarnessDev: Can LLMs Create and Evolve Their Own Agent Harness?". 2609.01437v1; 2026-09-01. https://arxiv.org/html/2609.01437v1 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[10] Yan et al. (2026). "Harness-of-Harness: Multi-Day Autonomous Software Development with Continual Improvement". 2609.01481v1; 2026-09-01. https://arxiv.org/html/2609.01481v1 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[11] Zhang et al. (2026). "JIT-Agent: Scaling Harness Intelligence via Just-in-Time Harness Evolution". 2608.25593v2; 2026-09-03. https://arxiv.org/html/2608.25593v2 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[12] Jiang et al. (2026). "HarnessEvolve: Learning from Reference Trajectories for Reliable Agent Self-Evolution". 2609.00829v1; 2026-09-01. https://arxiv.org/html/2609.00829v1 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[13] Fan et al. (2026). "An Empirical Study of Harness Design for Coding Agents". 2609.20804v1; 2026-09-17. https://arxiv.org/html/2609.20804v1 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[14] Li et al. (2026). "A Blind Trust, the Bloody Thrust: When Attacker-Controlled Hook UpdatesSteer AI Agent Harnesses towards Malicious Behaviors". 2609.03884v2; 2026-09-08. https://arxiv.org/html/2609.03884v2 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[15] Chen et al. (2026). "MemSecBench: Tracking Agent Memory Poisoning from Persistence to Consequence and Repair". 2607.27080v1; 2026-07-29. https://arxiv.org/abs/2607.27080 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[16] Ben Brandt / ACP (2026). "ACP v2 is available in Draft - Agent Client Protocol". 2026-07-20 draft. https://agentclientprotocol.com/announcements/acp-v2-draft (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[17] Palash Shah / LangChain (2026). "LangSmith Engine: How We Built an Agent for Improving Agents". 2026-05-19. https://www.langchain.com/blog/how-we-built-langsmith-engine-our-agent-for-improving-agents (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[18] Jin et al. (2026). "Harness Engineering in LLM Tool Use via Agent-Native Reusable Tool Primitives". 2609.01736v1; 2026-09-01. https://arxiv.org/abs/2609.01736 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[19] Duan et al. (2026). "The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement". 2609.11873v2; 2026-09-15. https://arxiv.org/html/2609.11873v2 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[20] Chen et al. (2026). "Show-Harness: Just a VLM Agent Can Play Robots". 2609.10522v1; 2026-09-09. https://arxiv.org/abs/2609.10522 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[21] Yue et al. (2026). "Ecdysis: Efficient and Effective Training of Runtime Harnesses for LLM Agents". 2609.11677v1; 2026-09-10. https://arxiv.org/html/2609.11677v1 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[22] Lin et al. (2026). "Stellar Colosseum: A Many-Agent Harness for Long-Horizon Research in Mathematics and Theoretical Computer Science". 2609.15983v2; 2026-09-15. https://arxiv.org/html/2609.15983v2 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[23] Liu et al. (2026). "SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness". 2609.20519v1; 2026-09-17. https://arxiv.org/html/2609.20519v1 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[24] Zhang et al. (2026). "Self-Harness: Harnesses That Improve Themselves". 2606.09498v3; 2026-08-20. https://arxiv.org/abs/2606.09498 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[25] Du et al. (2026). "Living-Harness Is an Interactive-Agent Evolver". 2607.26598v2; 2026-08-11. https://arxiv.org/abs/2607.26598 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[26] Luo et al. (2026). "Self-Evolving Agent Harnesses via Gated Semantic Quality-Diversity". 2607.13683v1; 2026-07-15. https://arxiv.org/abs/2607.13683v1 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[27] Luo et al. (2026). "HarnessBank: Semantic Gene-Bank Search with Gated Verification for Agent-Harness Self-Evolution". 2607.13683v2; 2026-07-30. https://arxiv.org/html/2607.13683v2 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[28] NLE authors / Facebook Research (2026). "facebookresearch/nle: The NetHack Learning Environment". snapshot 2026-09-19. https://github.com/facebookresearch/nle (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[29] Tailin Zhou (2026). "Hierarchical Self-Improvement: A Framework for Task-Specific Evolvable Agent Harnesses". 2608.08466v1. https://arxiv.org/html/2608.08466v1 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[30] Taylor Mullen; Christian Gunderman / Google (2026). "The Anatomy of Harness Engineering: How to Evaluate, Iterate, and Guard AI Coding Agents - Google Developers Blog". 2026-09-09. https://developers.googleblog.com/the-anatomy-of-harness-engineering-how-to-evaluate-iterate-and-guard-ai-coding-agents/ (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[31] openJiuwen Team (2026). "openJiuwen: Beyond Static Harnesses for Long-Horizon Coding Agents". 2608.27969v1; 2026-08-28. https://arxiv.org/abs/2608.27969 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[32] Hacker News participants (2026). "An empirical study of harness design for coding agents | Hacker News". 2026-09-18/19. https://news.ycombinator.com/item?id=49753878 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[33] r/LocalLLaMA participants (2026). "Which agent harness do you use and why? : r/LocalLLaMA". 2026-09-05. https://www.reddit.com/r/LocalLLaMA/comments/1w8f7bp/which_agent_harness_do_you_use_and_why/ (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[34] Cursor forum reporter TeX1 (2026). "Custom subagent ignores its card and claims it is the parent agent - production unusable - Support / Bug Reports - Cursor - Community Forum". 2026-09-17. https://forum.cursor.com/t/custom-subagent-ignores-its-card-and-claims-it-is-the-parent-agent-production-unusable/172038 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[35] 黄浴 / 知乎 (2026). "HarnessEvolve：从参考轨迹中学习以实现可靠的智能体自进化 - 知乎". 2026-09-06. https://zhuanlan.zhihu.com/p/2079901486545478621 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[36] Barbaste et al. (2026). "Harness Engineering: Anatomy, Architecture, and Evolution of Coding Agents -- A Source-Code Study of Eleven Systems". 2609.00006v1; page date conflicts with identifier month. https://arxiv.org/abs/2609.00006 (Retrieved: 2026-09-19).</p>
+<p class="bib-entry">[37] Google Cloud (2026). "Query syntax | BigQuery". snapshot 2026-09-19. https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#for_system_time_as_of (Retrieved: 2026-09-19).</p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

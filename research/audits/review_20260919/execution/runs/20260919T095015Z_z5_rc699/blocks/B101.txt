@@ -1,0 +1,9 @@
+{
+  "release": "harness-43",
+  "parent": "harness-42",
+  "candidate": "mut-981",
+  "eval_report": "eval:2026w34:771",
+  "approvals": ["product", "security", "runtime-owner"],
+  "canary": {"slice": "low-risk-code", "result": "pass"},
+  "rollback_bundle": "harness-42+model-12+memory-87"
+}

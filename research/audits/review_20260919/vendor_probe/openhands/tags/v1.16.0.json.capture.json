@@ -1,0 +1,13 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/OpenHands/OpenHands/commits/v1.16.0"
+  ],
+  "retrieved_at": "2026-09-19T09:44:39.669592+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "sha256": "b676803bb9da2c4d2de571166f8e67c2e4f979b3df99c9c2e9b9f4d9452007fd"
+}

@@ -1,0 +1,10 @@
+model proposal
+  → schema validation
+  → semantic normalization
+  → policy evaluation
+  → approval if needed
+  → credential binding
+  → sandbox/executor dispatch
+  → result validation
+  → redaction/transformation
+  → event + model observation

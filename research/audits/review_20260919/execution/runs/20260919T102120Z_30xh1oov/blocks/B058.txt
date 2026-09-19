@@ -1,0 +1,8 @@
+delegate(
+  task,
+  allowed_tools,
+  resource_scope,
+  budget,
+  expiry,
+  can_delegate=false
+)

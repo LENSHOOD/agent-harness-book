@@ -1,0 +1,471 @@
+{
+  "scope": "offline method-discriminant and required-field checks; not full JSON Schema conformance, no model execution, fixture events are synthetic",
+  "passed": 58,
+  "total": 58,
+  "checks": [
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "initialize",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "thread/start",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "turn/start",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "turn/interrupt",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "turn/cancel",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/started",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/start",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/agentMessage/delta",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/update",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "turn/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "method_and_required_fields_only",
+      "fixture": "initialize",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "method_and_required_fields_only",
+      "fixture": "interrupt_valid_not_sent",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "method_and_required_fields_only",
+      "fixture": "interrupt_missing_turn_id",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "method_and_required_fields_only",
+      "fixture": "invalid_cancel",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "method_and_required_fields_only",
+      "fixture": "agent_delta_valid_not_received",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema",
+      "test": "method_and_required_fields_only",
+      "fixture": "invalid_generic_update",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "initialize",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "thread/start",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "turn/start",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "turn/interrupt",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "request",
+      "method": "turn/cancel",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/started",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/start",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/agentMessage/delta",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/update",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "item/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "exact_method_union",
+      "kind": "notification",
+      "method": "turn/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "method_and_required_fields_only",
+      "fixture": "initialize",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "method_and_required_fields_only",
+      "fixture": "interrupt_valid_not_sent",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "method_and_required_fields_only",
+      "fixture": "interrupt_missing_turn_id",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "method_and_required_fields_only",
+      "fixture": "invalid_cancel",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "method_and_required_fields_only",
+      "fixture": "agent_delta_valid_not_received",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "mode": "schema_experimental",
+      "test": "method_and_required_fields_only",
+      "fixture": "invalid_generic_update",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    }
+  ],
+  "source_checks": [
+    {
+      "snapshot": "old",
+      "method": "turn/interrupt",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "old",
+      "method": "turn/cancel",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "old",
+      "method": "item/started",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "old",
+      "method": "item/start",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "old",
+      "method": "item/agentMessage/delta",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "old",
+      "method": "item/update",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "old",
+      "method": "item/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "old",
+      "method": "turn/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "stable_0.155.1",
+      "method": "turn/interrupt",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "stable_0.155.1",
+      "method": "turn/cancel",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "stable_0.155.1",
+      "method": "item/started",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "stable_0.155.1",
+      "method": "item/start",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "stable_0.155.1",
+      "method": "item/agentMessage/delta",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "stable_0.155.1",
+      "method": "item/update",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "stable_0.155.1",
+      "method": "item/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "stable_0.155.1",
+      "method": "turn/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "new",
+      "method": "turn/interrupt",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "new",
+      "method": "turn/cancel",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "new",
+      "method": "item/started",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "new",
+      "method": "item/start",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "new",
+      "method": "item/agentMessage/delta",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "new",
+      "method": "item/update",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "snapshot": "new",
+      "method": "item/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "snapshot": "new",
+      "method": "turn/completed",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "results": [
+    "BUDGET_EXHAUSTED",
+    "BUDGET_EXHAUSTED",
+    "BUDGET_EXHAUSTED",
+    "COMMITTED",
+    "COMMITTED",
+    "BUDGET_EXHAUSTED",
+    "BUDGET_EXHAUSTED",
+    "BUDGET_EXHAUSTED",
+    "BUDGET_EXHAUSTED",
+    "COMMITTED",
+    "BUDGET_EXHAUSTED",
+    "BUDGET_EXHAUSTED"
+  ],
+  "snapshot": {
+    "task": {
+      "id": 1,
+      "state": "BUDGET_EXHAUSTED",
+      "budget": 3,
+      "spent": 3
+    },
+    "ledger": [
+      {
+        "action_id": "a0",
+        "key": "k0",
+        "binding": "64f688041bfca9b65f6d13527650e0c9ddc6eccb839945f99f874d3cb0f189b3",
+        "payload": "{\"action_id\": \"a0\", \"key\": \"k0\", \"target\": \"item/0\", \"args\": {\"i\": 0}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a1",
+        "key": "k1",
+        "binding": "4ca5f3aa622ee3cc5418c48c01ac1f5cd2ed05fcc0e7fdb9308a587e3c5afc1d",
+        "payload": "{\"action_id\": \"a1\", \"key\": \"k1\", \"target\": \"item/1\", \"args\": {\"i\": 1}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a10",
+        "key": "k10",
+        "binding": "88ddc606f109e1073ea046bbb16e584321aa611bfe5ad0820347484d13773532",
+        "payload": "{\"action_id\": \"a10\", \"key\": \"k10\", \"target\": \"item/10\", \"args\": {\"i\": 10}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a11",
+        "key": "k11",
+        "binding": "ab4c253429c6cecadb04729a2882cadcab90480bad48da8323149c3bbb965ee0",
+        "payload": "{\"action_id\": \"a11\", \"key\": \"k11\", \"target\": \"item/11\", \"args\": {\"i\": 11}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a2",
+        "key": "k2",
+        "binding": "9ab62b940f9a2b0977ba982931a94ca9c39d5a79611bdc4dafcb17f4c4edfc58",
+        "payload": "{\"action_id\": \"a2\", \"key\": \"k2\", \"target\": \"item/2\", \"args\": {\"i\": 2}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a3",
+        "key": "k3",
+        "binding": "baa914b356a49a794eefe7b2155d55abdd080b094a45be135d09468243bea8d3",
+        "payload": "{\"action_id\": \"a3\", \"key\": \"k3\", \"target\": \"item/3\", \"args\": {\"i\": 3}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "COMMITTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a4",
+        "key": "k4",
+        "binding": "6dc62e600afb6048f7313f6a238da25c2c32216bd16e19f7136fa1540b370cf5",
+        "payload": "{\"action_id\": \"a4\", \"key\": \"k4\", \"target\": \"item/4\", \"args\": {\"i\": 4}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "COMMITTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a5",
+        "key": "k5",
+        "binding": "9f1efeba16239d468e9feac2a8c65564762a595289a8954ba65ae0f10e9cc460",
+        "payload": "{\"action_id\": \"a5\", \"key\": \"k5\", \"target\": \"item/5\", \"args\": {\"i\": 5}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a6",
+        "key": "k6",
+        "binding": "f7464fa6d738da85876b2222e0d5b0c64ccc91f26429220050cb95937e9271fb",
+        "payload": "{\"action_id\": \"a6\", \"key\": \"k6\", \"target\": \"item/6\", \"args\": {\"i\": 6}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a7",
+        "key": "k7",
+        "binding": "e7bb41818ca252ae07bfe698d716ddb751013ee28c71113722ca78f5f03a3afb",
+        "payload": "{\"action_id\": \"a7\", \"key\": \"k7\", \"target\": \"item/7\", \"args\": {\"i\": 7}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a8",
+        "key": "k8",
+        "binding": "aa006bb5c4a08dd027148afe2238ab15abdac0120626475ae45d22b2752e8aad",
+        "payload": "{\"action_id\": \"a8\", \"key\": \"k8\", \"target\": \"item/8\", \"args\": {\"i\": 8}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "BUDGET_EXHAUSTED",
+        "cost": 1,
+        "approved": 0
+      },
+      {
+        "action_id": "a9",
+        "key": "k9",
+        "binding": "3fdeca497bda79a1f84149101ac2174aa30de3e39afac71ca4d11672d0d5299d",
+        "payload": "{\"action_id\": \"a9\", \"key\": \"k9\", \"target\": \"item/9\", \"args\": {\"i\": 9}, \"cost\": 1, \"tenant\": \"teaching\"}",
+        "status": "COMMITTED",
+        "cost": 1,
+        "approved": 0
+      }
+    ],
+    "events": [
+      {
+        "seq": 1,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 2,
+        "kind": "EXECUTE_RESERVED",
+        "detail": "k9"
+      },
+      {
+        "seq": 3,
+        "kind": "COMMITTED",
+        "detail": "k9"
+      },
+      {
+        "seq": 4,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 5,
+        "kind": "EXECUTE_RESERVED",
+        "detail": "k3"
+      },
+      {
+        "seq": 6,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 7,
+        "kind": "EXECUTE_RESERVED",
+        "detail": "k4"
+      },
+      {
+        "seq": 8,
+        "kind": "COMMITTED",
+        "detail": "k4"
+      },
+      {
+        "seq": 9,
+        "kind": "COMMITTED",
+        "detail": "k3"
+      },
+      {
+        "seq": 10,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 11,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 12,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 13,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 14,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 15,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 16,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 17,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      },
+      {
+        "seq": 18,
+        "kind": "AUTHORIZE",
+        "detail": "ALLOW"
+      }
+    ]
+  },
+  "target_effect_count": 3
+}

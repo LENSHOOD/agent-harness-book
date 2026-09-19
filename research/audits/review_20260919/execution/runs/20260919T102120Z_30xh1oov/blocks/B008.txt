@@ -1,0 +1,31 @@
+evidence_package:
+  schema_version: evidence-package/v1
+  package_id: required
+  task:
+    task_id: required
+    contract_version: required
+  attempt:
+    attempt_id: required
+    runtime: required
+    runtime_version: required
+    harness_profile: required
+  inputs:
+    - uri: required
+      hash: sha256-required
+  candidate:
+    uri: required
+    hash: sha256-required
+  effects: []
+  policy_decisions:
+    artifact_ref: required
+  verification:
+    verifier_version: required
+    environment_ref: required
+    status: PASS|FAIL|INCONCLUSIVE
+    checks: []
+  approvals: []
+  final_commit: null
+  lineage:
+    parent_attempt: optional
+    model_version: required
+    harness_bundle: required

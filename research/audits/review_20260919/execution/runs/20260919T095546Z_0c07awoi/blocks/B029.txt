@@ -1,0 +1,6 @@
+建议：prompt / tool description
+引导：workflow / mode / model routing
+检查：validator / policy decision
+限制：capability / IAM / network policy
+隔离：container / VM / separate account
+证明：external verification / signed audit

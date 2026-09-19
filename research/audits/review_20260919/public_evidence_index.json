@@ -1,0 +1,3256 @@
+[
+  {
+    "capture": "retrieval/acp-v2.json",
+    "url": "https://agentclientprotocol.com/announcements/acp-v2-draft",
+    "query": null,
+    "title": "ACP v2 is available in Draft - Agent Client Protocol",
+    "accessed_at": "2026-09-19T09:52:13.322Z",
+    "text_sha256": "acf7337c53293d8dcd89e93c66a44d1b4b0567b0356a287bb6aeff0a7a55cebd",
+    "capture_sha256": "93543e85183a3a4500abc9c33b405290e619593d8ecdb790911caf6537a8ebe5",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/anthropic-managed-architecture.json",
+    "url": "https://www.anthropic.com/engineering/managed-agents",
+    "query": null,
+    "title": "Scaling Managed Agents: Decoupling the brain from the hands \\ Anthropic",
+    "accessed_at": "2026-09-19T09:55:33.629Z",
+    "text_sha256": "a0b96ce24cc1e961a07f1598945095558509123f47d78daa4ff819163a4a82b0",
+    "capture_sha256": "5cfa15558dc389bff53f613e119221d5dc7b20c779af2e1019ab3134c81f270d",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/anthropic-release-notes.json",
+    "url": "https://docs.anthropic.com/en/release-notes/api",
+    "query": null,
+    "title": "Claude Platform release notes - Claude Platform Docs",
+    "accessed_at": "2026-09-19T09:34:14.296Z",
+    "text_sha256": "ea311783fcba31da29366644e55473f1d91572b78a2384d2b9cf54c8d6b7b46e",
+    "capture_sha256": "fa89837f3f2f836f2bb7ff9f59686851c22eea581bf6fa08b35444c4e36946dd",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/beyond-static.json",
+    "url": "https://arxiv.org/abs/2608.27969",
+    "query": null,
+    "title": "[2608.27969] openJiuwen: Beyond Static Harnesses for Long-Horizon Coding Agents",
+    "accessed_at": "2026-09-19T09:35:42.335Z",
+    "text_sha256": "ed63aacb2ac6b3ded18cf7a74a73118b5124840eaea45b63e2813d8950749ce3",
+    "capture_sha256": "18dc01a3058f95fa1e4cad6adf217e275da15623f542256df2b96b39a3c7a2e4",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/bigquery-time-travel.json",
+    "url": "https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#for_system_time_as_of",
+    "query": null,
+    "title": "Query syntax  |  BigQuery  |  Google Cloud Documentation",
+    "accessed_at": "2026-09-19T10:14:48.326Z",
+    "text_sha256": "f88726e7065f9e146a29f8c667571cbabeed77a1697d088427c9b303ed003503",
+    "capture_sha256": "736dd157d5fd309f64b600eb2a9af7730b2edb18198dca9db336de62428125f4",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/colosseum-full.json",
+    "url": "https://arxiv.org/html/2609.15983v2",
+    "query": null,
+    "title": "Stellar Colosseum: A Many-Agent Harness for Long-Horizon Research in Mathematics and Theoretical Computer Science",
+    "accessed_at": "2026-09-19T10:00:34.237Z",
+    "text_sha256": "dbbac567317e5a696b40f309b757b1c0bedeab48f4cec49c66e1ab84d16ce911",
+    "capture_sha256": "d75b5d89f51c5cf8530575d0792616f0e83a619c95745d2c2777cd308904e5c3",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/colosseum.json",
+    "url": "https://arxiv.org/abs/2609.15983",
+    "query": null,
+    "title": "[2609.15983] Stellar Colosseum: A Many-Agent Harness for Long-Horizon Research in Mathematics and Theoretical Computer Science",
+    "accessed_at": "2026-09-19T09:59:03.580Z",
+    "text_sha256": "d4a5322a1b9be1cd476d45147f878e2c43f70769c27580f6c68189187fcd3105",
+    "capture_sha256": "ec287b4b7e20337139cd62f54d39c5507bdd9c0a0c7e525cc01de053d6d17cc6",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/cursor-changelog.json",
+    "url": "https://cursor.com/changelog",
+    "query": null,
+    "title": "Cursor 最新动态 — 最新更新与发布说明",
+    "accessed_at": "2026-09-19T09:38:31.226Z",
+    "text_sha256": "a642780bee0ce8a79b734553bca8646e826eecb862839a77736b4b5fc5a66eea",
+    "capture_sha256": "27d3d24649c0a8acbc884fb01dc0e976b8722a0a83eabceec4a27a8b338209d8",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/cursor-self-hosted.json",
+    "url": "https://cursor.com/blog/self-hosted-machines",
+    "query": null,
+    "title": "在您自行管理的机器上运行云端智能体 · Cursor",
+    "accessed_at": "2026-09-19T09:34:14.310Z",
+    "text_sha256": "346bf97e76dbc1d9f4d00d07451ffea1a6ad1d683d101b2b47a2b167f828da93",
+    "capture_sha256": "b5103efaa0789270516aad47265b020606210296ed632ad6f5c7715eb57abcae",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/cursor-subagent-issue.json",
+    "url": "https://forum.cursor.com/t/custom-subagent-ignores-its-card-and-claims-it-is-the-parent-agent-production-unusable/172038",
+    "query": null,
+    "title": "Custom subagent ignores its card and claims it is the parent agent - production unusable - Support / Bug Reports - Cursor - Community Forum",
+    "accessed_at": "2026-09-19T09:54:21.151Z",
+    "text_sha256": "f5d2a4eb40dc93521313ddec21d16fc39ff07f51fcc0d275948e66b452326736",
+    "capture_sha256": "2eb6a3f365a270aadc3f924903c2b2ec2ee9b51115e6fb4f50c51af9409cd074",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/ecdysis-full.json",
+    "url": "https://arxiv.org/html/2609.11677v1",
+    "query": null,
+    "title": "Ecdysis: Efficient and Effective Training of Runtime Harnesses for LLM Agents",
+    "accessed_at": "2026-09-19T10:00:34.247Z",
+    "text_sha256": "729abed7d286e6ca89449de8be3f37555ac8575296f267f0dee9c6f6e125af75",
+    "capture_sha256": "a1a748c9bd1eb8fd07515b2c0d5e90e07be23dfb165b535e473e514ad0d0206a",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/ecdysis.json",
+    "url": "https://arxiv.org/abs/2609.11677",
+    "query": null,
+    "title": "[2609.11677] Ecdysis: Efficient and Effective Training of Runtime Harnesses for LLM Agents",
+    "accessed_at": "2026-09-19T09:59:03.589Z",
+    "text_sha256": "81f4eca57970012d8eeb3da24d34a6cf91cf5921f3bcf2ecdeb7929c22a82b47",
+    "capture_sha256": "54288743dc5558792618f043dfa4bbdb283cf0f20940a90762ce2407cdbadebd",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/empirical-full.json",
+    "url": "https://arxiv.org/html/2609.20804v1",
+    "query": null,
+    "title": "An Empirical Study of Harness Design for Coding Agents",
+    "accessed_at": "2026-09-19T09:45:11.392Z",
+    "text_sha256": "66108fe83d9fb2cdb4775abae3666855f3ca9706b0a62678a05fd021bf467286",
+    "capture_sha256": "4e303e5f97bd828c86f7eb7b7fcc9d9af3acbaa1bfd039ae82ad4076a2af6d41",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/empirical-harness-study.json",
+    "url": "https://arxiv.org/abs/2609.20804",
+    "query": null,
+    "title": "[2609.20804] An Empirical Study of Harness Design for Coding Agents",
+    "accessed_at": "2026-09-19T09:44:20.625Z",
+    "text_sha256": "4946305aa58f377687b16e3e11af29897ca942a1e49302f260f5c26d76afdc83",
+    "capture_sha256": "21c34fbf282cc132763a3d1615c409a84a2f17a0d1548038785d361b79fe2d3d",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/google-harness.json",
+    "url": "https://developers.googleblog.com/the-anatomy-of-harness-engineering-how-to-evaluate-iterate-and-guard-ai-coding-agents/",
+    "query": null,
+    "title": "The Anatomy of Harness Engineering: How to Evaluate, Iterate, and Guard AI Coding Agents - Google Developers Blog",
+    "accessed_at": "2026-09-19T09:59:03.556Z",
+    "text_sha256": "1b008c75f110c40020ad5be8fa137d4e3d7338ab610472628b2b4e2487691a68",
+    "capture_sha256": "b026ac5b9d1eee55a43d7be0c4a497f9f27a53391659cfbd875eaad31879e3ec",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/gsme-current.json",
+    "url": "https://arxiv.org/abs/2607.13683",
+    "query": null,
+    "title": "[2607.13683] HarnessBank: Semantic Gene-Bank Search with Gated Verification for Agent-Harness Self-Evolution",
+    "accessed_at": "2026-09-19T09:53:07.569Z",
+    "text_sha256": "a1309f8dc7dc7096e0f6754b13a6519afd879646fd7137e19207e2b16115c59c",
+    "capture_sha256": "792e1c7845a8b4250a79cbb1baec60288d4ed034f443c1fa357c65ed6234b5dd",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harness-of-harness.json",
+    "url": "https://arxiv.org/abs/2609.01481",
+    "query": null,
+    "title": "[2609.01481] Harness-of-Harness: Multi-Day Autonomous Software Development with Continual Improvement",
+    "accessed_at": "2026-09-19T09:35:42.344Z",
+    "text_sha256": "e14ded7681656ed17856a168f93f2738bc510b1fb9f413d30aa6e8367a7366ab",
+    "capture_sha256": "9761ed3a4477ae3c933fe6ee47afc4989d28e636a99c7dbb0bab1bca540f674c",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harness-survey.json",
+    "url": "https://arxiv.org/abs/2609.00006",
+    "query": null,
+    "title": "[2609.00006] Harness Engineering: Anatomy, Architecture, and Evolution of Coding Agents -- A Source-Code Study of Eleven Systems",
+    "accessed_at": "2026-09-19T09:44:20.644Z",
+    "text_sha256": "273a9dea2c0696f8ed69112ee0d0fb4b877a81fa815e5d46ec8579d2de27a60a",
+    "capture_sha256": "23e50af16517dc5117507fad4142c6b24648e22084627d01a64863aa33dd16b9",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harness-tool-primitives.json",
+    "url": "https://arxiv.org/abs/2609.01736",
+    "query": null,
+    "title": "[2609.01736] Harness Engineering in LLM Tool Use via Agent-Native Reusable Tool Primitives",
+    "accessed_at": "2026-09-19T09:44:20.654Z",
+    "text_sha256": "7c9af14a27f8099f67c30724a902b2a0dd2f7db5d71264248e04c1e2cc062e77",
+    "capture_sha256": "58d0c517b752f6517f59a01d9fc4d47548808187c3d380d2f1cfd9252a4f2ca2",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harnessbank-v1.json",
+    "url": "https://arxiv.org/abs/2607.13683v1",
+    "query": null,
+    "title": "[2607.13683v1] Self-Evolving Agent Harnesses via Gated Semantic Quality-Diversity",
+    "accessed_at": "2026-09-19T09:55:33.641Z",
+    "text_sha256": "b2be443cc235fe6540364075d28261080be66f38fc4551b9d53d7d671a1d013c",
+    "capture_sha256": "c13ba09d8c8c759a426a99351fd54e713321a44bace2e0835e9210f6d13e2272",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harnessbank-v2-full.json",
+    "url": "https://arxiv.org/html/2607.13683v2",
+    "query": null,
+    "title": "HarnessBank: Semantic Gene-Bank Search with Gated Verification for Agent-Harness Self-Evolution",
+    "accessed_at": "2026-09-19T09:55:33.606Z",
+    "text_sha256": "0197a8bef8b28d72e8847abf8dad131b434d0272293dd7e9fd66adde43d5ac9c",
+    "capture_sha256": "d3638ed522d0b8dd7c33a098b432f9a4656c087c6a426c88a0b3d00fb7a80532",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harnessdev-full.json",
+    "url": "https://arxiv.org/html/2609.01437v1",
+    "query": null,
+    "title": "HarnessDev: Can LLMs Create and Evolve Their Own Agent Harness?",
+    "accessed_at": "2026-09-19T09:45:11.363Z",
+    "text_sha256": "cd857c021a72c38a44f5b93f8ad100d993ba7d2a8ce0b6919dffff9983f9875f",
+    "capture_sha256": "34b49dc9f4f7a52253f1f52edeb2041d11ed0c4a684057eca0519825b4ef3f64",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harnessdev.json",
+    "url": "https://arxiv.org/abs/2609.01437",
+    "query": null,
+    "title": "[2609.01437] HarnessDev: Can LLMs Create and Evolve Their Own Agent Harness?",
+    "accessed_at": "2026-09-19T09:35:42.327Z",
+    "text_sha256": "8fcfe5bf21a5422cfe571c4f62bb4e616f7862209c97c91ac6675d592fbe801b",
+    "capture_sha256": "4bc34db665eed0102890c3856ff83c8667255e9268ad2cb008c817614ac9f315",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harnessevolve-full.json",
+    "url": "https://arxiv.org/html/2609.00829v1",
+    "query": null,
+    "title": "HarnessEvolve: Learning from Reference Trajectories for Reliable Agent Self-Evolution",
+    "accessed_at": "2026-09-19T09:52:13.305Z",
+    "text_sha256": "0f79e44598af4d509a87deb2050b3db8d3ec7e54ed8d2f6be9d17faef60a94ce",
+    "capture_sha256": "61c5f27310785273d00e0e75deaf9e8bd225d98cdef146ac932a5ed7a9440d78",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/harnessevolve.json",
+    "url": "https://arxiv.org/abs/2609.00829",
+    "query": null,
+    "title": "[2609.00829] HarnessEvolve: Learning from Reference Trajectories for Reliable Agent Self-Evolution",
+    "accessed_at": "2026-09-19T09:50:41.786Z",
+    "text_sha256": "fb4b81598fde9a16ca1dc7778bf4e7048c4814022d01e3428a8b7dcf61ecf24e",
+    "capture_sha256": "4f64f5cb5090dc32698fd75214fc2c70260e0ad7404919bc4c763c3464e48c93",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/hn-harness-study.json",
+    "url": "https://news.ycombinator.com/item?id=49753878",
+    "query": null,
+    "title": "An empirical study of harness design for coding agents | Hacker News",
+    "accessed_at": "2026-09-19T09:38:31.182Z",
+    "text_sha256": "af2849ee6a492c656ab333cce19c179f24e44efdd0a8ee05b147ba5ef48492e8",
+    "capture_sha256": "3a3a4736e9d9b06c328f5ec9527a44d2d76b619568c01ef91e50f61267c635f6",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/hoh-full.json",
+    "url": "https://arxiv.org/html/2609.01481v1",
+    "query": null,
+    "title": "Harness-of-Harness: Multi-Day Autonomous Software Development with Continual Improvement",
+    "accessed_at": "2026-09-19T09:45:11.377Z",
+    "text_sha256": "d65ec9d803a7acf14ace82ebe22346996fec13ca94ff69043cce8e0e9d285581",
+    "capture_sha256": "6ac72c8ed0f31a5691d7849d42b7de31bbb063499c4dbe89d3ad4dd2e0115d8b",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/hook-full.json",
+    "url": "https://arxiv.org/html/2609.03884v2",
+    "query": null,
+    "title": "A Blind Trust, the Bloody Thrust: When Attacker-Controlled Hook UpdatesSteer AI Agent Harnesses towards Malicious Behaviors",
+    "accessed_at": "2026-09-19T09:52:13.352Z",
+    "text_sha256": "a926c45338b0c44c7cf13f7f86a2f02102de0e1c95ccfa2e7e9f420e01e6a906",
+    "capture_sha256": "bf9cda6fdd9acccec519832d3f397d246532d609ca0c228d31588e2e8f1254a2",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/hook-supply-chain.json",
+    "url": "https://arxiv.org/abs/2609.03884",
+    "query": null,
+    "title": "[2609.03884] A Blind Trust, the Bloody Thrust: When Attacker-Controlled Hook Updates Steer AI Agent Harnesses towards Malicious Behaviors",
+    "accessed_at": "2026-09-19T09:50:41.803Z",
+    "text_sha256": "fd37c4e66b5d844d3dc2fa6fc32739130dd7f0174a3edf6cbe5532bff9c3ebb6",
+    "capture_sha256": "8e4177abe78988b9cd4a5f3ca9f5852417acd36bf3bca3c819608c963de038ae",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/hsi-current.json",
+    "url": "https://arxiv.org/html/2608.08466v1",
+    "query": null,
+    "title": "Hierarchical Self-Improvement: A Framework for Task-Specific Evolvable Agent Harnesses",
+    "accessed_at": "2026-09-19T09:53:07.542Z",
+    "text_sha256": "d86a65ffc175b51629bb85d29b93f464c92b5c7a51f479a692a4290880aa1adc",
+    "capture_sha256": "8438cb646bac812e0b255a0997ba968fa4498b4cedcfb6191aacc90bfb96a540",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/jit-agent.json",
+    "url": "https://arxiv.org/abs/2608.25593",
+    "query": null,
+    "title": "[2608.25593] JIT-Agent: Scaling Harness Intelligence via Just-in-Time Harness Evolution",
+    "accessed_at": "2026-09-19T09:35:42.352Z",
+    "text_sha256": "f5b60af0c0f8dd10abdd2d1adcf4448915c26a014b24c5cda19ef49fead4e667",
+    "capture_sha256": "797cd99eb4b8d598a4aff2317bab09de274275c12ff5001489f795867bb2646b",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/jit-full.json",
+    "url": "https://arxiv.org/html/2608.25593v2",
+    "query": null,
+    "title": "JIT-Agent: Scaling Harness Intelligence via Just-in-Time Harness Evolution",
+    "accessed_at": "2026-09-19T09:45:11.405Z",
+    "text_sha256": "e9d7fbc1458c42695bd540f32f5ff2650217dbc48fee33660c096a9ce17ee2f9",
+    "capture_sha256": "f6a9e81574190a58e12e58b28132ca211cacb2ddc35bd6a19e91c33e8d7d7f4e",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/langchain-context-modes.json",
+    "url": "https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness",
+    "query": null,
+    "title": "Organizing Context in a Multi-Agent Harness",
+    "accessed_at": "2026-09-19T09:34:14.279Z",
+    "text_sha256": "d75dcb0fc661d6359fc2e4af9dfcf8cc33d7b08e19dc39758b560293ca94a236",
+    "capture_sha256": "04134d46a0c62dd0379914c1c96418ee1c1358db54b51f304494d5963f931d82",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/langsmith-engine.json",
+    "url": "https://www.langchain.com/blog/how-we-built-langsmith-engine-our-agent-for-improving-agents",
+    "query": null,
+    "title": "LangSmith Engine: How We Built an Agent for Improving Agents",
+    "accessed_at": "2026-09-19T09:52:13.337Z",
+    "text_sha256": "b35d3d9ff024c133be11e4587eaf7399b3eb4287b672bba57f0339969a58e686",
+    "capture_sha256": "a30103b1471b22d0eaaf90a713813ef840f661b79f9aefee50074ffd20237ec5",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/living-harness-current.json",
+    "url": "https://arxiv.org/abs/2607.26598",
+    "query": null,
+    "title": "[2607.26598] Living-Harness Is an Interactive-Agent Evolver",
+    "accessed_at": "2026-09-19T09:53:07.560Z",
+    "text_sha256": "84c64169dd26a572eecba498a330a2aa4f630607db59c24f6b0ae0c3bcb1a90c",
+    "capture_sha256": "fa35b957fed74d41cea534ff665fa28f94fb9df3ef213414f2b7f4a08e3a6379",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/memsecbench.json",
+    "url": "https://arxiv.org/abs/2607.27080",
+    "query": null,
+    "title": "[2607.27080] MemSecBench: Tracking Agent Memory Poisoning from Persistence to Consequence and Repair",
+    "accessed_at": "2026-09-19T09:50:41.795Z",
+    "text_sha256": "4ba01ac2170810a2b651e07ddc3d25a01be2f35e2172bf59ed3290a3fa25db68",
+    "capture_sha256": "4e96e7c2d102b66e512342cf09fea5ae67343a1e90d8fcac7e9b964c51779d51",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/microsoft-harness.json",
+    "url": "https://learn.microsoft.com/en-us/agent-framework/concepts/harness",
+    "query": null,
+    "title": "Agent Harness | Microsoft Learn",
+    "accessed_at": "2026-09-19T09:44:20.634Z",
+    "text_sha256": "21a2861628fb2afbd04b50e0cbb6631b848f811a3de3c0e53363dc0dbce1b738",
+    "capture_sha256": "484ce44ca20747e137d6ff3d13838eb1aa80f6c29c4168ba587df3fb0b303a1d",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/nle-official.json",
+    "url": "https://github.com/facebookresearch/nle",
+    "query": null,
+    "title": "facebookresearch/nle: The NetHack Learning Environment",
+    "accessed_at": "2026-09-19T09:55:33.617Z",
+    "text_sha256": "8264b16a28eff7360850ddff6ce6225f064683ac8b33d1b4e27c2ca8c1b844b4",
+    "capture_sha256": "7767a1b12d3abc05146a4ede7e8bb501d932d00551e7ab5309f73bb3b7d3f887",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/openai-agents-overview.json",
+    "url": "https://developers.openai.com/api/docs/guides/agents-api/overview",
+    "query": null,
+    "title": "Agents API | OpenAI API",
+    "accessed_at": "2026-09-19T09:34:14.265Z",
+    "text_sha256": "e917ae9c3ba7ef1ae461328a18122cbf351fcd40b7091f1959807735aa466e86",
+    "capture_sha256": "de20b3aa7907dacb5dd5c6d2f313ff7fbe877cb462aa0b7f1aaf4023526c2282",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/openai-api-changelog.json",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "query": null,
+    "title": "Changelog | OpenAI API",
+    "accessed_at": "2026-09-19T09:38:31.208Z",
+    "text_sha256": "fd5bf2070521f5ac0726c9cf51a0c57b009b781f4089e81f424eab794881d9cc",
+    "capture_sha256": "44fb591a9912cd54c2f64ad245467e9ab31143ad0cdff7db2a5446e84cd0009f",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/reddit-harness-use.json",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1w8f7bp/which_agent_harness_do_you_use_and_why/",
+    "query": null,
+    "title": "Which agent harness do you use and why? : r/LocalLLaMA",
+    "accessed_at": "2026-09-19T09:54:21.112Z",
+    "text_sha256": "a7e78aefdd74f88932ef1f10b456c9734345b32f95e27870fd93b6041b29a883",
+    "capture_sha256": "1de0e574aef95f0fc4d4e62eabd52e0babeb125a08d407d1b9b9f381e59b5d19",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/rsi-full.json",
+    "url": "https://arxiv.org/html/2609.11873v2",
+    "query": null,
+    "title": "The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement",
+    "accessed_at": "2026-09-19T10:00:34.225Z",
+    "text_sha256": "5614d76616486ee792749d6ee59cdd300fd7baebbef9c6306e207faf4c689345",
+    "capture_sha256": "d4b7dd149b712544e32738656fe2ed95f27edaa67426653c278fb5f96d7b999d",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/rsi-roadmap.json",
+    "url": "https://arxiv.org/abs/2609.11873",
+    "query": null,
+    "title": "[2609.11873] The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement",
+    "accessed_at": "2026-09-19T09:50:41.777Z",
+    "text_sha256": "1d05e91ce01d9bb5f5e468560cc9b1402426b9a5e34c5e41285a4f4244f54955",
+    "capture_sha256": "80d2f85563bccda9900c524f7db994ef2bf09534d38a122a58a0053fdefbb20d",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-01-0.json",
+    "url": null,
+    "query": "agent harness after:2026-08-28 before:2026-09-20",
+    "title": null,
+    "accessed_at": "2026-09-19T09:29:56.131Z",
+    "text_sha256": null,
+    "capture_sha256": "0faa81bc4a6bb851838286ad09c8d84a4fe40c2ad4fbf444d81511f30a7573bf",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-01-1.json",
+    "url": null,
+    "query": "site:arxiv.org harness agent 2026 September",
+    "title": null,
+    "accessed_at": "2026-09-19T09:29:56.140Z",
+    "text_sha256": null,
+    "capture_sha256": "00953c5c51a65abebcccf45a42c7de82cffbbfa71f7320e221ceb7b411703bf7",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-01-2.json",
+    "url": null,
+    "query": "site:developers.openai.com codex harness changelog September 2026",
+    "title": null,
+    "accessed_at": "2026-09-19T09:29:56.149Z",
+    "text_sha256": null,
+    "capture_sha256": "e9062aa227b07fcf00aa92e4421b1ab6d598f0f29f4312854199b7f2c147230c",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-01-3.json",
+    "url": null,
+    "query": "site:anthropic.com engineering harness September 2026",
+    "title": null,
+    "accessed_at": "2026-09-19T09:29:56.155Z",
+    "text_sha256": null,
+    "capture_sha256": "76690bd686e0e4dc6a58a05cfb72bda63a62fe237da9c6fe97389777f3a7cfd2",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-02-0.json",
+    "url": null,
+    "query": "site:cursor.com harness agent after:2026-08-28 before:2026-09-20",
+    "title": null,
+    "accessed_at": "2026-09-19T09:32:23.279Z",
+    "text_sha256": null,
+    "capture_sha256": "509e3a9ae5ca819900de2dd759be2eb2dccecec44a2babe02ae4b58609cf3883",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-02-1.json",
+    "url": null,
+    "query": "DeepSeek harness dsh September 2026 github",
+    "title": null,
+    "accessed_at": "2026-09-19T09:32:23.300Z",
+    "text_sha256": null,
+    "capture_sha256": "df794e6e671322846286973d74d3464fc93791a7a697f6b4e407a07880c44878",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-02-2.json",
+    "url": null,
+    "query": "OpenHands agent SDK September 2026 harness",
+    "title": null,
+    "accessed_at": "2026-09-19T09:32:23.291Z",
+    "text_sha256": null,
+    "capture_sha256": "265e4898602a37f478f780de9183e8473f492a8f86b09c97a36a7ad0a8db17d8",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-02-3.json",
+    "url": null,
+    "query": "site:news.ycombinator.com harness after:2026-08-28 before:2026-09-20",
+    "title": null,
+    "accessed_at": "2026-09-19T09:32:23.312Z",
+    "text_sha256": null,
+    "capture_sha256": "b1d295c0e3465c8f17d163da5b7dfcc0adb9afa9c81f9f78f05bb8b3fabe2f6a",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-03-0.json",
+    "url": "https://www.google.com/search?pws=0&q=agent%20harness%20security%20benchmark%20memory%20poisoning%20after%3A2026-08-28%20before%3A2026-09-20",
+    "query": null,
+    "title": "agent harness security benchmark memory poisoning after:2026-08-28 before:2026-09-20 - Google 搜索",
+    "accessed_at": "2026-09-19T09:47:26.302Z",
+    "text_sha256": "65c4664cc112ad8dba6e94e489180a3ab7994dc3b92f293a0f3d857604083e4c",
+    "capture_sha256": "90fe7a455caecc20a28e5dc01392579fe6f4dfd7fafbe4cea91443abeb5772da",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-03-1.json",
+    "url": "https://www.google.com/search?pws=0&q=agent%20harness%20%E8%87%AA%E6%88%91%E8%BF%9B%E5%8C%96%202026%20%E4%B9%9D%E6%9C%88",
+    "query": null,
+    "title": "agent harness 自我进化 2026 九月 - Google 搜索",
+    "accessed_at": "2026-09-19T09:47:26.314Z",
+    "text_sha256": "b50a688e384b407e11c70fca664bc0629cba46e4521c828a81fb9aae53d8e95d",
+    "capture_sha256": "8822c43c32b032cd073a1af6c6bf939e7059187cbc549be8896b96c998cf2ab8",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-03-2.json",
+    "url": "https://www.google.com/search?pws=0&q=agent%20client%20protocol%20ACP%20harness%20September%202026",
+    "query": null,
+    "title": "agent client protocol ACP harness September 2026 - Google 搜索",
+    "accessed_at": "2026-09-19T09:47:26.333Z",
+    "text_sha256": "30395558c42635113b4886b32a64d6c0f771404f78f66424a40443a6f5bf5ec3",
+    "capture_sha256": "ec319f8534c795153830b1b3ef898bdef6098d26af0a2574ab0c6182f594ab89",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-03-3.json",
+    "url": "https://www.google.com/search?pws=0&q=site%3Areddit.com%2Fr%2FLocalLLaMA%20harness%20after%3A2026-08-28%20before%3A2026-09-20",
+    "query": null,
+    "title": "site:reddit.com/r/LocalLLaMA harness after:2026-08-28 before:2026-09-20 - Google 搜索",
+    "accessed_at": "2026-09-19T09:47:26.322Z",
+    "text_sha256": "d401f2f3913f367b4c641cf8bd9c17132ba4e55daacd905a4c44380cba0f1217",
+    "capture_sha256": "153cf2d13aac72225bf1720fb52bd921da54de58c9a500af7aa9646bced3138c",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-04-0.json",
+    "url": "https://www.google.com/search?pws=0&q=HarnessEvolve%20reference%20trajectories%20arxiv",
+    "query": null,
+    "title": "HarnessEvolve reference trajectories arxiv - Google 搜索",
+    "accessed_at": "2026-09-19T09:49:35.055Z",
+    "text_sha256": "871a6af149978495bdfce885cdfddaad2462efeccf29751c39fcfeef5c91bc7c",
+    "capture_sha256": "c33658544f7be856a7156e4a00208a8f1371c59231716b06dc6c43eeb86a99e3",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-04-1.json",
+    "url": "https://www.google.com/search?pws=0&q=The%20Last%20AI%20Built%20by%20Humans%20recursive%20self%20improvement%20arxiv%20September%202026",
+    "query": null,
+    "title": "The Last AI Built by Humans recursive self improvement arxiv September 2026 - Google 搜索",
+    "accessed_at": "2026-09-19T09:49:35.067Z",
+    "text_sha256": "f498b0e1f379fa5fe575702bad2797188f2f14df4687e09f51c714b748605ba5",
+    "capture_sha256": "91c37ff9ed11bb1f01a47e7ef5955631a732cf1412e96e0d6b0e7641a5a53899",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-04-2.json",
+    "url": "https://www.google.com/search?pws=0&q=MemSecBench%20agent%20memory%20poisoning%20arxiv",
+    "query": null,
+    "title": "MemSecBench agent memory poisoning arxiv - Google 搜索",
+    "accessed_at": "2026-09-19T09:49:35.091Z",
+    "text_sha256": "3af371669e6002223b5704c53fe89c7c74eec3b1cead34ea59a5ea40f6ca0a1f",
+    "capture_sha256": "a5dccc2043de4ed4ad0e244bdd7940a8c3fc570e38000cdd9c92359dde69e634",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-04-3.json",
+    "url": "https://www.google.com/search?pws=0&q=site%3Alangchain.com%20blog%20agent%20harness%20September%202026%20engine",
+    "query": null,
+    "title": "site:langchain.com blog agent harness September 2026 engine - Google 搜索",
+    "accessed_at": "2026-09-19T09:49:35.080Z",
+    "text_sha256": "f9475e622aa732d87b5919aa26d891dcf2cf6ab98562855b82a43de39d56bbd7",
+    "capture_sha256": "2b9d393c5b4989b73c994fd5de292a7cf5f92c93ac7d493fe3f32c2122f9473e",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-05-0.json",
+    "url": "https://www.google.com/search?pws=0&q=site%3Aarxiv.org%20agent%20harness%20after%3A2026-09-10%20before%3A2026-09-20",
+    "query": null,
+    "title": "site:arxiv.org agent harness after:2026-09-10 before:2026-09-20 - Google 搜索",
+    "accessed_at": "2026-09-19T09:57:16.271Z",
+    "text_sha256": "8d296cfa3eb5870e31e79a85b3dc38cdbdc8388b9e56a8562918d69805197e22",
+    "capture_sha256": "d378188e6bfe64f076bc633a91ef5460bb5ae1f6de77fd99fd77ab3827eda9e6",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-05-1.json",
+    "url": "https://www.google.com/search?pws=0&q=site%3Ablog.langchain.com%20harness%20September%202026%20deep%20agents",
+    "query": null,
+    "title": "site:blog.langchain.com harness September 2026 deep agents - Google 搜索",
+    "accessed_at": "2026-09-19T09:57:16.292Z",
+    "text_sha256": "8ae30666f5db9af9c1810bb5fa3e21700cc7d70c1da3ec12f123aba8bd99d990",
+    "capture_sha256": "142d9ce4670a60cd1fae7f5bc1410e719212df783f77752d4a0233ea852a2f27",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-05-2.json",
+    "url": "https://www.google.com/search?pws=0&q=site%3Acloud.baidu.com%20DuMate%20Agent%20API%20Harness%202026%209",
+    "query": null,
+    "title": "site:cloud.baidu.com DuMate Agent API Harness 2026 9 - Google 搜索",
+    "accessed_at": "2026-09-19T09:57:16.304Z",
+    "text_sha256": "c86b4444404297b1abfe61fa9d67c10e83dc7380b223f90c1db0d8b3410337a5",
+    "capture_sha256": "284a632765b145d138ba936c8f04434df13438dc3cefc2f775a678e9c5080dbf",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-05-3.json",
+    "url": "https://www.google.com/search?pws=0&q=site%3Adevelopers.googleblog.com%20gemini%20cli%20agent%20harness%20September%202026",
+    "query": null,
+    "title": "site:developers.googleblog.com gemini cli agent harness September 2026 - Google 搜索",
+    "accessed_at": "2026-09-19T09:57:16.279Z",
+    "text_sha256": "1830628d1d7107a96b3b8e1b3aff414bc60279e53219d829e3662daaff5bcbe0",
+    "capture_sha256": "7470bbd0415f8325b31b6fc019d0a70b205043118fbf762a7bf5e80e0506cdd4",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-sql-0.json",
+    "url": "https://www.google.com/search?pws=0&q=site%3Acloud.google.com%20bigquery%20FOR%20SYSTEM_TIME%20AS%20OF%20query%20parameters%20named%20parameter%20syntax",
+    "query": null,
+    "title": "site:cloud.google.com bigquery FOR SYSTEM_TIME AS OF query parameters named parameter syntax - Google 搜索",
+    "accessed_at": "2026-09-19T10:13:02.552Z",
+    "text_sha256": "9b57710fb00f3d858f0f134d58e0c2878f2f2b695e9f0741700162a0862b3668",
+    "capture_sha256": "0ddcc0a0b41dc699e37a2de9d5988faf7b325d8c0de96a02474b660045d89226",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/search-sql-1.json",
+    "url": "https://www.google.com/search?pws=0&q=site%3Alearn.microsoft.com%20FOR%20SYSTEM_TIME%20AS%20OF%20sql%20parameter%20temporal%20table",
+    "query": null,
+    "title": "site:learn.microsoft.com FOR SYSTEM_TIME AS OF sql parameter temporal table - Google 搜索",
+    "accessed_at": "2026-09-19T10:13:02.563Z",
+    "text_sha256": "d798061265eb044cee0c4427e6552d97fe29b1c0da21cb5718c2652f1a29e709",
+    "capture_sha256": "71bceccccb191c1a48821dbea9fd012db4496525e864131fcad72acc9abafd42",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/self-harness-current.json",
+    "url": "https://arxiv.org/abs/2606.09498",
+    "query": null,
+    "title": "[2606.09498] Self-Harness: Harnesses That Improve Themselves",
+    "accessed_at": "2026-09-19T09:53:07.552Z",
+    "text_sha256": "ca598acc7d41843238272e404f6d002cc736239d7e7227498fac242f42e23f3b",
+    "capture_sha256": "6bcbabb56d2462a5833cac41b211287f78832bbcca3bf84e70393cb17f288e3d",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/show-harness.json",
+    "url": "https://arxiv.org/abs/2609.10522",
+    "query": null,
+    "title": "[2609.10522] Show-Harness: Just a VLM Agent Can Play Robots",
+    "accessed_at": "2026-09-19T09:54:21.136Z",
+    "text_sha256": "45594030a01945364e52f13acc883b101892463006f4ddd40ac9cb8dac8b1826",
+    "capture_sha256": "34adcab573680416421b1baa464f13b2512abf00dedd3ee11f462d591759585c",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/sol-pi-full.json",
+    "url": "https://arxiv.org/html/2609.20519v1",
+    "query": null,
+    "title": "SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness",
+    "accessed_at": "2026-09-19T10:00:34.203Z",
+    "text_sha256": "20a19881965fb8f96e8049d3f6edd8c55d49bd07d244c6492dc272aefc87a130",
+    "capture_sha256": "c9911486f32cd280659e676158be9e5c6d987c903a064e698fc3ed98dfc2b5db",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/sol-pi.json",
+    "url": "https://arxiv.org/abs/2609.20519",
+    "query": null,
+    "title": "[2609.20519] SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness",
+    "accessed_at": "2026-09-19T09:59:03.569Z",
+    "text_sha256": "712788abf7b4ce4214ba26e7c721e07228aac8e7d7b5265fbe2eb9c0a5751f5c",
+    "capture_sha256": "7e9e78de68066e639fbc092a748a8591f5fe00737c84077de41e0a675f12ab8c",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "retrieval/zhihu-harnessevolve.json",
+    "url": "https://zhuanlan.zhihu.com/p/2079901486545478621",
+    "query": null,
+    "title": "HarnessEvolve：从参考轨迹中学习以实现可靠的智能体自进化 - 知乎",
+    "accessed_at": "2026-09-19T09:54:21.124Z",
+    "text_sha256": "ad5a912e64da61d503cd94770e54c6b8e3a233e2f6468b20fa2d87af8bfd3247",
+    "capture_sha256": "d45cd6ba7ce2622fe8cc57d0a1da20f6c4967420bd25fb7a91c3233c2fd2a55f",
+    "availability": "local retrieval cache"
+  },
+  {
+    "capture": "vendor_probe/codex/baseline.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits?sha=main&until=2026-08-27T23:59:59Z&per_page=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:25.364161+00:00",
+    "sha256": "7bfdd44fec0c458fca747e1c12b8e100f88d26ab0bd13e3e738a6dfdc3faefc5",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/head.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/main"
+    ],
+    "retrieved_at": "2026-09-19T09:43:24.707207+00:00",
+    "sha256": "72c0f01bf197cdd456b49274467010581dbbbf16f96b37903256cce2df654ad1",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/latest_release.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/releases/latest"
+    ],
+    "retrieved_at": "2026-09-19T09:43:26.336187+00:00",
+    "sha256": "7eadd7adb76a1bc1575c29493b869cc7e35d87cbae2ad8dd428140bf78151e13",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/local_release.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/releases/tags/rust-v0.142.5"
+    ],
+    "retrieved_at": "2026-09-19T09:57:14.156599+00:00",
+    "sha256": "91e055464f342324c8851227e1d7f7c78c2b8bc624910c7a56e0e94e14593cd0",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/releases_page_1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/releases?per_page=100&page=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:37.004725+00:00",
+    "sha256": "848d44ca19b18d92f4ac26dbd2d00f3ba25962ee224d4aca75ab3666c2f5212b",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/repo.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex"
+    ],
+    "retrieved_at": "2026-09-19T09:43:24.100927+00:00",
+    "sha256": "807f4c0f0251b5a5998d15a4fa1b8c19143d2939d05c7336c6b8e17c5e9145c0",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/local_tag/codex-rs/app-server/src/lib.rs.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/app-server/src/lib.rs?ref=rust-v0.142.5",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.329906+00:00",
+    "sha256": "4bbfc09beefb6e1476045cb424eb2f2b86658db63688c6b3710dc2ebee8c064c",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/local_tag/codex-rs/app-server/src/main.rs.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/app-server/src/main.rs?ref=rust-v0.142.5",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.661217+00:00",
+    "sha256": "5219ab070aacf1fc4d8a1753a6981d5af655f620c072a365a6f6657babb447e1",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/local_tag/codex-rs/arg0/src/lib.rs.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/arg0/src/lib.rs?ref=rust-v0.142.5",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.494975+00:00",
+    "sha256": "63556587faa41204580dc0dd6ab6e82bd1c5bd9cec93c2ad49592bce5e5770ad",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/new/codex-rs/Cargo.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/Cargo.toml?ref=78245b47af2a7aafcabe025828ceecca69db4df1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.182772+00:00",
+    "sha256": "5f531fe8a45a1ab7d9cf56f03eb31dfb5ec2ecfb7574bebaada6130382e5877f",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/new/codex-rs/app-server/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/app-server/README.md?ref=78245b47af2a7aafcabe025828ceecca69db4df1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.152185+00:00",
+    "sha256": "2d307580a9e3c8818c9d83336d9e94eb70b7cefc589dd48694d6bee10ba70bbc",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/new/codex-rs/app-server-protocol/src/protocol/common.rs.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/app-server-protocol/src/protocol/common.rs?ref=78245b47af2a7aafcabe025828ceecca69db4df1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.278736+00:00",
+    "sha256": "02cd72be646c4388e90f21ed651838aeab3d6273ade14715e38f2de6c095ba99",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/old/codex-rs/Cargo.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/Cargo.toml?ref=426fa8cdab4247e5623e9617d531f6917482b947",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.073508+00:00",
+    "sha256": "72caf920f01c29e97c54d5d56eeb129aa4ca1493c8bdc49a8112a4b27edfee72",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/old/codex-rs/app-server/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/app-server/README.md?ref=426fa8cdab4247e5623e9617d531f6917482b947",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.463010+00:00",
+    "sha256": "5e9913c86dc43580a645c6a200ef9fb6a3a2fe2cfe0099f0b0873c656db765f5",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/old/codex-rs/app-server-protocol/src/protocol/common.rs.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/app-server-protocol/src/protocol/common.rs?ref=426fa8cdab4247e5623e9617d531f6917482b947",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.266059+00:00",
+    "sha256": "f67267aa0645d50ee997334036f26ef8d7b3ed42f7c79afa33e6ebb507c0c45d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/stable_0.155.1/codex-rs/app-server/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/app-server/README.md?ref=be2951ea34f0d295ed0becf97079f92fa5f6950e",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:18.495363+00:00",
+    "sha256": "a0474274712e422a67e591c19ef87d602f47a019b1628d2734a2d066337feb11",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/source/stable_0.155.1/codex-rs/app-server-protocol/src/protocol/common.rs.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/contents/codex-rs/app-server-protocol/src/protocol/common.rs?ref=be2951ea34f0d295ed0becf97079f92fa5f6950e",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:19.199639+00:00",
+    "sha256": "da72b22e76648ce7549c2ab7677bf828bf4fbe2f44ae73ac8dc1c53651370b47",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/python-v0.154.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/python-v0.154.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.487572+00:00",
+    "sha256": "5017aed2dc3c28fe39aabd237a646caba46ea6abc9ac6f251472a7d1fdba03d8",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.142.5.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.142.5"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.937485+00:00",
+    "sha256": "8aa5963c66950a8ae1982ad4b3c4862db0766661fecac0eb38f0f5d45c3b3bb9",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.150.1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.150.1"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.642659+00:00",
+    "sha256": "e4c26970647c8442f6a94daa0e47a458bb300a899891459e0ac22fb09c78169a",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.151.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.151.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.782478+00:00",
+    "sha256": "1f377b79b92524ddd0a6f212d19974180cebf819548961e15f8e17bcd30b0896",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.152.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.152.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.323531+00:00",
+    "sha256": "ee13de3006b6cd82d2aae2a942008439599494bcf5ad843128683b05b9f82e18",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.152.1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.152.1"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.822054+00:00",
+    "sha256": "939d776c1a8e7439cf1e4a068ddc15eecd5ec801ecb8fddcdc86cf3cce8dccb2",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.153.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.153.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.408740+00:00",
+    "sha256": "ca2200fb0451c47e2ac4af350e16f95092d05401c764adba49812fb4c51f3b06",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.153.1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.153.1"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.388545+00:00",
+    "sha256": "cffff885fc5bb2876a853c293c4fcde971fa9601348e8fabb9b8ebb010a90920",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.153.2.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.153.2"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.399041+00:00",
+    "sha256": "1a29e8307686bb051426e8dd52407d7d51a874a8e3fd1152139090a4071b0542",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.153.3.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.153.3"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.257245+00:00",
+    "sha256": "b729b74cd181a2e1b4225d61ea0faac911a9ef88104f8d67305aa86dc2aff007",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.153.4.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.153.4"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.628487+00:00",
+    "sha256": "35a6952c6d8146fc19fd5d801c41c7f340e1e2f8b03d9f785e0f3920a04ad443",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.154.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.154.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.591294+00:00",
+    "sha256": "81cef1998b0fec87c537e4166e99df94cf807e144f48fae96ed8f1cc60f532d2",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.155.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.155.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.248368+00:00",
+    "sha256": "5ba0992b9f8115af95cfd1bacd8604d727279c228a5ba190c1a44e76a574b06b",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tags/rust-v0.155.1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/commits/rust-v0.155.1"
+    ],
+    "retrieved_at": "2026-09-19T09:44:38.271779+00:00",
+    "sha256": "1fa617fa2ec4e2e1c277805d450311ba16811b4e5a537465f3c971d8f1b2c128",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/codex/tree.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/openai/codex/git/trees/78245b47af2a7aafcabe025828ceecca69db4df1?recursive=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:38.854456+00:00",
+    "sha256": "5963c2a46654d1b542a0788f262e745b3dd3589387760b1a5f5425504f90f485",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/baseline.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=master&until=2026-08-27T23:59:59Z&per_page=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:25.358754+00:00",
+    "sha256": "14e1cc946be85bd6021a53d98f1a9224623a666b88e5727b3e0bab46e28e3371",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/75ed8da3e0c9.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/75ed8da3e0c9103b3b2174b2981b7129e1fba21d"
+    ],
+    "retrieved_at": "2026-09-19T09:57:13.361793+00:00",
+    "sha256": "018bde343be270b396464902fb99cba1b32a79b61c2c1389d839118653006d40",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/7c9bb5914ced.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/7c9bb5914cedec80e46197a8c894037fcfd12faf"
+    ],
+    "retrieved_at": "2026-09-19T09:54:19.613914+00:00",
+    "sha256": "af6fc3fd9c42da7f2dad944f334211046b21e25787b5b52bbf3da8ea7f16db5e",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/98b92b683c39.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/98b92b683c39"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.515620+00:00",
+    "sha256": "690e455d11d72acd69c02243b288ba9de5d7e862b7828c053f3bce46618aa2b0",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/9b7a8ccc9fab.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/9b7a8ccc9fabc2e87386acf7f8b0741baf978022"
+    ],
+    "retrieved_at": "2026-09-19T09:54:18.826378+00:00",
+    "sha256": "6b7cfeb2a434381a7df23b0f3d3a688a01499904df186b1eb4ba1c621e5d27a8",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/abd765a6001f.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/abd765a6001f"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.188488+00:00",
+    "sha256": "811aed3da22c8cb16bb0a040bf7a497ae8c497c06c0cf825f1fce1fefc4ca955",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/aeb13413c71e.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/aeb13413c71e"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.470853+00:00",
+    "sha256": "1d65b613f1f7de00cc22be2bff1de4b02d9f1adc83d45e5590394ef9afa94d59",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/d1521ea7838f.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/d1521ea7838f"
+    ],
+    "retrieved_at": "2026-09-19T09:51:35.337469+00:00",
+    "sha256": "2e3c4baddc4a3132bf655376f3ddab327fc45a9fd63ded7a7ba0d6420f6cc9f7",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/e07f41d5fd8c.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/e07f41d5fd8c"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.122985+00:00",
+    "sha256": "49b37ff4c2abc7a42d7be850a8f7a54a743294d029c55c7ca82ea1bd4b318edb",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/ed32f57f88ef.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/ed32f57f88ef"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.349909+00:00",
+    "sha256": "69042e979344ab2feed7c47b0d0c2b57fac51ac4ccb21963b9199f9a3f2683fd",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/commits/f99b06eaed81.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/f99b06eaed81"
+    ],
+    "retrieved_at": "2026-09-19T09:51:34.765805+00:00",
+    "sha256": "62dd9fc112cc95c73b2789ca96c30c8e7f1acc0d4266fa1b9740750af61b36c6",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/compare.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/compare/cd5ef8148158c3a752a658978873241fdf8e2bbc...ddefc45fbc7f8e46dd73185e68295696d1297887"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.775428+00:00",
+    "sha256": "d8d6e4850b01f2395efd36e6ed674f356b8510b96d61c5fa327a3df0780fe0c5",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/head.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/master"
+    ],
+    "retrieved_at": "2026-09-19T09:43:24.734184+00:00",
+    "sha256": "eb8e3aac183ed429fd92d1d7b652cfda3695335f917f1c4f60b2489c9ed751e6",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/agent_setup.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/core/agent-loop/src&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.192627+00:00",
+    "sha256": "f86206f49b9ed7445e4863dc4df3656456ead5313f0b73b7439fde2f0bf62fa7",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/architecture.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=docs/architecture.md&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:49:05.723281+00:00",
+    "sha256": "e98f654bf5a4b9e95c16f3a21c131857abe506a08239703da66dace81be2895d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/boot.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/boot/app-boot&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.394943+00:00",
+    "sha256": "d314d305f150720b113f7e87247c77cf79aa984f52351d04cd9915d1397f9fc2",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/code_runtime.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/code-runtime&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:54:18.801232+00:00",
+    "sha256": "c78358b268fe79561dbdf18f344ebe05b963d8a81fa7667fb5c62523f9f3cc50",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/plugin.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/boot/plugin-manager&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.034921+00:00",
+    "sha256": "91b7d36d002bc3c8fd460fd08d1e912e5ba05e53dfc45117c3c769bfd58ba065",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/ptc.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/ptc&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.116515+00:00",
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/ptc_rename.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/ptc-runtime&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.457106+00:00",
+    "sha256": "cb003d54cb5dbe27684548b096362d7141e962331106b4dfb56dcc009e0c847f",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/tool_cordis.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/extensions/tool-cordis/src/index.ts&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.940311+00:00",
+    "sha256": "c0ac3d325d73ef90c1f453e6c8d63e69fdf866f8579aeca9fff6674e403e5a22",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/history/vm.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits?sha=ddefc45fbc7f8e46dd73185e68295696d1297887&path=packages/extensions/cordis-host-runner/src/sandbox.ts&since=2026-08-28T00:00:00Z&per_page=100"
+    ],
+    "retrieved_at": "2026-09-19T09:49:05.560868+00:00",
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/latest_release.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/releases/latest"
+    ],
+    "retrieved_at": "2026-09-19T09:43:26.097467+00:00",
+    "sha256": "d9e37600354c1839f6b22cebde497e9d14750d2401a06c9a51b1619baf991613",
+    "exit_code": 1,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/old_commit.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/cd5ef8148158c3a752a658978873241fdf8e2bbc"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.130305+00:00",
+    "sha256": "0a8a3d08e1145ea8929bb05633792d1ec4e141d5cf3ec7ed1a6813b236347a4c",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/old_tree.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/git/trees/cd5ef8148158c3a752a658978873241fdf8e2bbc?recursive=1"
+    ],
+    "retrieved_at": "2026-09-19T09:49:07.252939+00:00",
+    "sha256": "06b53d213a7370c08373f6a294d7143367ec03bcb3096e960d7a9fb3f41b782d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/releases_page_1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/releases?per_page=100&page=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:26.873237+00:00",
+    "sha256": "42aa3f2e1f5bcfe81887f3d28cf2a8f9b3cbdbe8145599f3156a9f37d4d607e8",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/repo.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness"
+    ],
+    "retrieved_at": "2026-09-19T09:43:23.972928+00:00",
+    "sha256": "d902e233e399cabc0a7b1bb628456e01e6b0dd1d5579130ba6b3ed2581ee7ccc",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/README.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:36.923997+00:00",
+    "sha256": "b43a2af65d10028e5de61e4603f946bfce9b777df079e92745491c7700a6d58e",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/docs/architecture.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/docs/architecture.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:36.981066+00:00",
+    "sha256": "a381d3b3cb3af59f9be1075b009d5fd0b65b926c2dadd59965af0b1d9d1d2b0a",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/docs/tool-catalog.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/docs/tool-catalog.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.714636+00:00",
+    "sha256": "de6908c430c5470d57ba958f9a6a54005db9d2a50f64f5b7a8ef2e7338db59a8",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/package.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/package.json?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.683203+00:00",
+    "sha256": "a9cc164c4d922d74571e09c04be4e0f85a318685d410bb1c56072258a19a6f1d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/boot/app-boot/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/app-boot/README.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:05.516029+00:00",
+    "sha256": "63290bf4290b940d25e59943f977bac0c2ad59ef582d2b251deaae1171520f13",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/boot/app-boot/src/index.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/app-boot/src/index.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:31.813860+00:00",
+    "sha256": "eb2b9dbdc1eb0b08a1d1ce7b1dd32e340c05c6ad5bac15ccbd3f596f6e859028",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/boot/app-boot/src/profile.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/app-boot/src/profile.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:31.631719+00:00",
+    "sha256": "4751a270ee65d7a6d20da08da8c274ff763b6a02de69a03a3677279078ab3fb1",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/boot/plugin-manager/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/plugin-manager/README.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:04.882477+00:00",
+    "sha256": "245ee6d39cc3d6ec85938957cd4464b945722805172c05107215be79ae19fd1e",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/boot/plugin-manager/src/operations.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/plugin-manager/src/operations.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:04.870904+00:00",
+    "sha256": "439ba0a4e681178e0f735e4f9dc5256e9ab609d82b1c0e396a9a89a6b78d8ea6",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/boot/plugin-manager/src/tools.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/plugin-manager/src/tools.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.313356+00:00",
+    "sha256": "eb36644ffa9a9608689e5c6f8ccbd9ff75532b9d9477631fc93a276122d94288",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/core/agent-loop/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/core/agent-loop/README.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:05.507730+00:00",
+    "sha256": "0a2275673cec2f22cb343cabab7554ef59ae7b6ffb73f0e7a93c8df421f446f8",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/extensions/cordis-host-runner/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/extensions/cordis-host-runner/README.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:04.884744+00:00",
+    "sha256": "bb98800d0e9e05770626811f50d322c52a90907676add0857c91c07121c1f480",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/extensions/cordis-host-runner/src/lifecycle.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/extensions/cordis-host-runner/src/lifecycle.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:31.643077+00:00",
+    "sha256": "21eaf07ad26c1a4463d8a91664d8e88c4ba93e714b93de0868918e3c0d2ef53d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/extensions/cordis-host-runner/src/sandbox.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/extensions/cordis-host-runner/src/sandbox.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:04.757600+00:00",
+    "sha256": "a7deb6432593dab5f3976eb1c3f63ff8457112048a0a03294581ab6d42baed05",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/extensions/tool-cordis/src/index.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/extensions/tool-cordis/src/index.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:31.648906+00:00",
+    "sha256": "2a5527aa76df829a27184c0dd67a84086b71c002c7de1a1a97af59874c255626",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/ptc-runtime/ptc-runtime-node/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/ptc-runtime/ptc-runtime-node/README.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.840667+00:00",
+    "sha256": "de6e3418bb18539081b7e154228aa1613843f8b49672f34f6ee8a2114c283b7e",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/ptc-runtime/ptc-runtime-node/src/launch.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/ptc-runtime/ptc-runtime-node/src/launch.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.307126+00:00",
+    "sha256": "3b5dba23947071bfda759995fc9a98c2b1072a589a0c3f437ed17326afe1c49c",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/packages/sandbox/sandbox-local/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/sandbox/sandbox-local/README.md?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:05.530895+00:00",
+    "sha256": "6934b74bbef0ab31a45d03b986c9ed691f179eded3981351033519c5f2c36ded",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/vendor/loader/src/config/entry.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/vendor/loader/src/config/entry.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.242455+00:00",
+    "sha256": "891189af87e3491c71be7a74ea76f5fdc71bd3e87cc4a6a1a3aaef7a531fa5cd",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/new/vendor/loader/src/config/group.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/vendor/loader/src/config/group.ts?ref=ddefc45fbc7f8e46dd73185e68295696d1297887",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.260674+00:00",
+    "sha256": "5e138e8a8fad22e21d031859345797c445efbc380559fc32d35b03c835e60ccc",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/README.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:36.928264+00:00",
+    "sha256": "a51ca4bff273518c3f292b2e6800f5f2de76170ae6f5919fc48e4a0d82b0da1e",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/docs/architecture.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/docs/architecture.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:36.953863+00:00",
+    "sha256": "2bf22f999cf5c0ddb0b05e8041dd73cd8ece60b3cfaaa485878aa329c47d26d3",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/docs/tool-catalog.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/docs/tool-catalog.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:37.154753+00:00",
+    "sha256": "955f06db4ad0660fb2c329d129b3fcde86db0e7f4e0b940b9e60cf2e12ee8879",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/package.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/package.json?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:36.950439+00:00",
+    "sha256": "552fe07638754047fb3dfd29d61dde835c2a5a618da8b766a711bc15eaa334e2",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/boot/app-boot/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/app-boot/README.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:05.379553+00:00",
+    "sha256": "d44e9fd69898587c40f2d1e948bae0da4459e540bb93dfb77e8287fd51cd2988",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/boot/app-boot/src/index.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/app-boot/src/index.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:31.765076+00:00",
+    "sha256": "3be1cad2d61b4717cae435f746b6cc5c13d447309f281521e2eb87ec9dc2ce94",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/boot/app-boot/src/profile.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/app-boot/src/profile.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:31.759583+00:00",
+    "sha256": "b70b809c55ac3be6cbd588e1d04bb8e503da09734c3d0a090f9fb35f28bc91b9",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/boot/plugin-manager/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/plugin-manager/README.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:04.858186+00:00",
+    "sha256": "e45906ce02e79f16fb87a838d86bb4e497e37a9591f97608fa013bbcd8b9cbc2",
+    "exit_code": 1,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/boot/plugin-manager/src/operations.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/boot/plugin-manager/src/operations.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:04.905890+00:00",
+    "sha256": "e45906ce02e79f16fb87a838d86bb4e497e37a9591f97608fa013bbcd8b9cbc2",
+    "exit_code": 1,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/code-runtime/code-runtime-worker-thread/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/code-runtime/code-runtime-worker-thread/README.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:18.498962+00:00",
+    "sha256": "0c982c59c3aea07d740d82f1884de073c17474deee42eb955fb240eed4a99783",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/code-runtime/code-runtime-worker-thread/src/index.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/code-runtime/code-runtime-worker-thread/src/index.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:18.445402+00:00",
+    "sha256": "3c89db89bbc84bf21786c9c7b8fe49326cd450f4b1418c895a3a8f893e1f028e",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/code-runtime/code-runtime-worker-thread/src/worker.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/code-runtime/code-runtime-worker-thread/src/worker.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:18.489725+00:00",
+    "sha256": "41fc5366e37516721a1fde49de30cdfa1cb34981c0967d654b0a98fc615d435d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/core/agent-loop/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/core/agent-loop/README.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:05.454361+00:00",
+    "sha256": "6ca72ad90e8aba08780db061d0973dc14926556eb63328b6ebea3a4c2cbe6283",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/extensions/cordis-host-runner/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/extensions/cordis-host-runner/README.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:04.908700+00:00",
+    "sha256": "8d723209e2435658fea8cf3d81eba254a4a419a065fcc50904b3c544e482728e",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/extensions/cordis-host-runner/src/lifecycle.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/extensions/cordis-host-runner/src/lifecycle.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:31.639145+00:00",
+    "sha256": "cbe2d9beb583151fe590e2b8ebcdf1656cedc083cfde60532251f11c4f4a673f",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/extensions/cordis-host-runner/src/sandbox.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/extensions/cordis-host-runner/src/sandbox.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:04.889673+00:00",
+    "sha256": "a7deb6432593dab5f3976eb1c3f63ff8457112048a0a03294581ab6d42baed05",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/extensions/tool-cordis/src/index.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/extensions/tool-cordis/src/index.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:31.722844+00:00",
+    "sha256": "4ed9fe8e09c4ada6e854ec189157e413430141c23550588385c1924d08148519",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/packages/sandbox/sandbox-local/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/packages/sandbox/sandbox-local/README.md?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:05.456490+00:00",
+    "sha256": "b4d424d6c7799d30dbe4301dd7d39f3ce05d8aba8b2c2024ed06e64aa918af46",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/vendor/loader/src/config/entry.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/vendor/loader/src/config/entry.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.247317+00:00",
+    "sha256": "c1a15a12decb49bda43a953787708a9fb6afa2bc056018287d89fcd3a1d2c5fe",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/source/old/vendor/loader/src/config/group.ts.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/contents/vendor/loader/src/config/group.ts?ref=cd5ef8148158c3a752a658978873241fdf8e2bbc",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:32.242190+00:00",
+    "sha256": "a3079629f907745ddc1e0f2520b66d57711053b4d3715ee8b5983954a6908168",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/tags/dsh-v0.1.2-alpha.1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/dsh-v0.1.2-alpha.1"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.248196+00:00",
+    "sha256": "0a8a3d08e1145ea8929bb05633792d1ec4e141d5cf3ec7ed1a6813b236347a4c",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/tags/dsh-v0.1.6-alpha.2.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/commits/dsh-v0.1.6-alpha.2"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.265728+00:00",
+    "sha256": "eb8e3aac183ed429fd92d1d7b652cfda3695335f917f1c4f60b2489c9ed751e6",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/dsh/tree.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/deepseek-ai/deepseek-harness/git/trees/ddefc45fbc7f8e46dd73185e68295696d1297887?recursive=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:28.663867+00:00",
+    "sha256": "46bb19ccf535e18355188adf4dc6c42c9c358bf801fa1b399fc526d40ddfecef",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/baseline.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits?sha=main&until=2026-08-27T23:59:59Z&per_page=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:25.332967+00:00",
+    "sha256": "8cabe92c14d82bda848b64d31f328ae70e75ec493409706ff8662ad739c4dc2c",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/first_v1_release.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/releases/tags/1.0.0"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.954077+00:00",
+    "sha256": "2c994936d515485ee3428fb67b6a029ec69fc397fbe41ad04d13d89e1526f5f9",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/head.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits/main"
+    ],
+    "retrieved_at": "2026-09-19T09:43:24.694084+00:00",
+    "sha256": "701eaf88ddcf6b7dfd70d7339dd36220d22f7cdac10241893f064b64009e476d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/latest_release.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/releases/latest"
+    ],
+    "retrieved_at": "2026-09-19T09:43:26.012204+00:00",
+    "sha256": "5fb69b3f5c587046a3488fa67ce4b63c0f76d25f65809560b84979a91e6fb206",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/legacy_tree.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/git/trees/0.62.0?recursive=1"
+    ],
+    "retrieved_at": "2026-09-19T09:51:34.290612+00:00",
+    "sha256": "348056866eeccd42a5bdf505754ab3f41a1d50c0b03574f0d30128e6b9e743ee",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/releases_page_1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/releases?per_page=100&page=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:27.738578+00:00",
+    "sha256": "e792782b3ee40fd1684b46907dbab2103466d03dd420eb5eb8c405f5d047ea3d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/repo.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands"
+    ],
+    "retrieved_at": "2026-09-19T09:43:24.071960+00:00",
+    "sha256": "0b04cbee83524b7e9680021f49f1c737d1be53058a563f85f5d799471ce3f57a",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/legacy_0.62.0/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/README.md?ref=0.62.0",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:34.040273+00:00",
+    "sha256": "b94aab64e09b87e69ffd4f5b36c56a0b7a0fcff2c534861637a58525efe184a6",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/legacy_0.62.0/openhands/runtime/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/openhands/runtime/README.md?ref=7fbb48c40679afd674970966b96185657d92a487",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:19.573502+00:00",
+    "sha256": "4a27dd8d7dc5ae0f1cef046c39cc83db57479f677050781f8aca55a364a633d9",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/legacy_0.62.0/openhands/runtime/action_execution_server.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/openhands/runtime/action_execution_server.py?ref=0.62.0",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:34.569498+00:00",
+    "sha256": "44c55f76cf6b1a1d3e768a9a11fc012dd3a97cf5ce341a61d9a1fa0fb6838c8a",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/legacy_0.62.0/openhands/runtime/base.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/openhands/runtime/base.py?ref=0.62.0",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:34.310950+00:00",
+    "sha256": "a41975e6fcd34bed989fa08a1f246f6dcc540dbfd61da9f877ea53a2fb2348bc",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/legacy_0.62.0/openhands/runtime/impl/docker/docker_runtime.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/openhands/runtime/impl/docker/docker_runtime.py?ref=0.62.0",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:51:34.421804+00:00",
+    "sha256": "09174eaba47a383c2d366e34ef8862feabccba52c1321266e266b015c700f537",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/new/DEVELOPMENT.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/DEVELOPMENT.md?ref=a07364828c8f202e7745c6bce3dcef3915ae7ac1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:07.901498+00:00",
+    "sha256": "e45906ce02e79f16fb87a838d86bb4e497e37a9591f97608fa013bbcd8b9cbc2",
+    "exit_code": 1,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/new/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/README.md?ref=a07364828c8f202e7745c6bce3dcef3915ae7ac1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.867640+00:00",
+    "sha256": "1b783460b1ec68ee4eb0a9de28b97b97cb2a128bcc524d2ab0340ba32143659c",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/new/package.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/package.json?ref=a07364828c8f202e7745c6bce3dcef3915ae7ac1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.888133+00:00",
+    "sha256": "3541ae99bc2d2b4c8a4835c349cb95ef6c855100a81786980524b433ffd700a3",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/new/pyproject.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/pyproject.toml?ref=a07364828c8f202e7745c6bce3dcef3915ae7ac1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.016377+00:00",
+    "sha256": "e45906ce02e79f16fb87a838d86bb4e497e37a9591f97608fa013bbcd8b9cbc2",
+    "exit_code": 1,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/old/DEVELOPMENT.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/DEVELOPMENT.md?ref=b50c60c6728e2ce123ccb6e125bee3eb88ac87d1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.863796+00:00",
+    "sha256": "e45906ce02e79f16fb87a838d86bb4e497e37a9591f97608fa013bbcd8b9cbc2",
+    "exit_code": 1,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/old/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/README.md?ref=b50c60c6728e2ce123ccb6e125bee3eb88ac87d1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.765917+00:00",
+    "sha256": "16c8207274f40f5c9bed551b7778f2e58ae03a6324ef1fe6e10386404187fedd",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/old/package.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/package.json?ref=b50c60c6728e2ce123ccb6e125bee3eb88ac87d1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:06.717215+00:00",
+    "sha256": "4328e053d53085d5ddf6cc94249b24854c8c3006855b0906c9d14dbf114e3c8f",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/old/pyproject.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/pyproject.toml?ref=b50c60c6728e2ce123ccb6e125bee3eb88ac87d1",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.194700+00:00",
+    "sha256": "e45906ce02e79f16fb87a838d86bb4e497e37a9591f97608fa013bbcd8b9cbc2",
+    "exit_code": 1,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/source/stable_1.20.0/package.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/contents/package.json?ref=9737f713616a1e452f822c2967f0e2c8bf2dc308",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:19.076593+00:00",
+    "sha256": "ecdd2160d51f020aef1296d8c6dc171dfcc179b788597f45bdc9d1028e6c1c58",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/tags/0.62.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits/0.62.0"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.803224+00:00",
+    "sha256": "908214bfee6d4b406a41ba3b85d7e7a90f221e046de6fa119b1a98ead9b5c7d5",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/tags/1.0.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits/1.0.0"
+    ],
+    "retrieved_at": "2026-09-19T09:51:33.799655+00:00",
+    "sha256": "53be1e781ea3689895a34b8ade6591057bd24ba4964cb351f5f5cf5044e02cdc",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/tags/v1.16.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits/v1.16.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.669592+00:00",
+    "sha256": "b676803bb9da2c4d2de571166f8e67c2e4f979b3df99c9c2e9b9f4d9452007fd",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/tags/v1.17.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits/v1.17.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.870911+00:00",
+    "sha256": "e083b3beb115cb0c32805b08418bf82d5fe61f843a1a4e3229a17db17f41346e",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/tags/v1.18.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits/v1.18.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.188978+00:00",
+    "sha256": "a30509d15a82870212840ae63dffddb7a36ba1100abef45896e16b264c309559",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/tags/v1.19.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits/v1.19.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.898337+00:00",
+    "sha256": "b66fa73f1179f1c6aa8fcc16b8fb00e7007769a8618ada94b1411e0a137f754b",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/tags/v1.20.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/commits/v1.20.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:39.696883+00:00",
+    "sha256": "c1bb016b63a6a8a8b180b5d5cb6ca59f38b0d33e25266453b6b1bb46c4752dc5",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/openhands/tree.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/OpenHands/git/trees/a07364828c8f202e7745c6bce3dcef3915ae7ac1?recursive=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:28.792221+00:00",
+    "sha256": "a3d726850a94a881fc95a102694100ff7401d4b768bae1bc4d14d4713aef2e1b",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/baseline.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits?sha=main&until=2026-08-27T23:59:59Z&per_page=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:25.758214+00:00",
+    "sha256": "b28e7dce0a49fd4fdebaf604d94ae45119310d5dfe8b19d1fa7f9184cc62f0b8",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/head.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/main"
+    ],
+    "retrieved_at": "2026-09-19T09:43:25.123361+00:00",
+    "sha256": "0b65f847def6f6426b34fe90d9eac3aa30b00e954b8768038b056a9c9447f020",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/latest_release.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/releases/latest"
+    ],
+    "retrieved_at": "2026-09-19T09:43:26.388854+00:00",
+    "sha256": "aa0567b26172d22a1f4548b5ffe55faeb61428b8b60c513749d90154b6272abf",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/3403.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/3403"
+    ],
+    "retrieved_at": "2026-09-19T09:54:20.078080+00:00",
+    "sha256": "0190c8765bb093b19d880ad8c822406a4c4a1b9cb03f5ef1ac70fd8445c5c7d1",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/4516.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/4516"
+    ],
+    "retrieved_at": "2026-09-19T09:49:08.474558+00:00",
+    "sha256": "f6d5ab658a2ee472cde68e14db4b8e21865d7c253cdd2a7c81a75b2dba2d8b81",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/4702.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/4702"
+    ],
+    "retrieved_at": "2026-09-19T09:49:08.835192+00:00",
+    "sha256": "e097e84d24a11f7beaf0cca5b3458f85f172fc64578891d4514ad51f22bc2a16",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/4806.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/4806"
+    ],
+    "retrieved_at": "2026-09-19T09:49:07.883806+00:00",
+    "sha256": "951b03d23a80ce2439cc4a7bcb307e3119daa74507b59dde8d229825bdc7097a",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/4807.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/4807"
+    ],
+    "retrieved_at": "2026-09-19T09:49:07.828869+00:00",
+    "sha256": "737fa5adb8fdaaa50eb6d073c5420d63ab5c3bb1cd50aee64064bda6358c33ed",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/4822.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/4822"
+    ],
+    "retrieved_at": "2026-09-19T09:49:07.964605+00:00",
+    "sha256": "8a2a79ea30ca892a3604edc5153d8019d285f08433b472fe87c70d304b9dff51",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/4966.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/4966"
+    ],
+    "retrieved_at": "2026-09-19T09:49:08.216962+00:00",
+    "sha256": "af8c766d537a015276d78e0fc8580d791ebbd3164623741c986596faa827c844",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/5093.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/5093"
+    ],
+    "retrieved_at": "2026-09-19T09:54:20.456836+00:00",
+    "sha256": "5ae9e2dcc7aa786623910beadff1ba7e7969137fc7e4161f61aeec202f35e8c0",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/prs/5101.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/pulls/5101"
+    ],
+    "retrieved_at": "2026-09-19T09:54:20.190131+00:00",
+    "sha256": "46f27d97a5db53133822cd028693e1464872af070ee6fdb2c01417abb86568a6",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/releases_page_1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/releases?per_page=100&page=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:27.809445+00:00",
+    "sha256": "833c1172c03cbc2288c2d9524b9c93c0500b410281630f4b390c38aa7fd35a35",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/repo.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk"
+    ],
+    "retrieved_at": "2026-09-19T09:43:24.446087+00:00",
+    "sha256": "f54fc1ef68321578ae98b3e1c2b530c270649c77e4a681cd20a93539eec88d3d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/new/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/README.md?ref=004c674a96d7eeeba70fcefc0e6dfc6a87958d3d",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.697658+00:00",
+    "sha256": "95094c9745c7cc58136d4eaa1688fb6038aafefec2be05344293f6df7e55dbf8",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/new/openhands-agent-server/openhands/agent_server/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-agent-server/openhands/agent_server/README.md?ref=004c674a96d7eeeba70fcefc0e6dfc6a87958d3d",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:07.448016+00:00",
+    "sha256": "9f4936fa77e0362882b1da5a02caa49cbf12ff19bf2f9dc08a636cdbaf415233",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/new/openhands-sdk/openhands/sdk/__init__.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-sdk/openhands/sdk/__init__.py?ref=004c674a96d7eeeba70fcefc0e6dfc6a87958d3d",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.670010+00:00",
+    "sha256": "edb1791bf7a3bf182fa0fd045fb8ec8502c4290a53f2b05fa17fe666cbb62c29",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/new/openhands-sdk/openhands/sdk/conversation/conversation.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-sdk/openhands/sdk/conversation/conversation.py?ref=004c674a96d7eeeba70fcefc0e6dfc6a87958d3d",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:07.011712+00:00",
+    "sha256": "7fb48719db9006bb8ac4144fafdf6f036085d2eeaa7a09b70ce2c859dd4b8122",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/new/openhands-sdk/pyproject.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-sdk/pyproject.toml?ref=004c674a96d7eeeba70fcefc0e6dfc6a87958d3d",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.511942+00:00",
+    "sha256": "df88171f618b9ad5b7e3bfed242de68dc3f1f34b15ba9b3e2ea1e38836826663",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/new/openhands-workspace/openhands/workspace/agent_sandbox/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-workspace/openhands/workspace/agent_sandbox/README.md?ref=004c674a96d7eeeba70fcefc0e6dfc6a87958d3d",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:49:07.516336+00:00",
+    "sha256": "04e1038ae66c61231afac66b527e328ad0d740d6a06cbd5142fb124e88d1d7a9",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/new/pyproject.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/pyproject.toml?ref=004c674a96d7eeeba70fcefc0e6dfc6a87958d3d",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.636879+00:00",
+    "sha256": "0ae2f96342f14a2ac65afaf0b60c41378f10e6503a25716e2a8b271a0b067bc0",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/old/README.md.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/README.md?ref=b57ba44c781c85ffc89804d04bf955d534ac0a29",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.116829+00:00",
+    "sha256": "e84e8728685301bf2769b24c44143738b4147db23dc32ebaa83bb9f589a6c21d",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/old/openhands-sdk/openhands/sdk/__init__.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-sdk/openhands/sdk/__init__.py?ref=b57ba44c781c85ffc89804d04bf955d534ac0a29",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.213764+00:00",
+    "sha256": "edb1791bf7a3bf182fa0fd045fb8ec8502c4290a53f2b05fa17fe666cbb62c29",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/old/openhands-sdk/pyproject.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-sdk/pyproject.toml?ref=b57ba44c781c85ffc89804d04bf955d534ac0a29",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.149284+00:00",
+    "sha256": "d36796d1a14bbfd91c81066d8910ff12110d5c7e62a8afef22d842217da3a907",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/old/pyproject.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/pyproject.toml?ref=b57ba44c781c85ffc89804d04bf955d534ac0a29",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.099919+00:00",
+    "sha256": "07f5c468edfbc1437fe3deac1647219e2cf24aa44992a93747147615fa992d22",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/stable_1.49.2/openhands-agent-server/openhands/agent_server/docker_runtime/provisioning.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-agent-server/openhands/agent_server/docker_runtime/provisioning.py?ref=d128a786ee2ee570eb23ff5862ec148b43cfad0b",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:19.190723+00:00",
+    "sha256": "ace1d23164a846da5b0f59f16a7bd4cd5cb270404d418874ad12322c3ecdaae0",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/stable_1.49.2/openhands-agent-server/openhands/agent_server/runtime_router.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-agent-server/openhands/agent_server/runtime_router.py?ref=d128a786ee2ee570eb23ff5862ec148b43cfad0b",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:19.190870+00:00",
+    "sha256": "a164fc2f376b06668c25c73b164ea2b5aabe9e299a83554f6d7b03c4d8d4a0ea",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/stable_1.49.2/openhands-sdk/openhands/sdk/conversation/conversation.py.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-sdk/openhands/sdk/conversation/conversation.py?ref=d128a786ee2ee570eb23ff5862ec148b43cfad0b",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:19.421087+00:00",
+    "sha256": "7fb48719db9006bb8ac4144fafdf6f036085d2eeaa7a09b70ce2c859dd4b8122",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/source/stable_1.49.2/openhands-sdk/pyproject.toml.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/contents/openhands-sdk/pyproject.toml?ref=d128a786ee2ee570eb23ff5862ec148b43cfad0b",
+      "-H",
+      "Accept: application/vnd.github.raw+json"
+    ],
+    "retrieved_at": "2026-09-19T09:54:19.421198+00:00",
+    "sha256": "df88171f618b9ad5b7e3bfed242de68dc3f1f34b15ba9b3e2ea1e38836826663",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/1.0.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/1.0.0"
+    ],
+    "retrieved_at": "2026-09-19T09:51:34.653597+00:00",
+    "sha256": "eb72416d189dd25f4e4d07813266d01d9474b52636c4799e56026d312bf4028f",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.44.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.44.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.464901+00:00",
+    "sha256": "a9db8866779f5e5ec1117c7a0e559529f047c137d87ebc35b945524bba3e9cc7",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.44.1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.44.1"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.599521+00:00",
+    "sha256": "44d09d10d492fc138640167ae5796e2bf665906c75793f6fcb3ba27e0f7188e8",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.45.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.45.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.631073+00:00",
+    "sha256": "4736d19cc34440efabfe4ae646002fc420ef15910c6a120f85b2a91d3cfb93f9",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.46.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.46.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.947038+00:00",
+    "sha256": "643c9147bc2efbcb2f6a813f3856c3ac02f8772e63589cffe8229b47156e51d6",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.47.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.47.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.421189+00:00",
+    "sha256": "eee47da538f5e5e255fa0578b4301fe332693c381638d3b9e0bcb9a617625b20",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.48.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.48.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.588557+00:00",
+    "sha256": "fe9168adb2ca7709f32ccb90c2f6ad832931dcb830af2120d75811992121ac95",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.49.0.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.49.0"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.943663+00:00",
+    "sha256": "d43ba98795fe39ab6dac9199d6275840d5addf6480eca5c2289cd47c3abda88b",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.49.1.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.49.1"
+    ],
+    "retrieved_at": "2026-09-19T09:44:40.403211+00:00",
+    "sha256": "3aebfe83892f44ef226bef0139edd033b1c7056c62530ee8b6efcff0be543433",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tags/v1.49.2.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/commits/v1.49.2"
+    ],
+    "retrieved_at": "2026-09-19T09:44:41.204234+00:00",
+    "sha256": "2936eaf1f29d57e63d2164dc87e2a9167d5bca9b43068ae3286d579b0a64da35",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  },
+  {
+    "capture": "vendor_probe/sdk/tree.json.capture.json",
+    "command": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/OpenHands/software-agent-sdk/git/trees/004c674a96d7eeeba70fcefc0e6dfc6a87958d3d?recursive=1"
+    ],
+    "retrieved_at": "2026-09-19T09:43:28.663585+00:00",
+    "sha256": "a109ea049c7fb5d0c0678c426f7c5d5d5b77774a95721dd2a0add85afd3ffb15",
+    "exit_code": 0,
+    "availability": "API provenance; raw cache may be local only"
+  }
+]

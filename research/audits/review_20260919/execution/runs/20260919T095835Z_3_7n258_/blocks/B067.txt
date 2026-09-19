@@ -1,0 +1,15 @@
+EvidencePackage {
+  task_id, contract_version
+  input_snapshot[]       // repo commit、数据版本、时间范围
+  artifacts[]            // path/URI、hash、media type、producer
+  change_set[]           // diff、外部 effect、幂等键
+  checks[] {             // 每条验收检查
+    check_id, verifier_version, environment_digest,
+    started_at, exit_status, observations, artifact_refs
+  }
+  provenance[]           // 来源、工具、插件与委派关系
+  policy_decisions[]     // 授权、批准和例外
+  unresolved[]           // 未验证假设、flaky check、已知风险
+  final_status           // verified / partial / blocked / failed
+  signature
+}

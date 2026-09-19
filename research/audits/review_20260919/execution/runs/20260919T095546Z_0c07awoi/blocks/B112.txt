@@ -1,0 +1,16 @@
+{
+  "evidence_package": "EP-EVO-93-C7",
+  "parent": "harness-42",
+  "candidate": "grouped-dynamic-discovery-r4",
+  "mutation_hash": "sha256:09cd...",
+  "activation": {"eligible_trials": 240, "activated": 228},
+  "evaluation": {
+    "report": "artifact:sha256:f810...",
+    "sealed_test_accessed_once": true,
+    "security_gate": "pass",
+    "critical_slices": "non_inferior"
+  },
+  "release": {"mode": "canary", "slice": "code-low-risk-5pct"},
+  "rollback_bundle": "harness-42+model-12+memory-87",
+  "approver": "runtime-release-owner"
+}
