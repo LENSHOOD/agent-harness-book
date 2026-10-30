@@ -135,4 +135,4 @@ evidence_package:
     harness_bundle: required
 ```
 
-非空幂等键只便于表达逻辑动作身份，不会让下游自动去重；非空constraints也不证明执行器真的落实了约束。checks是否覆盖目标、hash对应哪个可信产物、批准是否来自有权主体，均由相应策略与验收服务检查。第25、27章的领域合同经adapter映射为Task，`contract_id`不能无转换地冒充`task_id`，分钟预算要先换算成秒。
+非空幂等键只便于表达逻辑动作身份，不会让下游自动去重；非空constraints也不证明执行器真的落实了约束。checks是否覆盖目标、hash对应哪个可信产物、批准是否来自有权主体，均由相应策略与验收服务检查。第26、28章的领域合同经adapter映射为Task，`contract_id`不能无转换地冒充`task_id`，分钟预算要先换算成秒。

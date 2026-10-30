@@ -19,10 +19,16 @@ def main() -> None:
     numbers = [chapter["number"] for chapter in chapters]
     slugs = [chapter["slug"] for chapter in chapters]
 
-    if numbers != list(range(1, 31)):
-        fail(f"chapter numbers are not exactly 1..30: {numbers}")
+    expected_count = structure.get('chapterCount', 30)
+    if numbers != list(range(1, expected_count + 1)):
+        fail(f"chapter numbers are not exactly 1..{expected_count}: {numbers}")
     if len(slugs) != len(set(slugs)):
         fail("chapter slugs are not unique")
+
+    expected_slugs = set(slugs) | {structure['preface']['slug']}
+    actual_slugs = {path.stem for path in (MANUSCRIPT / 'chapters').glob('*.md')}
+    if actual_slugs != expected_slugs:
+        fail(f"unlisted or missing chapter files: {actual_slugs ^ expected_slugs}")
 
     preface = structure["preface"]
     preface_path = MANUSCRIPT / "chapters" / f"{preface['slug']}.md"

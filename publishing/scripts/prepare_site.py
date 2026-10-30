@@ -34,9 +34,11 @@ brief = brief.replace('[TOC]\n', '')
 (site / 'executive-brief.md').write_text(brief)
 
 sources = [json.loads(x) for x in (evidence / 'sources.jsonl').read_text().splitlines() if x.strip()]
-cutoff = json.loads((root / 'publishing/book_structure.json').read_text())['sourceCutoff']
+structure = json.loads((root / 'publishing/book_structure.json').read_text())
+cutoff = structure['sourceCutoff']
+revision = structure.get('revisionDate', cutoff)
 verified = [s for s in sources if s.get('metadata_status') == 'verified' and s.get('core_claim_eligible', True)]
-refs = ['# 已核验参考文献', '', f'研究登记表共 {len(sources)} 项，其中 {len(verified)} 项已核验身份与版本且可用于技术事实引用的来源列于下方；其余待核验或社区发现线索保留在仓库。资料维护至 {cutoff}，产品行为以各章版本为准。来源身份核验不等于全文每个结论均被独立证明。', '']
+refs = ['# 已核验参考文献', '', f'研究登记表共 {len(sources)} 项，其中 {len(verified)} 项已核验身份与版本且可用于技术事实引用的来源列于下方；其余待核验或社区发现线索保留在仓库。全书基础资料截面为 {cutoff}，最近修订为 {revision}；具体更新范围、产品行为以各章版本为准。来源身份核验不等于全文每个结论均被独立证明。', '']
 for i, s in enumerate(verified, 1):
     authors = s.get('authors') or '机构/作者未登记'
     year = s.get('year') or 'n.d.'

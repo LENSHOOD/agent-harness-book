@@ -2,7 +2,7 @@
 title: 'Agent Harness：从执行脚手架到自我进化系统'
 subtitle: '企业 Agent 平台架构与工程实践'
 author: '研究修订稿'
-date: '2026-09-19'
+date: '2026-10-29'
 lang: zh-CN
 ---
 
@@ -20,7 +20,7 @@ Harness 不是某个框架品牌，也不只是 `while model calls tools`。
 它把人的意图编译成任务，把环境状态编译成上下文，把模型动作约束为受控副作用，再把外部结果编译成可审查证据。
 
 本书面向企业 Agent 平台架构师和高级工程师。
-历史篇解释从规划、BDI、ReAct 到 coding agent 的转折；原理篇给出状态机、上下文、工具、安全、验证和多 Agent 的设计；产品篇研究 Claude Code、Codex、Cursor、DeepSeek Harness 与 OpenHands；进化篇区分任务内、跨任务、Harness 和模型四层；实践篇给出供应商无关的参考架构和迁移路线。
+历史篇解释从规划、BDI、ReAct 到 coding agent 的转折；原理篇给出状态机、上下文、工具、安全、验证和多 Agent 的设计；产品篇按同一组架构问题研究 Claude Code、Codex、Cursor、DeepSeek Harness、OpenHands 与 pi-mono；进化篇区分任务内、跨任务、Harness 和模型四层；实践篇给出供应商无关的参考架构和迁移路线。
 
 全书用下面的乘式表达一个设计隐喻，而非可计算的定量公式：
 
@@ -32,7 +32,7 @@ Agent System Capability = Model × Harness × Environment × Feedback
 强模型仍可能因关键上下文缺失、危险工具、环境异常或验证器错误而失败。
 同一模型单次问答的成绩，也不能直接当作带工具、搜索和多次尝试的系统上限。Harness 改变了可用信息和计算过程，具体收益仍需在给定任务与预算下实测。
 
-全书原始资料截面为 2026-08-28；本轮补入 2026-09-19 已核验材料，快速变化的产品与接口按具体来源日期和版本说明。
+全书原始资料截面为 2026-08-28，2026-09-19 完成一轮全书增补；2026-10-29 进一步重写第三篇的架构分析并加入 pi-mono。其余篇没有因此被视为完成十月事实更新；快速变化的产品与接口按各章的来源日期和固定版本说明。
 功能会过时，但设计原则更稳。
 书中明确区分公开事实、论文结果和作者综合判断；内部使用不改变证据边界。
 
@@ -2783,398 +2783,733 @@ production traces
 
 ---
 
-## 本篇导言：五种产品，五种架构重心
+## 本篇导言：用同一组问题读懂六种实现
 
-本篇保留 Claude Code、OpenAI Codex、Cursor、DeepSeek Harness 与 OpenHands 五个主案例，分别检查接入面、源码可见范围，以及一次产品特有的事件序列或失败边界。生命周期扩展、协议化核心、IDE 上下文、插件组合和决策／执行分离，是作者选择的观察重心，不是官方产品分类或效能排名。
+第二篇说明一个 Harness 要解决哪些问题，本篇进一步看实际产品把这些责任放在哪里。六个案例分别是 Claude Code、OpenAI Codex、Cursor、DeepSeek Harness、OpenHands 和 pi-mono。它们的共同点是围绕模型组织行动，差异则在组件划分、状态归属和控制方式。先看总体架构，才能理解同样名叫“工具”或“子智能体”的功能为什么并不等价。
 
-产品事实更新至 2026-09-19 的已核验资料截面：网页采用存档的官方原文，源码采用不可变 commit，历史实现与当前版本分开。仓库发布日与提交日按 UTC，网页日期沿用来源标注，不把文档更新时间当作功能首发日。Claude Managed Agents、Codex Agents API 和 Cursor 自管 worker 不等于把完整系统部署在本地；模型循环、工具执行、会话存储和数据回传分别说明。源码契约、厂商实验与本书实际验证各自限定，不把本地 schema 检查写成端到端通过。
+每个案例沿下面的顺序展开。读者可以顺着一章理解一个系统，也可以沿某一行横向比较六种实现：
 
-第十八章再用 Deep Agents、Microsoft Harness 补充组合框架视角，区分成品工具、可嵌入运行时、框架与托管服务。事实和作者采用建议分列；配置示例标明是否为本书自定义。任务匹配、控制、证据、耐久、可替换和运营经济性六个坐标均待同条件实测，不填推测分数。
+| 产品章要回答的问题 | 对应第二篇 | 阅读时应找到的具体内容 |
+|---|---|---|
+| 整体架构如何分工 | 第五章 | 入口、核心、模型服务、执行环境与状态存储之间的关系 |
+| Loop 怎样运行和恢复 | 第六章 | 请求怎样推进，工具怎样回传，什么时候继续、暂停或停止 |
+| 上下文怎样组织 | 第七章 | 指令、检索、会话历史、压缩和跨任务经验分别怎样进入请求 |
+| 工具与 MCP 怎样接入 | 第八章 | 注册、发现、参数校验、分派、执行与结果处理 |
+| 权限与沙箱怎样落地 | 第九章 | 谁批准操作，什么边界限制实际访问，凭证放在哪里 |
+| 子智能体怎样委派 | 第十一章 | 子任务拿到什么上下文和权限，结果怎样收回，取消怎样传播 |
+| 怎样验证和观察 | 第十、十二章 | 产品记录什么，哪些事实还需要宿主平台验证 |
+| 一次任务如何穿过架构 | 上述章节的综合 | 从输入到工具反馈和最终交接，组件如何一起工作 |
+
+各章最后的贯穿任务是解释流程的教学场景，除非另有运行证据，不表示已用该商业产品完成了实验。没有内建的机制也会明确写出：可以通过扩展获得的功能，不等于默认加载；独立上下文，不等于独立操作系统权限；循环结束，不等于业务验收通过。
+
+本轮于 2026-10-29 重写架构说明，具体产品事实以章首声明的文档截面和固定源码版本为准；没有把全部产品统一升级到同一天的最新版。开源代码用于解释可检查的控制流，闭源产品依据公开接口与工程说明，不补写无法验证的内部类名、调度器和持久化事务。托管循环、自管工具执行和本地运行仍分别讨论。
+
+第十九章把六个案例放回同一组原理问题中比较，再以 Deep Agents、Microsoft Harness 补充框架视角。比较的是设计取舍和运营责任；任务质量、费用及可靠性仍需在同等条件下测量，本书不填推测分数。
 
 ---
 
 ## 第十三章 Claude Code：薄循环、厚运行时
 
-> 资料截面：2026-09-19。Claude Code、Claude Agent SDK、Claude Managed Agents 与 Messages API 是不同接入面。本章依据已存档的官方文档与工程说明；托管内部实现属于厂商披露，未经过本书源码审计或端到端测试。
+> 资料截面与实际访问日期：2026-10-29。公开源码基线为 [Claude Agent SDK Python `0.2.174`](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/pyproject.toml#L7)、commit `27858cbba9ecee26a06a90b8d39d3b5596121d11`；网页快照哈希见本轮研究记录。SDK 源码可解释宿主接口，不能据此宣称审计了闭源 Claude Code 核心。本章是文档与源码研究，未运行产品端到端实验。
 
-Claude Code 把“模型—工具—观察”循环放在会话、权限、上下文和扩展系统里。Claude Agent SDK 的官方说明描述了接收输入、执行模型请求的工具、回传结果，直到模型不再请求工具，最后返回带 token、费用和 session id 的结果消息的过程。[Agent loop](https://code.claude.com/docs/en/agent-sdk/agent-loop) 本章把“薄循环、厚运行时”作为作者的架构归纳，不把它当作源码分层或性能结论。
+Claude Code 的架构重点，在于把模型选择下一步的循环放进一个持续管理上下文、工具执行和会话状态的 Harness。官方将工作概括为收集上下文、采取行动、验证结果；每次工具返回的新信息都可能改变下一步，而不必预先列出完整工作流。[运行原理](https://code.claude.com/docs/en/how-claude-code-works) “薄循环、厚运行时”是本书对这种职责分配的归纳，不是厂商公布的内部模块名。
 
-### 1. 先选接入面，再讨论运行时
+### 1. 整体架构与职责边界：谁拥有循环
 
-下表归纳公开产品面；接入建议是作者判断。不能因为它们都使用 Claude，就假定配置文件、事件名或恢复机制相同。
+Claude Code CLI 面向交互开发；Agent SDK 把同一套工具、循环和上下文管理提供给 Python／TypeScript 应用，由应用运营进程。Client SDK 则直接调用 Claude API，工具循环由调用方或其 tool runner 驱动。Managed Agents 是另一个托管 Harness 接入面，不能把它的远程 session、sandbox 和管理接口当作本地 CLI 的内部结构。[接入面比较](https://code.claude.com/docs/en/agent-sdk/overview)
 
-| 接入面 | 公开能力与运行责任 | 证据边界与集成判断 |
-|---|---|---|
-| Claude Code / CLI | 开发者交互、工具、会话及本机扩展 | 根据公开行为集成；本轮没有可据以审计完整内部实现的源码证据 |
-| Claude Agent SDK | 在应用中控制 Agent 循环、消息流与生命周期 | 应用负责所部署进程与工作区；SDK 接口不能代替对底层运行时的审计 |
-| Claude Managed Agents | 托管循环、持久 session、工具与执行环境接口 | 通过服务接口接入；内部恢复与存储语义以厂商说明为依据 |
-| Claude Messages API | 模型请求、工具调用内容及显式压缩等接口 | 使用它自行组装循环，不会自动获得上述托管会话系统 |
+公开 Python SDK 给出了可核查的边界：`SubprocessCLITransport` 构造带 `--output-format stream-json` 的命令，以 stdin/stdout 管道启动 Claude Code binary，并传入工作目录和环境。另一侧的 `Query` 处理 `can_use_tool`、`hook_callback`、`mcp_message` 控制请求，把应用回调结果写回管道。这解释了“作为库使用”的含义：应用握有控制接口，循环仍由 Claude Code 运行时驱动。[进程传输源码](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/src/claude_agent_sdk/_internal/transport/subprocess_cli.py#L570)、[控制协议源码](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/src/claude_agent_sdk/_internal/query.py#L577)
 
-Claude Code 的扩展面包括 `CLAUDE.md`、Skills、subagents、hooks、MCP、plugins 和 agent teams：规则提供持续上下文，skill 提供按需知识，子代理承接独立工作，hook 在生命周期节点运行，MCP 接入外部能力。[扩展总览](https://code.claude.com/docs/en/features-overview) Managed Agents 则把 session 日志、调用模型与路由工具的 Harness、执行代码的 sandbox 分开。这项架构说明发表于 2026 年 4 月 8 日，是本轮补收的既有材料，不能写成 9 月新架构。[Managed Agents 架构](https://www.anthropic.com/engineering/managed-agents)
-
-### 2. 上下文不是一段无限增长的聊天
-
-Claude Code 会把系统提示、工具定义、消息与工具结果放入上下文，并在接近上限时压缩。子代理用独立上下文承接工作、向父会话返回结果，可以减少父窗口负担。[Agent loop](https://code.claude.com/docs/en/agent-sdk/agent-loop) 但整个任务的费用取决于重复探索、并发数量与交接内容；父窗口变小不等于总 token 或延迟下降。
-
-2026 年 9 月 14 日发布说明增加的是 **Messages API 的按需压缩 beta**：请求带顶层 `compaction` 参数及 `compact-2026-09-04` beta header，返回签名的 compaction block，后续请求用它替换此前消息，也可保留近期原文。这不能直接写成 Claude Code 的 CLI 选项或 Managed Agents 的同名接口。签名提供供应商定义的完整性边界，不证明摘要没有遗漏业务限制。[Claude Platform 发布说明](https://docs.anthropic.com/en/release-notes/api)
-
-### 3. 九月配置与权限变化属于哪个产品
-
-9 月 3 日，`ant` CLI 1.30.0 增加 `ant apply`：从仓库文件创建或更新 agents、environments、skills、memory stores 和 deployments，先展示计划供批准，再写入 `claude-lock.json`，使以后操作定位同一批资源。9 月 10 日，1.32.0 增加 `ant beta:sessions connect`，可跟随 Managed Agents 会话、发消息并批准或拒绝待处理调用。这些是 Claude Platform 的管理入口，不是 `claude` CLI 的配置别名。[Claude Platform 发布说明](https://docs.anthropic.com/en/release-notes/api)
-
-同日 Managed Agents 的权限策略增加 `auto`：服务端逐次评估 Agent 或 MCP 工具调用，选择执行、拒绝或暂停等待批准；`agent.tool_use` 和 `agent.mcp_tool_use` 事件在 `evaluated_permission` 外增加 `evaluation`。集成方因此可记录“怎样作出决定”，但自动评估不等于企业已授权任何目标或数据范围。[Claude Platform 发布说明](https://docs.anthropic.com/en/release-notes/api)
-
-Claude Code 的 hooks 是另一条控制路径，例如工具前后、停止及压缩前的生命周期处理。[Hooks](https://code.claude.com/docs/en/hooks-guide) hook 命令由宿主执行，SDK 回调由应用侧执行，不能把它们当成模型上下文里的文字。作者建议对插件更新做 hook 清单差异审查，记录执行身份、命令与权限变化；高风险变更重新审批，撤销时同时停止在途执行。工作区沙箱未必覆盖这些宿主动作，工具调用的审批记录也不能替代 hook 自身的审计。
-
-### 4. 托管恢复的一条事件剖面
-
-Managed Agents 的工程文章给出两种不同失败路径。下列顺序是对其架构的转述，函数名是文章中的接口示意，不是本书实际发送的 API 报文：[Managed Agents 架构](https://www.anthropic.com/engineering/managed-agents)
+下面是依据上述接口作出的作者抽象，表示职责和信息流，不表示闭源程序的类或线程布局。
 
 ```text
-工具执行环境退出 → Harness 收到工具错误 → 模型决定是否重试
-                                      → 必要时重新 provision 环境
-Harness 自身退出 → 新实例 wake(sessionId) → getSession(id)
-                                      → 从已保存事件恢复
+用户 / 业务应用
+      | 任务、选项、后续输入
+CLI 界面 / Agent SDK 宿主
+      | 输入与控制请求             ^ 消息流、结果、会话 ID
+Claude Code 运行时 <--------------> Claude 模型服务
+      | 上下文组装、循环、工具许可       模型请求工具 / 生成回答
+      +--> 内置 Read / Edit / Bash --> 工作区与命令结果
+      +--> MCP 分派 --> 外部服务器 / SDK 进程内 handler
+      +--> Agent --> 子代理上下文 --> 最终报告
+      +--> 本地会话 JSONL；可选 SessionStore 镜像
+宿主 hooks / 权限回调 <-----------> 运行时控制协议
 ```
 
-这项分离使执行容器故障不必带走会话日志，但不能推出外部动作恰好执行一次。若第三方写入已生效、工具响应却丢失，恢复日志仍可能不足以确定写入结果；此时应按第六章的不确定提交规则回读对账，而非直接重发。文章也描述凭证放在沙箱之外、MCP 经代理访问凭证库的设计；它是特定托管架构的披露，不能自动归到本地 Claude Code。
+对应第五章，模型负责提出动作，Harness 负责使动作成为受控调用，环境承受读写，反馈返回下一轮。选用 SDK 可以复用这一运行机制；应用仍须决定工作区归属、运行身份、任务验收和外部系统的事务边界。这是架构取舍，而不是把业务应用缩减成一个提示词入口。
 
-Claude Code 的 OS 级文件与网络 sandbox 另有官方说明，其内部场景中权限提示减少 84% 是供应商自报结果，不能外推成跨产品收益或安全指标。[Sandboxing](https://www.anthropic.com/engineering/claude-code-sandboxing)
+### 2. Agent loop 与恢复：消息流不是业务事务
 
-### 5. 企业集成剖面
+一次 SDK 调用先接收提示词、系统指令、工具定义和历史，通常产生 `system/init` 元数据；模型输出 `assistant` 消息中的 `tool_use`，运行时执行工具，再以 `user` 消息中的工具结果供下一次推理使用。循环持续到模型不再请求工具，随后产生 `ResultMessage`。因此宿主消费消息流时，不必为每个 `Read` 或 `Bash` 自行实现“调用模型—执行工具—再调用模型”。[循环与消息生命周期](https://code.claude.com/docs/en/agent-sdk/agent-loop)
 
-若选择自行部署 SDK/CLI，作者建议由适配器管理进程、工作区和原始事件；若选择 Managed Agents，则另建服务适配器，映射资源版本、会话事件及逐调用权限评估，不能沿用本地进程假设。以下是**本书自定义平台契约**，需由自建适配器解析和转换，不能直接交给 Claude CLI、Agent SDK 或 `ant apply`；值均为示意。
+工具拒绝会作为观察返回模型，使其换路或解释受阻；结束也可能来自 `maxTurns`、`maxBudgetUsd` 或执行错误。宿主应读取 `success`、`error_max_turns` 等 result subtype，而不能只看有没有最后一段文字。预算在模型响应到达后核算，故触及上限的那次响应仍可能使估算费用越过阈值；这是一道运行预算门，不是逐 token 的硬额度锁。[工具拒绝、预算与结果](https://code.claude.com/docs/en/agent-sdk/agent-loop)
 
-```yaml
-runtime_profile:
-  provider: anthropic-claude-code
-  version: pinned
-  permission_mode: policy_mediated
-  workspace: isolated
-  network: allowlist
-  completion_authority: external_verifier
-  export:
-    - session_id
-    - tool_events
-    - cost
-    - artifacts
-```
+TypeScript 流式接口还提供 `interrupt()` 请求中断查询；已经排队的用户消息可能在中断后继续执行，因此宿主需要分别管理当前执行与待处理输入，而不能把一次中断当成整个会话的取消。[中断及队列语义](https://code.claude.com/docs/en/agent-sdk/typescript#sdkcontrolinterruptresponse)
 
-`policy_mediated` 和 `external_verifier` 是本书的平台取值，不是厂商原生模式。接入时须逐项证明原生消息能映射到哪些字段；不能导出的审批或产物证据应标为缺失，并缩小自动执行范围。平台任务与会话的关系、业务验收规则统一见第十八章。
+持久化首先保存对话。CLI 将消息、工具调用和结果写入本地 JSONL；SDK 的 `resume` 延续会话，fork 建立另一条会话历史。文件检查点是另一套机制：启用后备份 `Write`、`Edit`、`NotebookEdit` 所修改的文件，`rewindFiles()` 回退文件却不回退对话；不能把 Bash 修改、外部 API 写入或所有子代理编辑视为同样受到保护。[会话](https://code.claude.com/docs/en/agent-sdk/sessions)、[文件检查点](https://code.claude.com/docs/en/agent-sdk/file-checkpointing)
 
-### 6. 设计判断
+跨主机恢复可以接入 `SessionStore` 的 `append/load`。其数据路径是“子进程先写本地，SDK 再镜像到自有存储”，镜像失败可发出 `mirror_error` 并继续运行；文件检查点不能与该存储选项同时启用。[外部会话存储](https://code.claude.com/docs/en/agent-sdk/session-storage) 对应第六章，这些机制分别恢复“先前讨论了什么”和“部分文件曾是什么样”，并未建立第三方写入的恰好一次语义。若工单已经创建而响应丢失，应用仍应凭业务操作标识回读，而不是因会话可以恢复就重新提交。
 
-这一组产品让集成者可以选择自行运营循环，或采购会话与循环管理服务。作者的采用判断取决于已有应用、权限边界与运维能力：需要自定义生命周期时评估 SDK，需要托管恢复时评估 Managed Agents，并分别测量恢复缺口、权限决定可追踪性和费用。公开接口支持这些架构假设，还不足以证明某条路线普遍更便宜或更可靠。
+### 3. 上下文与会话：压缩、缓存、记忆各做什么
+
+运行时每轮组装的是模型当次可见的信息。历史消息、读入文件、命令输出和工具 schema 都消耗窗口；磁盘上的整个仓库并不会因为可访问就全部进入模型。`CLAUDE.md` 承载人写的持续说明，auto memory 保存 Claude 积累的经验，两者都作为上下文使用，不能代替执行权限。[上下文组成](https://code.claude.com/docs/en/agent-sdk/agent-loop#the-context-window)、[指令与记忆](https://code.claude.com/docs/en/memory)
+
+SDK 与 CLI 的装配起点也有差别：SDK 不设置 `systemPrompt` 时使用最小提示，选择 `claude_code` preset 才采用 CLI 的系统提示；`CLAUDE.md` 则由 `settingSources` 控制，与是否采用 preset 分开。当前文档中的默认 `query()` 会读取文件配置，显式选择来源可以收窄用户与项目配置的影响，但 managed policy 和全局配置另有规则。[系统提示](https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts)、[配置加载](https://code.claude.com/docs/en/agent-sdk/claude-code-features) 这使应用能够分别决定“通用行为”和“项目知识”，也要求部署配置成为可复现的任务输入。
+
+接近窗口上限时，自动 compaction 用摘要替代旧历史，并在 SDK 流中发出 `compact_boundary`；`PreCompact` 可以在压缩前处理归档，`/compact` 可主动触发。摘要保留关键决定，但早期细节可能丢失。[自动压缩](https://code.claude.com/docs/en/agent-sdk/agent-loop#automatic-compaction) 依照第七章，压缩是在有限窗口内选择继续工作所需的状态；原始会话日志与当前上下文因此不应被当作同一份资料。
+
+Prompt cache 解决的是重复计算。Claude Code 将稳定内容放在请求前部、把新交互追加在后，模型服务复用精确匹配的前缀；它不是按文件独立缓存，也不替模型保存跨请求记忆。压缩会另发总结请求，并使后续请求的对话层前缀改变；系统和项目层能否继续命中，取决于内容是否保持一致。[Claude Code 缓存](https://code.claude.com/docs/en/prompt-caching)、[API 前缀语义](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) 因而一次主动压缩可以换来较短的后续上下文，同时付出总结与重建缓存的成本；不能把“token 变少”直接等同于“本轮更便宜”。
+
+### 4. 工具、MCP 与扩展：从可发现能力到执行结果
+
+内置 `Read/Edit/Write` 处理文件，`Glob/Grep` 提供检索，`Bash` 执行命令。模型选择工具和参数，运行时处理执行与回传；多个工具也不是一律并行，公开契约允许只读工具并发，而修改状态的工具按序执行。自定义工具默认按序，`readOnlyHint` 才表达可并发的只读意图。[工具执行](https://code.claude.com/docs/en/agent-sdk/agent-loop#tool-execution) 这让模型看到的能力接口与实际调度相分离，对应第八章的 ACI：工具不仅要能被选择，还要有稳定的结果和错误形式。
+
+MCP 的路径从服务器注册开始：`mcpServers` 可以描述本地 stdio 进程、远程 HTTP/SSE 服务或 SDK server；工具使用 `mcp__<server>__<tool>` 名称。发现工具不意味着立即把全部 schema 填满上下文，当前 tool search 默认延迟加载定义，模型需要时再找出相应能力。[MCP 注册、命名与发现](https://code.claude.com/docs/en/agent-sdk/mcp) 这样减少的是无关工具描述的常驻成本，真正调用时仍须获得定义、完成许可和收集返回值。
+
+SDK 自定义工具把名称、描述、输入 schema 与 handler 组合，经 `createSdkMcpServer`／`create_sdk_mcp_server` 注册。handler 在应用进程中运行，返回 `content`，还可返回结构化结果或 `isError`；公开 Python 分派器将运行时送来的 `mcp_message` 路由到相应 server，再把响应写回。[自定义工具](https://code.claude.com/docs/en/agent-sdk/custom-tools)、[MCP 控制分派](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/src/claude_agent_sdk/_internal/query.py#L656) 这里的“进程内”指应用 handler 所在位置，不表示模型服务直接执行 Python 函数。
+
+扩展还会改变循环的不同位置。Skill 的描述先被发现，正文按需进入上下文；hooks 则按事件和 matcher 运行代码，例如 `PreToolUse` 在动作前检查参数，`PostToolUse` 记录结果，`PreCompact` 处理摘要前状态。SDK 回调在宿主执行，配置中的 command hook 运行命令，不能把 hook 当成要求模型自觉遵守的一段说明。[按需上下文](https://code.claude.com/docs/en/how-claude-code-works#manage-context-with-skills-and-subagents)、[hooks 分派](https://code.claude.com/docs/en/agent-sdk/hooks) 作者据此把扩展分成“补知识”和“改变控制路径”两类，以便判断它究竟增加上下文，还是引入新的执行主体。
+
+Plugin 将 skills、agents、hooks 和 MCP servers 打包，SDK 可按本地路径加载。[扩展包装](https://code.claude.com/docs/en/agent-sdk/overview) 因此审查一个插件时，应沿这些组件各自的路径判断它改变了什么；安装一个包并不会使其中的知识文件与可执行 hook 获得相同的信任等级。
+
+### 5. 权限、沙箱与凭证：批准动作与限制能力
+
+工具请求先要回答“是否获准执行”。SDK 文档的基本求值顺序是 hooks、deny 规则、ask 规则、permission mode、allow 规则，最后才是 `canUseTool`；各模式和扩展另有例外。`PreToolUse` 可以直接拒绝，但它返回 allow 也不能跳过后续 deny/ask。应用回调接收工具名和输入，返回允许、修改后的输入或拒绝理由。[权限求值](https://code.claude.com/docs/en/agent-sdk/permissions)、[回调协议源码](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/src/claude_agent_sdk/_internal/query.py#L586)
+
+这条顺序解释了两个不同接口的用途：`allowedTools` 是预批准集合，不是“除此之外工具不存在”的白名单；已被规则或模式批准的调用通常不进入 `canUseTool`。若应用要在每次工具调用前核验业务范围，应使用相应 `PreToolUse` hook；若要在模型面前收窄能力，应配置工具集合或移除工具。[规则与回调边界](https://code.claude.com/docs/en/agent-sdk/permissions#allow-and-deny-rules) 作者的设计判断是把常见安全读操作做成确定规则，把需要业务裁决的动作留给回调，避免审批 UI 承担所有运行时策略。
+
+获准之后还要回答“进程能触及什么”。内置 Bash sandbox 通过操作系统限制 shell 命令及其子进程的文件与网络访问：macOS 使用 Seatbelt，Linux／WSL2 使用 bubblewrap，网络通过代理检查目标主机。但 `Read/Edit/Write`、本地 MCP 服务器与 command hooks 不在这层 shell 沙箱内；前者使用工具权限，后者运行于宿主环境。[沙箱覆盖范围](https://code.claude.com/docs/en/sandboxing) 对应第九章，权限控制调用入口，隔离约束实际执行，两者要共同覆盖应用选用的路径。
+
+凭证也必须按所在位置理解。MCP 配置可把凭证放入 server 环境或 HTTP headers；Bash sandbox 的 `credentials` 可显式禁止读取文件、移除环境变量，也可配置占位符与代理注入，但没有默认覆盖所有秘密的内置 deny 清单。[MCP 认证](https://code.claude.com/docs/en/agent-sdk/mcp#authentication)、[凭证保护](https://code.claude.com/docs/en/sandboxing#protect-credentials) 若要求整个 SDK 应用、hooks 和工具都处于同一隔离边界，官方部署指南提供容器／虚拟机与外置凭证代理的组合思路。[安全部署](https://code.claude.com/docs/en/agent-sdk/secure-deployment) 这些部署责任不能从 Managed Agents 的凭证库设计推导为本地默认能力。
+
+### 6. 子智能体与委派：隔离的是哪一份状态
+
+通过 `agents` 定义 `AgentDefinition`，应用为角色配置 description、prompt、tools 等；主模型通过 `Agent` 工具委派。普通子代理从自己的系统提示、委派 prompt、工具定义和项目说明启动，不携带父对话历史。因此父代理必须把任务所需的文件位置、错误信息和已作决定写入委派输入。[定义与继承](https://code.claude.com/docs/en/agent-sdk/subagents#what-subagents-inherit) 对应第十一章，这个输入就是一份最小工作契约，不能只写“继续刚才的工作”。
+
+fork 是另一种起点：它复制当前对话再分支；官方文档注明 Claude Code `v2.1.302` 起可以由 `Agent` 的 `subagent_type: "fork"` 发起。普通子代理适合过滤无关历史，fork 适合需要已有推导的分支，两者之后的工具过程都可与父上下文分开。[fork 子代理](https://code.claude.com/docs/en/agent-sdk/subagents#forked-subagents)、[上下文管理](https://code.claude.com/docs/en/how-claude-code-works#manage-context-with-skills-and-subagents) 这种上下文隔离本身没有承诺独立操作系统身份、独占工作区或新的凭证边界；作者建议把需要并发写入的文件归属明确放进委派契约。
+
+回收结果时，父代理收到的是子代理最终报告，可能再总结后交给用户；完整子轨迹保存在独立文件，SDK 事件可以用 `parent_tool_use_id` 关联委派。后台工作通过稍后的完成通知进入主会话，权限提示也在主会话处理。[报告与轨迹](https://code.claude.com/docs/en/agent-sdk/subagents)、[后台执行](https://code.claude.com/docs/en/sub-agents#tools-permissions-and-results-of-background-subagents) 因而“工具日志不占父窗口”与“宿主拿不到工具日志”是两回事；报告压缩了模型交接内容，观测链仍可保留细节。
+
+当前接口允许子代理继续委派，并提供深度、并发与费用限制；TypeScript `stopTask(taskId)` 可停止后台任务。[委派上限](https://code.claude.com/docs/en/agent-sdk/subagents#cap-subagent-depth-concurrency-and-spend)、[任务控制](https://code.claude.com/docs/en/agent-sdk/typescript#query-object) 取消传播则须按具体接口验证：本章固定的 Python 源码在权限和 hook 回调中仍传入 `signal=None`，不能假定所有语言接口都有完整的取消信号链，更不能把停止任务解释成撤回已完成的外部写入。[回调信号源码](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/src/claude_agent_sdk/_internal/query.py#L593)
+
+### 7. 验证与可观测性：从循环结束到可验收产物
+
+Claude 可以在循环中运行测试，把错误输出变成下一轮修改依据；`Stop` hook 也能阻止结束，让代理继续工作。[验证循环](https://code.claude.com/docs/en/how-claude-code-works#the-agentic-loop)、[Stop 事件](https://code.claude.com/docs/en/hooks#stop) 但第十章要求区分“运行时正常结束”与“业务验收通过”。本书建议在任务入口就定义验收命令与产物，再由独立验证步骤检查补丁和测试记录。hook 是插入检查的机会，不会凭空知道业务正确性，也不能让已经发生的外部副作用消失。
+
+运行中，宿主可以记录 assistant/tool/result 消息、压缩边界、子代理关联和权限决定；Claude Code 还可通过 OpenTelemetry 导出指标、事件及可选 traces，工具参数和内容的导出受配置控制。[消息流](https://code.claude.com/docs/en/agent-sdk/agent-loop#message-types)、[可观测性](https://code.claude.com/docs/en/monitoring-usage) 对应第十二章，作者建议用任务 ID 连接 session、工具调用和最终产物，把“模型为什么继续工作”与“平台为什么接受结果”分别保存，避免只留下自然语言总结。
+
+核算同样需要辨别统计边界：同一次模型响应可能拆成多条消息，使用量应按 message ID 去重；result 的 `usage` 只覆盖主循环，全树统计使用 `modelUsage`／`model_usage`。`total_cost_usd` 是客户端价格表计算的估算，不是权威账单。[费用统计](https://code.claude.com/docs/en/agent-sdk/cost-tracking)、[结果字段](https://code.claude.com/docs/en/agent-sdk/agent-loop#handle-the-result) 这样才能比较“主窗口更短”是否真的抵消了额外子代理请求，而不把上下文整理效果误报为总成本收益。
+
+### 8. 一次任务穿过架构：修复登录回归
+
+下面是作者设计的接入示例，不是实测记录。任务是“修复过期会话导致的登录失败，交付补丁和回归测试，不部署”。应用先建立隔离工作区，固定 SDK 与 binary 版本，选择编码用 system preset、项目配置来源和运行预算，并把验收目标作为任务输入。对应的提示、配置来源和预算均有独立接口，应该在一次任务的运行记录中共同保存。[提示装配](https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts)、[循环控制](https://code.claude.com/docs/en/agent-sdk/agent-loop#control-how-the-loop-runs)
+
+模型先请求读取失败测试与认证代码。运行时完成许可、执行读取、回传内容；若委派只读审查，父代理给出具体路径和失败信息，子代理只交回发现及证据位置。主代理再决定修改并运行测试。若需要读取缺陷工单，MCP 将工单服务的工具定义带入调用路径；本例只开放读取业务记录的工具，不把写工单权限附带授予。[工具循环](https://code.claude.com/docs/en/agent-sdk/agent-loop#tool-execution)、[子代理输入](https://code.claude.com/docs/en/agent-sdk/subagents#what-subagents-inherit)、[MCP 权限](https://code.claude.com/docs/en/agent-sdk/mcp#allow-mcp-tools)
+
+长时间排查后，自动压缩让主窗口保留当前假设和关键决定；缓存复用尚未改变的前缀。测试再次失败就把输出送回循环，而不是把失败本身直接认定为整个任务结束。[压缩与反馈](https://code.claude.com/docs/en/agent-sdk/agent-loop)、[缓存重建](https://code.claude.com/docs/en/prompt-caching#compacting-the-conversation) 本例的工程要求是让测试结果指向具体工作区版本，并把失败日志留在产物存储，摘要只承担定位作用。
+
+若宿主中断，应用先确认日志与工作区仍可用，再选择 resume；如果用了外部 SessionStore，还要检查是否发生镜像失败。测试通过后，平台重新验证补丁、汇总授权与工具记录，再把任务标记为可交付。[恢复边界](https://code.claude.com/docs/en/agent-sdk/session-storage) 最终取舍是：SDK 复用了成熟的代理循环，却仍由应用运营进程、持久存储和验证门；需要购买托管循环时另行评估 Managed Agents，而不是在本地适配器里混入其 `wake/getSession` 架构假设。[托管边界](https://code.claude.com/docs/en/agent-sdk/overview)、[Managed Agents 架构](https://www.anthropic.com/research/managed-agents)
 
 ---
 
 ## 第十四章 OpenAI Codex：协议化的 Agent Core
 
-> 资料截面：2026-09-19。开源 CLI/App Server 以 Rust 0.155.1（9 月 18 日发布）为固定源码点；本地 probe 使用的是 0.142.5。Agents API 是另一个托管接入面，不能用开源客户端源码证明其服务端实现。[0.155.1 发布记录](https://github.com/openai/codex/releases/tag/rust-v0.155.1)
+> 本次查阅日期：2026-10-29。内部实现继续采用 Rust 0.155.1，固定提交 `be2951ea34f0d295ed0becf97079f92fa5f6950e`，不声称它是当前最新版；官方网页按本次访问日期引用。本章分析公开的本地 Harness，不用客户端源码推断托管 Agents API 的服务端实现。[版本定义](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/Cargo.toml)
 
-Codex 把核心循环从终端 UI 中抽离，供多个客户端复用。官方将线程生命周期与持久化、配置与认证、沙箱工具执行、MCP/skills 等扩展归入 core；App Server 管理多个 core thread，并提供双向协议。[App Server](https://openai.com/index/unlocking-the-codex-harness/) 这里的“协议化核心”是作者归纳，不意味着每个字段永久稳定，也不意味着 Codex 模型、SDK、App Server 与托管服务是同一对象。
+### 1. 整体架构与职责边界：协议包住的是运行时
 
-### 1. 从 UI 内核到可嵌入服务
+理解 Codex，应先把“界面上的聊天”拆成三个层次：产品决定用户正在处理什么业务；Harness 决定如何把任务持续运行下去；模型决定下一步输出消息还是调用工具。官方对平台化的解释正是复用 agent loop，让应用继续拥有业务上下文、工具和控制界面。App Server 是进入这个运行时的双向接入面，不是循环本身。[平台说明](https://developers.openai.com/blog/codex-as-a-platform)
 
-App Server 使用 JSON-RPC 风格的请求、响应与通知。在本文讨论的 stdio 接入中，消息按 JSONL 分帧并省略 `jsonrpc` 字段，不能假定任意标准 JSON-RPC 客户端可以无缝兼容。[App Server](https://openai.com/index/unlocking-the-codex-harness/) 客户端请求可引出多个通知，服务端也可反向请求审批或输入。下面是精确方法名与方向的协议骨架，省略了响应与其他事件，**不是抓取到的运行轨迹**：
+在固定源码中，`ThreadManager` 持有 `ThreadId → CodexThread` 映射，并通过 `ThreadStore` 管理存储；`CodexThread` 包装一个 `Session` 及其操作、事件端点。真正的运行状态在 `Session`：历史与配置状态、活动 turn、待处理输入以及执行所需的服务。这样的分工允许客户端更换界面，同时让会话状态归运行时管理。[线程管理](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/thread_manager.rs)、[线程包装](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/codex_thread.rs)、[Session](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/session.rs)
+
+下面是作者依据这些组件绘制的职责图；箭头表示主要调用与回传关系，不表示每条路径都跨进程。
 
 ```text
-client request: initialize
-client notification: initialized   (after successful initialize response)
-client request: thread/start, turn/start, turn/interrupt
-server notification: item/started, item/agentMessage/delta,
-                     item/completed, turn/completed
-server request: approval or user input   (semantic category, not a method name)
+产品客户端：业务对象、交互、审批呈现
+        | 请求 / 通知 / 服务端反向请求
+        v
+App Server -> ThreadManager -> CodexThread
+                                   |
+                  Session + SessionIo
+                  |                |
+             run_turn          ThreadStore
+                  |          历史、检查点、设置
+       +----------+-----------+
+       |                      |
+ ModelClient              ToolRouter / ToolRegistry
+ 模型请求与响应                 |
+       ^              +-------+---------+
+       |              |                 |
+       +-- 工具结果 -- 执行 runtime     MCP / 宿主工具
+                      |
+              审批 + SandboxManager
+
+AgentControl：同一根任务树内的子代理注册、通信与生命周期
 ```
 
-`turn/interrupt` 是客户端请求，参数包含 `threadId` 与 `turnId`；`item/started` 是服务端通知，增量按类型区分，例如 `item/agentMessage/delta` 包含 `threadId`、`turnId`、`itemId` 和 `delta`。不存在本书旧稿中的通用 `item/update`。旧稿的 `turn/cancel` 与 `item/start` 也不在所核验的方法枚举内。8 月 27 日基线已使用正确名称，因此这是原稿纠错，不能记为 9 月 API 改名。[基线协议](https://github.com/openai/codex/blob/426fa8cdab4247e5623e9617d531f6917482b947/codex-rs/app-server-protocol/src/protocol/common.rs#L985)、[0.155.1 中断请求](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/app-server-protocol/src/protocol/common.rs#L1056)、[0.155.1 item 通知](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/app-server-protocol/src/protocol/common.rs#L1941)
+App Server 把这种执行活动投影为 `Thread / Turn / Item`：线程包含多轮请求，一轮请求包含消息、命令、文件变化等 item。stdio 使用按行分帧的 JSON，消息省略 `jsonrpc` 字段；还允许服务端反向请求审批。协议因此既承载内容，也承载控制权的交接。[协议与对象](https://developers.openai.com/codex/app-server)
 
-### 2. 四种接入面与不同运营责任
+接入层并非可互换的名称。这个固定版本的 TypeScript Codex SDK 通过子进程封装 `codex exec` 的 JSON 输出；本次查阅的官方文档则明确 Python Codex SDK 控制本地 App Server。应分别核验语言实现，不能把它们等同于通用 Agents SDK，或把某个 SDK 的能力自动移植到另一个 SDK。[TypeScript 执行封装](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/sdk/typescript/src/exec.ts)、[Codex SDK](https://developers.openai.com/codex/sdk)
 
-| 接入面 | 已公开事实 | 作者的接入判断与待核验项 |
-|---|---|---|
-| `codex exec` | CLI 非交互执行入口 | 适合边界清楚的脚本任务；按版本确认输出与退出语义 |
-| Codex SDK | 至少有 TypeScript、Python 接入；Python 0.154.0 于 9 月 10 日发布 | 逐语言确认功能与协议版本，不能假定两者完全对等 |
-| App Server | 可自行部署的长生命周期双向协议服务 | 适合中途输入、审批和进度集成；客户端承担重连与兼容处理 |
-| Agents API | 9 月 10 日进入 public beta，由 OpenAI 管理会话编排、压缩与恢复 | 采购托管 Harness；工具执行环境可托管或自管，服务限制另行检查 |
+### 2. Agent loop 与恢复：一轮请求可以包含多次采样
 
-Python 0.154.0 的发布说明涉及 typed protocol、ExternalMessage、历史及单 turn 选项。这是已存在 SDK 的版本发布，本轮没有证明 Python SDK 的首次出现日期。[Python SDK 发布记录](https://github.com/openai/codex/releases/tag/python-v0.154.0) Agents API 的公测日期则有正式 changelog 支持，不能把它与本地 SDK 或通用 Agents SDK 混称。[API changelog](https://developers.openai.com/api/docs/changelog)
+对应第六章，Codex 的 turn 不是一次模型 HTTP 请求。`SessionIo` 以提交队列接收操作，以事件队列输出进展；`run_turn` 为一次模型采样捕获 `StepContext`，使上下文、公布给模型的工具以及随后调用工具时使用的设置共享同一请求视图。这样可以避免配置刷新后，模型看到的能力与执行器实际采用的能力相互错位。[队列端点](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/mod.rs)、[循环与请求快照](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/turn.rs)
 
-截至本次存档，Agents API 保留会话状态，只支持美国数据驻留，不支持 Zero Data Retention（ZDR）；选择自托管 sandbox 不会使它具备 ZDR 资格。自管工具执行解决执行位置的问题，并没有把托管编排、推理和会话存储全部迁回企业网络。[Agents API 概览](https://developers.openai.com/api/docs/guides/agents-api/overview)
+每次采样从当前历史构造输入，收到工具调用后执行并纳入后续采样；循环同时检查模型是否需要继续、用户是否追加输入、是否达到上下文预算。没有后续工作时才进入停止路径，Stop hook 仍可能要求继续处理。这里的设计动机是让“继续、等待还是结束”成为宿主状态机的判断，而不是只看模型刚刚说了“完成”。[run_turn](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/turn.rs)
 
-### 3. 源码边界与九月运行时变化
+失败恢复也有层次。采样代码区分不可重试错误、上下文超限与使用额度问题；流式连接错误走重试状态、退避和满足条件时的传输回退，部分连接重试行为还受 feature 配置控制。它恢复的是模型请求链路，不能由此推出数据库写入或远程工单创建具有“恰好一次”语义。[采样错误处理](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/turn.rs)、[流重试](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/responses_retry.rs)
 
-开源源码可以核对本地 core、App Server 协议与执行策略；它不能证明托管 Agents API 的每个部署细节。官方循环说明描述了环境与权限变化追加进消息、长会话压缩及缓存前缀处理。[Agent loop](https://openai.com/index/unrolling-the-codex-agent-loop/) 对适配器而言，重点是升级或恢复后权限是否仍与当前策略一致。
+中断处理活动任务、取消信号与排队输入，终态事件后还有显式的历史刷新屏障；恢复则从 rollout 中选取仍有效的压缩检查点及后续记录，重建历史和设置基线。其恢复单位是可持久化的会话状态，不是一个暂停在任意指令上的操作系统进程快照。[任务结束与中断](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tasks/mod.rs)、[历史重建](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/rollout_reconstruction.rs)
 
-本窗口有三项直接影响集成的变化：0.152.0 改善恢复与压缩中的权限保留；0.153.0 对外部 App Server 断线重连保留草稿和转录，并暂停处理不确定或排队的提交；0.154.0 支持活动会话刷新插件、skills/hooks，MCP OAuth 刷新也不会自动重放被拒调用。这些是具体版本行为，不是“可恢复”三个字可以覆盖的全部语义。[0.152.0](https://github.com/openai/codex/releases/tag/rust-v0.152.0)、[0.153.0](https://github.com/openai/codex/releases/tag/rust-v0.153.0)、[0.154.0](https://github.com/openai/codex/releases/tag/rust-v0.154.0)
+### 3. 上下文与会话：模型窗口、宿主事实和记忆各有归属
 
-### 4. 中断与迟到通知：适配器的失败边界
+对应第七章，输入不是把聊天记录拼接后直接发送。`AGENTS.md` 加载器沿项目根到当前目录收集项目指令，支持 `AGENTS.override.md`，并受项目可信状态与字节预算约束；`run_turn` 再记录环境和设置变化，使用当前步骤对应的上下文构造请求。因此目录、权限或工具变化也是会话需要表达的事实。[项目指令装配](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agents_md.rs)、[上下文更新](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/turn.rs)
 
-下面是作者据协议设计的待测故障场景，不是已经完成的产品实验：客户端收到某 item 的文本增量后发送 `turn/interrupt`，但等待响应时连接断开。此时应记录“中断请求已发送、结果未知”，不能立刻显示“所有工具已停”。重连时核对原 thread/turn 与终态，将迟到通知关联回原 item；若断线前已有写入，另外核对写入结果。
+`ContextManager` 保存有序的 `ResponseItemEnvelope`、token 信息、用于差异更新的上下文基线，以及独立于模型窗口的 `retained_context`。工具输出进入历史时可按截断策略缩短；`for_prompt` 再把历史转换成模型请求输入。这解释了为什么界面上可见的记录、落盘的记录和某次实际送给模型的内容不能被当作同一份数据。[ContextManager](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/context_manager/history.rs)
 
-这要求适配器保留请求 ID、thread/turn/item 标识、原始通知与接收顺序。`item/completed`、`turn/completed` 的名称本身不是成功状态，应读取相应结果。也不能从协议层中断推导后代进程与外部副作用全部撤销。取消的通用状态规则见第六章；这里独有的问题是双向 RPC 与异步通知如何在重连后归并。
+压缩改变工作窗口，却不应替用户改写授权。源码专门用 `replace_compacted` 保留这条边界；本地压缩路径生成摘要、保留一定用户消息，并根据发生在轮前还是轮中决定何时补回初始上下文。轮中的上下文注入还要保持摘要所在的相对位置；远程压缩则由 provider 能力选择另一条路径。压缩由此是一项上下文重建操作，而不只是删除旧文本。[压缩替换](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/context_manager/history.rs)、[本地压缩](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/compact.rs)、[路径选择](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/turn.rs)
 
-### 5. 企业 adapter 的状态模型
+跨会话记忆又是另一条流水线。该版本的设计文档描述：在记忆功能开启、非临时根会话且有状态库等条件满足时，后台先从合格 rollout 抽取结构化记忆，再持有全局阶段锁汇总共享记忆材料。第一阶段可并行，第二阶段串行，是为了避免多个任务同时改写同一记忆工作区。它有启动条件、筛选规则和失败重试，不等于每条消息都会永久保存为可靠知识。[记忆流水线](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/memories/README.md)
 
-以下是**本书自定义平台映射**，不是 App Server 请求参数，也不能直接交给 CLI/SDK。占位版本需要替换为实际部署标识：
+### 4. 工具、MCP 与扩展：声明能力和执行能力必须对齐
 
-```json
-{
-  "task_id": "TASK-2048",
-  "attempt_id": "A-03",
-  "runtime": "codex-app-server",
-  "runtime_version": "pinned-build",
-  "thread_id": "vendor-thread-ref",
-  "workspace_revision": "git:8f31...",
-  "policy_profile": "code-medium-v4",
-  "completion_contract": "cc:v7"
-}
-```
+对应第八章，`ToolRouter` 同时持有模型可见的工具规格与 `ToolRegistry`；它把模型响应解析为含名称、调用 ID 和 payload 的工具调用，并查询工具是否允许并行。`ToolRegistry` 再按名称找到 runtime、检查载荷类型、执行 hooks 和处理结果。设计重点在于，一份最终工具计划同时确定“模型能请求什么”和“宿主能执行什么”。[工具路由](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/router.rs)、[注册与分派](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/registry.rs)
 
-原生 thread/turn/item 可映射为平台尝试及事件引用；供应商通知未提供的业务验收结果不能由字段名推断。协议握手、能力协商、取消和进程退出都应按所部署版本测试；不支持的能力明确降级，不能静默模拟成功。
+MCP 接入在这个边界上增加适配。客户端初始化时协商能力并列举工具；`McpHandler` 把 `ToolInfo` 转成模型工具规格，再把调用送入 MCP 调用路径。结果经工具输出路径回到历史，模型才能据此继续。只读提示等元数据还可能影响并行许可，因此服务端声明不仅是帮助文本，也参与调度决策。[MCP 初始化与发现](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/codex-mcp/src/rmcp_client.rs)、[McpHandler](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/mcp.rs)
 
-### 6. 本地核验到哪里，结论就到哪里
+扩展不只有 MCP。`DynamicToolHandler` 接受线程提供的工具规格，并在调用时向宿主请求结果；技能扩展则负责目录、选择、provider 和指令注入。前者增加动作入口，后者增加任务知识与操作方法，两者可以组合，但技能文字本身并没有创建新的隔离执行器。[动态工具](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/dynamic.rs)、[技能扩展](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/ext/skills/src/lib.rs)
 
-本轮研究在本机 0.142.5 成功生成默认及 experimental 两套 schema，离线方法集合、必要字段与固定源码对照 **58/58 符合预期**，其中包含证明旧方法名不在枚举中的反例检查。这个分母既不表示旧示例正确，也不表示完整 JSON Schema 验证或端到端测试通过。
+工具 hook 也有明确时间边界：前置 hook 可以阻止调用，后置 hook 拒绝的是已经返回的结果，不能撤销此前完成的动作。对企业工具而言，这意味着拒绝不可信结果与阻止业务写入必须放在不同位置，不能用一个“验证失败”状态含混地覆盖两者。[分派与 hook 边界](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/registry.rs)
 
-三次自施受限启动都在 `initialize` 响应前以 exit 1 退出，错误为 `Operation not permitted`；具体受限路径和系统调用仍未知。未发送 `initialized`、`thread/start`、`turn/start` 或模型请求，也没有观察到错误方法名被线上拒绝的报文。**正常握手未验证，取消与模型流未端到端验证**；不能据此宣布 Codex 不可用。原始记录保存在本书研究材料的 `review_20260919/vendor_probe/codex/`。
+工具数量增长时，还要区分“已经注册”与“本轮直接公开”。路由器可识别延迟发现的工具，动态工具也保存 `Direct / Deferred` 暴露方式；模型不必在每轮都看到所有工具的完整定义。作者将这一设计理解为上下文预算与能力发现之间的折中：缩小初始工具目录，同时保持发现后的调用仍落到同一注册表，不让搜索结果成为绕过执行校验的新入口。[可见性判断](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/router.rs)、[动态工具暴露方式](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/dynamic.rs)
 
-作者的设计判断是：双向协议适合承接丰富客户端，托管 API 则把部分运维责任交给供应商。选择哪条接入面，取决于版本控制、数据流、恢复责任和实际任务测量；开源协议检查并不能替代这些验收。
+### 5. 权限、沙箱与凭证：决定能否做，与限制如何做
+
+对应第九章，审批策略回答“此动作是否需要进一步许可”，沙箱回答“执行时实际允许访问什么”。官方文档将两者明确区分；源码中的 `ToolOrchestrator` 把审批要求、首次沙箱选择、执行尝试和失败后的升级路径集中起来。工具被判为禁止时直接返回拒绝，不能把所有沙箱失败都解释成应该自动提权。[审批与隔离](https://learn.chatgpt.com/docs/agent-approvals-security)、[ToolOrchestrator](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/orchestrator.rs)
+
+`SandboxManager` 进一步把抽象权限、命令、工作目录和网络设置变成执行请求。固定版本的后端类型包括 `MacosSeatbelt`、`LinuxSeccomp` 和 `WindowsRestrictedToken`，具体选择还取决于平台与启用条件。共同权限模型让上层表达工作区访问范围，平台实现负责落到系统机制；这并不证明各平台拥有完全相同的隔离效果。[沙箱转换与平台选择](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/sandboxing/src/manager.rs)
+
+执行隔离也不能替远程业务系统认证。MCP 是另一条服务调用路径，宿主动态工具又把执行交回应用；企业接入时，应在这些服务端检查租户、资源和动作权限，而不能把本机文件沙箱当成远程数据库的权限模型。这是由调用边界导出的架构要求。[MCP 调用适配](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/mcp.rs)、[宿主动态工具](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/dynamic.rs)
+
+登录凭证有单独存储职责：`AuthCredentialsStoreMode` 可以选择文件、系统 keyring、自动选择或临时存储，文件后端涉及 `auth.json`。因此“模型不直接处理密钥”与“本机没有持久凭证”是两个不同命题；部署时应把凭证存储方式作为运行环境配置，而不是写进任务提示词。[凭证后端](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/login/src/auth/storage.rs)
+
+### 6. 子智能体与委派：子线程共享控制面，各自运行循环
+
+对应第十一章，Codex 的子代理是受管理的线程，而不是给同一条历史加一个角色标签。`AgentControl` 在同一根任务树内共享注册表、执行限额和预算，并持有指向线程管理器的弱引用；这种设计把父子关系放在控制面，同时避免管理器与会话互相持有强引用形成生命周期环。[AgentControl](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agent/control.rs)
+
+以该版本 V1 路径为例，`spawn_agent` 接受任务输入，可选择 `fork_context`，记录父线程、父 turn、根 turn 和环境选择，并检查派生深度。创建时会应用角色和模型设置，再继承当前审批策略、工作目录与权限配置。由此可以把上下文隔开，却不能把“另一个线程”推导为“另一个文件系统”或“另一套业务账号”；需要文件隔离时，工作区仍须显式安排。[创建路径](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents/spawn.rs)、[运行时设置继承](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents_common.rs)
+
+结果回收依赖状态订阅。V1 `wait` 返回代理状态和超时信息；`AgentStatus` 又从开始、完成、错误和中断事件推导，完成状态可以携带最终消息。`Interrupted` 在这里不属于普通的最终完成状态，等待超时也不表示子任务已经失败。父代理因此需要区分“现在没有结果”与“已经得到终态结果”。[等待](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents/wait.rs)、[状态推导](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agent/status.rs)
+
+取消同样分层：`interrupt_agent` 向指定线程发送中断操作；关闭路径则记录关闭关系，并关闭从内存派生树可达的活跃后代。这是会话树生命周期管理，不是文件写入或外部服务的事务回滚。固定源码还包含 V2 委派工具实现，所以上述 V1 名称是具体路径说明，不是所有版本唯一不变的公开契约。[指定线程中断](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agent/control.rs)、[关闭树](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agent/control/legacy.rs)、[V2 创建实现](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents_v2/spawn.rs)
+
+### 7. 验证与可观测性：看到执行，不等于证明正确
+
+对应第十、十二章，App Server 提供 `item/started`、`item/agentMessage/delta`、`item/completed` 和 `turn/completed` 等事件；中断请求的精确名称是 `turn/interrupt`。事件中的关联标识让客户端把文本、工具和终态归回同一执行过程，但完成通知还需要读取状态，不能仅凭方法名标记业务成功。[固定协议枚举](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/app-server-protocol/src/protocol/common.rs)、[生命周期](https://developers.openai.com/codex/app-server)
+
+运行时还提供工具分派 trace，并按配置构造 OpenTelemetry exporter；这些机制可以帮助定位哪次调用失败、耗时或经历重试，却不会替代回归测试和业务不变量验证。平台应把工具输出、代码差异、测试结果与业务任务关联，尤其在重连后保留尚未确认的动作状态。[工具 trace](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/tool_dispatch_trace.rs)、[遥测初始化](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/otel_init.rs)
+
+本章的运行证据仍限于历史局部探测：2026-09-19 的本机 0.142.5 两套生成 schema 及离线方法、字段和源码对照共 58 项符合预期；三次自施受限启动都在 `initialize` 响应前以 exit 1 报 `Operation not permitted`，具体拒绝路径与系统调用未知。没有发送 `initialized`、`thread/start`、`turn/start` 或模型请求，正常握手、取消与模型流均未端到端验证，也不能据此认定产品不可用。原始材料在研究目录 `review_20260919/vendor_probe/codex/`；本轮只核对文档与源码，没有把阅读源码记成实跑成功。
+
+### 8. 一次任务如何穿过架构：修复导出遗漏
+
+设想用户要求：“修复订单导出跨页遗漏，增加回归测试，并说明是否影响已有数据。”下面是作者设计的架构走查，不是已完成的产品实验。业务应用先提供订单模块位置、失败样本和验收条件，再把任务交给线程；`thread/start` 建立会话，`turn/start` 开始工作，客户端持续消费 item 事件。这让业务对象留在应用层，执行过程进入 Harness。[线程与 turn 接口](https://developers.openai.com/codex/app-server)
+
+进入 core 后，项目指令、环境与当前历史形成步骤上下文；模型可以通过工具读取实现，再把“核对分页边界条件”委派给子线程。若父线程改代码、子线程只读分析，应用应事先约定文件职责；上下文分开本身不会防止同目录写入冲突。这个例子利用了线程派生与环境继承机制，但读写职责是作者建议的任务组织方式。[指令加载](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agents_md.rs)、[子线程创建](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents/spawn.rs)
+
+假如需要查询内部字段定义，应用可通过 MCP 暴露只读查询；模型拿到查询结果后选择补丁和测试动作。命令执行经过工具分派与审批、沙箱路径，结果再次进入历史。若安装缺失依赖需要网络权限，应先让权限机制做出决定；拒绝后应调整方案或报告缺失条件，而不是把一次失败无限重放。[MCP 工具](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/mcp.rs)、[执行编排](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/orchestrator.rs)
+
+任务拉长时，压缩保住继续推理所需的窗口；应用还应把验收条件和测试材料存为可再次读取的工件。最终答复应说明复现样本、修复差异、回归结果及数据影响依据，平台再以独立检查决定是否接受。后一项是本书的验收设计：运行时会话结束不能代替业务证明，摘要也不能成为唯一证据库。[上下文压缩机制](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/compact.rs)
+
+接入取舍由此变得具体：批处理任务可选 `codex exec` 或适合该语言的 Codex SDK；需要长会话、中途控制、审批与细粒度进展的产品更适合直接接 App Server。复用循环会减少应用自行实现状态机的工作，同时让应用必须认真维护协议版本、工具权限和结果验收。可复用的是执行机制，业务完成标准仍需应用定义。[官方接入层选择](https://developers.openai.com/blog/codex-as-a-platform)
 
 ---
 
 ## 第十五章 Cursor：IDE 原生上下文与云端 Agent
 
-> 资料截面：2026-09-19。依据已存档的官方工程文章与发布说明，区分 IDE、本地执行、云端 Agent、自管 worker 和 Projects beta；本轮没有审计专有的云端循环、选择器或压缩器源码，也没有同条件产品实测。
+> 资料访问日期：2026-10-29。本章依据官方文档与工程文章重建公开架构，不代表对闭源实现的源码审计。网页截面以证据账本中的内容 SHA-256 固定；未取得产品源码 commit。文中标明日期的历史能力保留原版本含义，示例为作者推演，未经产品端到端实跑。
 
-Cursor 的差异化不是“也能调用 shell”，而是把编辑器状态、代码检索、终端、模型选择和远程执行组织成连续体验。它展示了 Harness 的另一条路线：不是先设计通用 runtime 再接 UI，而是从开发者工作流反向塑造上下文与工具。
+### 1. 整体架构与职责边界：从编辑器进入执行系统
 
-### 1. 动态上下文发现
+理解 Cursor，先把“在哪里交互”“在哪里组织模型输入”“在哪里执行工具”分开。IDE 提供工作区与会话入口；官方披露，初始上下文会包含操作系统、Git 状态、当前及最近查看的文件，更多信息由 Agent 动态获取。[Harness 工程说明](https://cursor.com/blog/continually-improving-agent-harness) 最终提示组装发生在 Cursor 后端，即使用户自带模型 API key，请求仍经过该后端。[数据使用说明](https://cursor.com/data-use) 因而“本地 Agent”主要说明工作环境的位置，不能解释为整套服务都在笔记本内运行。
 
-Cursor 把较少信息静态塞入 prompt（提示语输入），让 Agent 按需检索更多上下文。官方列出的做法包括：把长工具输出写入文件、把历史会话作为可搜索文件、按需加载 skill、把 MCP（Model Context Protocol）工具描述同步为目录，以及把集成终端输出映射为文件。[Dynamic context discovery](https://cursor.com/blog/dynamic-context-discovery) 这里的核心抽象不是“文件万能”。其要点是把大对象拆成有地址的外部状态。模型先看索引，再决定读取哪一部分内容。
-
-官方报告一项 A/B 对照实验：在确实调用 MCP 工具的运行中，按需发现工具描述使总 Agent token 减少 46.9%，结果随已安装 MCP 数量高度变化。[Dynamic context discovery](https://cursor.com/blog/dynamic-context-discovery) 本章未复核随机化单位、是否同任务配对及统计窗口，不能把 A/B 直接定义为“同一任务跑两套配置”。这项厂商结果可转成待测假设，不能外推成所有任务或 Harness 的固定收益。
-
-动态发现也有失效边界。若索引命名错误、文件过期，或 Agent 不知道该搜索什么，重要资料可能变得不可发现。作者建议另测上下文召回率：由独立标注确定任务所需权威资料，再统计决策前实际读取的比例。分母不能由 Agent 用自己读过的文件定义，也不能用 token 下降代替召回或完成结果（见第七章）。
-
-### 2. Model-specific Harness
-
-Cursor 公开说明会按模型及版本定制 prompt（提示语）和工具格式。例如，不同模型在训练中熟悉的编辑动作不同。若用不熟悉的格式，推理成本会上升，错误更容易发生。模型切换时，Harness 也会切换到对应 profile，但新模型仍要消费前一个模型产生的历史上下文。[Harness evolution](https://cursor.com/blog/continually-improving-agent-harness) 这说明“模型无关 canonical action（标准动作语义）”与“模型面向的 tool view（工具视图）”应分成两层：平台内部语义保持稳定，模型看到的名称、schema（数据结构定义）、示例和返回压缩可以按 profile 编译。
-
-一个待测反例是强制不同模型使用同一编辑工具：成功率可能下降，token 消耗可能上升，实际方向取决于模型与任务。另一个极端是连动作产生的效果都使用私有语义，使追踪和评测难以比较。作者建议共享效果语义，同时允许模型看到的工具形式变化（见第八章）。
-
-### 3. 在线信号与离线评测
-
-Cursor 披露其同时使用公开和内部 benchmark（基准测试）、在线 A/B、时延、token 效率、工具错误、cache hit（缓存命中率），以及代码在一段时间后仍被保留的 Keep Rate（留存率）。[Harness evolution](https://cursor.com/blog/continually-improving-agent-harness) 其中 Keep Rate 比“用户点击接受”更接近长期效用，但仍不是正确性的充分条件。用户可能没发现缺陷，而代码也可能因项目中止被保留。企业应把行为信号与确定性测试、事故记录和人工抽检组合，而不是让单一指标驱动进化决策（见第十九、二十四章）。
-
-### 4. 自管 worker 移动的是工具执行位置
-
-9 月 2 日官方说明区分了两种云端 Agent 执行方式：默认每会话使用 Cursor 云端专用 VM；自管机器则在企业环境保存仓库工作副本、编辑文件和执行命令。`agent worker start` 建立出站 HTTPS 长连接，云端把工具调用发给 worker，worker 回传结果。可以连接个人机器，也可以使用团队资源池。[自管机器说明](https://cursor.com/blog/self-hosted-machines)
-
-自管 worker **仍由 Cursor 云端完成 Agent 循环、推理与规划**。工具输出可能含代码并回传，转录也可能在云端处理和存储；出站连接不等于数据不出网。这与“在企业内完整自部署模型和 Harness”是不同方案，不能共用一个“自托管”标签。[自管机器说明](https://cursor.com/blog/self-hosted-machines)
-
-以下是根据公开流程构造的失败边界，未实跑：
+下面按第五章的职责边界画出功能分区。这是作者根据公开契约归纳的图，不是内部进程图；“上下文服务”也不是声称存在某个同名内部类。索引链路来自官方索引文章，云端循环与 worker 的分工来自自管机器文档。[索引架构](https://cursor.com/blog/secure-codebase-indexing)、[自管机器](https://cursor.com/docs/cloud-agent/self-hosted)
 
 ```text
-云端规划 → 经出站通道下发工具调用 → 内网 worker 读取仓库并运行命令
-         ← 工具输出回传（可能带代码、日志或内网数据）
-         → 云端继续推理；转录可能在云端存储
+用户 <-> IDE / Agents Window / Web
+          | 任务、规则、工作区线索
+          v
+Cursor 服务：提示组装、模型适配 Harness <-> 模型
+          ^             | 工具请求
+          |             v
+上下文索引/检索     工具执行位置
+  ^    |           +-- 本地工作区：文件、终端
+  |    +-> 相关片段 +-- Cursor 云端 VM：仓库、依赖、测试
+代码变化           +-- 自管 worker：企业机器上的工具
+                              |
+                  工具结果、diff、日志 -> 下一轮模型输入
 ```
 
-例如 worker 在内部服务旁运行测试，失败日志包含敏感字段。即使仓库磁盘与进程都在内网，该字段仍可能随工具结果进入云端。作者建议在采用前确定可回传的数据类别、日志处理和凭证范围；如任务要求完全离线或禁止这种数据流，这条部署路线不满足约束。不能用“没有入站端口”代替数据流验收。
+托管 Cloud Agent 在独立 VM 中获得克隆仓库、依赖和运行环境；自管模式把文件编辑、终端、本地 MCP 等执行交给 worker，循环、推理与规划仍由 Cursor 承担。[Cloud Agents](https://cursor.com/docs/cloud-agent)、[Self-Hosted Machines](https://cursor.com/docs/cloud-agent/self-hosted) 这套分工的价值，在作者看来，是让同一种任务交互连接不同算力与开发环境；它的代价是上下文、会话和工作副本不再天然位于同一处。
 
-### 5. Projects beta 扩展了工作关系
+### 2. Agent loop 与恢复：模型决策，应用执行
 
-9 月 10 日发布的 Projects 处于 beta，并逐步开放。官方描述的协调 Agent 负责规划、创建和管理实现 Agent，并把成果交给用户检查；项目维护跨云端与本地机器同步的文件，积累研究与产物，还支持 subscriptions、事件触发和周期运行。需要本机测试时，协调者可启动本地 Agent。[Projects 发布说明](https://cursor.com/changelog)
+对应第六章，一轮工作可以抽象为“组装输入—模型提出工具及参数—应用执行—结果进入上下文—再次决策”。Cursor 的教学文档明确把执行责任放在应用一侧，模型依据返回结果继续对话；Agent 则把多次工具调用组织为搜索、修改、测试和纠错的循环。[Tool Calling](https://cursor.com/learn/tool-calling)、[Agents](https://cursor.com/learn/agents) 这解释了为什么测试输出是一轮新的输入：模型必须看见实际失败，才能选择补丁或更换方法，不能由“已经调用测试”直接推导任务完成。
 
-这扩大了共享上下文和持续执行的范围，但官方关于长期工作与大量委派的描述并非本书的可靠性测量。作者建议先验证一条具体链：触发事件进入项目，协调者委派，实现者更新共享文件，后续 Agent 读取该版本。若错误测试说明被同步，后续工作可能反复复用它；检查点应包括文件来源、版本、撤销传播、并发预算和停止条件，而不只是“协调者还在运行”。
+这个循环还有模型适配层。Cursor 披露，它会针对模型及版本定制提示与工具格式，例如适配模型训练时熟悉的 patch 或字符串替换；中途换模型时也切换相应 Harness，同时提示新模型不要调用旧历史中已不可用的工具。[模型适配与会话切换](https://cursor.com/blog/continually-improving-agent-harness) 作者据此区分两种稳定性：文件最终如何变化可以保持一致，而模型眼中的动作格式不必相同。恢复旧会话因此也包含工具语境的衔接。
 
-Cursor hooks通过stdio JSON与处理程序交换数据。当前文档区分IDE、云端和自管worker：云端仅运行命令型hook，一些早期只读探索阶段不加载hook；事件覆盖和sessionStart/sessionEnd触发点也有差别。文档还说明，命令hook以2退出会阻断，其他非零退出通常按失败放行；权限hook以0退出但返回非法JSON或不合schema时另有阻断规则。因此不能把“装了前置hook”当作所有路径默认拒绝的安全保证。[Hooks](https://cursor.com/cn/docs/hooks) 以上是文档契约，本书没有逐运行面实测；缺少可靠提交前阻断或结构化证据时，应保留人工审阅或限制自动写入。
+恢复要按状态对象理解。IDE checkpoint 在重大修改前保存文件快照，存于本地且独立于 Git；恢复会回退文件，却不会移除对话消息。[Checkpoints](https://cursor.com/docs/agent/overview#checkpoints) 所以恢复后可能出现“对话说补丁已完成，磁盘却回到补丁前”的状态，后续应重新读取文件。官方还区分排队消息与在下一次工具调用边界送达的运行中指令，后者保留正在执行的动作。[运行中引导](https://cursor.com/docs/agent/overview#steer-a-running-agent)
 
-### 6. 设计判断
+停止也有可观察契约：loop 结束时，`stop` hook 收到 `completed`、`aborted` 或 `error`；它还可以返回 `followup_message`，自动提交下一条用户消息，开始后续迭代。[停止事件](https://cursor.com/docs/hooks#stop) 因此应区分一轮结束、会话结束和任务验收，不能把任一停止事件直接记为业务成功。
 
-作者从 Cursor 提炼出的原则是：上下文可发现、工具按模型适配、产品反馈进入评测。自管 worker 提供执行位置控制，Projects 提供更长的工作组织，两者都没有开放完整云端实现。采用时应分别衡量数据回传、共享上下文错误扩散、任务结果和人工介入；不能由 IDE 体验、Keep Rate 或一个低 token 指标直接推导平台级适配结论。
+云端另有持久化边界：会话状态、元数据和产物保存到 Cursor 管理的存储，以便审查和恢复；VM 则会按生命周期休眠、回收。[云端运行生命周期](https://cursor.com/docs/cloud-agent/security#how-cloud-agents-work) 这支持“继续一次工作”的产品契约，却没有公开逐条工具调用的事务重放、恰好一次执行或所有取消副作用的保证，本章不补写这类内部机制。
+
+### 3. 上下文与会话：索引、指令、历史各有载体
+
+第七章所说的上下文选择，在这里首先体现为增量索引。客户端构造文件与目录哈希组成的 Merkle tree，与服务端比较，只同步变化分支；变化文件被切成语法块，再转换为 embedding，并按块内容缓存。[首次索引流程](https://cursor.com/blog/secure-codebase-indexing) 这解决的是代码变化后怎样维护可搜索表示：不必每轮把整库重新塞进提示，也不必对未变内容重复计算。检索负责缩小候选范围，Agent 随后仍要读取与任务相关的代码。
+
+索引复用也有边界。官方介绍的新工作区加速方案，会在同一用户或团队的索引中寻找相似版本；客户端提交的内容证明用于过滤搜索结果，无法证明本地持有的文件会被过滤。[索引复用与访问证明](https://cursor.com/blog/secure-codebase-indexing#proving-access) 这里应关注“候选索引”和“当前工作副本”的差异，而不能把复用索引理解为向新成员开放整个团队代码。
+
+指令由另一条路径进入模型。Project Rules 存在 `.cursor/rules/*.mdc`，通过 `alwaysApply`、文件模式、描述相关性或手工引用决定何时加入；应用后的规则内容位于模型上下文开头。规则里引用文件只提供查找线索，并不自动展开文件全文。[Rules](https://cursor.com/docs/rules) 作者建议把必须持续生效的短约束放在规则正文，把大体量范例留在可读取文件中：前者保证任务方向，后者控制输入体积。
+
+长会话则依靠压缩与重新发现相互补充。Cursor 在上下文达到限制时生成摘要，并向 Agent 提供历史文件引用，必要时可搜索被摘要丢失的细节；长 shell/MCP 输出写入文件，集成终端输出也映射到文件系统，供按需读取。[动态上下文发现](https://cursor.com/blog/dynamic-context-discovery) 设计动机不是无限扩大窗口，而是让大对象在窗口之外仍有地址。摘要负责继续工作所需的短状态，历史文件承担追溯，两者不能互相替代。
+
+“记忆”还要区分版本与作用域。Cursor 1.0 在 2025-06-04 将 Memories 作为 beta 发布，说明其按个人、按项目保存对话事实并供未来引用；这是历史契约，本轮未核实同名能力在现行客户端的可用范围。[1.0 发布记录](https://cursor.com/changelog/1-0) 当前 Projects 文档则明确描述一组跨云端与本地机器同步的共享文件，持续积累研究、产物及工作约定。[Project 共享上下文](https://cursor.com/docs/agent/projects#shared-context) 规则是可审阅的行为指令，摘要服务当前会话，历史支持追溯，共享文件服务跨任务知识；把它们分开，才能判断一条过时结论应在哪里修订。
+
+### 4. 工具、MCP 与扩展：从可发现描述到实际调用
+
+第八章的工具链可分成接入、发现、分派与返回。Cursor 通过项目级 `.cursor/mcp.json` 或用户级同名配置接入 MCP server，支持 stdio、SSE 和 Streamable HTTP；前者由本机启动进程，后两者连接服务端点并可使用 OAuth。[MCP 接入](https://cursor.com/docs/mcp#how-it-works) 这些配置确定连接对象和认证材料，工具描述再告诉模型何时、如何调用，不能仅凭名称就赋予模型执行能力。
+
+Cursor 的工程文章说明，MCP 工具描述会同步为按 server 分组的目录，模型先看到少量静态线索，任务需要时再读取说明；Skills 同样以名称、描述引导按需加载详细指令与附带文件。[工具与技能的动态发现](https://cursor.com/blog/dynamic-context-discovery) 这种设计把发现成本延后到真正需要的位置，也要求描述足够准确：不可发现的能力，即使已连接，也可能始终不会进入决策。
+
+模型选定工具后，由客户端的协议集成把调用交给 server，响应再回到会话；界面可展开参数与结果，失败调用会标记错误供重试和查日志。[MCP 使用与故障处理](https://cursor.com/docs/mcp#using-mcp-in-chat) 需要改变循环行为时，hooks 提供另一种扩展面：它们是阶段性启动的进程，通过 stdio 双向 JSON 接收事件并返回观察、修改或阻断结果。[Hooks](https://cursor.com/docs/hooks) 因此，Skill 扩展工作方法，MCP 扩展外部动作，hook 接入执行时序；三者在架构中承担不同职责。
+
+### 5. 权限、沙箱与凭证：批准动作不等于限制进程
+
+对应第九章，本地 Run Modes 决定调用是否自动放行。Auto-review 先处理 allowlist，其他 shell 命令尽可能在沙箱运行，不能使用沙箱的调用交给后端分类器审查；MCP 与 Fetch 也参与审查。分类器拒绝后，Agent 可换方法或请求人工批准，官方明确说明分类器不是安全边界。[Run Modes](https://cursor.com/docs/agent/security/run-modes#how-auto-review-works)
+
+执行隔离是另一层。`permissions.json` 调整自动批准与审查策略，`sandbox.json` 限制沙箱内的文件路径和网络访问；macOS 使用 Seatbelt，Linux 使用 Landlock 与 seccomp，Linux 环境不满足所需条件时回退到命令审批。[沙箱配置与平台实现](https://cursor.com/docs/agent/security/run-modes#sandboxing) 这使“允许跑测试”和“测试进程能读哪些文件、访问哪些网络”成为两个可分别配置的问题，而不是一次点击替代所有边界。
+
+Cloud Agents 不使用本地 Run Modes，其专用机器允许自主执行工具，无需每一步都等待批准。[云端审批区别](https://cursor.com/docs/agent/security/run-modes) 凭证也有分层：Environment Variable 对 Agent 可见；Runtime Secret 仍注入环境变量，但在工具结果、转录和提交等位置脱敏；Build Secret 只供构建过程使用。[Secrets & Network](https://cursor.com/docs/cloud-agent/security-network#secret-protection) 脱敏因此是输出保护，不能解释为进程没有拿到凭证。
+
+需要临时身份时，云端机器可通过本地 socket 申请 Cursor 签发的短期 OIDC JWT，外部服务验证签名与声明后授权；该身份属于整个运行，能访问 socket 的进程均可申请，并非每个 subagent 独占的身份。[OIDC 信任模型](https://cursor.com/docs/cloud-agent/identity#trust-model) 云端 MCP 登录态也与本机分开保存，退出本地登录不会自动退出云端。[MCP 认证边界](https://cursor.com/docs/mcp)
+
+自管 worker 进一步把执行地点与数据流分开：完整 checkout 留在企业机器，但文件内容、终端输出、diff、截图和 MCP 结果会按任务需要回传；`agent worker start` 使用出站 HTTPS 长连接接收工具调用。[自管数据流](https://cursor.com/docs/cloud-agent/self-hosted#what-leaves-your-network) 选择它是为了接近内部服务或特殊硬件，不能据此推导推理和会话数据也完全留在内网。
+
+### 6. 子智能体与委派：上下文隔离、环境隔离、调度分层
+
+第十一章的委派首先发生在模型上下文之间。普通 subagent 从干净窗口开始，由父 Agent 在提示里给足信息；前台执行等待结果，后台执行立即返回，完成后把最终消息交给父 Agent。内建 Explore 和 Browser 用来吸收搜索、DOM 与截图等大量中间内容；自定义定义位于 `.cursor/agents/`，可指定模型和只读权限。[Subagents](https://cursor.com/docs/subagents) 这里最直接的收益，是让父会话保留决策所需结果，而不承担全部探索轨迹。
+
+上下文独立不等于磁盘独立。普通 subagent 默认共享父工作副本；要求隔离时才使用独立 worktree 或云端环境。Cloud subagent 有自己的 VM 与分支，并使用团队配置的云端 MCP，而非直接继承本地 MCP 会话。[隔离副本与云端子智能体](https://cursor.com/docs/subagents#isolated-project-copies) 同样，后台 subagent 可按返回的 agent ID 恢复，父 Agent 可读取其输出了解进度；但公开材料不足以证明父任务取消会原子撤销所有后代已发生的外部动作。[恢复与状态](https://cursor.com/docs/subagents#resuming-subagents)
+
+worker 则是执行资源，不是另一个独立规划者。Team Pool 是路由与等待队列，由 worker 领取会话，一台机器服务一个 Agent；My Machines 可让多个 Agent 共用一台机器，扩缩容量由企业自己的 controller 管理。[Worker、Pool 与 Controller](https://cursor.com/docs/cloud-agent/self-hosted#how-it-works) 因而并行度有两个来源：子任务拆分增加决策分支，更多 worker 或 VM 增加可同时执行的环境。
+
+Projects 再把组织尺度扩大：coordinator 负责规划与委派，自身不写代码，并通过共享文件和 subscriptions 维持跨任务工作。[Projects](https://cursor.com/docs/agent/projects) 作者将其理解为三层组合：父子 Agent 交换任务结果，worker 提供执行地点，Project 保存持续工作的关系与知识。评估并行方案时应分别检查这三层，不能把多开几个云端任务等同于已经具备统一协调与结果合并。
+
+### 7. 验证与可观测性：可回看过程，仍须验证结果
+
+第十、十二章关注的验证，在 Cursor 中依赖完整开发环境。云端环境可预装依赖、配置启动方式，使 Agent 能构建、测试并操作修改后的软件；仪表盘显示该运行使用的 environment 与 Build，帮助解释“为什么同一补丁在另一环境失败”。[云端环境](https://cursor.com/docs/cloud-agent#environments) 云端还提供会话日志，以及通过 Cursor Cloud MCP 读取转录、运行事件、环境详情和 setup 日志的诊断能力。[云端可审计性](https://cursor.com/docs/cloud-agent/security#auditability)
+
+hooks 能把观察点接到工具、编辑、压缩与子 Agent 生命周期，但覆盖范围取决于运行面：云端只执行命令型 hook，早期只读探索阶段不运行；自管 worker 的 sessionStart/sessionEnd 对应领取、释放会话。[Hooks 运行面](https://cursor.com/docs/hooks#cloud-agent-support) 命令 hook 以 2 退出可阻断，其他非零退出通常放行；权限 hook 以 0 退出却返回非法 JSON 或 schema 时另有阻断规则。[Hook 返回契约](https://cursor.com/docs/hooks#command-based-hooks) 因此，收集到若干事件不能证明所有调用均经过同一关卡。
+
+Cursor 自身还将公开及内部基准、在线 A/B、工具错误、时延、token 效率、缓存命中和代码 Keep Rate 组合使用。[Harness 评测](https://cursor.com/blog/continually-improving-agent-harness) 作者的判断是，这些信号适合发现质量变化，但“代码仍被保留”并不证明业务正确。企业自己的验证链仍应把补丁、测试命令、真实结果与验收要求关联起来；子 Agent 的完成消息可以触发检查，不能替代检查。
+
+### 8. 一次任务穿过架构：修复跨前后端的权限错误
+
+设想用户在 IDE 中提出：“修复订单详情页对过期权限的处理，补回归测试，保留现有接口。”这是作者构造的架构走查，未实际运行。第一步应把验收条件和相关文件附给任务，使上下文选择有明确目标；IDE 工作区线索及按范围应用的规则，为后续搜索提供起点。[初始上下文](https://cursor.com/blog/continually-improving-agent-harness)、[规则作用域](https://cursor.com/docs/rules) 随后利用索引寻找鉴权入口、页面错误分支与测试，再读取当前代码核对，避免只凭名称相似就开始修改。[代码索引](https://cursor.com/blog/secure-codebase-indexing)
+
+第二步可委派 Explore 查清后端返回契约，父 Agent 保留实现责任。该选择利用子上下文过滤探索输出的能力；若再让另一个 subagent 同时修改测试，则应明确文件所有权，或请求独立环境，因为默认工作副本是共享的。[委派与隔离](https://cursor.com/docs/subagents) 作者建议回传路径、接口约束及复现条件，而不仅是一句“已找到问题”，这样父 Agent 才能把子任务结论变成可检查的补丁依据。
+
+第三步由模型提出编辑和测试调用，应用执行并回传失败信息，循环继续修复；日志过长时通过文件检索相关段落，而不是把丢失细节的摘要当作完整证据。[工具循环](https://cursor.com/learn/tool-calling)、[长输出处理](https://cursor.com/blog/dynamic-context-discovery) 若测试需要内部鉴权服务，可选择接近服务的自管 worker；若只需标准依赖和可公开访问的测试资源，托管 VM 能提供预备好的环境。两条路径都必须依据真实网络与凭证范围选择。[执行地点](https://cursor.com/docs/cloud-agent/self-hosted)、[托管环境](https://cursor.com/docs/cloud-agent)
+
+最后把 diff、接口行为和回归结果一起交给审阅者。云端流程支持保存产物并以分支、PR 交接；这些是验证材料的载体，实际是否满足用户要求仍要由测试和审查决定。[云端交接](https://cursor.com/docs/cloud-agent/security#how-cloud-agents-work) 这次走查展示的取舍是：IDE 提供低成本的交互与现场线索，动态上下文控制输入负担，委派把探索移出主窗口，远程环境让测试接近所需资源。接入企业平台时，应保留这些职责之间的连接，尤其是任务标识、环境版本、测试结果和交接产物之间的对应关系。
+
+> 研究注：原章的厂商 A/B 数字、Projects 发布时的 beta 状态及核验限制移入本轮 `cursor_disposition.md`。证据账本保存短引文、定位和来源截面；本章未把厂商指标当作独立效果复现，也未运行官方示例脚本。
 
 ---
 
 ## 第十六章 DeepSeek Harness：可组合、可逆的运行时
 
-> 资料截面：2026-09-19。当前固定点为 `0.1.6-alpha.2`、commit `ddefc45fbc7f8e46dd73185e68295696d1297887`，9 月 17 日发布，仍为 developer preview / prerelease。历史对照点为 `0.1.2-alpha.1`、`cd5ef8148158c3a752a658978873241fdf8e2bbc`。本章核对公开源码与文档，未部署或进行安全逃逸测试。[发布记录](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.6-alpha.2)
+> 本章访问日期：2026-10-29。沿用已固定的 `dsh-v0.1.6-alpha.2`、commit `ddefc45fbc7f8e46dd73185e68295696d1297887`，不声称它是访问日最新版。以下是该版本公开文档与源码的架构分析，没有运行上游程序或验证安全隔离。[固定版架构](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md)
 
-dsh 以 Cordis 组合模型适配器、工具、会话日志和 Agent 循环。插件注册服务、类型化事件及随生命周期清理的注册效果，因此可在不改特权核心的前提下替换组件。[固定版架构](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md) 这里“可逆”的范围是受框架管理的注册与资源；已经发送的邮件、已提交的数据库写入不随卸载消失。
+### 1. 整体架构与职责边界：运行的是一棵插件树
 
-### 1. 配置树决定实际运行什么
+dsh 把模型适配器、工具注册表、会话日志和默认 Agent 循环都放入 Cordis 插件体系。插件向共享 Context 注册服务、类型化事件和随生命周期释放的效果；替换循环或文件系统提供者，不必另造一个应用入口。这里的“可逆”首先指注册关系与受管理资源可以撤销，并不意味着插件已经造成的业务写入会倒退。[组件与扩展机制](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#cordis)
 
-dsh 的接入面包括 profile、bundle、CLI 与 SDK；它们组装的对象是可运行的插件图。配置顺序为有序 bundle，再叠加 profile patch、home patch 与调用级 CLI `--patch`。按 id 匹配的 patch **替换整份 config，而非深合并**。这些在旧点已经存在，不是九月新增。[旧版架构](https://github.com/deepseek-ai/deepseek-harness/blob/cd5ef8148158c3a752a658978873241fdf8e2bbc/docs/architecture.md)、[当前架构](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md)
+实际启动树由 profile 组装：按顺序加载 bundle，再应用 profile、home 与命令行 patch。按 id 命中的 patch 替换整份 config，不能按深合并理解。`dsh-base` 提供常用基础能力，Web、SDK、headless 等 bundle 再增加交互载体；`sdk-minimal` 则持有自己的完整小型树。因而“同样使用 dsh”并不证明两次任务拥有相同的工具、策略或持久化组件。[组合与启动](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#profiles-and-bundles)
 
-例如作者构造的配置反例：基线 config 同时设置超时与网络限制，上层按相同 id 只写超时。若集成者误当深合并，就会以为网络限制仍被保留。这个例子不是 dsh 漏洞复现；它说明证据应绑定解析后的配置和来源，而不能只记 profile 名称。新 Plugin Manager 启用 bundle 时会把它追加到有序列表末尾，也可能改变覆盖顺序。
-
-### 2. 生命周期管理没有整批事务保证
-
-九月的关键变化集中在启动与持久管理：
-
-| 日期与固定变更 | 公开行为 | 集成时应处理的边界 |
-|---|---|---|
-| 9 月 9 日，串行初始化 | AgentLoop 等待 `agent/created` 完成后处理排队工作，失败执行创建清理 | 插件已挂载不等于 Agent 已准备好 |
-| 9 月 9 日，撤回事务式 reload | 普通 Loader group 保留已成功的兄弟项，后续 HMR 不做整批回滚 | 初始启动另有 required-entry 策略，不能把所有失败混为一种 |
-| 9 月 14—16 日，Plugin Manager / YAML HMR / Creator | 管理当前 profile 的持久插件；HMR 是否启用由 YAML 配置决定 | 变更可影响该 profile 下所有会话，Host 代码不受工作区 sandbox 自动保护 |
-
-对应不可变依据为[串行初始化](https://github.com/deepseek-ai/deepseek-harness/commit/9b7a8ccc9fabc2e87386acf7f8b0741baf978022)、[撤回事务式 reload](https://github.com/deepseek-ai/deepseek-harness/commit/e07f41d5fd8ca172287fda0f923b4d1f69c592f3)、[Plugin Manager](https://github.com/deepseek-ai/deepseek-harness/commit/98b92b683c39fc60771daa774492105c2d3e8076)、[YAML HMR](https://github.com/deepseek-ai/deepseek-harness/commit/abd765a6001ff9d9c9772b8b407e0b7f18fe25ab) 和 [Creator 持久插件流程](https://github.com/deepseek-ai/deepseek-harness/commit/ed32f57f88ef6bba983e30a0b434fe5d77e5773b)。这些日期是提交日期，不是对所有用户的功能上线日期。
-
-当前 base 默认启用 config-only HMR，headless/SDK/ACP 默认禁用，sdk-minimal 省略；profile patch 仍可覆盖。Creator 改为通过 Plugin Manager 安装持久插件，旧模型工具 `cordis_define/run/stop/undefine` 不再作为该组工具提供，但程序化与浏览器动态生命周期仍在。不能据此说整个动态 runner 已删除。
-
-### 3. 两条执行路径，两个信任边界
-
-`run_code`的执行后端与动态插件使用的`node:vm`是两条路径，不能统称为同一种安全沙箱。固定源码支持的区分如下：
-
-| 执行路径 | 历史点 | 当前点 | 可作出的结论 |
-|---|---|---|---|
-| 动态 Cordis Host | `node:vm` realm | 关键 `sandbox.ts` 逐字节未变 | 源码明确不是 containment；宿主 realm 的 helper 仍可成为逃逸路径 |
-| 模型 `run_code` / PTC | 每次创建 Node worker thread，明确不提供宿主安全隔离 | 每次创建独立 Node 进程，经平台 OS sandbox 策略启动 | 隔离强度取决于平台 backend 与 mode；受限模式缺少 backend 时失败 |
-
-9 月 12 日的 [PTC 进程后端变更](https://github.com/deepseek-ai/deepseek-harness/commit/75ed8da3e0c9103b3b2174b2981b7129e1fba21d) 将旧 worker 后端改为子进程；同日另一个提交[统一 PTC 命名](https://github.com/deepseek-ai/deepseek-harness/commit/7c9bb5914cedec80e46197a8c894037fcfd12faf)。变更已进入上述 9 月 17 日版本，本轮没有穷举它首次进入的发布 tag。动态 Host 的 `node:vm` 则没有随之成为安全虚拟机。[动态 Host 源码](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/extensions/cordis-host-runner/src/sandbox.ts#L1)、[旧 worker 文档](https://github.com/deepseek-ai/deepseek-harness/blob/cd5ef8148158c3a752a658978873241fdf8e2bbc/packages/code-runtime/code-runtime-worker-thread/README.md)
-
-新版 PTC 仍允许直接使用 Node API，文件、网络和子进程访问受所选 OS sandbox 约束；桥接子工具则继续走工具注册表的可见性、审批和日志规则。默认 `timeoutMs=120000`、上限 `600000` 是包括审批与子工具等待的经过时间，不是 CPU 计量；V8 heap cap 也不是整棵进程树的内存上限。宿主管理进程范围，并在取消、超时及正常结束后清理；但 fallback 平台上逃离该范围的后代可能残留。这些是文档和源码契约，未经过本书实测。[PTC Node 文档](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/ptc-runtime/ptc-runtime-node/README.md)
-
-### 4. 一次安装失败会留下什么
-
-Plugin Manager 的恢复范围比“插件可回滚”具体得多。下面依据当前文档整理的是失败语义，不是执行日志：[Plugin Manager 固定版文档](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/boot/plugin-manager/README.md)
+下图为作者依照服务归属绘制的调用关系。它对应第五章的职责分解：Host 承载控制与服务，执行后端承载代码运行，Session 承载可重建事实；三个位置不能因为都叫 runtime 而混在一起。[核心服务及能力接口](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#core-packages)
 
 ```text
-快照 package.json / pnpm-lock.yaml → pnpm 安装 → bundle 校验
-  安装失败或取消：恢复这两个文件；下载物、日志等可能保留
-  安装及校验成功：安装阶段完成 → 按选择启用 bundle
-    后续启用失败：不撤销已完成安装，保存状态也可能已改变
-删除：取消 bundle 选择 → 卸载注册 → pnpm remove
-  任一步失败：停止后续步骤，保留已完成修改，不自动重新启用
+profile + ordered bundles + patches
+                 |
+        Cordis Host / shared Context
+                 |
+Web / SDK --> ctx.agents --> AgentLoop <----> ctx.sessions
+                               |              事件日志
+                    ctx.systemPrompt          |
+                               |        deriveMessages()
+                            ctx.llm <----------+
+                               |
+                            ctx.tools
+                     /         |          \
+                文件/命令      MCP      run_code / PTC
+                   |           |             |
+          fs/subprocess    外部服务器   独立 Node 进程
+                   \_________________________/
+                         所选执行世界与策略
 ```
 
-依赖 build-script 批准另有持久状态，可能在安装失败后保留；服务会校验待批准包名，却不验证“用户已在对话中同意”是否真实。已安装 Host 代码在进程内、工作区 sandbox 外执行。因此作者建议把插件安装授权、依赖构建脚本授权和普通工具授权分别记录，并在失败后检查实际文件与加载状态。这里不能承诺安装、热重载或业务副作用全事务回滚。
+能力替换进一步分成 Service Definition、Service Provider 和 Consumer：接口定义约束提供者，工具等消费者只调用接口。例如文件系统与子进程提供者需要属于同一个执行世界，切换到远端时才能让文件路径与命令操作同一对象。这里可组合的单位是有明确输入输出与生命周期的能力，不是任意把几个插件名堆在配置里。[能力接口](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#capability-seams)
 
-### 5. 流式显示与持久会话也有时间差
+一个作者构造的反例是：底层工具配置包含超时和策略，上层 patch 只写超时，却误以为其他字段仍会继承。由整份替换规则可知，应检查最终解析树，而不只检查新写的几行。配置组合既提供自由度，也把“本次到底运行了什么”变成可复现性的一部分。[覆盖规则](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#profiles-and-bundles)
 
-9 月 1 日的持久化调整把 `agent/assistant-stream` 用作进程内瞬态流，完整紧凑流在最终 `assistant/message` 或 `assistant/attempt` 中保存。settlement 前进程硬退出，不会留下这一尝试的完整 durable stream。历史会话沿相邻版本链迁移，写打开产生新版本文件，不覆盖旧 generation。[流式持久化变更](https://github.com/deepseek-ai/deepseek-harness/commit/f99b06eaed81d6fe4fc64d44687450e18ef68a67)、[会话迁移变更](https://github.com/deepseek-ai/deepseek-harness/commit/d1521ea7838f19a78a9cca7b4a93622d301149bb)
+### 2. Agent loop 与恢复：把请求、尝试和回合分开
 
-适配器因而需要区分“UI 已显示的增量”与“已经落盘的尝试记录”。桥接工具的逐次开始/完成追踪在旧版已存在，当前 PTC 使用 `tool/ptc-dispatch-start` / `tool/ptc-dispatch`；不要把上游已有事件全部写成企业尚需自建。[旧工具目录](https://github.com/deepseek-ai/deepseek-harness/blob/cd5ef8148158c3a752a658978873241fdf8e2bbc/docs/tool-catalog.md)、[当前工具目录](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/tool-catalog.md)
+`ctx.agents` 提供创建与恢复入口，`AgentLoop` 是可替换的默认驱动。创建阶段先完成 scoped setup 和串行 `agent/created` 初始化，随后才处理队列。调用者持有的 `AgentHandle` 负责最终释放：停止循环、等待退出、注销 Agent、移除内存会话，再拆除其作用域。这使“已构造对象”“已准备执行”“已完成释放”成为不同边界。[创建与所有权](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/core.md#creation-and-ownership)
 
-### 6. 设计判断与适配责任
+一次 `followup` 把消息排入下一回合；`steer` 面向最近的步骤边界；`inject` 只加入上下文，不唤醒空闲驱动。一个 turn 可以有多个 step，每个 step 包含一次模型请求及其工具调用。驱动认领输入，组装提示和工具 schema，经 `agent/pre-step`、请求准备后，把被接受的输入写入日志，从日志冻结模型历史，接收响应、执行工具，再判断是否还欠一次模型请求。工具结果因此是下一步推理的正式输入，而非 UI 旁边的临时显示。[输入契约](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/core.md#the-agent-handle)、[步骤顺序](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#turn-flow)
 
-dsh 可供观察和修改的源码范围包括组合、加载、执行后端及会话语义，适合检验运行时变体；preview 接口和部署责任仍需进入选择条件。下表是作者建议，不是上游原生保证：
+一次请求也不等于一次成功回答。成功内容落为 `assistant/message`；已结算的失败、重试、取消尝试落为 `assistant/attempt`，后者留作日志而不污染模型历史。重试不重做提示组装和 `pre-step`。实时 `agent/assistant-stream` 的 chunk 是进程内消息，完整紧凑流到结算时才嵌入持久事件；此前硬退出可能丢失这一尝试的完整流。[尝试与持久化](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#session-log)
 
-| 原生能力 | 平台映射 | 平台需补建或核验 | 缺失时的降级 |
-|---|---|---|---|
-| 有序配置与插件生命周期 | 固定运行版本及配置来源 | 导出解析图、hash，审查扩展更新 | 不允许自动变更生产 profile |
-| 工具与 PTC 子调用事件 | 动作及结果记录 | 关联审批、产物与外部副作用 | 缺关键证据时转人工处理 |
-| Plugin Manager 持久管理 | 安装、启用、删除的分阶段状态 | 包来源/签名策略、实际残留检查 | 隔离 profile，修复后再启用 |
-| session migration | 历史记录版本关联 | 旧会话兼容与崩溃窗口测试 | 保留旧 generation，拒绝无证据恢复 |
+`cancel` 中断当前活动，默认清除待处理输入，`keepInbox` 可保留它；`whenIdle` 等待整个 Agent 静止，不是某条消息的完成凭证。第六章的恢复问题在这里有了具体落点：应先检查日志中哪个 turn、step、attempt 已结算，再决定继续什么；不能把界面停止刷新当作命令已被撤销。[取消与静止](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/core.md#the-agent-handle)
 
-平台适配器连接的是 Agent 运行组件；PTC 子进程与 OS sandbox 才是代码执行边界。用于实验的可变插件与评价、发布权限应处于不同信任域，这是一项按风险实施的作者设计建议，并非 Cordis 会自动建立的治理能力。功能分层与信任域的共同定义见第十八章及第二十四、二十六章。
+请求接纳还有一个细节：循环先经 `agent/request` 与 `prepareCall()` 确定真正的模型路由和能力，再提交系统提示及被接受的用户消息；准备期间取消，不会把尚未进入模型调用的输入冒充成已发送历史。随后派生并冻结请求，同时保持取消信号有效。作者据此将它理解为“记录已经接纳的事实”，而不是“用户一提交，就假设模型已经读过”。[请求准备与接纳](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#turn-flow)
+
+### 3. 上下文与会话：日志保存事实，投影决定模型看见什么
+
+`ctx.systemPrompt` 汇集有序 `PromptSection` 和工具声明，循环把渲染结果记录为 `system/message`。变化频繁的 `PromptContext` 则以持久 user-role 快照进入历史，在内容改变或被压缩移除后更新。系统指令和运行状态分别入账，既能解释请求来自哪里，也能避免每次状态变化都重写提示前缀。[提示组装](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/system-prompt.md)
+
+工作区知识由具体贡献者提供。例如 `dsh-agent-instructions` 将全局与项目 `AGENTS.md`、`CLAUDE.md` 等文件按由宽到窄的顺序注入，受字节预算约束；成功的文件读写可发现深层指令，恢复会话时重新核对基线。它不持续监听所有外部编辑，也不通过猜测任意 shell 命令来发现目录变化。此处可借鉴的设计是：指令来源、发现时点与注入消息都有归属，而非把工作区当成模型天然知道的背景。[工作区指令](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/context/agent-instructions/README.md)
+
+日志保留的内容多于当前模型上下文。`deriveMessages()` 从追加式事件推导可见历史；压缩作为可选 `ctx.compaction` 能力，在日志中记录 start、summary、end，再用带 `surfaceOp: replace` 的 `user/message` 替换模型视图中的一段内容。旧事件不因视图替换而消失。锁最后才释放，崩溃留下未闭合 start 可以被检测；压缩提交和持久化仍可能分别失败，不能视为无损记忆或绝对事务。[压缩协议](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/compaction.md)
+
+恢复还涉及存储格式。JSONL provider 选择最高的规范 generation，沿相邻版本链迁移；只读打开不发布新文件，写打开则验证并排他发布新版本，旧 generation 保留。未来版本被拒绝，普通未封口尾部的修复仍由 handle 消费者承担。这样把第七章的“重建会话”分成了物理记录恢复与模型视图重建两件事。[会话存储与迁移](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#session-log)
+
+自动压缩通常发生在下一步请求派生之前；确认的上下文溢出也可经请求错误处理触发恢复。后端可以先裁剪工具结果再决定是否需要摘要，只有可见表面实际推进才返回相应重试动作，避免对同一超限请求无意义地循环。压缩边界保护工具调用与结果配对，却不一定保留整个 turn，因而一轮很长的工作也能逐段缩减。[压力与溢出恢复](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/compaction.md)
+
+### 4. 工具、MCP 与扩展：统一分派，分别拥有执行
+
+工具作者用 `defineTool` 声明参数、输出和执行函数，注册到 `ctx.tools` 后参与提示组装。模型调用先成为 `tool/call`，再经过 `tools/pre-execute`、只能收紧的 guards、`tools/execute` 和 `tools/post-execute`；最终内容约束及结果观察完成后，循环记录 `tool/result`。这种分层把工具业务逻辑与审批、拦截、结果规范化分开，也让普通工具错误能够作为结果返回给下一步。[注册契约](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/core/tools/README.md)、[分派管线](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/tool-execution-pipeline.md)
+
+PTC（程序化工具调用）改变模型组织工具的方式：native 模式展示各工具，ptc 模式展示 `run_code` 和生成的 SDK，也可同时提供两者。模型写一段 TypeScript，在一个程序内处理返回数据并调用绑定函数；桥接子调用仍走同一注册表和审批管线，带父调用关联并记录 `tool/ptc-dispatch`。中间绑定值不逐项进入模型历史，外层结果才返回，这解释了 PTC 为什么适合多次查询后的程序化筛选。[工具呈现](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/core/tools/README.md)、[PTC 返回路径](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/ptc-runtime/ptc-runtime-node/README.md)
+
+MCP 则解决工具来自哪里。每个 opt-in 客户端插件持有一个服务器连接，将发现的工具注册到调用者可见的 scope；stdio 与 Streamable HTTP 使用官方 SDK 协商。资源工具按服务器名查询，服务端指令进入有来源的提示段，断线或列表刷新失败有各自生命周期。此固定版不支持 MCP prompt templates、elicitation、task-based execution 和资源订阅，不能从“支持 MCP”推出协议能力全集。[MCP 适配边界](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/mcp.md)
+
+运行时“演化”具体发生在插件组合上。Creator 先用 `cordis_inspect_list/query` 读取准确 API，再通过 Plugin Manager 安装持久 bundle；安装后的 Host 代码在宿主进程执行。当前 Creator 流程不能与旧的临时动态定义流程混写，程序及浏览器消费者使用的动态 runner 也并未因此消失。扩展改变工具与界面供给，并不等于模型参数发生训练。[只读发现](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/extensions/tool-cordis/README.md)、[持久插件管理](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/boot/plugin-manager/README.md)
+
+### 5. 权限、沙箱与凭证：三个问题，三条边界
+
+`ctx.approval` 回答“这个动作是否获准”。只有 `allowed-once` 是许可，拒绝、取消、无人应答都不放行；每次请求有配对的 `approval/asked` 与 `approval/decided` 日志。尤其要读准策略名：dsh 的 `never` 表示永不询问、所有需要询问的动作一律拒绝，不是自动批准；一次批准也不永久改变会话权限。[审批契约](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/approval.md)
+
+`ctx.sandbox` 回答“执行时允许产生哪些文件效应”。`read-only`、`workspace-write` 交给平台后端，`danger-full-access` 绕过限制；Linux、macOS、Windows 的实现与完整度不同，必须保留 `full/partial` 报告。该 mode 词汇本身不覆盖网络与进程可见性。凭证另由 `ctx.credentials` 保存与解析：配置携带引用，模型适配器每次请求重新取值，便于轮换；这不是沙箱替你管理凭证生命周期。[沙箱语义](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/sandbox.md)、[凭证服务](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/credentials.md)
+
+PTC 后端先解析执行世界中的 Node 与 bootstrap，经 sandbox 包装 argv，再由 subprocess 启动独立进程。Host 管策略、期限和绑定分派，子进程计算程序；直接 Node API 仍可用，程序可见环境被清空，请求受限模式而后端不可用时失败。与之不同，动态 Host runner 的 `node:vm` 明确不是安全 containment，宿主 realm helper 仍可能成为逃逸路径，已安装插件同样不能靠工作区沙箱隔离。[PTC 启动](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/ptc-runtime/ptc-runtime-node/README.md)、[Host 信任边界](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/extensions/cordis-host-runner/src/sandbox.ts)
+
+PTC 默认期限为 120000 毫秒、上限 600000 毫秒，包含等待审批与子工具的时间，清理可使返回更晚。V8 heap cap 不限制整棵进程树内存，也没有进程树 CPU 计量；fallback 平台逃离管理范围的后代可能残留。输出上限只保留可容纳部分，绑定通道限额不限制 Host 绑定内部的全部分配；每次程序均为一次性执行，不提供跨调用状态或实时结果流。这些边界应与“独立进程”同时理解。[PTC 已知限制](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/ptc-runtime/ptc-runtime-node/README.md#known-limitations-and-deferred-work)
+
+### 6. 子智能体与委派：上下文继承不等于权限继承
+
+`ctx.subagents` 是可选能力注册表，可同时容纳进程内、ACP 或其他产品后端。调用先核对 provider 是否支持模型覆写、结构化输出、深度、工具过滤和人格；不支持的请求在启动前拒绝。进程内 `spawn` 创建空历史子会话，`fork` 则取得父会话已完成 turn 的一次性快照，不含正在执行的 turn，后来父消息也不会自动同步。[能力协商](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/subagent.md)、[spawn](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/subagent/subagent-spawn-in-process/README.md)、[fork](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/subagent/subagent-fork-in-process/README.md)
+
+两者共享宿主进程及相关服务，子 Agent 拥有新 scope；完整父工具限制和 authority 不被自动复制，工具过滤须在子创建窗口明确施加。一次性委派等待子任务自己的最终输出，取消、拒绝或截断成为错误结果，收集后释放 handle。因此“子会话独立”解释的是上下文和生命周期，不能自动解释为独立操作系统身份或更小的权限。[进程内子任务的所有权](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/subagent/subagent-spawn-in-process/README.md)
+
+这不等于完全不继承策略：`captureDelegatedPolicyOverrides` 在第一次异步等待前捕获父会话显式 sandbox override，以及 Auto 或 Full access 的 preset 身份；父侧存在审批服务时，子审批策略钉为 `never`。新子会话在 fork seed 之后记录这些覆盖，冷恢复读取子日志。Auto 子调用仍逐次独立评审，不能将父任务的许可扩写成所有子动作的通行证。[委派策略捕获](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/subagent.md)
+
+可继续的子任务又多一层：持久 child Session 可被多次激活，同一时刻至多一个 Activation，队列仍由 Agent inbox 统一拥有。接收消息之后，调用者后续取消不再撤销已接收回合；`interrupt` 只中断当前活动，保留未认领队列和已发布后代，且不等待完全静止。管理器整体卸载才执行向下取消、子先于父释放。最终 flush 失败会记录错误后继续释放，所以稍后恢复仍可能读到缺失或陈旧状态。[Activation 与取消范围](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/subagent.md#continuable-children-and-activations)
+
+### 7. 验证与可观测性：区分事实日志、实时流与报告副本
+
+会话事件用于重建请求与结果，`agent/*` 用于观察当前活动，能力事件用于在工具和文件系统等接缝处插入策略。PTC 子调用已有原生追踪，审批已有配对记录，不能笼统称为“平台必须从零补齐审计”。作者建议沿 Session、turn、step、attempt 与工具调用标识关联一次任务，而不是仅记录最后一句回答。[事件分工](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md#events)、[工具结果路径](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/tool-execution-pipeline.md)
+
+遥测不是另一份同等可靠的会话库。`session-telemetry` 将有序副本非阻塞交给 backend，cursor 只表示已经交出，不表示送达；崩溃可丢队列。默认没有内建脱敏规则，文件或命令输出夹带的秘密可能原样离开进程。需要可靠审计或共享 collector 时，应分别设计投递保存与脱敏规则，不能借用本地会话持久化的保证。[遥测交付边界](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/session/session-telemetry/README.md)
+
+第十章的验证还要求回答“工作做对了吗”。运行事件可以证明调用及结果流转，却不能独自证明外部系统已处于期望状态。以下任务中的成功探针、独立测试和外部回读是作者建议；本章只做了固定源码交叉阅读，没有把文档中的失败处理当成已执行的故障注入。
+
+对第十二章而言，这种分工也提示一种有效的诊断顺序：先从会话日志确认输入和输出，再看 attempt 解释失败请求，最后用实时事件或遥测定位延迟。若反过来仅用 collector 中“没有看到记录”断言动作未执行，就把报告丢失与执行失败混为一谈。这是作者根据上述持久化和尽力投递契约提出的排查方法，尚需实际故障实验检验。
+
+### 8. 一次任务穿过架构：接入一个 MCP 查询能力
+
+设想用户要求“把指定 MCP 服务接入当前 profile，确认能查询，再整理结果”。这是作者按官方 Creator 教程扩展的示例。Agent 先检查运行时 API，写一个包含 `dsh-mcp-client` 配置的 bundle，再调用 Plugin Manager 安装；HMR 启用时，新连接发现工具并注册到 `ctx.tools`，下次提示组装即可包含它。官方教程要求同时看到 `application: applied` 和成功的 ping，`restart-required` 仅说明配置已保存。[官方接入路径](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/user/develop/practice/dynamic-cordis.md)
+
+随后可以直接调用查询工具，也可以让 PTC 执行一组查询并筛选返回数据；两种呈现都走工具权限和记录路径。若把结果解释委派给 spawn 子 Agent，应传入自足任务，并显式配置其工具范围；这些是调用者组合上的选择，不能靠父会话的限制自动推导。[PTC 管线](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/tool-execution-pipeline.md)、[子作用域](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/subagent/subagent-spawn-in-process/README.md)
+
+安装与演化的失败必须按阶段解释：pnpm 或 bundle 校验失败，恢复的是 `package.json` 和 lockfile，下载物、日志与构建脚本批准可能保留；安装成功后启用失败不撤销安装；删除按取消选择、卸载、移除依赖推进，失败保留已完成修改而不自动重新启用。构建脚本批准与普通工具批准分开，服务校验包名却不验证对话中的授权陈述。普通 HMR 保留成功兄弟项，不提供整批回滚；初始启动 required entry 失败才有另一套整应用清理规则。[管理失败语义](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/boot/plugin-manager/README.md#failure-behavior)、[启动与 HMR](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/boot/app-boot/README.md)
+
+由此，作者的接入取舍是把 profile 当成需要版本管理的运行配置，把插件安装当成宿主代码变更，把查询结果当成需要业务验证的数据。dsh 的组合接口使这些控制点可检查、可替换；收益来自能精确改变哪一层，代价则是必须清楚谁拥有状态、谁清理资源，以及所谓“可逆”究竟止于何处。
 
 ---
 
 ## 第十七章 OpenHands：Agent 与执行 Runtime 分离
 
-> 资料截面：2026-09-19。历史 Runtime 以 0.62.0 固定源码说明；当前产品面为 Agent Canvas 1.20.0 与 Software Agent SDK 1.49.2，两条版本线均在 9 月 17 日发布。本轮为源码、文档及发布记录核对，未部署 Docker/Kubernetes 或实跑模型任务。[Canvas 1.20.0](https://github.com/OpenHands/OpenHands/releases/tag/v1.20.0)、[SDK 1.49.2](https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.49.2)
+> 本章访问日期：2026-10-29。分析基线为 Software Agent SDK `1.49.2`、commit `d128a786ee2ee570eb23ff5862ec148b43cfad0b`；应用层另固定 Agent Canvas `1.20.0`、commit `9737f713616a1e452f822c2967f0e2c8bf2dc308`。这不是访问日最新版声明，也不表示两者依赖版本相同：后者的 TypeScript client 依赖实际为 `1.49.1`。本章静态阅读源码，未部署容器或运行模型任务。[SDK 职责](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/README.md)、[Canvas 固定依赖](https://github.com/OpenHands/OpenHands/blob/9737f713616a1e452f822c2967f0e2c8bf2dc308/package.json)
 
-OpenHands 的决策与执行分离原则仍值得借鉴，但原章把旧类名写成了当前架构。理解现在的接入面，需要区分产品应用、Agent SDK、Agent Server 和执行环境；不能只看到 `Runtime` 就推断它与 Codex core 或 dsh 运行组件承担相同责任。
+### 1. 整体架构与职责边界：配置、会话与执行位置分别建模
 
-### 1. 历史结构保留在历史版本中
+理解 OpenHands，应先区分四个对象。`Agent` 描述模型、工具和上下文处理能力；`Conversation` 拥有一次会话的消息、执行状态与运行入口；`Workspace` 描述工作发生的位置；Agent Server 将会话能力暴露为 REST/WebSocket 服务。Canvas 消费 SDK 的 TypeScript client 提供产品界面，调度和 webhook 等自动化生命周期另由 automation 仓库负责，不能把它们都归入一个“Agent 大脑”。[仓库责任](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/README.md#repository-boundaries)、[会话工厂](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/conversation.py)
 
-0.62.0 的 `Runtime` 接收并订阅 `EventStream`，客户端通过 HTTP 把 action 交给 `ActionExecutor`，后者管理 shell、browser 和插件并返回 observation。原章的下列图可以定位到这一历史实现：[旧 Runtime README](https://github.com/OpenHands/OpenHands/blob/7fbb48c40679afd674970966b96185657d92a487/openhands/runtime/README.md)、[旧 ActionExecutor](https://github.com/OpenHands/OpenHands/blob/7fbb48c40679afd674970966b96185657d92a487/openhands/runtime/action_execution_server.py)
+`Conversation(..., workspace=...)` 根据 workspace 类型创建 `LocalConversation` 或 `RemoteConversation`。本地路径在当前执行环境驱动 Agent；远程路径由客户端发送会话请求，Agent 在远端 Server 上运行。因此，远程会话并非必然是“模型循环留在笔记本，只把 shell 送进容器”。调用者控制会话的接口与循环实际驻留的位置必须分别定位。[工厂选择](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/conversation.py)、[远程客户端](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/impl/remote_conversation.py)
+
+下图为作者对固定版的归纳。LocalConversation 是控制循环的具体承载者；Docker mode 再把每个会话的服务放入独立容器，控制面负责供给与转发，容器内仍运行本地会话逻辑。这种嵌套使会话协议能够跨部署位置复用。[Docker 会话路由](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/routers.py)、[容器供给](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/registry.py)
 
 ```text
-历史 0.62.0：
-Agent → Action → EventStream → Runtime client → ActionExecutor
-      ← Observation ←─────────────────────────────────────┘
+Canvas / Python client / automation caller
+               |
+        Conversation API
+          /           \
+ LocalConversation   RemoteConversation -- HTTP / WebSocket
+          |                                 |
+          |                       Agent Server control plane
+          |                                 |
+          |                   local mode / per-conversation container
+          |                                 |
+          +---------------------- LocalConversation
+                                           |
+                         ConversationState + EventLog
+                                  |        ^
+                              Agent.step   |
+                                  |        |
+                           LLM -> Action -> ToolExecutor
+                                           |
+                                      Observation
+                         工具在所属 workspace 环境中执行
 ```
 
-应用 1.0.0 在 **2025 年 12 月 16 日**已宣布使用新的 software-agent-sdk；8 月 27 日 README 也已把应用仓库定位为 Agent Canvas，把 Agent、tool、conversation、workspace、events 及 REST/WebSocket server 契约归给 SDK。因此，“SDK 分离”属于旧稿漏收的结构，不是九月才发生的迁移。[应用 1.0.0 发布说明](https://github.com/OpenHands/OpenHands/releases/tag/1.0.0)、[8 月 27 日 README](https://github.com/OpenHands/OpenHands/blob/b50c60c6728e2ce123ccb6e125bee3eb88ac87d1/README.md)
+历史 `0.62.0` 中的 `EventStream → Runtime → ActionExecutor` 属于另一套实现。旧 Runtime 通过 HTTP 交付动作并返回 observation，可用于理解决策与执行分离的历史思路，但不应拿旧类名替代上图的 SDK 会话对象。[历史 Runtime 契约](https://github.com/OpenHands/OpenHands/blob/7fbb48c40679afd674970966b96185657d92a487/openhands/runtime/README.md)
 
-### 2. 当前应该连接哪一层
+### 2. Agent loop 与恢复：由 Conversation 驱动 Agent 的单步
 
-下表前两列为固定版本可见的职责归纳；最后一列是作者给适配器的设计建议。
+调用者先 `send_message()`，再调用 `run()` 或异步 `arun()`。`LocalConversation` 初始化插件与 Agent，循环检查执行状态、卡住检测、预算和迭代上限，再调用 `Agent.step`。Agent 负责“一步如何决策”，Conversation 负责“何时再走一步”。完成状态还可交给 Stop hook 检查，反馈可能促使会话继续，因而循环终止不是单看模型输出了一段告别文字。[循环所有者](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py)
 
-| 接入对象 | 当前公开职责 | 适配器连接的边界 |
-|---|---|---|
-| Agent Canvas 1.20.0 | 产品 UI、profile 与 automation 等应用组织 | 面向用户的工作入口，不以 UI 版本替代 SDK 版本 |
-| Software Agent SDK 1.49.2 | Agent、conversation、workspace、events 与工具契约 | 控制决策循环及会话，保留原生事件 |
-| Agent Server | 远程会话的服务接口与运行环境管理 | 通过服务控制会话，另查其执行部署模式 |
-| workspace / conversation runtime | 代码与工具实际运行的位置 | 检查文件、网络、凭证、进程和租户边界 |
+一个普通 step 读取 `state.view`，经 condenser 准备模型消息，调用 LLM，并将响应区分为工具调用、文本等路径。工具调用解析并验证为 `ActionEvent`，执行器产生 observation，再封装为 `ObservationEvent`。下一步看到的是更新后的会话视图。若有等待确认的未配对动作，step 先执行这些动作，而不是重新请求模型生成一份相似命令，这使“批准既有动作”与“再规划一次”分开。[单步与动作转换](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/agent.py)
 
-SDK 的 `Conversation` 工厂根据 workspace 类型创建 `LocalConversation` 或 `RemoteConversation`：前者在本地运行 Agent，后者连接远端 Agent Server。[1.49.2 固定源码](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/conversation.py#L34) Canvas 1.20.0 的 `package.json` 精确依赖 TypeScript client 1.49.2，直接说明应用与 SDK 版本不能混写。[Canvas 固定依赖](https://github.com/OpenHands/OpenHands/blob/9737f713616a1e452f822c2967f0e2c8bf2dc308/package.json)
+确认模式下，第一次 run 可以停在 `WAITING_FOR_CONFIRMATION`；再次 run 表示隐式确认并执行 pending actions，拒绝则应走 `reject_pending_actions`。因此，接入端的“继续”按钮具有实际授权含义，不能当成任意网络重试。上下文超限时，Agent 只有在配置的 condenser 支持请求式压缩时才进入相应恢复路径，否则显式报错，不保证所有失败都会自行修复。[确认与恢复](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py)、[上下文错误处理](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/agent.py)
 
-这些源码开放了会话工厂、协议与容器供给等检查点，但本轮并未审计所有实现。自己运行 Agent Server 也不等于自动容器隔离；基线 README 已提示本机直接运行可访问本地文件系统。模型推理的数据流仍取决于所选模型服务，不能由“开源、自管”两个词推出完全离线。
+取消也有粒度。`pause()` 在 step 之间生效；`interrupt()` 可取消正在运行的异步 task，先设置 cancellation token，再触发异步取消；同步 run 路径回退为 pause。中断后，未得到 observation 的工具调用可补入合成错误，保持模型消息结构完整。这种“修复历史配对”没有撤销已经写入的文件、外部请求或已启动进程；第六章的不确定提交问题仍需具体执行器和外部系统处理。[暂停、中断与孤立动作](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py)
 
-### 3. 事件先保存，再通知订阅者
+### 3. 上下文与会话：原始事件、模型视图和长期记忆各有位置
 
-SDK 1.45.0 于 9 月 7 日发布，包含 9 月 2 日合并的 **persist-before-publish** 变更：先持久化事件，再向订阅者发布。同期迁入 TypeScript client，并加入 session socket 的非 Event envelope；因此不能把每条 socket 消息都当成可重放的持久事件。[持久化顺序变更](https://github.com/OpenHands/software-agent-sdk/commit/94fca578b720df758b9bbf8a2639511b303c78e6)、[socket envelope 变更](https://github.com/OpenHands/software-agent-sdk/commit/2ab274897ac5e2c66b0ba17e9a6d39367b769876)、[1.45.0 发布说明](https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.45.0)
+`ConversationState` 保存 Agent、workspace、执行状态、秘密注册表及 EventLog；活动分支的 `View` 是可重建派生值。配置 `persistence_dir` 才有对应文件存储，未配置则使用内存存储；恢复时会核对 Agent 与已存工具配置。会话身份、执行配置和事件不能只靠一段对话文本替代，否则可能在恢复时连接到不同能力集合。[状态与恢复](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/state.py)
 
-下表是作者根据该顺序提出的故障检查，不是本书实测结果：
+`AgentContext` 负责提示扩展：仓库指令、运行环境、会话附加规则和 skills 在这里汇集。项目 skills 与 `AGENTS.md` 由 LocalConversation 在知道 workspace 后延迟加载；`load_project_skills`、`load_memory` 等开关不能写成无条件默认开启。记忆功能读取用户及工作区的 `MEMORY.md` 索引，索引内容每个会话从磁盘重新解析，不作为整个会话状态反复序列化。这使第七章讨论的指令、历史与跨会话知识具有不同更新周期。[上下文及记忆归属](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/context/agent_context.py)
 
-| 故障窗口 | 应分别观察什么 | 不能直接推出什么 |
-|---|---|---|
-| 事件持久化失败 | 写入错误、订阅者是否收到通知 | UI 无消息不证明外部动作从未执行 |
-| 已持久化，尚未发布时进程退出 | 日志中已有事件，客户端可能尚不可见 | 未收到通知不等于可重发同一动作 |
-| 重连后补取事件，又收到迟到通知 | 用原生事件身份核对是否同一记录 | 两次传输不等于两次动作 |
-| 收到 session socket 控制 envelope | 按消息类型路由 | 控制消息不能直接计入业务事件回放 |
+并非所有 Event 都送给模型。`View` 仅纳入 `LLMConvertibleEvent`，并按顺序应用 `Condensation`；暂停与内部状态记录保留在日志，却不进入模型输入。它还维护允许修改消息的位置，避免压缩切断工具请求与结果的结构关系。于是审计能够查看发生过什么，而模型可以只看适合下一次推理的内容。[视图投影](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/context/view/view.py)
 
-persist-before-publish 缩小了“订阅者先看见、日志却没有”的窗口，并没有把外部服务写入和日志落盘合成一个事务，也没有自动证明投递恰好一次。若支付、发布或数据库写入已生效而结果尚未保存，仍须回读结果；这是第六章不确定提交问题在该实现中的具体落点。当前版本已经提供持久化能力，不能再笼统写成“进入企业平台必须从零补齐 durable state”。
+`LLMSummarizingCondenser` 可使用独立 LLM 摘要，按事件数量、token 压力或显式压缩请求触发，保留指定开头及近期内容。摘要模型与决策模型不必相同，token 阈值还应尊重决策模型的输入限制。这是上下文预算策略，而非证明信息没有损失的记忆机制；接入者应将关键验收条件保存在可重新读取的文件或结构化任务定义中，后半句属于作者建议。[摘要器实现](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/context/condenser/llm_summarizing_condenser.py)
 
-### 4. 每会话容器是新 SDK 的具体模式
+这也解释了为什么“恢复聊天”与“恢复执行”不能合并成一个按钮的表面含义。模型视图能够从记录重新计算，并不保证当前工作目录里的文件仍与记录一致；摘要保留了任务目标，也不证明测试产物仍然存在。作者建议在跨进程恢复的重要任务里同时核对事件、工作副本与产物，让模型读到的是可验证的当前事实，而不只是先前描述的状态。这是对状态分层的应用判断，不是 SDK 额外承诺的文件回滚功能。
 
-9 月 15 日发布的 SDK 1.48.0 引入按 conversation 作用域隔离的 runtime API/client、Kubernetes `AgentSandboxWorkspace` 和 profile secret 范围控制。9 月 16 日 1.49.0 增加 Agent Server 的 **per-conversation Docker containers** runtime mode。这是新 SDK/Agent Server 的新增模式，不是 OpenHands 首次支持 Docker。[1.48.0 发布说明](https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.48.0)、[每会话容器变更](https://github.com/OpenHands/software-agent-sdk/commit/3ff6924d8564b3d47a22a6c7e71377a701ae014f)
+### 4. 工具、MCP 与扩展：配置可以传输，执行器在运行处物化
 
-紧接着的 1.49.1 修复 Docker conversation metadata route；1.49.2 修复旧会话 catalog 保留、重复扫描、proxy root path、workspace 创建与删除期间重启等问题。Canvas 1.20.0 则转发该容器配置，并更新 profile secret 选择与 automation 的 saved profile 选择。[1.49.1](https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.49.1)、[1.49.2](https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.49.2)、[固定 provisioning 源码](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/provisioning.py)、[Canvas 1.20.0](https://github.com/OpenHands/OpenHands/releases/tag/v1.20.0)
+`Tool(name, params)` 是工具配置，Agent 初始化时找到注册的工具类并调用创建逻辑，得到具体 `ToolDefinition` 与 executor。动作和观察分别有 schema，模型只看到工具声明，实际调用由执行器负责；TerminalTool、FileEditorTool 等因此能在同一循环中提供不同环境能力。远程传输配置与在 Server 中创建资源，是理解 SDK 可部署性的关键。[工具初始化](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/base.py)、[执行与观察](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/agent.py)
 
-因此采用时要同时记录 Canvas、SDK、Agent Server 与镜像版本，检查恢复后会话目录、容器及工作区是否仍指向同一对象。容器的 mount、宿主 socket、网络与凭证配置决定实际隔离；不能从每会话一个容器推出多租户隔离已经验证，更不能把 Docker socket 无限制暴露给生成代码。
+并行执行由 `ParallelToolExecutor` 管理，它使用每 Agent 的并发限制与资源锁，把触及相同声明资源的调用串行化。锁有效的前提是工具正确实现 `declared_resources()`；不同执行器实例又有各自的锁，不能推断两个子会话同时编辑同一文件会自动互斥。并发调度降低等待，资源声明则维护可预测性，二者共同决定工具作者承担的契约。[并发和资源锁](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/parallel_executor.py)
 
-### 5. 针对当前结构的运营检查
+MCP 工具经 `MCPToolDefinition/MCPToolExecutor` 进入同一工具体系，再通过 MCPClient 发给服务器，返回普通 observation。连接丢失时，执行器可以在调用前尝试重连；已经关闭的客户端不会被偷偷复活。参数中的秘密引用由 conversation 的 SecretRegistry 展开，不读取任意宿主环境变量。这条适配链解决了调用形状，外部服务实际写入的幂等性仍不是工具 schema 能保证的。[MCP 执行器](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/mcp/tool.py)
 
-以下是作者建议的检查项，采集主体是部署与事件服务，不由 Agent 自报：
+插件是另一层组合单位，可打包 skills、hooks、MCP 配置、agent 定义和 commands；`ResolvedPluginSource` 记录实际取得的 commit，避免暂停后继续时漂移到分支新版本。这里的扩展把提示知识、事件处理与外部能力组织成可加载资源，不应简单等同于新增一个函数工具；来源固定也只是可复现条件，不是插件安全证明。[插件组成](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/plugin/plugin.py)、[固定插件来源](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/plugin/types.py)
 
-| 检查 | 应保留的证据 | 失败后的处理 |
-|---|---|---|
-| 创建与恢复会话 | conversation ID、镜像版本、runtime mode、workspace 标识 | 拒绝在身份或目录错配的环境继续执行 |
-| 日志与订阅一致性 | 持久事件、传输通知及最后确认位置 | 补取并去重；不以重发工具调用弥补通知缺口 |
-| 取消与容器回收 | 会话终态、容器状态、后代进程与清理结果 | 清理未完成时保持待处理，不冒充已取消干净 |
-| profile secret 范围 | 注入对象、权限范围与撤销记录 | 范围不符时停止新动作，轮换或撤销凭证 |
+### 5. 权限、沙箱与凭证：批准动作与隔离执行分别配置
 
-这些检查把“开放可观察”转成待验证的操作条件。源码能显示应当发生的顺序；部署中的故障注入才可检验存储失败、重启和资源泄漏。
+`AlwaysConfirm`、`NeverConfirm`、`ConfirmRisky` 决定一个动作是否需要确认；后者可以按风险阈值处理未知风险。与 dsh 的 `never` 不同，OpenHands 的 `NeverConfirm` 意味着不要求确认，并不禁止执行。风险分析与确认策略共同影响是否停下来等待用户，但它们不会自行建立文件系统或网络隔离。[确认策略](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/security/confirmation_policy.py)
 
-### 6. 设计判断
+执行隔离要看部署。Agent Server 本身是服务接口，普通 local mode 不因“Server”这个名字就得到容器；每会话 Docker mode 则由控制面创建容器，挂入该会话的记录、持久目录和 workspace，设置运行 UID/GID、去掉 capabilities，并启用 no-new-privileges；内存、CPU、PID 限额另有配置。这些是固定代码可检查的措施，不能省略镜像、挂载、网络与宿主 Docker 权限检查而宣称多租户隔离已验证。[Docker 启动参数](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/registry.py)
 
-OpenHands 适合作为决策循环、会话服务与执行环境分离的源码案例。是否自运维全栈，应取决于组织是否需要这些控制点，以及镜像、调度、恢复和升级责任能否承担；本轮没有成本数据，不能声称其成本必然高于托管产品。第十八章统一解释 Agent Runtime 与 Execution Runtime 的责任，第二十六章再把它们映射到企业功能层和信任域。
+容器身份也属于恢复状态。`RuntimeProvisioningStore` 保存 conversation ID、API key、加密 key 与 workspace 路径，要求控制面配置 `OH_SECRET_KEY`，拒绝会话身份不匹配或重绑工作区。重连的目标应由持久身份重建，而不是临时发现一个同名目录后继续。Server 的会话 API key 认证是可配置的，部署者仍要明确服务暴露范围。[身份供给](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/provisioning.py)、[服务认证](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/README.md)
+
+业务凭证由 SecretRegistry 管理，在执行时解析并对已知值做输出遮罩，流式遮罩还考虑秘密被拆到相邻 chunk 的情况。profile 的 `secret_refs` 则定义哪些保存的秘密可暴露：`null` 为全部，空列表为没有，非空列表为按名过滤。作者据此建议先限定注入范围，再考虑日志脱敏；遮罩已知字符串不能证明生成代码无法通过编码或网络泄露秘密。[秘密注册表](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/secret_registry.py)、[profile 范围](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/profiles/agent_profile.py)
+
+### 6. 子智能体与委派：一项 task 对应一个子 Conversation
+
+固定版的 `TaskToolSet` 提供阻塞式 `task` 工具。模型提交任务提示、`subagent_type` 和可选 resume ID，TaskExecutor 转交 TaskManager，最终返回含 task ID、状态与内容的 TaskObservation。子 Agent 类型由注册的 factory 决定，既可以是专门探索代码的配置，也可以是调用者自定义工具与指令的配置；工具定义中的旧 `max_turns` 字段已经弃用并被忽略。[Task 工具契约](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/task/definition.py)
+
+TaskManager 创建新的 LocalConversation，共享父 workspace 路径，复制父 LLM 配置但重置独立计量，将子任务提示作为新消息发送，并按 agent 定义或父会话确定预算与迭代限制。这里没有复制父完整历史的步骤，也没有为每个 task 自动创建容器或操作系统身份。子任务结束后释放活对象，保留与 task 对应的会话记录；只有 FINISHED 算完成，卡住、暂停或限额终止返回错误和可用的部分结果。[创建与回收](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/task/manager.py)
+
+这条实现有两个容易误读的边界。其一，resume 用进程内 task 映射找到落盘 conversation，不能据此保证进程重启后 task 索引自动恢复；父会话不持久化时，临时任务目录在 manager 关闭时会清理。其二，子策略可由定义覆写，否则继承父确认策略，但没有配置 `confirmation_handler` 时，manager 会继续执行等待确认的子动作，不能仅凭“继承”声称有人审。[恢复及确认处理](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/task/manager.py)
+
+取消责任也必须沿具体实现追踪：此 TaskManager 走同步子会话 run，已检查的 start/run 路径没有把父 cancellation token 下传。因此不能将父异步 interrupt 的保证扩大为全部子进程或子会话同时停止。第十一章的委派契约在这里应包含任务范围、共享工作区冲突、确认处理器以及显式的子任务停机验证，后者是作者提出的接入要求。[同步任务路径](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/task/manager.py)
+
+### 7. 验证与可观测性：存储顺序不等于业务恰好一次
+
+LocalConversation 将默认持久化回调放在调用者回调之前：事件追加失败，后续订阅发布不应先行。终端 visualizer 可以更早显示，不能把所有 UI 输出都当成落盘证明。这个 persist-before-publish 顺序减少了“订阅者看到但事件没存下”的窗口，却没有把文件写入、外部 API 与会话事件合成事务。存储后通知前退出时，应补读事件，而非重新执行同一业务动作。[回调次序](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py)
+
+Agent Server 的 session socket 又区分 durable、transient、delta 和同步等 envelope，不能把每条 socket 消息都当持久 Event。它通过有界发送队列处理慢消费者，必要时断开连接，并支持按 `after_seq` 恢复持久事件流。这是服务提供的通道契约；具体客户端使用哪条 socket 路由仍应核对，不能把新 session 协议自动套给所有客户端。[session socket](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/session_socket.py)
+
+观测还有不同目的。SDK 的 Laminar/OpenTelemetry 集成可关联 conversation、工具调用与委派 trace；Server 文档另区分产品 analytics、完整 completion logging 和 tracing，前者默认关闭，不能把三者的数据范围混写。持久事件用来恢复事实，trace 用来找耗时，测试结果用来判断工作是否正确，三类证据互相补充。[trace 集成](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/observability/laminar.py)、[数据采集分类](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/README.md)
+
+本书没有执行容器回收、存储故障、重启或秘密泄露实验。作者建议将这些作为部署验收：重连后核对会话与工作区身份；事件补取按原生身份去重；取消后查看资源实况；业务提交缺少结果时回读外部状态。源码支持提出这些检查，但不能替代运行环境中的验证结论。
+
+### 8. 一次任务穿过架构：修复仓库中的解析错误
+
+设想用户要求“修复配置解析器处理空输入的错误，并证明已有行为未退化”。以下是作者构造的任务走查，不是已运行示例。接入端选择 Agent 的模型、TerminalTool、FileEditorTool 与 TaskToolSet，把仓库放到指定 workspace，再创建远程 conversation。若使用每会话 Docker mode，控制面解析配置、建立持久身份、启动容器，最后把会话创建请求转发到容器中的 Agent Server。[工具配置](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/base.py)、[容器创建顺序](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/routers.py)
+
+任务消息进入会话，项目指令按启用的 AgentContext 规则加载；Agent 从当前 View 请求模型，模型调用文件工具定位解析入口。一个 task 可以让子 Agent 独立追踪调用者和相关测试，只返回位置与发现；父 Agent 根据回收的 observation 修改代码，再用终端执行测试。共享 workspace 意味着子任务可以读到同一工作副本，也意味着并行写入需要另行安排；作者在此建议让探索子任务只读，集中修改责任。[上下文装配](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/context/agent_context.py)、[子任务运行](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/task/manager.py)
+
+若测试命令需要确认，Conversation 停在待批动作，用户批准后继续该动作；若用户中断，应该检查命令是否仍运行、文件是否已改变，而非重建一份“干净的成功故事”。最终交付应关联实际 diff、测试命令与退出结果，并说明未覆盖的情况。模型的完成状态可以结束循环，验收证据是否充分仍由任务要求决定。[运行与确认边界](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py)
+
+如果探索任务第一次返回“缺少某个失败样本”，父 Agent 可以带着更具体的问题按 task ID 继续子会话，复用其已保存上下文；如果工具集合或子 Agent 定义发生变化，则不能绕过会话恢复的一致性检查。这里选择继续已有子任务，目的是保留调查过程；选择新建任务，则是刻意切断旧背景。两种选择需要由任务语义决定，不宜仅按哪个调用更方便。[任务恢复](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/task/manager.py)、[恢复校验](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/state.py)
+
+这一结构的接入价值在于可以分别控制 Agent 能力、会话协议和执行环境。小型本地工作流可以直接持有 LocalConversation；服务化系统则需要维护会话存储、身份、镜像与容器生命周期。作者的选择标准是组织是否需要并能承担这些控制点，而非仅凭“开源”推断完全离线、自动安全或必然更低成本；模型数据去向与隔离效果都应按实际配置评价。
 
 ---
 
-## 第十八章 产品比较：不要用一张总分表掩盖架构差异
+## 第十八章 pi-mono：小核心怎样长成可组合的运行时
 
-> 资料截面：2026-09-19。本章是架构与接入责任比较。五个主案例没有完成统一任务、模型、预算与权限条件下的实测，六轴均不填分数，也不构成产品排名。
+> 资料截面：2026-10-29。本章沿用读者熟悉的 pi-mono 名称；原仓库已迁至 `earendil-works/pi`。以下以稳定版 **v1.4.0、commit `4a080252f06caf63a525d7873c5d94d3c23887e0`** 为准，不把早期版本的取舍当成永久特性。[发布记录](https://github.com/earendil-works/pi/releases/tag/v1.4.0)
+
+Pi 值得研究的地方，是它把“循环本身”“编码会话”和“工作方式”分成了可以分别使用和替换的部分。只需要一个调用模型与工具的循环，可以使用 Agent Core；需要会话、上下文压缩和扩展发现，可以使用 Coding Agent SDK；需要终端交互，再使用 CLI。下面按第二篇的同一组问题，追踪这些部分怎样一起完成任务。[包划分](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/README.md)、[SDK](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md)
+
+### 1. 整体架构：循环、会话和界面分别负责什么
+
+对应第五章，先区分四个主要组件。`pi-ai` 统一不同模型供应商的消息、工具调用和流式响应；`pi-agent-core` 的 `Agent` 管理一次运行的状态和循环；`pi-coding-agent` 的 `AgentSession` 在循环外管理编码任务所需的会话、压缩、资源和扩展；`pi-tui` 提供终端呈现。它们是包和职责的划分，并不意味着每层都运行在独立进程。[仓库说明](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/README.md)、[会话工厂源码](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/src/core/sdk.ts)
+
+下面是依据这些接口整理的架构图。图中连线表示调用或数据依赖，不代表安全隔离：
+
+```text
+终端 CLI / JSONL RPC 客户端 / 嵌入 SDK 的应用
+                       |
+                 AgentSession
+          +------------+-------------+
+          |            |             |
+    SessionManager  ResourceLoader  扩展运行环境
+    会话树与当前分支  指令/skills等   工具与生命周期处理器
+          |            |             |
+          +------ 当前请求上下文 ------+
+                       |
+                Agent / agent loop
+                 /             \
+          pi-ai 模型适配      工具执行接口
+               |             /       \
+           模型服务      本机文件/进程   MCP 服务等
+```
+
+`createAgentSession()` 负责把这些对象装配起来。`SessionManager` 持有持久化或内存中的会话记录；`DefaultResourceLoader` 找到指令、skills、模板和扩展；`AgentSession` 再协调当前模型、可用工具和运行状态。宿主可以替换这些依赖，因而“沿用 Pi 的循环”不必等于“照搬 Pi 的终端产品”。[SDK 的可替换边界](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md)
+
+这里的小核心是一种职责选择。完整企业系统仍需要身份、隔离、任务验收和运营设施；只引用 `pi-agent-core` 不会自动获得 Coding Agent 的全部会话能力，更不会获得持久业务工作流。仓库中的其他包也不能仅凭名称就视为这条 CLI 调用链的必经组件。
+
+### 2. Agent loop：工具反馈和用户追加输入怎样推进循环
+
+对应第六章，Pi 的低层循环有两层推进条件：内层处理模型响应、工具调用和 steering 输入，外层在一次工作原本可以结束时检查 follow-up。steering 用来调整正在进行的工作，follow-up 用来排在当前工作之后；两者不只是界面上不同颜色的消息，而是不同的调度时机。[循环源码](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/agent/src/agent-loop.ts)、[SDK 输入语义](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md)
+
+一次正常工具轮次可以这样阅读：循环先整理当前消息和工具声明，调用模型，接收完整 assistant 消息，再校验并执行其中的工具调用；工具结果成为 `toolResult` 消息，进入下一次模型请求。下一轮开始前，上层还可以更新上下文和模型配置。源码同时有并行与顺序工具执行路径，不能把早期版本的执行顺序当成所有版本的固定行为。[请求、调度与工具分派](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/agent/src/agent-loop.ts)
+
+停止条件比“模型没有调用工具”更细。排队输入或上层继续决定可能产生下一轮；相反，整批工具都明确给出终止提示时，可以跳过自动追问。若模型响应因输出长度截断，哪怕拼出的工具参数看起来是合法 JSON，也不执行这些调用，而是反馈错误；错误或中止响应则结束本次低层运行。这些分支让不完整输出不会直接变成动作。[同一固定版本的停止与截断分支](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/agent/src/agent-loop.ts)
+
+恢复由上层会话补充。`agent_end` 只说明一次低层运行结束，其后仍可能发生自动重试、压缩恢复或队列工作；外部应用要判断 Pi 是否还会自动继续，应观察 `agent_settled`。但即使会话已经静止，也不能推导先前的文件修改或远端写入已撤销。这里分别对应第六章的运行终态和副作用对账，不能用一个结束事件代替两者。[RPC 生命周期](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/rpc.md)
+
+### 3. 上下文与会话：完整记录和当前请求不是同一个对象
+
+对应第七章，Pi 用两个转换边界隔开内部消息和模型输入。`transformContext` 可以修剪或补充本次要看的内容；`convertToLlm` 再把内部消息转换为模型能接受的格式，例如滤掉只供界面使用的消息。这允许会话保留更多信息，同时控制本次请求实际发送什么。转换函数是否保留原数据还取决于实现，不能把可插拔接口当成自动保证。[模型调用边界源码](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/agent/src/agent-loop.ts)
+
+会话的权威记录由 `SessionManager` 管理。除首行会话头外，JSONL 会话条目通过 `id` 和 `parentId` 组成树，当前叶节点确定活动分支。会话头保存会话级元数据，其 `id` 不是条目树的节点 ID。回到旧分支不需要删除其他分支；生成模型上下文时，管理器选择当前路径并应用压缩记录。系统指令和工具声明的变化也以消息保存，恢复时可以重建当时的有效配置。直接替换内存中的消息数组，并不等于替换持久会话。[会话格式](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/session-format.md)、[SessionManager 的权威性](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md)
+
+压缩会选取较早的上下文生成摘要，追加带 `summary` 和 `firstKeptEntryId` 的记录，再用摘要及保留的近期消息构造下一次请求。原始记录仍然存在。这解决“上下文窗口装不下”的问题；切换分支时的 branch summary 则解决“新分支需要知道另一条路径上做过什么”的问题。两者都使用摘要，但触发原因不同，也都不保证摘要保留了所有细节。[压缩与分支摘要](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/compaction.md)
+
+skills 采用按需读取：先提供名称和说明，需要时再读取 `SKILL.md`，避免把所有工作指南一次塞进请求。文档也明确承认模型可能漏读相关 skill，必要时应显式指定。因此，skills 是组织经验的载体，加载机制本身不是自动学习或正确选择的证明。[Skills](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/skills.md)
+
+### 4. 工具、MCP 与扩展：小接口怎样容纳大工具集
+
+对应第八章，CLI 默认启用 `read`、`bash`、`edit`、`write`。模型看见工具声明后生成调用，循环对参数做校验，再把执行结果送回模型。扩展可以注册工具，也可以在调用前后处理事件。嵌套调用通过 `ctx.executeTool()` 复用工具校验和事件处理，事件带 `parentToolCallId`；嵌套结果先返回给调用它的工具，并不会全部自动塞入模型转录。这使复合工具有机会筛选结果，而不只是把更多输出搬进上下文。[CLI 工具](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/cli.md)、[扩展与嵌套工具](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/extensions.md)
+
+**在本章版本中，Pi 已经有内建 MCP 支持。** 它连接 stdio 或 Streamable HTTP 服务，把服务工具注册到本地工具体系。工具可以直接声明给模型，也可以先隐藏详细定义，等 `tool_search` 找到后再声明，或由 `codemode` 脚本发现、组合调用。完全隐藏的工具则不可达。这几种模式对应第八章的选择：让常用工具容易调用，让大工具集不必全部占据每次请求。[MCP 连接与工具暴露](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/mcp.md)
+
+这里还要分清产品装配与库默认值。CLI 把 MCP、`codemode` 和 `tool_search` 作为内建扩展加载；使用 SDK 创建会话时，需要宿主显式加入相应扩展工厂并绑定扩展生命周期。只写一句“Pi 支持 MCP”，不足以指导企业嵌入，旧文章中一句“Pi 没有 MCP”也已经不能描述这个版本。[SDK 的 MCP 装配要求](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md)
+
+工具暴露方式不等于授权。一个 MCP 工具即使未直接声明，也可能通过间接机制调用；工具的只读、幂等或破坏性 annotations 也只是服务方提供的提示。平台要限制实际访问范围，应检查最终执行路径和凭证，而不是只检查模型最初看见的工具列表。[MCP 暴露语义](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/mcp.md)、[工具 annotations](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/extensions.md)
+
+### 5. 权限、沙箱与凭证：项目可信不等于操作受限
+
+对应第九章，Pi 默认以启动它的操作系统用户权限运行，没有内建的逐工具审批体系或覆盖文件、进程、网络、凭证的强制权限系统。`cwd` 是工作位置，不是路径边界；模型、扩展和子进程能影响什么，要看外部赋予它们的权限。[安全说明](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/security.md)
+
+Project trust 解决的是另一个问题：是否允许项目提供的扩展、MCP 配置等资源在启动时被加载。它不能限制启动后的工具访问；拒绝项目可信也不意味着目录内容不再影响模型，例如上下文指令文件仍可能被读取。这是一道资源加载决定，不能替代命令级授权或执行隔离。[Project trust 的具体边界](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/security.md)
+
+官方区分两种隔离方式：把整个 Pi 进程放进受限环境，或者只把部分工具执行转到隔离环境。后一种做法留下主进程及其他扩展在外部运行，保护范围更窄。企业采用时应据此画出实际进程和凭证分布，再决定文件挂载、出网与身份限制；不能因为一个 bash 工具进了容器，就说所有扩展都被隔离。[运行方式与保护范围](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/security.md)
+
+MCP 的认证还有自己的生命周期，例如 HTTP OAuth 令牌按服务身份保存与刷新。它让 Pi 能代表用户访问服务，并没有替企业定义业务授权规则。结合本机模型凭证、MCP 凭证和扩展代码，接入方需要明确哪些秘密存在主进程，哪些只留在外部代理中。[MCP OAuth](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/mcp.md)
+
+### 6. 子智能体与委派：扩展示例如何复用同一个核心
+
+对应第十一章，Pi 默认核心没有把一套多智能体组织方式固定下来。官方仓库提供的 subagent 是可安装扩展示例：父会话调用一个工具，扩展再启动独立 `pi` 子进程，交给它专门的提示、工具和模型配置。每个子进程有自己的上下文窗口；这和直接在同一个会话里加一段“现在扮演审阅者”的指令不同。[项目取舍](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/README.md)、[Subagent 示例](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/examples/extensions/subagent/README.md)
+
+示例支持单任务、并行任务和链式任务。链式模式按顺序运行任务，并用后一步任务模板中的 `{previous}` 显式注入前一步最终文本；它不自动继承完整历史。并行模式分别收集执行进度、用量和最终文本，再作为父工具结果返回。取消也通过扩展传递给子进程。由此可以看到，委派并不神秘：它复用现有运行时，额外实现任务输入、调度、结果收集和取消传播。[示例的模式与输出约定](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/examples/extensions/subagent/README.md)
+
+独立上下文和独立进程都不自动产生独立权限。如果子进程仍共享同一账户、目录和凭证，它仍可能影响相同资源；父工具收到了失败信息，也不意味着子进程已经做过的修改被撤销。官方示例足以解释组合方式，企业任务系统还要补上工作区隔离、总预算、产物身份以及外部写入核对。这些是本书的接入建议，不能倒写成示例已经提供的保证。
+
+### 7. 验证与可观测性：事件帮助看见过程，不能替任务验收
+
+对应第十和第十二章，低层 Agent 发出运行、轮次、消息和工具事件，上层会话补充压缩、重试与最终静止事件。SDK 可以直接订阅；RPC 则在标准输出中提供 JSONL 响应和事件，诊断走标准错误。命令响应按请求 ID 关联，异步会话事件反映运行进展，因此“prompt 请求成功”与“任务完成”是两个不同事实。[SDK 事件](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md)、[RPC 记录与生命周期](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/rpc.md)
+
+一个修复任务仍要回答：测试是否覆盖原始故障，测试是否针对最终工作区运行，最终交付的修改是否就是被测试的修改。Pi 的事件和会话记录提供核对材料，业务验收规则需要宿主另行规定。只看到一条“测试通过”的模型回复，不足以得出这些结论。
+
+本书对 **真实的 Pi 1.4.0 Agent Core** 做了九项本地检查：工具结果回传、请求上下文过滤、非法参数拒绝、截断调用拒绝、工具异常反馈、follow-up 调度、混合终止结果、整批终止结果和模型中止路径，全部通过。模型端使用确定性响应替身，工具只做内存运算；测试没有调用收费模型、远端 MCP 或真实子智能体，也没有证明沙箱强度、摘要质量或完整 SDK 恢复正确。复现入口位于仓库 `examples/pi-core/`，它验证的是循环机制，不是产品整体效果。
+
+### 8. 一次修复任务如何穿过这些组件
+
+设想用户要求修复一个日期换算错误。以下是依据上述接口组织的教学流程，并非另一份已执行的模型轨迹：宿主先选择工作区与受限执行环境，创建 `AgentSession`，由资源加载器提供项目指令；模型通过 `read` 找到相关代码，再调用工具修改和测试；工具结果进入下一轮请求，模型据此继续修复或解释结果。
+
+如果用户此时追加“先不要修改接口”，steering 在规定的轮次边界进入上下文；如果说“完成后再解释兼容性”，follow-up 等当前工作可结束时再启动下一轮。若调查时间很长，`SessionManager` 保留完整会话树，压缩机制减少下次请求携带的旧内容。若安装了审阅者扩展，父任务还能委派一个独立会话，但平台仍须决定它看到哪个产物、能否修改工作区以及谁接受最终结果。
+
+整个路径说明了 Pi 的设计取舍：把频繁复用的循环、消息、会话和扩展接口做清楚，把具体团队如何工作留给外层组合。它适合需要研究和控制这些接缝的团队；相应代价是平台必须自己承担没有内建的治理责任。接入深度应与团队愿意长期维护的责任匹配，而不是只按代码行数或功能清单判断是否“简单”。
+
+---
+
+## 第十九章 产品比较：不要用一张总分表掩盖架构差异
+
+> 本章于2026-10-29重组。六个实现的事实版本见第十三至十八章；框架和托管产品的补充材料保留2026-09-19截面。六个主案例没有完成统一任务、模型、预算与权限条件下的实测，六轴均不填分数，也不构成产品排名。
 
 产品选择首先要确定采购或自建的是哪一部分：开发者工具、可嵌入循环、组合框架，还是托管 Harness。随后再比较谁运行循环、谁执行工具、谁保存记录。相同品牌可能同时覆盖多个层次；相同“自管”标签也可能对应完全不同的数据流。
 
-### 1. 五个主案例：公开事实与作者判断分列
+### 1. 先比较架构：相同责任被放在了哪里
 
-第二列归纳已核验的公开文档或固定源码，详情与版本见第十三至十七章；第三列是作者提出的采用条件和待测问题，没有同条件效能结论。
+第十三至十八章已经沿相同顺序拆开了六种实现。现在先回到第五章的职责边界：谁组织模型请求，谁管理上下文，谁执行工具，谁负责最终交接。下表是对各章证据的归纳；闭源产品的内部细节仍只说到公开资料能够证明的范围。
+
+| 实现 | 架构的组织中心 | 循环与上下文的主要落点（第六、七章） |
+|---|---|---|
+| Claude Code（第十三章） | 本地运行时围绕模型循环组合工具、会话、hooks及扩展；Agent SDK复用相关能力 | 主循环读取工具反馈继续工作；会话管理指令、历史和压缩，子智能体另有上下文 |
+| Codex（第十四章） | 可复用core承接多个前端，App Server提供客户端协议 | thread/turn与消息历史、工具事件相连；上下文组装及压缩在核心运行路径中处理 |
+| Cursor（第十五章） | 编辑器工作现场与Agent服务相连；云端路径另外连接执行环境 | 编辑器状态、仓库检索和规则参与上下文；服务组织工具反馈循环，内部持久化算法未公开 |
+| DeepSeek Harness（第十六章） | 用profile与插件服务图装配运行时 | loop使用可组合的消息、上下文和工具服务；插件生命周期与一次任务生命周期分开 |
+| OpenHands（第十七章） | Agent、Conversation和执行workspace分工，远程路径增加Agent Server | Conversation承接运行和事件状态；Agent据历史及工具反馈继续，执行环境可以独立部署 |
+| pi-mono（第十八章） | pi-ai、Agent Core、AgentSession与界面分层组合 | 低层loop组织模型和工具；SessionManager保存会话树，AgentSession补充压缩、扩展和恢复 |
+
+这几种拆法各自优化了不同接缝。Codex把客户端交互变成明确协议，OpenHands强调决策与工作区执行的分工，Pi让调用循环和管理编码会话可以分别复用。它们并不排斥彼此：一个系统完全可以同时拥有协议入口、远程工作区和可插拔上下文。选择时应检查实际接入路径，不要把这些归纳变成互斥标签。
+
+再沿第八、九、十一章比较工具、安全与委派。是否有名为“sandbox”或“subagent”的功能，不能替代下面这些机制问题：
+
+| 实现 | 工具与执行控制 | 子智能体与委派需要特别区分的边界 |
+|---|---|---|
+| Claude Code | 内建工具、MCP、hooks分别接入；权限决策和执行沙箱承担不同职责 | 子智能体拥有独立上下文；工具范围、权限模式、工作区隔离要分别配置 |
+| Codex | 工具分派、MCP连接、审批策略与操作系统执行限制分层 | 子线程控制与客户端多任务并行不是同一机制；结果、状态及取消要按原生接口回收 |
+| Cursor | IDE工具和MCP接入当前工作；本地、云端及自管worker各有执行边界 | 单任务内委派和多个云端Agent的协调要分别看；独立工作区不代表上下文完全独立 |
+| DeepSeek Harness | 工具由插件提供；PTC执行边界不覆盖所有Host插件代码 | spawn、fork及可继续子任务依赖所装配provider；子作用域的工具和权限不能假定自动继承父限制 |
+| OpenHands | 工具定义和执行实现分离，可接MCP；确认策略不等于容器隔离 | 委派工具创建子会话；上下文隔离、workspace共享和执行身份是三个问题 |
+| pi-mono | v1.4.0 CLI内建MCP扩展；SDK须装配；没有默认完整权限系统或内建OS沙箱 | subagent为可安装扩展示例；独立进程与上下文不自动缩小操作系统权限 |
+
+上表的具体版本、源码与公开文档均在对应产品章就近给出。第十、十二章还提供一条共同检验线：原生完成事件、会话转录和工具日志分别能证明什么。它们可以作为验收材料，但产品的一轮工作结束不能自动替企业确认业务目标达成。
+
+#### 接入面与企业仍需承担的责任
+
+下面保留采购时常用的接入比较。技术事实按具体接口区分，第三列是作者建议验证的问题，不是厂商效果承诺。
 
 | 主案例 | 公开接入面与源码边界 | 作者的架构判断与首要验证问题 |
 |---|---|---|
 | Claude Code 及相关 Claude 接入面 | CLI、Agent SDK；Managed Agents 另管持久会话与循环。Messages API 显式压缩又是不同接口；本轮未审计托管内部源码 | 先选择自行运营或托管循环，再测扩展更新、逐调用权限与恢复缺口 |
 | OpenAI Codex | 开源 exec、TypeScript/Python SDK、App Server；Agents API 于 9 月 10 日 public beta，托管内部不由开源源码覆盖 | 双向协议适合丰富客户端；托管路线另验数据留存、工具回传和退出成本 |
-| Cursor | IDE、云端 VM、自管 worker；Projects 于 9 月 10 日进入 beta；内部循环与上下文选择实现未开放供本轮审计 | 自管执行适合贴近内部构建环境的需求，但前提是接受云端推理及相关数据流 |
-| DeepSeek Harness | profile/bundle/SDK 与可检查的插件源码；当前 0.1.6-alpha.2，PTC 使用受平台 sandbox 约束的子进程 | 适合研究配置和运行组件变体；先验证部分失败、Host 插件授权与会话迁移 |
-| OpenHands | 历史 0.62.0 Runtime；当前 Canvas 1.20.0、SDK 1.49.2、Agent Server 与执行环境分层，关键源码可定位 | 适合需要控制执行与会话实现的团队；验证事件补取、容器身份和资源回收 |
+| Cursor | IDE、云端 VM、自管 worker与Projects协调；内部循环与上下文选择实现未开放供本轮审计 | 自管执行适合贴近内部构建环境的需求，但前提是接受云端推理及相关数据流 |
+| DeepSeek Harness | profile/bundle/SDK 与可检查的插件源码；固定研究基线 0.1.6-alpha.2，PTC 使用受平台 sandbox 约束的子进程 | 适合研究配置和运行组件变体；先验证部分失败、Host 插件授权与会话迁移 |
+| OpenHands | 历史 0.62.0 Runtime；SDK研究基线1.49.2、Agent Server 与执行环境分层，关键源码可定位 | 适合需要控制执行与会话实现的团队；验证事件补取、容器身份和资源回收 |
+| pi-mono / Pi | v1.4.0：CLI、JSONL RPC、TypeScript SDK及独立Agent Core；源码可定位 | 适合希望自行装配运行能力的团队；验证资源加载、扩展执行权、持久会话与平台验收的接缝 |
 
 托管差异见 [Managed Agents 架构](https://www.anthropic.com/engineering/managed-agents)、[Agents API 概览](https://developers.openai.com/api/docs/guides/agents-api/overview)、[Cursor 自管机器](https://cursor.com/blog/self-hosted-machines)。开源边界见 [dsh 固定架构](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md) 与 [OpenHands 固定会话工厂](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/conversation.py#L34)。这些一手来源可支持功能和契约描述，不能因 URL 多就计作独立效能验证。
 
 ### 2. 成品、可嵌入运行时、框架与托管服务
 
-五个主案例不覆盖全部采购对象。下面补入 Deep Agents 和 Microsoft Harness，目的是说明可组合框架仍有独立位置，不把本篇扩成品牌榜单。分类允许重叠：
+六个主案例不覆盖全部采购对象。下面补入 Deep Agents 和 Microsoft Harness，目的是说明可组合框架仍有独立位置，不把本篇扩成品牌榜单。分类允许重叠：
 
 | 层次 | 示例 | 应比较的交付责任 |
 |---|---|---|
 | 成品工具与工作入口 | Claude Code、Cursor、OpenHands Canvas | 交互、工作组织、权限管理与产物交接 |
-| 可嵌入 Agent 运行时 | Claude Agent SDK、Codex SDK/App Server、dsh、OpenHands SDK | 循环、会话、工具及进程生命周期由谁运营 |
+| 可嵌入 Agent 运行时 | Claude Agent SDK、Codex SDK/App Server、dsh、OpenHands SDK、Pi SDK/Agent Core | 循环、会话、工具及进程生命周期由谁运营 |
 | 组合框架 | Deep Agents、Microsoft Agent Framework Harness | 应用如何组合上下文、持久化、审批、委派和有界循环 |
 | 托管 Harness | Claude Managed Agents、OpenAI Agents API、Cursor 云端循环 | 服务商管理哪些运行状态，应用保留哪些执行与数据责任 |
 
@@ -3184,12 +3519,12 @@ Microsoft Harness 复用 Agent Framework 的 chat client、会话、上下文提
 
 ### 3. 托管与自管，要按责任拆开
 
-这里把“产生决策并管理会话的组件”称为 **Agent Runtime**，把“实际执行命令、文件与工具操作的环境”称为 **Execution Runtime**。同一系统可以拆开运营二者；“runtime”一词本身不构成安全边界。
+这里把“产生决策并管理会话的组件”称为 **Agent Runtime**，把“实际执行命令、文件与工具操作的环境”称为 **Execution Runtime**。同一系统可以拆开运营二者；“runtime”一词本身不构成安全边界。下表的托管服务政策保留2026-09-19核验截面，不构成十月采购条款确认。
 
 | 具体部署路线 | 循环与会话 | 工具执行与凭证 | 必须另查的数据边界 |
 |---|---|---|---|
 | Claude Managed Agents | 厂商披露将 Harness 与持久日志分离 | 通过执行环境/工具接口访问；工程文描述沙箱外凭证库及代理 | 按所选环境核对事件、工具输出与存储规则，不能套用 Code 本机假设 |
-| OpenAI Agents API | OpenAI 管理编排、压缩与恢复 | 可用托管或自管 sandbox，应用接入工具 | 当前仅美国数据驻留、不支持 ZDR；自管 sandbox 不改变此限制 |
+| OpenAI Agents API | OpenAI 管理编排、压缩与恢复 | 可用托管或自管 sandbox，应用接入工具 | 在上述九月截面中仅美国数据驻留、不支持 ZDR；自管 sandbox 不改变该截面的限制 |
 | Cursor 云端 Agent + 自管 worker | 循环、推理与规划仍在 Cursor 云端 | 企业机器执行工具，经出站 HTTPS 回传结果 | 代码可能随输出回传，转录可能云端处理及存储 |
 | 自行部署 Codex/dsh/OpenHands 等 | 所部署组件由组织运营，持久化依版本配置 | 组织选择执行环境与凭证控制 | 若仍调用外部模型或工具服务，相关数据仍可能出网 |
 
@@ -3245,7 +3580,7 @@ comparison:
        + 维护、失败重试、风险损失与双运行过渡成本
 ```
 
-单位成本若已包含重试，就不应在后项重复计入。改变任务量、人工介入率和供应商价格做敏感性分析，再预先约定质量下界、费用上限、不可接受的数据流与退出触发条件。本轮没有这组测量，故不宣布某产品最便宜，也不替所有组织指定“买或建”的结论。第二十六至二十九章将沿这些责任与条件展开参考设计。
+单位成本若已包含重试，就不应在后项重复计入。改变任务量、人工介入率和供应商价格做敏感性分析，再预先约定质量下界、费用上限、不可接受的数据流与退出触发条件。本轮没有这组测量，故不宣布某产品最便宜，也不替所有组织指定“买或建”的结论。第二十七至三十章将沿这些责任与条件展开参考设计。
 
 ---
 
@@ -3255,7 +3590,7 @@ comparison:
 
 ## 本篇导言：从“能改自己”到可复查的改进
 
-本篇是作者对进化机制的综合。第十九章按可变对象区分任务内适应、跨任务经验、Harness 版本和模型参数；这四类可以组合，不是从低到高的必经阶梯。第二十至二十三章分别展开搜索、经验发布、运行规则变更与参数训练，第二十四章把它们接到同一条评价、发布和撤销流程。
+本篇是作者对进化机制的综合。第二十章按可变对象区分任务内适应、跨任务经验、Harness 版本和模型参数；这四类可以组合，不是从低到高的必经阶梯。第二十一至二十四章分别展开搜索、经验发布、运行规则变更与参数训练，第二十五章把它们接到同一条评价、发布和撤销流程。
 
 阅读时抓住三个问题：改了什么，谁控制改进，什么证据支持收益。生成器受训而执行模型冻结、项目产物迭代而基础 Harness 不变，都是需要分开解释的情形。2026 年预印本提供了机制和受限实验信号，不能直接替代生产验证。
 
@@ -3263,7 +3598,7 @@ comparison:
 
 ---
 
-## 第十九章 进化不是自我修改：目标函数、证据与边界
+## 第二十章 进化不是自我修改：目标函数、证据与边界
 
 > 证据地位：本章综合截至 2026-09-19 已核验的公开研究与作者工程推导；近期研究多为预印本，不等同于长期生产复现。统计例与发布规则是本书的教学设计。
 
@@ -3282,7 +3617,7 @@ comparison:
 
 影响面和费用不能按层号排序。一次全局技能发布可能比小范围参数适配更危险；明确的工具单位缺陷可以直接修 L3，不必先经历 L1 重试和 L2 提醒。选择依据是故障机制、可验证性、影响面和全生命周期成本。反过来，蒸馏可能仅为了降低部署成本，并不要求先证明所有接口修复都无效。
 
-![图 19-1 四类可变对象共享归因、评价与发布闭环，层号不表示必经顺序](assets/diagrams/four-layer-evolution.png)
+![图 20-1 四类可变对象共享归因、评价与发布闭环，层号不表示必经顺序](assets/diagrams/four-layer-evolution.png)
 
 还要分开两个问题：谁控制改进决策，以及谁提供确认收益的证据。RSI 路线图按执行改进、选择策略、获取经验、适应环境和递归改进等自主性展开；它与本书的对象分类是不同轴，不能把两套层号相互替换。[RSI 路线图 v2](https://arxiv.org/html/2609.11873v2)
 
@@ -3294,7 +3629,7 @@ comparison:
 
 ### 2. 一份能复查的证据合同
 
-第二十至二十三章沿用同一模板，但填满字段只是记录完整，不代表结论成立：
+第二十一至二十四章沿用同一模板，但填满字段只是记录完整，不代表结论成立：
 
 ```yaml
 EvolutionEvidence:
@@ -3317,7 +3652,7 @@ EvolutionEvidence:
 
 这里的分离既要防写，也要防读。把测试目录挂成只读，仍会让候选代码读到答案。生成代理、运行候选代码的沙箱、评价器和训练作业应使用不同的访问权限。治理代码本身可以更新，但要走独立的版本、验收和批准流程；“候选不可改”不等于“组织永远不能改”。
 
-数据同样按用途分开：开发集允许诊断；留出验证集没有用于本轮拟合，却会参与选型；封存终测集只确认预先冻结的版本。反馈一旦进入修复、选择或经验提炼，该数据就已经影响系统，不能继续称为未见证据。跨轮访问预算和派生污染规则见第二十四章。
+数据同样按用途分开：开发集允许诊断；留出验证集没有用于本轮拟合，却会参与选型；封存终测集只确认预先冻结的版本。反馈一旦进入修复、选择或经验提炼，该数据就已经影响系统，不能继续称为未见证据。跨轮访问预算和派生污染规则见第二十五章。
 
 ### 4. 先定义估计对象，再谈晋级
 
@@ -3361,7 +3696,7 @@ HarnessDev 则把创建 Harness 与持续修订分开评估。创建阶段有独
 
 一个可检验假设应说清机制、适用条件和对照。例如：“当工具目录超过该模型的可靠选择范围时，按需发现能否在关键任务非劣的条件下降低选错工具率？”它比“工具太多，优化提示”更容易验证。
 
-时间相关只说明同时发生；轨迹对齐能定位分歧；消融估计指定组合下移除组件的影响，可能混有接口破坏和交互，不能证明普遍必要性。随机对照、配对差值与跨切片复现提供更强的归因证据，仍须明确实验假设。第二十三章给出模型与 Harness 的条件效应、平均主效应和交互公式。
+时间相关只说明同时发生；轨迹对齐能定位分歧；消融估计指定组合下移除组件的影响，可能混有接口破坏和交互，不能证明普遍必要性。随机对照、配对差值与跨切片复现提供更强的归因证据，仍须明确实验假设。第二十四章给出模型与 Harness 的条件效应、平均主效应和交互公式。
 
 ### 8. 预算、停止与保持现状
 
@@ -3373,7 +3708,7 @@ HarnessDev 则把创建 Harness 与持续修订分开评估。创建阶段有独
 
 ---
 
-## 第二十章 任务内进化：搜索、反思与验证—修复
+## 第二十一章 任务内进化：搜索、反思与验证—修复
 
 > 证据地位：本章综合公开研究与作者工程推导；近期演化研究以预印本为主，结论不等同于长期生产复现。控制流和费用表是教学示例。
 
@@ -3474,7 +3809,7 @@ return incomplete(reason)                    # 空候选、全失败均不可宣
 
 ### 4. 验证反馈与环境重试
 
-固定版本和输入下稳定复现的失败，可称为确定性失败；根因仍可能未知。结果忽好忽坏是稳定性问题，也不自动等于外部环境故障。开发检查可以返回定位诊断，封存终测则只按第二十四章的协议回传结果。不能把终测失败全文交给代理修复，再称重测仍是独立确认。
+固定版本和输入下稳定复现的失败，可称为确定性失败；根因仍可能未知。结果忽好忽坏是稳定性问题，也不自动等于外部环境故障。开发检查可以返回定位诊断，封存终测则只按第二十五章的协议回传结果。不能把终测失败全文交给代理修复，再称重测仍是独立确认。
 
 ```text
 候选 → 干净环境中的检查
@@ -3517,13 +3852,13 @@ Stellar Colosseum 把长证明组织为相互依赖的子问题，先探索路�
 
 ### 8. 如何结束当前任务
 
-任务结束时可以提出经验候选，附原任务、证据、适用条件、反例、暴露标签与归因不确定性，再进入第二十一章的写入门。来自封存测试的诊断不能直接变成技能或训练样本；若经授权转作开发材料，派生产物也继承暴露标签，并更换后续终测数据。
+任务结束时可以提出经验候选，附原任务、证据、适用条件、反例、暴露标签与归因不确定性，再进入第二十二章的写入门。来自封存测试的诊断不能直接变成技能或训练样本；若经授权转作开发材料，派生产物也继承暴露标签，并更换后续终测数据。
 
 失败也可产出有价值的发现，例如工具错误不可诊断、合同缺字段或检查不稳定，不必强行写成“以后都应该怎样做”。本层交付是产物、检查记录、完整费用和停止原因；跨任务复用需要另一次验证与发布决定。
 
 ---
 
-## 第二十一章 跨任务经验化：Memory、Skill 与策略库
+## 第二十二章 跨任务经验化：Memory、Skill 与策略库
 
 > 证据地位：本章综合公开研究与作者工程推导；近期研究以预印本为主。状态转换、指标示例和撤销演练是本书参考设计。
 
@@ -3543,7 +3878,7 @@ Stellar Colosseum 把长证明组织为相互依赖的子问题，先探索路�
 | 回滚粒度 | 单条经验、技能版本、经验库快照 |
 | 失败模式 | 陈旧、误触发、租户泄漏、恶意技能、负迁移与错误归因 |
 
-按第十九章的对象规则，改变经验统计的数据快照属于 L2；改变使用这些统计的检索算法属于 L3，训练参数则属于 L4。一次发布跨多个对象时分别记版本，避免重复归因。
+按第二十章的对象规则，改变经验统计的数据快照属于 L2；改变使用这些统计的检索算法属于 L3，训练参数则属于 L4。一次发布跨多个对象时分别记版本，避免重复归因。
 
 事实、情景、程序和策略统计仍需不同生命周期：事实要核对权威来源，情景要保留适用环境，程序要验证执行和权限，策略统计要说明样本分母。它们不能仅因都能嵌入向量，就共用同一套可信度和过期规则。
 
@@ -3629,7 +3964,7 @@ skill_manifest:
 
 索引失效不能替代执行端拦截，已经进入模型上下文的指令也不能靠删除源文件保证遗忘。恢复任务时要重建上下文，并检查旧产物是否继承了错误做法。已经发生的外部变更只能对账、补偿或交由责任人处置，不能声称恢复配置就撤销了现实结果。
 
-物理删除、受限保留和审计证明由数据责任人按适用要求决定，审计记录尽量只保留必要标识与处置结果，不再保存被要求清除的原文。派生模型的进一步处置见第二十三章；可追踪并不意味着模型已经遗忘。
+物理删除、受限保留和审计证明由数据责任人按适用要求决定，审计记录尽量只保留必要标识与处置结果，不再保存被要求清除的原文。派生模型的进一步处置见第二十四章；可追踪并不意味着模型已经遗忘。
 
 ### 6. 复用实验与流式经验库
 
@@ -3651,11 +3986,11 @@ JIT-Agent 的流式模式在任务完成后按协议更新 Harness 经验库，�
 
 ---
 
-## 第二十二章 Harness 进化：从失败病理到版本化变更
+## 第二十三章 Harness 进化：从失败病理到版本化变更
 
 > 证据地位：本章综合截至 2026-09-19 已核验的公开研究与作者工程推导。论文结果均受版本、模型、任务和费用口径限制，本书没有重跑作者的大规模实验。
 
-Harness 进化直接改变模型的决策环境：提示、工具接口、上下文编译、检索与压缩、路由和工作流都可成为候选。模型配置在这里只指选择哪个模型及怎样调用；更新可学习参数属于第二十三章。沙箱与权限设置也可由组织调整，但不能因此交给同一候选自行扩大授权。
+Harness 进化直接改变模型的决策环境：提示、工具接口、上下文编译、检索与压缩、路由和工作流都可成为候选。模型配置在这里只指选择哪个模型及怎样调用；更新可学习参数属于第二十四章。沙箱与权限设置也可由组织调整，但不能因此交给同一候选自行扩大授权。
 
 ### 1. 本层的证据模板实例
 
@@ -3705,13 +4040,13 @@ Ecdysis 从多个任务聚合失败，让不同角色诊断后形成修改规范
 
 本书统一采用 HarnessBank v2；GSME 是同一工作的 v1 历史名称。v2 以“修改位置×失败病理”组织语义基因库，保存不同机制并支持重构与跨单元重组；先用小样本筛选，再作更完整的训练集评价。有效性、激活、配对显著性和增益检查分别约束不同问题，不能把这些条件统称为“通过以后天然可信”。其 SWE-bench 测试仅 26 题，作者将该结果视为初步信号，未通过其统计门槛。这里采用机制解释，不移植旧版摘要的大幅增益数字。[HarnessBank v2](https://arxiv.org/html/2607.13683v2)
 
-JIT-Agent 使用记忆、计划、动作和能力编排四模块协议，部署时由已经训练的生成器按任务产出 Harness。静态模式可生成多个候选再选择一个执行，只执行一个环境 rollout 不等于只付一份生成和选择费用。训练生成器、训练中的有界修复和部署时固定参数分别在第二十三章说明；本层需要封存实际生成的代码、配置及所用经验库，不能只保存生成提示。[JIT-Agent v2](https://arxiv.org/html/2608.25593v2)
+JIT-Agent 使用记忆、计划、动作和能力编排四模块协议，部署时由已经训练的生成器按任务产出 Harness。静态模式可生成多个候选再选择一个执行，只执行一个环境 rollout 不等于只付一份生成和选择费用。训练生成器、训练中的有界修复和部署时固定参数分别在第二十四章说明；本层需要封存实际生成的代码、配置及所用经验库，不能只保存生成提示。[JIT-Agent v2](https://arxiv.org/html/2608.25593v2)
 
 HSI 允许冻结模型承担任务执行、演化与元演化角色，并保留外层锚点。NLE 的全称是 NetHack Learning Environment。[NLE 官方说明](https://github.com/facebookresearch/nle) 在 BALROG 的这一环境中，作者在所测冻结模型和实验设置下没有观察到实质改善；模型初始能力、任务复杂度和稀疏反馈未被完全分离，不能据此证明模型存在不可逾越的普遍上限。[HSI v1](https://arxiv.org/html/2608.08466v1)
 
 ### 5. 激活证据与四组门禁
 
-正确性门检查必需能力和回归，安全门检查权限、注入与信息流，运营门检查费用、时延和稳定性，治理门检查版本、负责人、来源许可和回退。严重硬门失败不能由平均收益抵消。统计优效、非劣和零观测风险采用第十九章的定义，不用“不显著下降”替代非劣。
+正确性门检查必需能力和回归，安全门检查权限、注入与信息流，运营门检查费用、时延和稳定性，治理门检查版本、负责人、来源许可和回退。严重硬门失败不能由平均收益抵消。统计优效、非劣和零观测风险采用第二十章的定义，不用“不显著下降”替代非劣。
 
 激活还要区分三个阶段：代码里存在机制，专用探针能触发，正式任务中实际触发。HarnessDev 的代码与轨迹审计发现，声明的组件不总在运行中出现相应事件。这支持记录“已加载、已发现、已执行”的事件链，却不能证明未触发的机制永久无用。[HarnessDev v1](https://arxiv.org/html/2609.01437v1)
 
@@ -3723,13 +4058,13 @@ HSI 允许冻结模型承担任务执行、演化与元演化角色，并保留�
 
 因此可维护按任务、风险和模型区分的配置，但必须控制数量。一个配置对应一组兼容与回归义务，不能无限复制。换执行模型后，要重新验收终止规则、工具消息和预算；生成器能为不同模型产出适配方案，也不证明同一冻结产物可直接迁移。
 
-交互可以很具体：简短工具描述与按需发现分别减少 token，组合后却可能使索引缺少足够区分信息，增加选错工具。应记录每个上下文项的来源、选择原因和费用，再按第二十三章的差分方法检查交互，而非只看最终均分。
+交互可以很具体：简短工具描述与按需发现分别减少 token，组合后却可能使索引缺少足够区分信息，增加选错工具。应记录每个上下文项的来源、选择原因和费用，再按第二十四章的差分方法检查交互，而非只看最终均分。
 
 ### 7. 效率优化要保留质量让步
 
 SoL-Pi 在搜索后保留四类机制：合并适宜的动作与后续命令，按预计收益选择压缩时机，以句柄保存大观察结果，以及委派较便宜模型提取日志证据。最后一种机制检查来源摘要、退出状态和原文摘录等，失败时回退原日志。需要先查看编辑结果才能决定的命令仍应分开，不能把动作合并解释为取消验证。[SoL-Pi v1](https://arxiv.org/html/2609.20519v1)
 
-这项工作把“少一次模型往返”和“少重发一段大日志”变成了具体优化对象，同时暴露费用口径的细节：压缩门比较缓存重写与未来输入节省，并未单独定价摘要调用；工程总账仍应补上这部分。第十九章所列 44.8 到 42.0 分是效率配置的得分让步，不能和论文另选的性能配置混为“同一方案全面领先”。是否接受这种取舍，要按任务损失、质量非劣界和完整费用决定。
+这项工作把“少一次模型往返”和“少重发一段大日志”变成了具体优化对象，同时暴露费用口径的细节：压缩门比较缓存重写与未来输入节省，并未单独定价摘要调用；工程总账仍应补上这部分。第二十章所列 44.8 到 42.0 分是效率配置的得分让步，不能和论文另选的性能配置混为“同一方案全面领先”。是否接受这种取舍，要按任务损失、质量非劣界和完整费用决定。
 
 ### 8. 发布半径与退役
 
@@ -3743,7 +4078,7 @@ SoL-Pi 在搜索后保留四类机制：合并适宜的动作与后续命令，�
 
 ---
 
-## 第二十三章 模型进化：从轨迹到参数更新
+## 第二十四章 模型进化：从轨迹到参数更新
 
 > 证据地位：本章综合公开研究与作者工程推导。2×2 数据为刻意构造的算术教学例，不是模型实测；近期论文的训练与部署结果未在本书中独立复现。
 
@@ -3890,7 +4225,7 @@ model_release:
 
 ---
 
-## 第二十四章 受控进化闭环：门禁、灰度、回滚与反投机
+## 第二十五章 受控进化闭环：门禁、灰度、回滚与反投机
 
 > 证据地位：本章综合公开研究与作者工程推导。权限矩阵、试验数量、区间和费用是教学设计，不是生产测量，也不代表适用于所有组织的统一阈值。
 
@@ -3914,7 +4249,7 @@ model_release:
 
 在看结果前固定假设、发布对象、主要指标、合格任务定义、实验单位、配对方式、重复次数、关键切片、失败和重试规则、停止条件及风险范围。任务顺序随机交错，模型与环境尽可能固定；无法固定的供应商变化要被检测和记录，不能把未知漂移继续当作同一实验。
 
-第十九章给出差值、非劣与风险界，第二十三章给出 2×2。这里沿用 120 个独立任务、每组每题 2 次运行的教学合同。总共 240 次运行不是 240 个独立任务；分析按任务保留配对和重复，必要时按同源任务簇估计区间。
+第二十章给出差值、非劣与风险界，第二十四章给出 2×2。这里沿用 120 个独立任务、每组每题 2 次运行的教学合同。总共 240 次运行不是 240 个独立任务；分析按任务保留配对和重复，必要时按同源任务簇估计区间。
 
 ```yaml
 experiment:
@@ -4042,7 +4377,7 @@ HarnessDev 的反馈轨迹与后续未见任务结果并不总同向，适合提
 
 ## 本篇导言：把原则落到企业控制面
 
-本篇用具体任务检验前四篇的原则。第二十五章沿软件修复、经营分析和Harness进化三个案例，连接合同、候选、验收与失败处置；第二十六章把这些责任放进企业参考架构；第二十七章展示业务规范如何转换为平台任务；第二十八、二十九章讨论按风险评估能力、核算采购与自建费用，以及怎样带着证据退出旧运行时；第三十章讨论长期形态与开放问题。
+本篇用具体任务检验前四篇的原则。第二十六章沿软件修复、经营分析和Harness进化三个案例，连接合同、候选、验收与失败处置；第二十七章把这些责任放进企业参考架构；第二十八章展示业务规范如何转换为平台任务；第二十九、三十章讨论按风险评估能力、核算采购与自建费用，以及怎样带着证据退出旧运行时；第三十一章讨论长期形态与开放问题。
 
 正文中的合同与伪代码是作者参考设计，公共入口 `python examples/run_examples.py` 提供有限的离线fixture检查。它们不依赖虚构生产仓库或教学提交号，也不代表供应商、真实数仓或模型收益已经验证。阅读时要分清结构能解析、局部机制通过、模型表现改善和业务真正完成这几种证据。
 
@@ -4050,7 +4385,7 @@ HarnessDev 的反馈轨迹与后续未见任务结果并不总同向，适合提
 
 ---
 
-## 第二十五章 三个贯穿案例：从意图到可验证结果
+## 第二十六章 三个贯穿案例：从意图到可验证结果
 
 > 证据地位：本章区分作者参考设计、教学占位数据和离线 fixture 检查。案例与阈值不代表生产实测；脚本化进化数据不能证明模型收益，也没有验证供应商端到端流程。
 
@@ -4062,9 +4397,9 @@ HarnessDev 的反馈轨迹与后续未见任务结果并不总同向，适合提
 python examples/run_examples.py
 ```
 
-入口输出代码候选封存、DST 时间窗、SQL 聚合与进化门禁的检查结果；失败候选被正确拒绝也是预期行为。它不连接真实支付服务、数仓或模型供应商。下文的 `payments` 与第二十七章的 `billing-api` 都是场景名称，仓库不包含其生产源码；原稿的 `8f31b6e`、`8f2c9d1` 是教学占位，不能作为运行前置提交。公共示例使用自身 fixture 的实际基线，规模与结果以该次运行输出为准。
+入口输出代码候选封存、DST 时间窗、SQL 聚合与进化门禁的检查结果；失败候选被正确拒绝也是预期行为。它不连接真实支付服务、数仓或模型供应商。下文的 `payments` 与第二十八章的 `billing-api` 都是场景名称，仓库不包含其生产源码；原稿的 `8f31b6e`、`8f2c9d1` 是教学占位，不能作为运行前置提交。公共示例使用自身 fixture 的实际基线，规模与结果以该次运行输出为准。
 
-![图 25-1 三类案例共享的任务、执行、验证与提交骨架](assets/diagrams/case-common-skeleton.png)
+![图 26-1 三类案例共享的任务、执行、验证与提交骨架](assets/diagrams/case-common-skeleton.png)
 
 ### 案例一：仓库级软件修复
 
@@ -4072,7 +4407,7 @@ python examples/run_examples.py
 
 场景：支付服务升级日期库后，夏令时边界测试失败。教学口径将扣款窗定义为一个当地民用日对应的半开 UTC 区间；它不等于固定24小时，也不代表所有支付产品的账务规则。Agent 可以修改 `src/time/` 与对应测试，不允许改账务规则、删除或削弱测试、联网发布。本任务只交付可审阅补丁及证据；创建 PR 和合并另由代码负责人授权。
 
-以下 JSON 是本书自定义的业务合同输入，不是厂商配置，也不能直接交给附录 E 的 Task 验证器。`<resolved-full-oid>` 等尖括号值是必须替换的占位符。第二十七章给出合同到平台对象的字段映射。
+以下 JSON 是本书自定义的业务合同输入，不是厂商配置，也不能直接交给附录 E 的 Task 验证器。`<resolved-full-oid>` 等尖括号值是必须替换的占位符。第二十八章给出合同到平台对象的字段映射。
 
 ```json
 {
@@ -4330,7 +4665,7 @@ intent → versioned contract → identity/workspace → runtime
 
 ---
 
-## 第二十六章 下一代企业 Harness 参考架构
+## 第二十七章 下一代企业 Harness 参考架构
 
 > 证据地位：本章为作者参考设计与工程推导，案例和阈值用于说明实现逻辑，不代表跨组织验证的通用标准。
 
@@ -4349,7 +4684,7 @@ Evolution Plane  eval registry / mutation / experiment / release / rollback
 
 体验层收集意图，控制层持久化任务合同和权威状态。Agent运行层提出动作，执行层在授权范围内操作文件与外部系统；证据层保存产物、执行验证和对账；进化层提出并评估未来版本。进化层内部的提案者与发布者必须分权，不能因为画在同一行就共享权限。
 
-第五章的三平面按管理与数据路径划分，本章六层按功能划分，第二十四章的候选域与治理域则按信任边界划分。三种视角的对应关系如下。
+第五章的三平面按管理与数据路径划分，本章六层按功能划分，第二十五章的候选域与治理域则按信任边界划分。三种视角的对应关系如下。
 
 | 六层中的组件 | 三平面中的主要位置 | 信任与读写边界 |
 |---|---|---|
@@ -4376,7 +4711,7 @@ Evolution Plane  eval registry / mutation / experiment / release / rollback
 
 ### 2. 统一契约与能力协商
 
-平台按需要定义 Task、Attempt、Action、Observation、Artifact、PolicyDecision、Checkpoint、Delegation、VerificationResult 和 EvidencePackage。沿用第六章：Task是任务，Attempt是任务执行尝试，Action是一次逻辑动作，ToolTry是该工具动作的单次尝试；重试不应改变同一逻辑动作的幂等身份。适配器负责统一对象与产品协议的映射，保存原始载荷的摘要、位置与协议版本。下面是本书自定义接口草图，不能作为某个厂商 SDK 的原生方法表；字段转换示例见第二十七章。
+平台按需要定义 Task、Attempt、Action、Observation、Artifact、PolicyDecision、Checkpoint、Delegation、VerificationResult 和 EvidencePackage。沿用第六章：Task是任务，Attempt是任务执行尝试，Action是一次逻辑动作，ToolTry是该工具动作的单次尝试；重试不应改变同一逻辑动作的幂等身份。适配器负责统一对象与产品协议的映射，保存原始载荷的摘要、位置与协议版本。下面是本书自定义接口草图，不能作为某个厂商 SDK 的原生方法表；字段转换示例见第二十八章。
 
 ```text
 RuntimeAdapter {
@@ -4453,7 +4788,7 @@ request → contract compiler → scheduler → runtime adapter
 
 ---
 
-## 第二十七章 Agent SDD：规范驱动的任务与发布
+## 第二十八章 Agent SDD：规范驱动的任务与发布
 
 > 证据地位：本章为作者参考设计与工程推导，案例和阈值用于说明实现逻辑，不代表跨组织验证的通用标准。
 
@@ -4527,9 +4862,9 @@ task:
 | 业务输入 | 平台映射与责任 |
 |---|---|
 | `specification.id`、`owner` | 进入有版本的规范对象；Task 的 `input_refs` 引用它，负责人身份由控制面核实 |
-| `task.task_id`、合同版本 | 映射到 Task 的 `task_id`、`contract_version`；第二十五章的 `contract_id` 由登记表解析成不可变合同版本引用 |
+| `task.task_id`、合同版本 | 映射到 Task 的 `task_id`、`contract_version`；第二十六章的 `contract_id` 由登记表解析成不可变合同版本引用 |
 | 租户、风险 | 从已认证调用者和风险策略取得 Task 的 `tenant`、`risk`，不由模型自行填高权限值 |
-| `snapshot` 或第二十五章的 `workspace.commit` | 解析完整输入版本，写入 `input_refs`；证据包 `inputs` 另绑定清单及内容摘要 |
+| `snapshot` 或第二十六章的 `workspace.commit` | 解析完整输入版本，写入 `input_refs`；证据包 `inputs` 另绑定清单及内容摘要 |
 | `invariant`、交付物、禁止动作 | 分别编译为 `invariants`、`deliverables`、`forbidden_actions`，并生成可执行策略 |
 | `allowed_writes` | 写入绑定合同版本的路径策略，Task引用该策略；租约与 `scope_guard` 同时执行 |
 | 验收表 | Task 的 `checks` 使用稳定的候选检查ID，适配器解析为完整CompletionContract的 `pre_commit_checks`；命令与验证器版本在只读套件登记。业务提交另有 `post_commit_checks`，附录E的最小Task未展开此字段，不能直接追加到根对象 |
@@ -4568,7 +4903,7 @@ task:
 
 账单完整性以调用提醒逻辑之前和之后的同一张 fixture 表比较：按固定主键排序，对合同指定的全部账单业务字段作规范序列化再求摘要，包括金额、状态和有业务意义的时间字段。只能排除预先声明的非业务元数据，不能临时忽略被候选修改的列。检查在 fixture 准备完成后取基线，执行候选后取终值，并同时检查表行数和键集合。
 
-候选按第二十五章协议封存，在干净环境应用同一补丁后运行下列验收。公开测试可给开发反馈，封存验收由独立主体控制；删除、跳过或削弱公开测试也不能替代固定验收集。
+候选按第二十六章协议封存，在干净环境应用同一补丁后运行下列验收。公开测试可给开发反馈，封存验收由独立主体控制；删除、跳过或削弱公开测试也不能替代固定验收集。
 
 ```yaml
 acceptance:
@@ -4639,7 +4974,7 @@ acceptance:
 
 候选产物、合同版本和验证结果一同进入发布门；提交前再次核对授权、产物与目标版本。业务确需带已知失败上线时，豁免记录失败检查、风险负责人、补救措施、影响范围和到期时间；不可豁免的硬约束仍然阻断。Agent 可以起草说明，不能自行批准，也不能用豁免覆盖已经撤销的权限。
 
-模型停止、候选 `checks` 通过、外部提交确认和 `post_commit_checks` 通过是不同事件。提交确认后进入 `VERIFYING_POSTCONDITIONS`，后置检查失败或未知为 `COMMITTED_BUT_UNVERIFIED`。纯成品交付合同在验收并交付后结束，不强造外部提交。第二十六章据此分别记录两类任务的完成率分母和时延。
+模型停止、候选 `checks` 通过、外部提交确认和 `post_commit_checks` 通过是不同事件。提交确认后进入 `VERIFYING_POSTCONDITIONS`，后置检查失败或未知为 `COMMITTED_BUT_UNVERIFIED`。纯成品交付合同在验收并交付后结束，不强造外部提交。第二十七章据此分别记录两类任务的完成率分母和时延。
 
 ### 7. 规范质量指标
 
@@ -4649,7 +4984,7 @@ acceptance:
 
 ---
 
-## 第二十八章 成熟度模型与 Build-vs-Buy
+## 第二十九章 成熟度模型与 Build-vs-Buy
 
 > 证据地位：本章为作者参考设计与工程推导，案例和阈值用于说明实现逻辑，不代表跨组织验证的通用标准。
 
@@ -4665,7 +5000,7 @@ acceptance:
 | M3 平台化运营 | 持久执行、策略、证据、变更与退出可运营 | 按任务需要支持恢复与隔离；多运行时只是检验替换能力的一种方法 |
 | M4 受控进化 | 候选生成、隔离评价、批准、灰度与回退可验证 | 可选扩展，须控制选择偏差、裁判污染和权限扩大 |
 
-本章用M0—M4标记成熟度能力，避免与第十九章的L1—L4进化对象混淆。这些阶段有控制依赖，但不要求每个系统走到M4。只有一个运行时、没有自动进化的系统，也可以在自己的任务范围内拥有成熟的安全、可靠性和完成验证。
+本章用M0—M4标记成熟度能力，避免与第二十章的L1—L4进化对象混淆。这些阶段有控制依赖，但不要求每个系统走到M4。只有一个运行时、没有自动进化的系统，也可以在自己的任务范围内拥有成熟的安全、可靠性和完成验证。
 
 ### 2. 按风险与证据自评
 
@@ -4683,7 +5018,7 @@ M4核对改进权：可变对象明确，候选不能修改裁判、封存测试
 
 ### 3. 买什么，控制什么
 
-当现成产品覆盖关键约束，接入与退出成本也可控时，可以优先采购模型、编码运行时、沙箱或连接器。采购对象应分开核算：谁运行模型循环，谁保存会话，谁执行工具，谁保管凭证，谁作业务验收。自管工具机器只是其中一个选择，不自动意味着全部数据留在企业内部；责任表见第二十六章。
+当现成产品覆盖关键约束，接入与退出成本也可控时，可以优先采购模型、编码运行时、沙箱或连接器。采购对象应分开核算：谁运行模型循环，谁保存会话，谁执行工具，谁保管凭证，谁作业务验收。自管工具机器只是其中一个选择，不自动意味着全部数据留在企业内部；责任表见第二十七章。
 
 企业应掌握任务合同、身份映射、业务策略、领域验证、证据、评测数据和发布权。这些能力可以采购实现，但配置、数据、访问权限和替换条件必须可控。是否自写运行时适配层，也取决于真实兼容需求；采用单一托管方案并保留可靠导出与人工接管路径，同样是可评估的替代方案。
 
@@ -4701,7 +5036,7 @@ POC按预先分配的代表性任务保留全部试验和成本，覆盖正常�
 
 ---
 
-## 第二十九章 从接入现有 Agent 到拥有运行时主动权
+## 第三十章 从接入现有 Agent 到拥有运行时主动权
 
 > 证据地位：本章为作者参考设计与工程推导，案例和阈值用于说明实现逻辑，不代表跨组织验证的通用标准。
 
@@ -4720,13 +5055,13 @@ POC按预先分配的代表性任务保留全部试验和成本，覆盖正常�
 
 ### 1. 封装而非散接
 
-先为选定Agent建立适配层，映射任务、任务执行尝试、动作、事件、产物、批准和取消，保存规范化事件及原始载荷引用。Task、Attempt、Action分别保留 `task_id`、`attempt_id`、`action_id`；同一动作的ToolTry另记，不能把网络重试当作新任务。每个适配器声明自己接入模型循环、托管会话服务还是工具执行环境，不能把“自管worker”等同于完整自部署。采用第二十六章的责任表分别核对循环、会话、凭证、工具和业务验收。
+先为选定Agent建立适配层，映射任务、任务执行尝试、动作、事件、产物、批准和取消，保存规范化事件及原始载荷引用。Task、Attempt、Action分别保留 `task_id`、`attempt_id`、`action_id`；同一动作的ToolTry另记，不能把网络重试当作新任务。每个适配器声明自己接入模型循环、托管会话服务还是工具执行环境，不能把“自管worker”等同于完整自部署。采用第二十七章的责任表分别核对循环、会话、凭证、工具和业务验收。
 
 退出证据包括能力协商结果、结构化事件样本、取消记录、费用账本和供应商版本信息。没有结构化协议的功能可以在受限配置中使用，但必须标明可观测性不足；不能靠解析终端颜色推断关键完成状态。供应商升级应经过兼容性检查，不能固定版本的服务另做变更检测与停用安排。
 
 ### 2. 外置完成与证据
 
-先选一个有明确验收条件的任务族，把验证、证据和提交权限放在执行Agent之外。按照第二十五章封存并重验同一候选；成品交付任务在验收并交付后完成，业务提交任务还要核对实际目标、当前授权、权威回读和 `post_commit_checks`。`COMMITTED_BUT_UNVERIFIED` 不能计为完成。换Agent时保留两类任务各自的分母和终点，并测试新适配器有没有遗漏必要事件。
+先选一个有明确验收条件的任务族，把验证、证据和提交权限放在执行Agent之外。按照第二十六章封存并重验同一候选；成品交付任务在验收并交付后完成，业务提交任务还要核对实际目标、当前授权、权威回读和 `post_commit_checks`。`COMMITTED_BUT_UNVERIFIED` 不能计为完成。换Agent时保留两类任务各自的分母和终点，并测试新适配器有没有遗漏必要事件。
 
 退出证据分三类记录：能否取回原封存产物并验证摘要，能否重跑确定性检查，能否在条件允许时重放生成过程。第三方模型或外部服务已不可用时，第三项可能无法完成，不能因此伪造逐字复现。所有无法复核的输入、环境和产物明确列出；错误完成可以回标到任务、合同及运行时版本。
 
@@ -4738,7 +5073,7 @@ POC按预先分配的代表性任务保留全部试验和成本，覆盖正常�
 
 ### 4. 建立评测与运营基线
 
-从获准使用的真实任务形成能力、回归、安全和恢复套件，用同一合同和预算比较质量、稳定性、全量成本及人工负担。各方案都保留预分配任务的失败、超时和未激活试验，不能只比较成功返回者；服务指标沿用第二十六章的窗口与分母。
+从获准使用的真实任务形成能力、回归、安全和恢复套件，用同一合同和预算比较质量、稳定性、全量成本及人工负担。各方案都保留预分配任务的失败、超时和未激活试验，不能只比较成功返回者；服务指标沿用第二十七章的窗口与分母。
 
 退出证据是版本固定的任务清单、逐次结果、故障记录、关键切片和成本账本。模型与Harness同时变化且需要归因时，再设计2×2对照；它不是所有单组件迁移的必备仪式。试验次数和非劣门槛由风险与统计计划确定，不能用一次演示代替。
 
@@ -4795,7 +5130,7 @@ POC按预先分配的代表性任务保留全部试验和成本，覆盖正常�
 
 ---
 
-## 第三十章 展望：Harness OS、Agent 组织与持续进化
+## 第三十一章 展望：Harness OS、Agent 组织与持续进化
 
 > 证据地位：本章为作者的条件性展望，结合截至 2026-09-19 已核验研究提出观察方向，不代表这些路径必然发生或已获生产验证。
 
@@ -4825,7 +5160,7 @@ HoH 在固定基础 Harness 下迭代软件项目，以产物和证据延续工�
 
 ### 4. 自我进化要拆开“改什么”与“谁来决定”
 
-Self-Harness、HarnessBank v2、Living-Harness 与 HSI 提供了不同对象的受限实验信号，具体机制与限制见第十九至二十四章。新研究又扩展了诊断、生成和效率目标：HarnessEvolve 依赖经检查的参考轨迹，Ecdysis 聚合跨任务失败，SoL-Pi 搜索减少往返与上下文费用的机制，同时存在得分让步。不能把它们概括成同一条已证实会持续增长的路线。[HarnessEvolve v1](https://arxiv.org/html/2609.00829v1)、[Ecdysis v1](https://arxiv.org/html/2609.11677v1)、[SoL-Pi v1](https://arxiv.org/html/2609.20519v1)
+Self-Harness、HarnessBank v2、Living-Harness 与 HSI 提供了不同对象的受限实验信号，具体机制与限制见第二十至二十五章。新研究又扩展了诊断、生成和效率目标：HarnessEvolve 依赖经检查的参考轨迹，Ecdysis 聚合跨任务失败，SoL-Pi 搜索减少往返与上下文费用的机制，同时存在得分让步。不能把它们概括成同一条已证实会持续增长的路线。[HarnessEvolve v1](https://arxiv.org/html/2609.00829v1)、[Ecdysis v1](https://arxiv.org/html/2609.11677v1)、[SoL-Pi v1](https://arxiv.org/html/2609.20519v1)
 
 RSI 路线图讨论改进过程的自主性，包括谁选择策略、获取经验和改进改进机制；本书四类对象回答的是改了什么。某个系统自动改提示，不代表它已经自主定义目标、生成可靠评测或接管治理。路线图是研究方向，不能因论文标题就宣布人类已退出改进回路。[RSI 路线图 v2](https://arxiv.org/html/2609.11873v2)
 
@@ -4833,7 +5168,7 @@ RSI 路线图讨论改进过程的自主性，包括谁选择策略、获取经�
 
 ### 5. 长时系统仍有未解决的问题
 
-长期运行会积累小错误，跨代理交接可能放大污染，插件与技能可能把一次注入变成持久行为。删除源经验后，摘要、缓存、训练数据或权重仍可能保留影响；紧急撤销又必须压过版本粘性。第三十章并不能靠一个“系统可治理”的结句替这些问题作安全保证。
+长期运行会积累小错误，跨代理交接可能放大污染，插件与技能可能把一次注入变成持久行为。删除源经验后，摘要、缓存、训练数据或权重仍可能保留影响；紧急撤销又必须压过版本粘性。第三十一章并不能靠一个“系统可治理”的结句替这些问题作安全保证。
 
 值得继续研究的具体问题包括：可移植检查点怎样描述外部动作状态；多条证明或方案如何组合验证；封存测试在反复查询后何时失去独立性；训练数据撤销后如何验证派生模型处置；质量与费用的权衡能否在长期任务分布中保持。衡量进展需要固定单位、对照与完整账目，而非只看一次最好结果。
 
@@ -5089,9 +5424,9 @@ Control Plane（控制平面）依据 Task 风险声明做能力检查，adapter
 
 | 检查项 | 适用范围／等级 | 合格判据 | 不合格的典型症状 | 依据 |
 |---|---|---|---|---|
-| 目标是否版本化 | K：R2–R4；R0/R1 可轻量记录 | 完成契约含交付物、不变量、预算、权限、验收、变更规则与负责人 | 目标静默变化 | 第十、二十七章 |
+| 目标是否版本化 | K：R2–R4；R0/R1 可轻量记录 | 完成契约含交付物、不变量、预算、权限、验收、变更规则与负责人 | 目标静默变化 | 第十、二十八章 |
 | 停止是否与完成分离 | K：全部 | 结束一轮、取消、待回复与任务完成分别记录；只有声明完成才执行验收 | 取消也等待成功门；最终文本直接触发提交 | 第六、十章 |
-| 是否生成证据包 | K：R3/R4；其余按验收要求 | 输入、产物哈希、检查、授权、批准与提交后验收可关联 | 只有最终文本或截图 | 第十、二十五章 |
+| 是否生成证据包 | K：R3/R4；其余按验收要求 | 输入、产物哈希、检查、授权、批准与提交后验收可关联 | 只有最终文本或截图 | 第十、二十六章 |
 | 外部提交是否独立授权 | K：R3/R4 | 提交权限受可信边界管理；拒绝、未知决定及过期授权均不执行 | Agent 自报成功后自动生效 | 第九、十章 |
 
 ### 上下文与记忆
@@ -5100,7 +5435,7 @@ Control Plane（控制平面）依据 Task 风险声明做能力检查，adapter
 |---|---|---|---|---|
 | 上下文来源可见 | K：R2–R4；其余 O | 承重片段有来源、版本、选择原因和成本记录 | 不知道规则从哪里注入 | 第七章 |
 | 压缩不覆盖权威状态 | K：使用压缩的任务 | 状态保存在上下文外；压缩后比对基线并核验引用 | 摘要漏掉授权限制 | 第六、七章 |
-| 记忆有写入与撤销门 | K：跨任务记忆 | 候选、验证、作用域、有效期与责任人齐全；撤销后复查派生对象 | 一次成功自动写入全局记忆 | 第七、二十一章 |
+| 记忆有写入与撤销门 | K：跨任务记忆 | 候选、验证、作用域、有效期与责任人齐全；撤销后复查派生对象 | 一次成功自动写入全局记忆 | 第七、二十二章 |
 | 检索先做隔离 | K：私有或多租户数据 | 先按身份、租户与分类过滤，结果保留信任标签 | 跨租户召回或公开内容提升为指令 | 第七、九章 |
 
 ### 工具、环境与副作用
@@ -5118,10 +5453,10 @@ Control Plane（控制平面）依据 Task 风险声明做能力检查，adapter
 | 检查项 | 适用范围／等级 | 合格判据 | 不合格的典型症状 | 依据 |
 |---|---|---|---|---|
 | 身份、授权、批准分开 | K：R1–R4 受控资源 | 主体、临时授权、决定与审批人可追踪 | 登录成功即拥有全部权限 | 第九章 |
-| 凭证受限且不进上下文 | K：使用凭证 | 代理按动作注入短期受限凭证；入日志前脱敏 | 令牌出现在提示或技能中 | 第九、二十六章 |
+| 凭证受限且不进上下文 | K：使用凭证 | 代理按动作注入短期受限凭证；入日志前脱敏 | 令牌出现在提示或技能中 | 第九、二十七章 |
 | 委派授权不扩大 | K：使用子代理 | 转授不超范围；独立专家的执行权与调用者委派权分别校验；预算原子预留 | 子代理继承宿主全部秘密 | 第十一章 |
-| 扩展供应链可撤销 | K：安装扩展 | 来源、版本、权限与责任人明确；hook 更新差异重新审查，撤销可停止后续执行 | 已信任插件更新后新增命令免审批 | 第九、二十一章 |
-| 提示注入有系统测试 | K：不可信输入可影响后续动作，含 R0 读取 | 覆盖间接注入、数据外泄和跨域组合 | 只测试口头拒绝 | 第九、二十三章 |
+| 扩展供应链可撤销 | K：安装扩展 | 来源、版本、权限与责任人明确；hook 更新差异重新审查，撤销可停止后续执行 | 已信任插件更新后新增命令免审批 | 第九、二十二章 |
+| 提示注入有系统测试 | K：不可信输入可影响后续动作，含 R0 读取 | 覆盖间接注入、数据外泄和跨域组合 | 只测试口头拒绝 | 第九、二十四章 |
 
 ### Durable 与多 Agent
 
@@ -5137,11 +5472,11 @@ Control Plane（控制平面）依据 Task 风险声明做能力检查，adapter
 | 检查项 | 适用范围／等级 | 合格判据 | 不合格的典型症状 | 依据 |
 |---|---|---|---|---|
 | 评测集用途分开 | K：选型／进化／泛化主张 | 开发、验证、密封终测、回归分别管理，记录访问与反馈 | 隐藏检查反复用于修复仍称独立终测 | 第十二章 |
-| 报告重复试跑与切片 | K：性能晋级主张；其余 O | 固定任务、环境和预算，报告区间、成本和关键切片 | 只报一次最好成绩 | 第十二、十八章 |
+| 报告重复试跑与切片 | K：性能晋级主张；其余 O | 固定任务、环境和预算，报告区间、成本和关键切片 | 只报一次最好成绩 | 第十二、十九章 |
 | 轨迹骨架完整 | K：R3/R4；其余按恢复要求 | 关键事件按保留规则全量记录；对账新建、未闭合和已终止运行 | 崩溃任务从统计分母消失 | 第十二章 |
-| 候选与裁判隔离 | K：自动优化／独立验收 | 可变范围明确，候选不可改裁判、密封集或根授权 | 可改评分逻辑与分母 | 第十九、二十四章 |
-| 软件发布可灰度与回退 | K：运行配置发布 | 固定任务版本，记录灰度与版本回退演练；业务副作用另处置 | 换回提示就声称撤销业务提交 | 第二十四章 |
-| 版本沿袭可解释 | K：R3/R4 版本发布；其余 O | 父版本、修改、数据、评测、批准、事故与退役齐全 | 无法回答为何上线 | 第二十四章 |
+| 候选与裁判隔离 | K：自动优化／独立验收 | 可变范围明确，候选不可改裁判、密封集或根授权 | 可改评分逻辑与分母 | 第二十、二十五章 |
+| 软件发布可灰度与回退 | K：运行配置发布 | 固定任务版本，记录灰度与版本回退演练；业务副作用另处置 | 换回提示就声称撤销业务提交 | 第二十五章 |
+| 版本沿袭可解释 | K：R3/R4 版本发布；其余 O | 父版本、修改、数据、评测、批准、事故与退役齐全 | 无法回答为何上线 | 第二十五章 |
 
 ### 最终判定
 
@@ -5208,43 +5543,43 @@ Control Plane（控制平面）依据 Task 风险声明做能力检查，adapter
 
 | 概念 | 首次集中定义 | 主要展开章节 |
 |---|---|---|
-| Model × Harness × Environment × Feedback | 第五章（序言先引入隐喻） | 第十八、二十三、二十六章 |
-| Agent / Workflow | 第五章（第二章有先行例子） | 第十一、二十七章 |
-| Harness | 第五章 | 第六至十二、十九、二十六章 |
-| Agent Runtime / Execution Runtime | 第五章 | 第十三至十七、二十六章 |
-| Control/Data/Execution Plane | 第五章 | 第九、二十六章 |
-| Durable state machine | 第六章 | 第十一、二十六章 |
+| Model × Harness × Environment × Feedback | 第五章（序言先引入隐喻） | 第十九、二十四、二十七章 |
+| Agent / Workflow | 第五章（第二章有先行例子） | 第十一、二十八章 |
+| Harness | 第五章 | 第六至十二、二十、二十七章 |
+| Agent Runtime / Execution Runtime | 第五章 | 第十三至十八、二十七章 |
+| Control/Data/Execution Plane | 第五章 | 第九、二十七章 |
+| Durable state machine | 第六章 | 第十一、二十七章 |
 | Task / Thread / Turn / Step / Attempt / ToolTry | 第六章 | 第十一、十二章、附录 A |
-| Checkpoint | 第六章 | 第七、二十章、附录 A |
-| Effect Ledger | 第六章 | 第十、十一、二十六章、附录 A |
-| Reconciliation | 第六章 | 第十、二十、二十五章 |
-| Context compiler | 第七章 | 第十五、二十二、二十九章 |
-| Compaction | 第七章 | 第十二至十五章 |
-| Memory | 第七章 | 第十九、二十一、二十四章 |
-| Skill | 第七、八章 | 第十三、二十一、二十二章 |
+| Checkpoint | 第六章 | 第七、二十一章、附录 A |
+| Effect Ledger | 第六章 | 第十、十一、二十七章、附录 A |
+| Reconciliation | 第六章 | 第十、二十一、二十六章 |
+| Context compiler | 第七章 | 第十五、二十三、三十章 |
+| Compaction | 第七章 | 第十二至十八章 |
+| Memory | 第七章 | 第二十、二十二、二十五章 |
+| Skill | 第七、八章 | 第十三、二十二、二十三章 |
 | ACI | 第三章 | 第四、八章 |
-| Action / Observation | 第三、六章 | 第十七、二十六章、附录 A |
-| MCP | 第八章 | 第九、十三、十五章 |
-| Code Mode | 第八章 | 第十六、二十二章 |
-| Capability lease | 第九章 | 第十一、二十六章 |
-| 执行权 / 委派权 | 第九、十一章 | 第二十六章 |
-| Sandbox | 第九章 | 第十三至十七、二十六章 |
-| Credential broker | 第九章 | 第二十五、二十六、二十九章 |
-| CompletionContract | 第十章 | 第二十五、二十七章 |
-| EvidencePackage | 第十章 | 第二十四至二十六章、附录 A |
-| Commit authority | 第十章 | 第二十五至二十七章 |
-| Delegation / Handoff | 第十一章 | 第十三、二十六章 |
-| Trace / Event graph | 第十二章 | 第十四、二十四、二十六章 |
-| Capability / Regression eval | 第十二章 | 第十八、二十二、二十九章 |
-| Held-out / Validation / Sealed test | 第十二章 | 第十、二十四章、附录 C |
-| Runtime adapter | 第十四、十八章 | 第二十五、二十六、二十九章 |
-| 四层进化模型 | 第十九章（第一章先作分类映射） | 第二十至二十四章 |
-| Mutable surface / Root of trust | 第十九章 | 第二十二、二十四章 |
-| Model × Harness 2×2 | 第十九、二十三章 | 第二十九章 |
-| Shadow / Canary | 第二十四章 | 第二十五、二十六章 |
-| Lineage | 第二十四章 | 第二十五、二十六章 |
-| Agent SDD | 第二十七章 | 第二十五、二十九章 |
-| M0—M4 成熟度能力 | 第二十八章 | 第二十九章 |
+| Action / Observation | 第三、六章 | 第十七、二十七章、附录 A |
+| MCP | 第八章 | 第九、十三至十八章 |
+| Code Mode | 第八章 | 第十六、二十三章 |
+| Capability lease | 第九章 | 第十一、二十七章 |
+| 执行权 / 委派权 | 第九、十一章 | 第二十七章 |
+| Sandbox | 第九章 | 第十三至十八、二十七章 |
+| Credential broker | 第九章 | 第二十六、二十七、三十章 |
+| CompletionContract | 第十章 | 第二十六、二十八章 |
+| EvidencePackage | 第十章 | 第二十五至二十七章、附录 A |
+| Commit authority | 第十章 | 第二十六至二十八章 |
+| Delegation / Handoff | 第十一章 | 第十三至十八、二十七章 |
+| Trace / Event graph | 第十二章 | 第十四、二十五、二十七章 |
+| Capability / Regression eval | 第十二章 | 第十九、二十三、三十章 |
+| Held-out / Validation / Sealed test | 第十二章 | 第十、二十五章、附录 C |
+| Runtime adapter | 第十四、十九章 | 第二十六、二十七、三十章 |
+| 四层进化模型 | 第二十章（第一章先作分类映射） | 第二十一至二十五章 |
+| Mutable surface / Root of trust | 第二十章 | 第二十三、二十五章 |
+| Model × Harness 2×2 | 第二十、二十四章 | 第三十章 |
+| Shadow / Canary | 第二十五章 | 第二十六、二十七章 |
+| Lineage | 第二十五章 | 第二十六、二十七章 |
+| Agent SDD | 第二十八章 | 第二十六、三十章 |
+| M0—M4 成熟度能力 | 第二十九章 | 第三十章 |
 
 ---
 
@@ -5385,13 +5720,13 @@ evidence_package:
     harness_bundle: required
 ```
 
-非空幂等键只便于表达逻辑动作身份，不会让下游自动去重；非空constraints也不证明执行器真的落实了约束。checks是否覆盖目标、hash对应哪个可信产物、批准是否来自有权主体，均由相应策略与验收服务检查。第25、27章的领域合同经adapter映射为Task，`contract_id`不能无转换地冒充`task_id`，分钟预算要先换算成秒。
+非空幂等键只便于表达逻辑动作身份，不会让下游自动去重；非空constraints也不证明执行器真的落实了约束。checks是否覆盖目标、hash对应哪个可信产物、批准是否来自有权主体，均由相应策略与验收服务检查。第26、28章的领域合同经adapter映射为Task，`contract_id`不能无转换地冒充`task_id`，分钟预算要先换算成秒。
 
 ---
 
 # 研究方法与局限
 
-本书采用官方文档、开源仓库、论文和社区材料的分层证据法。全书资料维护至 2026-09-19；无法验证的内部实现不作为事实。设计原则是作者基于多来源的综合推断。研究资产包括 sources.jsonl、evidence.jsonl 与人工标注的 claims_v2.jsonl；旧 claims.jsonl 仅作历史迁移参考。引用检查验证登记与引用关系，不代替逐句语义判断；原子账本是核心主张子集，不代表全部句子已经独立核验。本轮修订的本地案例和反例可通过 python examples/run_examples.py 复现；其中模型输出使用确定性替身，数据库采用明确方言和数据假设，不能等同供应商端到端或生产效果验证。局限包括产品快速迭代、公开 benchmark 污染、厂商数据选择偏差，以及部分2026年进化论文尚缺长期生产复现。
+本书采用官方文档、开源仓库、论文和社区材料的分层证据法。全书基础资料截面为 2026-09-19；最近修订日期为 2026-10-29，范围：第三篇架构重写与 pi-mono；其余篇事实截面仍为 2026-09-19。无法验证的内部实现不作为事实。设计原则是作者基于多来源的综合推断。研究资产包括 sources.jsonl、evidence.jsonl 与人工标注的 claims_v2.jsonl；旧 claims.jsonl 仅作历史迁移参考。引用检查验证登记与引用关系，不代替逐句语义判断；原子账本是核心主张子集，不代表全部句子已经独立核验。本轮修订的本地案例和反例可通过 python examples/run_examples.py 复现；其中模型输出使用确定性替身，数据库采用明确方言和数据假设，不能等同供应商端到端或生产效果验证。局限包括产品快速迭代、公开 benchmark 污染、厂商数据选择偏差，以及部分2026年进化论文尚缺长期生产复现。
 
 ---
 
@@ -5543,3 +5878,152 @@ evidence_package:
 144. 机构/作者未登记 (n.d.). [openai/codex rust-v0.155.1](https://github.com/openai/codex/releases/tag/rust-v0.155.1)。版本：release rust-v0.155.1; published_at=2026-09-18T20:03:04Z；访问：2026-09-19T09:43:26.336187+00:00。
 145. 机构/作者未登记 (n.d.). [Cognitive Architectures for Language Agents](https://arxiv.org/abs/2309.02427v3)。版本：arXiv:2309.02427v3；访问：2026-09-19T11:12:16.577Z。
 146. 机构/作者未登记 (n.d.). [SpecBench: Measuring Reward Hacking in Long-Horizon Coding Agents](https://arxiv.org/abs/2605.21384v2)。版本：arXiv:2605.21384v2；访问：2026-09-19T11:49:20.851Z。
+147. code.claude.com (2026). [Agent SDK overview](https://code.claude.com/docs/en/agent-sdk/overview)。版本：official documentation deployment dpl_AUojGTPodKNPTVaxVPcxnNvkSVqo; retrieved 2026-10-29；访问：2026-10-29。
+148. code.claude.com (2026). [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works)。版本：official documentation deployment dpl_AUojGTPodKNPTVaxVPcxnNvkSVqo; retrieved 2026-10-29；访问：2026-10-29。
+149. github.com (2026). [claude-agent-sdk-python: SubprocessCLITransport](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/src/claude_agent_sdk/_internal/transport/subprocess_cli.py)。版本：27858cbba9ecee26a06a90b8d39d3b5596121d11; pyproject.toml 0.2.174；访问：2026-10-29。
+150. github.com (2026). [claude-agent-sdk-python: Query control protocol](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/src/claude_agent_sdk/_internal/query.py)。版本：27858cbba9ecee26a06a90b8d39d3b5596121d11; pyproject.toml 0.2.174；访问：2026-10-29。
+151. code.claude.com (2026). [Configure permissions](https://code.claude.com/docs/en/agent-sdk/permissions)。版本：official documentation deployment dpl_AUojGTPodKNPTVaxVPcxnNvkSVqo; retrieved 2026-10-29；访问：2026-10-29。
+152. github.com (2026). [claude-agent-sdk-python pyproject.toml](https://github.com/anthropics/claude-agent-sdk-python/blob/27858cbba9ecee26a06a90b8d39d3b5596121d11/pyproject.toml)。版本：27858cbba9ecee26a06a90b8d39d3b5596121d11; package 0.2.174；访问：2026-10-29。
+153. code.claude.com (2026). [How the agent loop works](https://code.claude.com/docs/en/agent-sdk/agent-loop)。版本：2026-10-29 snapshot SHA256 67e074bc45e667feaf2dfa955f0de06df27b951b081979c64f83f3a3fbce9e02；访问：2026-10-29。
+154. code.claude.com (2026). [Work with sessions](https://code.claude.com/docs/en/agent-sdk/sessions)。版本：2026-10-29 snapshot SHA256 456f033eff0db40bef3d41724e8ee7260cd156256727d73859c4ee108c7e35d8；访问：2026-10-29。
+155. code.claude.com (2026). [Persist sessions to external storage](https://code.claude.com/docs/en/agent-sdk/session-storage)。版本：2026-10-29 snapshot SHA256 b2a5ad497f498a6f6f3fdb2e97ecc4bc13c6812f67403902ea14244736b86ecd；访问：2026-10-29。
+156. code.claude.com (2026). [Rewind file changes with checkpointing](https://code.claude.com/docs/en/agent-sdk/file-checkpointing)。版本：2026-10-29 snapshot SHA256 92184e8a01e18f2f17d86fa0343b5b7b7f34140f7e988a101dcca9bcc8959f73；访问：2026-10-29。
+157. code.claude.com (2026). [How Claude remembers your project](https://code.claude.com/docs/en/memory)。版本：2026-10-29 snapshot SHA256 f19bb5aa909fe5588d523cf302a0e15ed5950ca689fbb73bd932c315ec764a49；访问：2026-10-29。
+158. code.claude.com (2026). [Modifying system prompts](https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts)。版本：2026-10-29 snapshot SHA256 cf93b231577e079271bf564ae84d5f25f3a11723c51b55b104bd283817042330；访问：2026-10-29。
+159. code.claude.com (2026). [Use Claude Code features in the SDK](https://code.claude.com/docs/en/agent-sdk/claude-code-features)。版本：2026-10-29 snapshot SHA256 853607de24218eac839698efe2a3f29da889fb14b6760279dcc29e7ee0f66a70；访问：2026-10-29。
+160. code.claude.com (2026). [How Claude Code uses prompt caching](https://code.claude.com/docs/en/prompt-caching)。版本：2026-10-29 snapshot SHA256 02c7f42cc7a32e2be83a2d72bdb7e14b43287ff1a162d548c40b85958fea3579；访问：2026-10-29。
+161. platform.claude.com (2026). [Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)。版本：2026-10-29 snapshot SHA256 e8dd46e73676cfc1c18a99d792b6049293d59ff67cbfa4c4530d33b102b197ac；访问：2026-10-29。
+162. code.claude.com (2026). [Connect to external tools with MCP](https://code.claude.com/docs/en/agent-sdk/mcp)。版本：2026-10-29 snapshot SHA256 354ad14a1d3466c5846639cc7dbac8d409556fe5a719f3dc8f500b2209246fb2；访问：2026-10-29。
+163. code.claude.com (2026). [Give Claude custom tools](https://code.claude.com/docs/en/agent-sdk/custom-tools)。版本：2026-10-29 snapshot SHA256 946948f5a92b2f387aafa39924dfcec651db257572d98898c07387b07366edcf；访问：2026-10-29。
+164. code.claude.com (2026). [Intercept and control agent behavior with hooks](https://code.claude.com/docs/en/agent-sdk/hooks)。版本：2026-10-29 snapshot SHA256 fd0706dee09c3cdeb76c21a68723e0184e50e2eb4fac48dd3f2ae1a08e4f3b92；访问：2026-10-29。
+165. code.claude.com (2026). [Hooks reference](https://code.claude.com/docs/en/hooks)。版本：2026-10-29 snapshot SHA256 ffc7195446eb6048fb54e8351b31c00e0280d303c339f4829023a9215d4ecc76；访问：2026-10-29。
+166. code.claude.com (2026). [Configure the sandboxed Bash tool](https://code.claude.com/docs/en/sandboxing)。版本：2026-10-29 snapshot SHA256 e331b3b786e52fa028a68cc1dab76049ce8ee8c79e7907d7b43f58e039b9bc68；访问：2026-10-29。
+167. code.claude.com (2026). [Securely deploying AI agents](https://code.claude.com/docs/en/agent-sdk/secure-deployment)。版本：2026-10-29 snapshot SHA256 e384fdd59a4ba17711478aa66d74fdb157deb1494d7d9b49bf1a5998aaf0879f；访问：2026-10-29。
+168. code.claude.com (2026). [Subagents in the SDK](https://code.claude.com/docs/en/agent-sdk/subagents)。版本：2026-10-29 snapshot SHA256 9db0458e43e56fd472b94af95e6eb9c1b00052a250eb91bc540da930b77cc4cd；访问：2026-10-29。
+169. code.claude.com (2026). [Create custom subagents](https://code.claude.com/docs/en/sub-agents)。版本：2026-10-29 snapshot SHA256 c6af4f0b650d11cdabbd6b6e49d5272ff00cb966580bb4f8d1dc09ec4ae5b3cb；访问：2026-10-29。
+170. code.claude.com (2026). [Agent SDK reference - TypeScript](https://code.claude.com/docs/en/agent-sdk/typescript)。版本：2026-10-29 snapshot SHA256 1153044d62625a791f34279ce3db54587c2dd51aed2fc61a3f984c80bb329913；访问：2026-10-29。
+171. code.claude.com (2026). [Track cost and usage](https://code.claude.com/docs/en/agent-sdk/cost-tracking)。版本：2026-10-29 snapshot SHA256 b01f78de868bf230af56931cfeedea5df6a1d0c859c254bf8734c36501ddeb5b；访问：2026-10-29。
+172. code.claude.com (2026). [Monitoring](https://code.claude.com/docs/en/monitoring-usage)。版本：2026-10-29 snapshot SHA256 a0473752f2712fa11515466d798e5d16b879d0055bdbd686d39bfeaefc1ebb5a；访问：2026-10-29。
+173. www.anthropic.com (2026). [Scaling Managed Agents with stable interfaces / Decoupling the brain from the hands](https://www.anthropic.com/research/managed-agents)。版本：published 2026-04-08; 2026-10-29 HTML snapshot SHA256 0b78f9a5d109dcc6e6543ed350ffaefd80c08e68221484cea58a4f9c5abd41f1；访问：2026-10-29。
+174. developers.openai.com (2026). [Codex as a platform: build on the open agent harness](https://developers.openai.com/blog/codex-as-a-platform)。版本：2026-08-19 article; accessed 2026-10-29；访问：2026-10-29。
+175. developers.openai.com (2026). [Codex App Server](https://developers.openai.com/codex/app-server)。版本：live documentation accessed 2026-10-29；访问：2026-10-29。
+176. developers.openai.com (2026). [Codex SDK](https://developers.openai.com/codex/sdk)。版本：live documentation accessed 2026-10-29；访问：2026-10-29。
+177. learn.chatgpt.com (2026). [Agent approvals & security](https://learn.chatgpt.com/docs/agent-approvals-security)。版本：live documentation accessed 2026-10-29；访问：2026-10-29。
+178. github.com (2026). [ThreadManager / ThreadManagerState](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/thread_manager.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+179. github.com (2026). [CodexThread](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/codex_thread.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+180. github.com (2026). [Session](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/session.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+181. github.com (2026). [SessionIo and Session lifecycle](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/mod.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+182. github.com (2026). [run_turn / run_sampling_request](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/turn.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+183. github.com (2026). [Responses stream retry](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/responses_retry.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+184. github.com (2026). [RolloutReconstruction](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/session/rollout_reconstruction.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+185. github.com (2026). [ContextManager](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/context_manager/history.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+186. github.com (2026). [Compaction and initial context](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/compact.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+187. github.com (2026). [AGENTS.md discovery](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agents_md.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+188. github.com (2026). [ToolRouter](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/router.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+189. github.com (2026). [ToolRegistry](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/registry.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+190. github.com (2026). [McpHandler](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/mcp.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+191. github.com (2026). [MCP client initialization and discovery](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/codex-mcp/src/rmcp_client.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+192. github.com (2026). [DynamicToolHandler](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/dynamic.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+193. github.com (2026). [ToolOrchestrator](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/orchestrator.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+194. github.com (2026). [SandboxManager](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/sandboxing/src/manager.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+195. github.com (2026). [Auth storage backends](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/login/src/auth/storage.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+196. github.com (2026). [AgentControl](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agent/control.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+197. github.com (2026). [V1 spawn_agent](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents/spawn.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+198. github.com (2026). [Agent spawn runtime overrides](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents_common.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+199. github.com (2026). [Agent close and shutdown](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agent/control/legacy.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+200. github.com (2026). [Agent wait](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents/wait.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+201. github.com (2026). [Agent status derivation](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/agent/status.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+202. github.com (2026). [V2 spawn_agent](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/handlers/multi_agents_v2/spawn.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+203. github.com (2026). [Codex TypeScript SDK process transport](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/sdk/typescript/src/exec.ts)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+204. github.com (2026). [App Server protocol methods](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/app-server-protocol/src/protocol/common.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+205. github.com (2026). [Skills extension surface](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/ext/skills/src/lib.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+206. github.com (2026). [Memories pipeline](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/memories/README.md)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+207. github.com (2026). [Task cancellation and terminal persistence](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tasks/mod.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+208. github.com (2026). [ToolDispatchTrace](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/tools/tool_dispatch_trace.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+209. github.com (2026). [OpenTelemetry provider initialization](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/core/src/otel_init.rs)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e；访问：2026-10-29。
+210. github.com (2026). [Codex Rust workspace version](https://github.com/openai/codex/blob/be2951ea34f0d295ed0becf97079f92fa5f6950e/codex-rs/Cargo.toml)。版本：rust-v0.155.1; be2951ea34f0d295ed0becf97079f92fa5f6950e; annotated tag object 4e21628f9ec9ee656650cd2b62ef92225725b5ac；访问：2026-10-29。
+211. cursor.com (2026). [Cursor Agent](https://cursor.com/docs/agent/overview)。版本：unversioned official documentation; retrieved-text SHA-256 2b474c20c095efbc1280b9d6d6f8d7670da88a35e82ff66560282f97a90bbc91；访问：2026-10-29。
+212. cursor.com (2026). [Tool Calling](https://cursor.com/learn/tool-calling)。版本：unversioned official documentation; retrieved-text SHA-256 919d8e6bb9230ee69ec71577499f445b620073109430620df534a2f5a102beff；访问：2026-10-29。
+213. cursor.com (2026). [Agents](https://cursor.com/learn/agents)。版本：unversioned official documentation; retrieved-text SHA-256 c1cf476b6201c08f4adc70835ca4678913d9b10d270024759671d0a74d41227e；访问：2026-10-29。
+214. cursor.com (2026). [Continually improving our agent harness](https://cursor.com/blog/continually-improving-agent-harness)。版本：2026-04-30; retrieved-text SHA-256 88eaa21e2985a1f08a5558e1428bcbfd456a1d1d90255b00edb05843aa8ef329；访问：2026-10-29。
+215. cursor.com (2026). [Data Use & Privacy Overview](https://cursor.com/data-use)。版本：last updated 2026-09-03; retrieved-text SHA-256 fb6cbd6322e6426cdd92acc56712ba78627027c0624b9118c4b4fe6e9215d773；访问：2026-10-29。
+216. cursor.com (2026). [Securely indexing large codebases](https://cursor.com/blog/secure-codebase-indexing)。版本：2026-01-27; retrieved-text SHA-256 6aa8ad7517020d3f6d8ddfae13b2392229beafec02f7bea90111d6448569b51d；访问：2026-10-29。
+217. cursor.com (2026). [Rules](https://cursor.com/docs/rules)。版本：unversioned official documentation; retrieved-text SHA-256 dae9d3ecd7e389fc94ee57d87911fe8d54bae1f00ce451d44303616648247ce0；访问：2026-10-29。
+218. cursor.com (2026). [Dynamic context discovery](https://cursor.com/blog/dynamic-context-discovery)。版本：2026-01-06; retrieved-text SHA-256 ed1a2d87695f5e3e65cadfdc40d672ffaa7e446f115e19c01929be215fb10469；访问：2026-10-29。
+219. cursor.com (2026). [Cursor 1.0 release notes](https://cursor.com/changelog/1-0)。版本：Cursor 1.0 / 2025-06-04; retrieved-text SHA-256 ec55656d658f925ad6fea537b70dba52a52128997d479cfe10eac1260a2493ab；访问：2026-10-29。
+220. cursor.com (2026). [Model Context Protocol (MCP)](https://cursor.com/docs/mcp)。版本：unversioned official documentation; retrieved-text SHA-256 33c58ca4e1a2c7e1c31842a1016919d79ef00981e187db58527bdf7c0ab93671；访问：2026-10-29。
+221. cursor.com (2026). [Hooks](https://cursor.com/docs/hooks)。版本：unversioned official documentation; retrieved-text SHA-256 a5f76c8eab2c3ec3fe30fe5d41fbaf5c276da0090ac4d1f6687c4e5c0f4084fa；访问：2026-10-29。
+222. cursor.com (2026). [Run Modes](https://cursor.com/docs/agent/security/run-modes)。版本：unversioned official documentation; retrieved-text SHA-256 3047e773f2f179e85214eaa4f058bc9db6b8e54ac040a55371d7b95766095192；访问：2026-10-29。
+223. cursor.com (2026). [Cloud Agent security overview](https://cursor.com/docs/cloud-agent/security)。版本：unversioned official documentation; retrieved-text SHA-256 907873d8852c3f84784fc234b6490c08c2d041f87eb3f002919cf84b9d66a5d9；访问：2026-10-29。
+224. cursor.com (2026). [Cloud Agents](https://cursor.com/docs/cloud-agent)。版本：unversioned official documentation; retrieved-text SHA-256 0a6ca38d1d6aab6ab982b471cc111863f688bc248f308e6d5159312d20d8a051；访问：2026-10-29。
+225. cursor.com (2026). [Secrets & Network](https://cursor.com/docs/cloud-agent/security-network)。版本：unversioned official documentation; retrieved-text SHA-256 e3da6cc3669d194f059af49567e700450372e2a34889154a4a6bc74de25e9d1a；访问：2026-10-29。
+226. cursor.com (2026). [OIDC tokens](https://cursor.com/docs/cloud-agent/identity)。版本：unversioned official documentation; retrieved-text SHA-256 80832f5c8f03007aaee23b12a2c2daa09b7268dad7a6205abdc95118a950fe2f；访问：2026-10-29。
+227. cursor.com (2026). [Self-Hosted Machines](https://cursor.com/docs/cloud-agent/self-hosted)。版本：unversioned official documentation; retrieved-text SHA-256 51a8cea833c4994adf4ce5da465d18ac21f58d69145d95cb12bf4d875304d06d；访问：2026-10-29。
+228. cursor.com (2026). [Subagents](https://cursor.com/docs/subagents)。版本：unversioned official documentation; retrieved-text SHA-256 264b4b00e713ec0dd73939306690ea4013168bead35411da3cc56fc1a71b2668；访问：2026-10-29。
+229. cursor.com (2026). [Projects](https://cursor.com/docs/agent/projects)。版本：unversioned official documentation; retrieved-text SHA-256 7d7f6b16a56e7b88c5bf626a92f987c0b1db3f26e145a6ee7687c37698c8e2a2；访问：2026-10-29。
+230. cursor.com (2026). [Run cloud agents on machines you manage](https://cursor.com/blog/self-hosted-machines)。版本：2026-09-02; retrieved-text SHA-256 6d3089ae51d318979029aef5f62bf39f62bb2e6ff9855930ee6ff088ce20df4f；访问：2026-10-29。
+231. github.com (2026). [DeepSeek Harness Architecture](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md)。版本：dsh-v0.1.6-alpha.2 / ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+232. github.com (2026). [DeepSeek Harness Architecture](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+233. github.com (2026). [Core subsystem](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/core.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+234. github.com (2026). [System Prompt Assembly](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/system-prompt.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+235. github.com (2026). [dsh-agent-instructions](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/context/agent-instructions/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+236. github.com (2026). [Compaction subsystem](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/compaction.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+237. github.com (2026). [Tool Execution Pipeline](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/tool-execution-pipeline.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+238. github.com (2026). [MCP subsystem](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/mcp.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+239. github.com (2026). [dsh-ptc-runtime-node](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/ptc-runtime/ptc-runtime-node/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+240. github.com (2026). [Process Sandbox](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/sandbox.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+241. github.com (2026). [User Approval](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/approval.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+242. github.com (2026). [User Credentials](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/credentials.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+243. github.com (2026). [Cordis dynamic Host sandbox](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/extensions/cordis-host-runner/src/sandbox.ts)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+244. github.com (2026). [Plugin Manager](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/boot/plugin-manager/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+245. github.com (2026). [Configure persistent plugins from a prompt](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/user/develop/practice/dynamic-cordis.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+246. github.com (2026). [Application boot](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/boot/app-boot/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+247. github.com (2026). [Subagent subsystem](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/subsystems/subagent.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+248. github.com (2026). [Session telemetry](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/session/session-telemetry/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+249. github.com (2026). [Historical code-runtime-worker-thread](https://github.com/deepseek-ai/deepseek-harness/blob/cd5ef8148158c3a752a658978873241fdf8e2bbc/packages/code-runtime/code-runtime-worker-thread/README.md)。版本：dsh-v0.1.2-alpha.1 / cd5ef8148158c3a752a658978873241fdf8e2bbc；访问：2026-10-29。
+250. github.com (2026). [Spawn in-process subagent](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/subagent/subagent-spawn-in-process/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+251. github.com (2026). [Fork in-process subagent](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/subagent/subagent-fork-in-process/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+252. github.com (2026). [dsh-tools](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/core/tools/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+253. github.com (2026). [dsh-tool-cordis](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/packages/extensions/tool-cordis/README.md)。版本：ddefc45fbc7f8e46dd73185e68295696d1297887；访问：2026-10-29。
+254. github.com (2026). [OpenHands Software Agent SDK](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/README.md)。版本：v1.49.2 / d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+255. github.com (2026). [Agent Canvas package.json](https://github.com/OpenHands/OpenHands/blob/9737f713616a1e452f822c2967f0e2c8bf2dc308/package.json)。版本：v1.20.0 / 9737f713616a1e452f822c2967f0e2c8bf2dc308；访问：2026-10-29。
+256. github.com (2026). [Conversation factory](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/conversation.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+257. github.com (2026). [Agent implementation](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/agent.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+258. github.com (2026). [LocalConversation](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+259. github.com (2026). [ConversationState](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/state.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+260. github.com (2026). [AgentContext](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/context/agent_context.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+261. github.com (2026). [Context View](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/context/view/view.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+262. github.com (2026). [LLMSummarizingCondenser](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/context/condenser/llm_summarizing_condenser.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+263. github.com (2026). [ParallelToolExecutor](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/parallel_executor.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+264. github.com (2026). [MCPToolExecutor](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/mcp/tool.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+265. github.com (2026). [PluginSource and ResolvedPluginSource](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/plugin/types.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+266. github.com (2026). [Confirmation policies](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/security/confirmation_policy.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+267. github.com (2026). [OpenHands Agent Server](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/README.md)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+268. github.com (2026). [DockerConversationRegistry](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/registry.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+269. github.com (2026). [RuntimeProvisioningStore](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/provisioning.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+270. github.com (2026). [Docker conversation routes](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/docker_runtime/routers.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+271. github.com (2026). [Agent profile secret scope](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/profiles/agent_profile.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+272. github.com (2026). [SecretRegistry and StreamOutputMask](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/secret_registry.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+273. github.com (2026). [DelegateExecutor](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/delegate/impl.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+274. github.com (2026). [Session socket](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-agent-server/openhands/agent_server/session_socket.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+275. github.com (2026). [SDK observability integration](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/observability/laminar.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+276. github.com (2026). [Historical OpenHands Runtime](https://github.com/OpenHands/OpenHands/blob/7fbb48c40679afd674970966b96185657d92a487/openhands/runtime/README.md)。版本：0.62.0 / 7fbb48c40679afd674970966b96185657d92a487；访问：2026-10-29。
+277. github.com (2026). [TaskToolSet and TaskAction](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/task/definition.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+278. github.com (2026). [TaskManager](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-tools/openhands/tools/task/manager.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+279. github.com (2026). [Plugin model](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/plugin/plugin.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+280. github.com (2026). [AgentBase tool initialization](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/agent/base.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。
+281. github.com (2026). [Pi v1.4.0 release and repository identity](https://github.com/earendil-works/pi/releases/tag/v1.4.0)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+282. github.com (2026). [Pi README](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/README.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+283. github.com (2026). [Pi agent loop source](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/agent/src/agent-loop.ts)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+284. github.com (2026). [Pi SDK](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+285. github.com (2026). [Pi session file format](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/session-format.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+286. github.com (2026). [Pi compaction reference](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/compaction.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+287. github.com (2026). [Pi MCP servers](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/mcp.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+288. github.com (2026). [Pi extensions](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/extensions.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+289. github.com (2026). [Run Pi safely](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/security.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+290. github.com (2026). [Pi subagent extension example](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/examples/extensions/subagent/README.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+291. github.com (2026). [Pi RPC mode](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/rpc.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+292. github.com (2026). [Pi CLI reference](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/cli.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+293. github.com (2026). [Pi skills](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/skills.md)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+294. github.com (2026). [Pi coding-agent session factory](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/src/core/sdk.ts)。版本：4a080252f06caf63a525d7873c5d94d3c23887e0；访问：2026-10-29。
+295. github.com (2026). [RemoteConversation client](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/impl/remote_conversation.py)。版本：d128a786ee2ee570eb23ff5862ec148b43cfad0b；访问：2026-10-29。

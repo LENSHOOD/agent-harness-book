@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-29",
+  "before": {
+    "agent_harness_book.pdf": "ded865c55d0a6999458dc6a4b6032d1b6bb9721f9f673986f5bb920b2bf0982b",
+    "executive_brief.pdf": "4686ae2c5f86b52070f0b92cad97a73c8b93c251e3f01f2a5f5aad64729febf6"
+  },
+  "after": {
+    "agent_harness_book.pdf": "ded865c55d0a6999458dc6a4b6032d1b6bb9721f9f673986f5bb920b2bf0982b",
+    "executive_brief.pdf": "4686ae2c5f86b52070f0b92cad97a73c8b93c251e3f01f2a5f5aad64729febf6"
+  },
+  "identical": true,
+  "scope": "Two independent render processes using identical input and this local dependency environment."
+}

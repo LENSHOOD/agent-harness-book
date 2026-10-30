@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-29",
+  "rows": [
+    {
+      "url": "http://127.0.0.1:4173/agent-harness-book/parts/03_products",
+      "width": 390,
+      "heading": "本篇导言：用同一组问题读懂六种实现 ​",
+      "sections": 1,
+      "overflow": false,
+      "badImages": 0,
+      "previous": "上一章第十二章 可观测性、轨迹与评测运营",
+      "next": "下一章第十三章 Claude Code：薄循环、厚运行时"
+    },
+    {
+      "url": "http://127.0.0.1:4173/agent-harness-book/chapters/14_openai_codex_protocolized_agent_core",
+      "width": 390,
+      "heading": "第十四章 OpenAI Codex：协议化的 Agent Core ​",
+      "sections": 8,
+      "overflow": false,
+      "badImages": 0,
+      "previous": "上一章第十三章 Claude Code：薄循环、厚运行时",
+      "next": "下一章第十五章 Cursor：IDE 原生上下文与云端 Agent"
+    },
+    {
+      "url": "http://127.0.0.1:4173/agent-harness-book/chapters/18_product_comparison_and_architecture_spectrum",
+      "width": 390,
+      "heading": "第十九章 产品比较：不要用一张总分表掩盖架构差异 ​",
+      "sections": 6,
+      "overflow": false,
+      "badImages": 0,
+      "previous": "上一章第十八章 pi-mono：小核心怎样长成可组合的运行时",
+      "next": "下一章本篇导言"
+    },
+    {
+      "url": "http://127.0.0.1:4173/agent-harness-book/chapters/18_pi_mono_small_core_composable_session",
+      "width": 390,
+      "heading": "第十八章 pi-mono：小核心怎样长成可组合的运行时 ​",
+      "sections": 8,
+      "overflow": false,
+      "badImages": 0,
+      "previous": "上一章第十七章 OpenHands：Agent 与执行 Runtime 分离",
+      "next": "下一章第十九章 产品比较：不要用一张总分表掩盖架构差异"
+    }
+  ]
+}

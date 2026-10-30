@@ -20,11 +20,11 @@ th,td { border:1px solid #ccd5da; padding:6px 7px; vertical-align:top; }
 .title-block h1 { color:white; border:0; margin:0 0 14px; }
 .title-block .subtitle { font-size:15pt; color:#cce0ea; }
 .title-block .meta { margin-top:70px; color:#c1d5df; }
-</style></head><body><div class="title-block"><h1>Agent Harness</h1><div class="subtitle">企业决策者精简版</div><div class="meta">研究修订稿<br>资料截面：2026-09-19</div></div><h1 id="_1">执行摘要</h1>
+</style></head><body><div class="title-block"><h1>Agent Harness</h1><div class="subtitle">企业决策者精简版</div><div class="meta">研究修订稿<br>修订日期：2026-10-29；具体事实版本见各章</div></div><h1 id="_1">执行摘要</h1>
 <div class="toc"><span class="toctitle">自动目录</span><ul>
 <li><a href="#_1">执行摘要</a></li>
 <li><a href="#_2">一、先区分四个结果</a></li>
-<li><a href="#_3">二、市场上五个主案例的变化</a></li>
+<li><a href="#_3">二、六个主案例的架构选择</a></li>
 <li><a href="#_4">三、分别决定谁运行、谁执行、谁留证</a></li>
 <li><a href="#_5">四、安全控制从具体动作开始</a></li>
 <li><a href="#_6">五、验证要看业务结果，也要看关键行为</a></li>
@@ -38,7 +38,7 @@ th,td { border:1px solid #ccd5da; padding:6px 7px; vertical-align:top; }
 <h1 id="_2">一、先区分四个结果</h1>
 <p>模型停止生成、候选交付物通过检查、外部动作成功提交、业务目标验收通过，是不同事件。部署接口返回成功，但服务健康检查失败，应该记录“已提交、未完成”；取消请求被接受，也不能抹掉已发送的邮件或已提交的变更。</p>
 <p>对于只需要一份回答或文件的任务，完成契约可以很轻。涉及生产系统、资金或敏感数据时，再增加独立验证、审批、对账和回滚机制。组件多不等于成熟，关键是机制与任务风险相匹配。</p>
-<h1 id="_3">二、市场上五个主案例的变化</h1>
+<h1 id="_3">二、六个主案例的架构选择</h1>
 <table>
 <thead>
 <tr>
@@ -61,7 +61,7 @@ th,td { border:1px solid #ccd5da; padding:6px 7px; vertical-align:top; }
 <tr>
 <td>Cursor</td>
 <td>IDE上下文、云端代理、自管worker、Projects协调者</td>
-<td>worker可在企业网络，但推理与规划仍在云端；Projects处于beta</td>
+<td>worker可在企业网络，但推理与规划仍在云端；子智能体、worker与协调者承担不同职责</td>
 </tr>
 <tr>
 <td>DeepSeek Harness</td>
@@ -73,8 +73,14 @@ th,td { border:1px solid #ccd5da; padding:6px 7px; vertical-align:top; }
 <td>当前SDK、Agent Server与执行工作区分离</td>
 <td>Canvas和SDK有不同版本；旧EventStream/Runtime架构属于历史实现</td>
 </tr>
+<tr>
+<td>pi-mono / Pi</td>
+<td>小循环核心、会话树与可组合扩展；v1.4.0 CLI 已内建 MCP</td>
+<td>SDK须显式装配相关扩展；子智能体是扩展示例，运行权限和隔离由宿主承担</td>
+</tr>
 </tbody>
 </table>
+<p>第三篇在2026-10-29改按统一问题讲解六种实现：先看组件和状态归属，再看循环、上下文、工具、安全、委派与验证。pi-mono固定于v1.4.0；仓库已迁至earendil-works/pi。<a href="https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/README.md">Pi源码与职责</a>、<a href="https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md">CLI与SDK装配差异</a></p>
 <p>截至2026-09-19，dsh核验版本为0.1.6-alpha.2，Codex稳定版为0.155.1，OpenHands Canvas为1.20.0、SDK为1.49.2；这些是资料截面，不是永远适用的版本推荐。固定版本和迁移测试仍不可省略。<a href="https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.6-alpha.2">dsh发布</a>、<a href="https://github.com/openai/codex/releases/tag/rust-v0.155.1">Codex发布</a>、<a href="https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.49.2">OpenHands SDK发布</a></p>
 <p>框架也没有退出舞台。Deep Agents的fork/isolated上下文模式、Microsoft Harness的组合式能力，说明企业可以复用一部分运行机制，再补足自己的业务验收。适合执行者的父上下文继承，不一定适合需要独立判断的审阅者。<a href="https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness">子代理上下文模式</a></p>
 <h1 id="_4">三、分别决定谁运行、谁执行、谁留证</h1>
@@ -105,9 +111,9 @@ th,td { border:1px solid #ccd5da; padding:6px 7px; vertical-align:top; }
 </tr>
 </tbody>
 </table>
-<p>OpenAI Agents API在9月10日进入公测，负责托管会话、编排、压缩和恢复；应用仍要选择工具与执行环境。当前文档明确自托管sandbox不使该API获得ZDR支持。Cursor的自管worker同样不把云端推理自动迁进企业网络。采购条款和数据流应据具体产品面核对。<a href="https://developers.openai.com/api/docs/guides/agents-api/overview">Agents API</a>、<a href="https://cursor.com/blog/self-hosted-machines">Cursor自管机器</a></p>
+<p>按2026-09-19核验截面，OpenAI Agents API在9月10日进入公测，负责托管会话、编排、压缩和恢复；应用仍要选择工具与执行环境。当时文档明确自托管sandbox不使该API获得ZDR支持，本轮没有重验该服务的商业政策。Cursor的自管worker同样不把云端推理自动迁进企业网络。采购条款和数据流应据具体产品面核对。<a href="https://developers.openai.com/api/docs/guides/agents-api/overview">Agents API</a>、<a href="https://cursor.com/blog/self-hosted-machines">Cursor自管机器</a></p>
 <h1 id="_5">四、安全控制从具体动作开始</h1>
-<p>提示词中的“不访问生产”不是访问控制。批准应绑定动作、参数、资源、期限和契约版本，执行前再检查撤销和取消。委派默认只使用父任务已经获得的权限；如果需要领域专属身份，由有权主体独立签发，不能靠改一段子代理提示词扩权。</p>
+<p>提示词中的“不访问生产”不是访问控制。批准应绑定动作、参数、资源、期限和契约版本，执行前再检查撤销和取消。企业应将子任务权限显式约束在父任务已获授权的范围内，并按产品核验工具过滤、会话权限与执行身份是否真正继承；如果需要领域专属身份，由有权主体独立签发，不能靠改一段子代理提示词扩权。</p>
 <p>对结果未知的写动作，先对账。查询暂时没有记录不证明前次没生效；补偿接口存在也不意味着可以盲目重试。相同幂等键需要绑定同一操作和参数，下游的原子去重才提供相应保证。</p>
 <p>插件、skill和hook要按版本治理。尤其hook可能绕过模型决策、直接由宿主执行，更新后的权限变化不能仅靠模型自检。持久记忆也要有来源、作用域和撤销传播，删除原条目不一定清除了派生摘要和规则。</p>
 <h1 id="_6">五、验证要看业务结果，也要看关键行为</h1>

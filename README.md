@@ -18,7 +18,7 @@
 
 ### `manuscript/`
 
-- `chapters/`：序章及第 1—30 章 Markdown 源稿。
+- `chapters/`：序章及第 1—31 章 Markdown 源稿。章节顺序以 `publishing/book_structure.json` 为准；文件名前缀保留历史 URL，不一定等于当前章号。
 - `parts/`：五篇的篇级导言，说明章节依赖与本篇产出。
 - `appendices/`：附录源稿。
 - `assets/`：正文引用的图片、图表及其可再生源文件。
@@ -28,6 +28,7 @@
 
 - `src/`：Git/DST修复、SQLite分析、进化门禁和安全状态模型。
 - `tests/`：正常路径、拒绝、回执丢失、重复提交、坏候选等回归检查。
+- `pi-core/`：固定 Pi 1.4.0 真实 Agent Core 的九项机制实验，模型传输使用确定性替身。
 - `run_examples.py`：统一执行入口，输出退出码、源码hash、日志和结果；不调用收费模型或真实业务系统。
 - `runs/`：按时间保存的合成测试证据。详细环境和边界见该目录的README。
 
@@ -58,6 +59,9 @@
 ```bash
 .venv/bin/python -m pip install -r requirements.txt -r requirements-examples.txt
 .venv/bin/python examples/run_examples.py
+.venv/bin/python -m pytest -q publishing/tests
+npm --prefix examples/pi-core ci --ignore-scripts --no-audit --no-fund
+npm --prefix examples/pi-core test
 .venv/bin/python publishing/scripts/audit_claim_ledger.py
 .venv/bin/python publishing/scripts/check_book_structure.py
 .venv/bin/python publishing/scripts/build_book.py
@@ -78,6 +82,8 @@ npm --prefix site run docs:build
 4. `site/` 只承担在线呈现，根目录 `.github/workflows/` 负责自动部署。
 
 ## 审查状态
+
+2026-10-29 重写第三篇：六个案例统一按架构、循环、上下文、工具/MCP、安全、委派、验证和任务流程展开，新增 pi-mono 固定版本源码分析与九项真实 Agent Core 机制实验。修订范围、证据与验收位于 `research/audits/architecture_revision_20261029/`。历史审计保留其原有章节编号和事实截面。
 
 2026-09-19进行了增量研究、逐章复审和实际案例验证，并据此修订正文。此前关于“技术含义守恒”和字数的过度结论已经公开勘误；历史评审关闭不代表后续版本没有问题。当前验收结果见`research/audits/quality_audit.md`及本轮处置报告。
 

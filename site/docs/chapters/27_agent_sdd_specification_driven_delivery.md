@@ -1,4 +1,4 @@
-# 第二十七章 Agent SDD：规范驱动的任务与发布
+# 第二十八章 Agent SDD：规范驱动的任务与发布
 
 > 证据地位：本章为作者参考设计与工程推导，案例和阈值用于说明实现逻辑，不代表跨组织验证的通用标准。
 
@@ -72,9 +72,9 @@ task:
 | 业务输入 | 平台映射与责任 |
 |---|---|
 | `specification.id`、`owner` | 进入有版本的规范对象；Task 的 `input_refs` 引用它，负责人身份由控制面核实 |
-| `task.task_id`、合同版本 | 映射到 Task 的 `task_id`、`contract_version`；第二十五章的 `contract_id` 由登记表解析成不可变合同版本引用 |
+| `task.task_id`、合同版本 | 映射到 Task 的 `task_id`、`contract_version`；第二十六章的 `contract_id` 由登记表解析成不可变合同版本引用 |
 | 租户、风险 | 从已认证调用者和风险策略取得 Task 的 `tenant`、`risk`，不由模型自行填高权限值 |
-| `snapshot` 或第二十五章的 `workspace.commit` | 解析完整输入版本，写入 `input_refs`；证据包 `inputs` 另绑定清单及内容摘要 |
+| `snapshot` 或第二十六章的 `workspace.commit` | 解析完整输入版本，写入 `input_refs`；证据包 `inputs` 另绑定清单及内容摘要 |
 | `invariant`、交付物、禁止动作 | 分别编译为 `invariants`、`deliverables`、`forbidden_actions`，并生成可执行策略 |
 | `allowed_writes` | 写入绑定合同版本的路径策略，Task引用该策略；租约与 `scope_guard` 同时执行 |
 | 验收表 | Task 的 `checks` 使用稳定的候选检查ID，适配器解析为完整CompletionContract的 `pre_commit_checks`；命令与验证器版本在只读套件登记。业务提交另有 `post_commit_checks`，附录E的最小Task未展开此字段，不能直接追加到根对象 |
@@ -113,7 +113,7 @@ task:
 
 账单完整性以调用提醒逻辑之前和之后的同一张 fixture 表比较：按固定主键排序，对合同指定的全部账单业务字段作规范序列化再求摘要，包括金额、状态和有业务意义的时间字段。只能排除预先声明的非业务元数据，不能临时忽略被候选修改的列。检查在 fixture 准备完成后取基线，执行候选后取终值，并同时检查表行数和键集合。
 
-候选按第二十五章协议封存，在干净环境应用同一补丁后运行下列验收。公开测试可给开发反馈，封存验收由独立主体控制；删除、跳过或削弱公开测试也不能替代固定验收集。
+候选按第二十六章协议封存，在干净环境应用同一补丁后运行下列验收。公开测试可给开发反馈，封存验收由独立主体控制；删除、跳过或削弱公开测试也不能替代固定验收集。
 
 ```yaml
 acceptance:
@@ -184,7 +184,7 @@ acceptance:
 
 候选产物、合同版本和验证结果一同进入发布门；提交前再次核对授权、产物与目标版本。业务确需带已知失败上线时，豁免记录失败检查、风险负责人、补救措施、影响范围和到期时间；不可豁免的硬约束仍然阻断。Agent 可以起草说明，不能自行批准，也不能用豁免覆盖已经撤销的权限。
 
-模型停止、候选 `checks` 通过、外部提交确认和 `post_commit_checks` 通过是不同事件。提交确认后进入 `VERIFYING_POSTCONDITIONS`，后置检查失败或未知为 `COMMITTED_BUT_UNVERIFIED`。纯成品交付合同在验收并交付后结束，不强造外部提交。第二十六章据此分别记录两类任务的完成率分母和时延。
+模型停止、候选 `checks` 通过、外部提交确认和 `post_commit_checks` 通过是不同事件。提交确认后进入 `VERIFYING_POSTCONDITIONS`，后置检查失败或未知为 `COMMITTED_BUT_UNVERIFIED`。纯成品交付合同在验收并交付后结束，不强造外部提交。第二十七章据此分别记录两类任务的完成率分母和时延。
 
 ## 7. 规范质量指标
 
