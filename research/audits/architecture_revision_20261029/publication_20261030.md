@@ -27,4 +27,12 @@
 
 ## 发布状态
 
-当前为发布准备记录。PR、合并提交、GitHub Pages 构建及线上验收结果将在完成后追加；此处不提前宣称已上线。
+- [PR #9](https://github.com/LENSHOOD/agent-harness-book/pull/9) 已合并，内容提交为 `cf483a5a3df48c3474259de849dfd148553e235d`，合并提交为 `1e92c85cba86618f3e21fcd8d5d5578d5a96daa6`。
+- [PR 检查 41011989321](https://github.com/LENSHOOD/agent-harness-book/actions/runs/41011989321)通过；[发布运行 41012134508](https://github.com/LENSHOOD/agent-harness-book/actions/runs/41012134508)的 build、deploy 均成功，部署于 2026-10-30 06:07:45 UTC 完成。
+- [线上阅读](https://lenshood.github.io/agent-harness-book/)：首页、六个产品章及比较章，分别在 1280/390 宽度下检查，共 16 个页面场景通过。HTTP 200，未见页面横向溢出、缺失图片或捕获到的脚本异常；本次加载记录约 0.23–1.13 秒，不作为持续性能保证。
+- 实际点击移动目录从 Pi 进入第十九章成功；Pi 桌面/手机截图已查看，正文排版正常。
+- 两份线上 PDF 均 HTTP 200，与上表本地 SHA-256 完全一致，字节数分别为 1,460,261 和 67,190。
+
+原始线上观察保留在 `live_verification_raw_20261030.json`；最终判定见 `live_verification_20261030.json`。首次标题精确比较因 VitePress 锚点附带 U+200B 零宽字符误判，按明确的标题归一化规则重新计算；原始文本及首次判定均保留，网页无需修改。移动目录第一次操作因 CDP 重设尺寸使旧元素引用失效，改用当前语义定位后验证成功。
+
+CI 仍有既有 Actions Node 20 运行器迁移提示与 VitePress 大 chunk 提示，本次未修改依赖更新 PR。以上结果是本次发布的限定验收，不是供应商产品或整本书逐句事实认证。此回执绑定上述内容与部署提交；后续仅更新审计回执的提交不改变正文、渲染器、依赖或网站输入。

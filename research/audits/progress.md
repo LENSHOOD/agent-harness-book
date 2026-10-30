@@ -1,6 +1,6 @@
 # Harness 小书研究与写作进度
 
-最新进度（2026-10-29）：第三篇五章重写、新增 pi-mono 第十八章、比较章及全书引用编号同步；现为 31 章。本地 PDF/网站构建和限定验收完成，尚未提交发布。详情见 [本轮修订验收](architecture_revision_20261029/README.md)。下文为九月历史记录。
+最新进度（2026-10-30）：第三篇五章重写、新增 pi-mono 第十八章、比较章及全书引用编号同步；现为 31 章。PR #9 已合并，GitHub Pages 部署、桌面/手机阅读及两份线上 PDF 下载核验完成。详情见 [本轮修订验收](architecture_revision_20261029/README.md)与 [发布记录](architecture_revision_20261029/publication_20261030.md)。下文为九月历史记录。
 
 更新时间：2026-09-19。状态：本轮修订已通过PR #8合并发布，GitHub Pages部署与线上核验完成，记录见revision_20260919/deployment_receipt.json。
 
