@@ -5,3 +5,4 @@ site/docs/.vitepress/dist/
 .DS_Store
 __pycache__/
 *.py[cod]
+examples/pi-core/node_modules/

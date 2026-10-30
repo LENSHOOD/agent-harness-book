@@ -1,0 +1,2463 @@
+{
+  "date": "2026-10-29",
+  "base_commit": "11be2fecb5212aca11a1a76b40bd328568f0b8b2",
+  "chapter_count": 31,
+  "existing_chapter_urls_preserved": true,
+  "product_cases": [
+    {
+      "chapter": 13,
+      "file": "manuscript/chapters/13_claude_code_thin_loop_thick_runtime.md",
+      "sha256": "319d6d2df4f5d48c5068daf3c242ec66400579712bc7f42c655dff1c8aaf5cbc",
+      "headings": [
+        "整体架构与职责边界：谁拥有循环",
+        "Agent loop 与恢复：消息流不是业务事务",
+        "上下文与会话：压缩、缓存、记忆各做什么",
+        "工具、MCP 与扩展：从可发现能力到执行结果",
+        "权限、沙箱与凭证：批准动作与限制能力",
+        "子智能体与委派：隔离的是哪一份状态",
+        "验证与可观测性：从循环结束到可验收产物",
+        "一次任务穿过架构：修复登录回归"
+      ],
+      "passed": true
+    },
+    {
+      "chapter": 14,
+      "file": "manuscript/chapters/14_openai_codex_protocolized_agent_core.md",
+      "sha256": "1c1057cd6b2c12c06812ed16eaa23261f454f286aa68a562f4f2114ca26b73a6",
+      "headings": [
+        "整体架构与职责边界：协议包住的是运行时",
+        "Agent loop 与恢复：一轮请求可以包含多次采样",
+        "上下文与会话：模型窗口、宿主事实和记忆各有归属",
+        "工具、MCP 与扩展：声明能力和执行能力必须对齐",
+        "权限、沙箱与凭证：决定能否做，与限制如何做",
+        "子智能体与委派：子线程共享控制面，各自运行循环",
+        "验证与可观测性：看到执行，不等于证明正确",
+        "一次任务如何穿过架构：修复导出遗漏"
+      ],
+      "passed": true
+    },
+    {
+      "chapter": 15,
+      "file": "manuscript/chapters/15_cursor_ide_native_context_and_cloud_agents.md",
+      "sha256": "00e8a00067cb7b1141a31e152311e6078434449eb4cd0bb5d7483e48bfd8ebca",
+      "headings": [
+        "整体架构与职责边界：从编辑器进入执行系统",
+        "Agent loop 与恢复：模型决策，应用执行",
+        "上下文与会话：索引、指令、历史各有载体",
+        "工具、MCP 与扩展：从可发现描述到实际调用",
+        "权限、沙箱与凭证：批准动作不等于限制进程",
+        "子智能体与委派：上下文隔离、环境隔离、调度分层",
+        "验证与可观测性：可回看过程，仍须验证结果",
+        "一次任务穿过架构：修复跨前后端的权限错误"
+      ],
+      "passed": true
+    },
+    {
+      "chapter": 16,
+      "file": "manuscript/chapters/16_deepseek_harness_composable_runtime.md",
+      "sha256": "f5f46d5e9a47b7e96734b446ca86eeddc957a8bdaa915710cdfd5b630a9b5343",
+      "headings": [
+        "整体架构与职责边界：运行的是一棵插件树",
+        "Agent loop 与恢复：把请求、尝试和回合分开",
+        "上下文与会话：日志保存事实，投影决定模型看见什么",
+        "工具、MCP 与扩展：统一分派，分别拥有执行",
+        "权限、沙箱与凭证：三个问题，三条边界",
+        "子智能体与委派：上下文继承不等于权限继承",
+        "验证与可观测性：区分事实日志、实时流与报告副本",
+        "一次任务穿过架构：接入一个 MCP 查询能力"
+      ],
+      "passed": true
+    },
+    {
+      "chapter": 17,
+      "file": "manuscript/chapters/17_openhands_agent_runtime_separation.md",
+      "sha256": "0c986a4df77b0d3355d3bf1f7e6fee0b630a966a8b3cd63cf7680d21496cd9d8",
+      "headings": [
+        "整体架构与职责边界：配置、会话与执行位置分别建模",
+        "Agent loop 与恢复：由 Conversation 驱动 Agent 的单步",
+        "上下文与会话：原始事件、模型视图和长期记忆各有位置",
+        "工具、MCP 与扩展：配置可以传输，执行器在运行处物化",
+        "权限、沙箱与凭证：批准动作与隔离执行分别配置",
+        "子智能体与委派：一项 task 对应一个子 Conversation",
+        "验证与可观测性：存储顺序不等于业务恰好一次",
+        "一次任务穿过架构：修复仓库中的解析错误"
+      ],
+      "passed": true
+    },
+    {
+      "chapter": 18,
+      "file": "manuscript/chapters/18_pi_mono_small_core_composable_session.md",
+      "sha256": "1b151fb9c3548521cd542f3a1329096801fbd4995e932dc4663a075091339216",
+      "headings": [
+        "整体架构：循环、会话和界面分别负责什么",
+        "Agent loop：工具反馈和用户追加输入怎样推进循环",
+        "上下文与会话：完整记录和当前请求不是同一个对象",
+        "工具、MCP 与扩展：小接口怎样容纳大工具集",
+        "权限、沙箱与凭证：项目可信不等于操作受限",
+        "子智能体与委派：扩展示例如何复用同一个核心",
+        "验证与可观测性：事件帮助看见过程，不能替任务验收",
+        "一次修复任务如何穿过这些组件"
+      ],
+      "passed": true
+    }
+  ],
+  "capture_checks": [
+    {
+      "source_id": "a29-150ca7a9f143c545",
+      "path": "publishing/work/architecture_20261029/claude/sdk-overview.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-6a8e91d6c7130fc3",
+      "path": "publishing/work/architecture_20261029/claude/how-claude-code-works.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-cc31befce8f9b0e0",
+      "path": "publishing/work/architecture_20261029/claude/sdk-python/src/claude_agent_sdk/_internal/transport/subprocess_cli.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-bc24d276f38a0aff",
+      "path": "publishing/work/architecture_20261029/claude/sdk-python/src/claude_agent_sdk/_internal/query.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-fda53a4cee9e4a66",
+      "path": "publishing/work/architecture_20261029/claude/sdk-permissions.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-2e604487f499f759",
+      "path": "publishing/work/architecture_20261029/claude/sdk-python/pyproject.toml",
+      "valid": true
+    },
+    {
+      "source_id": "a29-0b22abc5cd823644",
+      "path": "publishing/work/architecture_20261029/claude/sdk-agent-loop.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-e6857f9d3a6e5ea0",
+      "path": "publishing/work/architecture_20261029/claude/sdk-sessions.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-c06ae2433da16ffb",
+      "path": "publishing/work/architecture_20261029/claude/sdk-session-storage.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-f6c60c4aeb616d4c",
+      "path": "publishing/work/architecture_20261029/claude/sdk-file-checkpointing.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-923dbd0ff9add357",
+      "path": "publishing/work/architecture_20261029/claude/memory.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-a1d8283fbc656e96",
+      "path": "publishing/work/architecture_20261029/claude/sdk-modifying-system-prompts.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-0d95a0cef35240b5",
+      "path": "publishing/work/architecture_20261029/claude/agent-sdk-claude-code-features.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-0db34fabfac8b8c2",
+      "path": "publishing/work/architecture_20261029/claude/prompt-caching.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-aeda56cb5025b699",
+      "path": "publishing/work/architecture_20261029/claude/platform-prompt-caching.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-e874b038923783b9",
+      "path": "publishing/work/architecture_20261029/claude/sdk-mcp.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-daee903c3e1bdd06",
+      "path": "publishing/work/architecture_20261029/claude/sdk-custom-tools.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-b5ba9cf42f6ea95f",
+      "path": "publishing/work/architecture_20261029/claude/sdk-hooks.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-830920c8b6955112",
+      "path": "publishing/work/architecture_20261029/claude/hooks.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-bda01a2b0713609d",
+      "path": "publishing/work/architecture_20261029/claude/sandboxing.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-a8722bf15d6548a2",
+      "path": "publishing/work/architecture_20261029/claude/sdk-secure-deployment.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-6ce69cf756f30e32",
+      "path": "publishing/work/architecture_20261029/claude/sdk-subagents.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-3499acf735df32f2",
+      "path": "publishing/work/architecture_20261029/claude/sub-agents.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-f1bdb0cb16054812",
+      "path": "publishing/work/architecture_20261029/claude/sdk-typescript.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-1fb6e98e34d5b17e",
+      "path": "publishing/work/architecture_20261029/claude/sdk-cost-tracking.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-9983b2d1a76afb8f",
+      "path": "publishing/work/architecture_20261029/claude/monitoring-usage.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-8c54fec3270c0561",
+      "path": "publishing/work/architecture_20261029/claude/managed-agents.html",
+      "valid": true
+    },
+    {
+      "source_id": "a29-ebd191e1073c0218",
+      "path": "publishing/work/architecture_20261029/codex/page-adc2fb98c295.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-7ad8bedc789a23fb",
+      "path": "publishing/work/architecture_20261029/codex/page-76e6771f5bec.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-64d5c9b4e57d829d",
+      "path": "publishing/work/architecture_20261029/codex/page-f3f1b6782caa.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-70ba10705ff90b6e",
+      "path": "publishing/work/architecture_20261029/codex/page-05d46e263670.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-0ddc398a9937ca72",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/thread_manager.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-f2f300e8015dc6ac",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/codex_thread.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-a9a9ce0db7c24de1",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/session/session.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-4b9226b4c028db87",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/session/mod.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-3c117c6d7c946029",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/session/turn.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-c5e71685fa1aa3ba",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/responses_retry.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-cbedd21ee85e9dea",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/session/rollout_reconstruction.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-edabea8ad1d0b4dc",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/context_manager/history.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-36040467f279b7c1",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/compact.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-4baa700bfd2ee48f",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/agents_md.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-2925441aee0f9d54",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/router.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-cacc65a619971793",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/registry.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-a12201af6df5818e",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/handlers/mcp.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-cf7d4abe22e3cf9d",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/codex-mcp/src/rmcp_client.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-398b334bd572034b",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/handlers/dynamic.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-f63360c9170b4c20",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/orchestrator.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-3382273e1786b2ba",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/sandboxing/src/manager.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-8169aeb2abdd534c",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/login/src/auth/storage.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-5f26b016009d5abd",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/agent/control.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-ddef3835efd5f480",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/handlers/multi_agents/spawn.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-189b806699443a76",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/handlers/multi_agents_common.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-54e1e2a537608126",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/agent/control/legacy.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-5841478d7c83c8e1",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/handlers/multi_agents/wait.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-6c40cfb391f46cc8",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/agent/status.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-5486a27c2b1a0859",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/handlers/multi_agents_v2/spawn.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-eab9c82ef77b721e",
+      "path": "publishing/work/architecture_20261029/codex/source/sdk/typescript/src/exec.ts",
+      "valid": true
+    },
+    {
+      "source_id": "a29-314151b931bdc4e4",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/app-server-protocol/src/protocol/common.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-557c9029cc6b5041",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/ext/skills/src/lib.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-1ef8c43937b49dec",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/memories/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-6da636c6963e192f",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tasks/mod.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-cbd9dc0eb9e003e3",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/tools/tool_dispatch_trace.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-d7c7eb5cb351cad3",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/core/src/otel_init.rs",
+      "valid": true
+    },
+    {
+      "source_id": "a29-78be3b1189201b75",
+      "path": "publishing/work/architecture_20261029/codex/source/codex-rs/Cargo.toml",
+      "valid": true
+    },
+    {
+      "source_id": "a29-9b62617b3a1f50d1",
+      "path": "publishing/work/architecture_20261029/cursor/docs_agent_overview_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-baf2e897eecc22c2",
+      "path": "publishing/work/architecture_20261029/cursor/learn_tool-calling.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-e25856765ea44b7f",
+      "path": "publishing/work/architecture_20261029/cursor/learn_agents.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-1c5d7498896a83ca",
+      "path": "publishing/work/architecture_20261029/cursor/blog_continually-improving-agent-harness.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-f46941a45ed4dada",
+      "path": "publishing/work/architecture_20261029/cursor/data-use.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-8db3a69cf69c412a",
+      "path": "publishing/work/architecture_20261029/cursor/blog_secure-codebase-indexing.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-5852b3d2669201d0",
+      "path": "publishing/work/architecture_20261029/cursor/docs_rules_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-aef4892207ac2d3e",
+      "path": "publishing/work/architecture_20261029/cursor/blog_dynamic-context-discovery.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-df570bf009bb3b29",
+      "path": "publishing/work/architecture_20261029/cursor/changelog_1-0.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-f43adc48cb78bb59",
+      "path": "publishing/work/architecture_20261029/cursor/docs_mcp_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-074d32eeedd4466e",
+      "path": "publishing/work/architecture_20261029/cursor/docs_hooks_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-759bb53cc82d1ddd",
+      "path": "publishing/work/architecture_20261029/cursor/docs_agent_security_run-modes_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-4a168200c1cad45e",
+      "path": "publishing/work/architecture_20261029/cursor/docs_cloud-agent_security_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-24288b622f606dc4",
+      "path": "publishing/work/architecture_20261029/cursor/docs_cloud-agent_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-7f816d6f0eeccb6d",
+      "path": "publishing/work/architecture_20261029/cursor/docs_cloud-agent_security-network_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-a3a934d6ed7140a7",
+      "path": "publishing/work/architecture_20261029/cursor/docs_cloud-agent_identity_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-ff7cc5054dd8a266",
+      "path": "publishing/work/architecture_20261029/cursor/docs_cloud-agent_self-hosted_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-593a8bf277703db1",
+      "path": "publishing/work/architecture_20261029/cursor/docs_subagents_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-c1043594e22ad0fa",
+      "path": "publishing/work/architecture_20261029/cursor/docs_agent_projects_md.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-992e95ed95d10373",
+      "path": "publishing/work/architecture_20261029/cursor/blog_self-hosted-machines.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-1ed02519554a25bc",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/architecture.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-e253dcc6210fcf77",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/architecture.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-d1d2652f928ad355",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/subsystems/core.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-634ea31e406f8e40",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/subsystems/system-prompt.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-033657f4e4532b3b",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/context/agent-instructions/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-96f1063cbfab9403",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/subsystems/compaction.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-34fa0ca1a3569207",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/tool-execution-pipeline.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-04541f362e5ba18f",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/subsystems/mcp.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-d8dc7b1c7f876109",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/ptc-runtime/ptc-runtime-node/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-21e9c1668eec0b79",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/subsystems/sandbox.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-330f2a6680b18ed0",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/subsystems/approval.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-d2d99ef3fa72eb8e",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/subsystems/credentials.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-0975b3a01007ca70",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/extensions/cordis-host-runner/src/sandbox.ts",
+      "valid": true
+    },
+    {
+      "source_id": "a29-6f7f1e17fd0e68fc",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/boot/plugin-manager/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-de349951f6ada671",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/user/develop/practice/dynamic-cordis.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-a2f34c2ca2eadd2d",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/boot/app-boot/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-b016d070b1405704",
+      "path": "publishing/work/architecture_20261029/dsh/source/docs/subsystems/subagent.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-98a09363f033580e",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/session/session-telemetry/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-5872323616ade3df",
+      "path": "publishing/work/architecture_20261029/dsh/old-worker.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-edce0b1a9310e155",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/subagent/subagent-spawn-in-process/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-5f225943762b3db8",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/subagent/subagent-fork-in-process/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-6f4fda27435a6133",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/core/tools/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-9518f3cbe1cce38c",
+      "path": "publishing/work/architecture_20261029/dsh/source/packages/extensions/tool-cordis/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-414a888e6d84c382",
+      "path": "publishing/work/architecture_20261029/openhands/source/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-af9b114ec50dd61f",
+      "path": "publishing/work/architecture_20261029/openhands/canvas-package.json",
+      "valid": true
+    },
+    {
+      "source_id": "a29-726e5f48b8924d05",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/conversation/conversation.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-7fd929bc5001e3a7",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/agent/agent.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-98bfb9c76dd0fdd9",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/conversation/impl/local_conversation.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-f30d7353e9b3c7f4",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/conversation/state.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-ba2d2382a71847e7",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/context/agent_context.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-71c05bc21fc8c686",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/context/view/view.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-6fa3b7d945b78ec9",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/context/condenser/llm_summarizing_condenser.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-e2717dee15e61797",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/agent/parallel_executor.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-d4d5e7a05c23b9cd",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/mcp/tool.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-2a869a1b7c668306",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/plugin/types.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-9b718192c065e202",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/security/confirmation_policy.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-9ad724a34d372003",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-agent-server/openhands/agent_server/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-141fb27c5debf635",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-agent-server/openhands/agent_server/docker_runtime/registry.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-8049c2ea989e1c06",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-agent-server/openhands/agent_server/docker_runtime/provisioning.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-c0a445a98ab8270d",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-agent-server/openhands/agent_server/docker_runtime/routers.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-ff0c02c5563d8642",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/profiles/agent_profile.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-9b8f91034d0a6882",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/conversation/secret_registry.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-4d955256538d918f",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-tools/openhands/tools/delegate/impl.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-415cb98c5353c407",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-agent-server/openhands/agent_server/session_socket.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-d7bb08b4ce72c819",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/observability/laminar.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-8b97669ec6082bae",
+      "path": "publishing/work/architecture_20261029/openhands/legacy-runtime.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-4e4fdbe0f4f513af",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-tools/openhands/tools/task/definition.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-cff964a76883b5be",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-tools/openhands/tools/task/manager.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-135ee08fc7c7c111",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/plugin/plugin.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-5da17d0fdcd8f7b0",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/agent/base.py",
+      "valid": true
+    },
+    {
+      "source_id": "a29-c75c0a9f252d5f01",
+      "path": "publishing/work/architecture_20261029/pi-release-v1.4.0.txt",
+      "valid": true
+    },
+    {
+      "source_id": "a29-e7f4be1c2337c3b6",
+      "path": "publishing/work/architecture_20261029/pi/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-38aedd57789d5eef",
+      "path": "publishing/work/architecture_20261029/pi/packages/agent/src/agent-loop.ts",
+      "valid": true
+    },
+    {
+      "source_id": "a29-0e64577b5815db9e",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/sdk.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-cda4f1017e5ec9f5",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/session-format.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-add5c4844c21f68e",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/compaction.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-d464791793f29989",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/mcp.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-ff2f595c9e25aaf5",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/extensions.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-67ca74fdb25b10c1",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/security.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-af5ef68f4eb9b686",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/examples/extensions/subagent/README.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-6f1996adac8912f6",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/rpc.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-0f05f398f69ef153",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/cli.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-8ec13f607ae69e0d",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/docs/skills.md",
+      "valid": true
+    },
+    {
+      "source_id": "a29-667ee4b7975daf8f",
+      "path": "publishing/work/architecture_20261029/pi/packages/coding-agent/src/core/sdk.ts",
+      "valid": true
+    },
+    {
+      "source_id": "a29-fdb1da2b6ca50961",
+      "path": "publishing/work/architecture_20261029/openhands/source/openhands-sdk/openhands/sdk/conversation/impl/remote_conversation.py",
+      "valid": true
+    }
+  ],
+  "sources_without_full_capture": [],
+  "manuscript_files": 42,
+  "cjk_characters_excluding_fences": 112177,
+  "pdf_checks": [
+    {
+      "file": "publishing/artifacts/agent_harness_book.pdf",
+      "sha256": "dfc244686427705b9b31bb189038d65be21925eb497aa4ff15fdd39462aa34f1",
+      "bytes": 1460261,
+      "page_count": 188,
+      "outline_count": 386,
+      "pages": [
+        {
+          "page": 1,
+          "text_characters": 60,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 2,
+          "text_characters": 891,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 3,
+          "text_characters": 4928,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 4,
+          "text_characters": 5543,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 5,
+          "text_characters": 5850,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 6,
+          "text_characters": 6105,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 7,
+          "text_characters": 5100,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 8,
+          "text_characters": 5197,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 9,
+          "text_characters": 5404,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 10,
+          "text_characters": 5855,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 11,
+          "text_characters": 3701,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 12,
+          "text_characters": 346,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 13,
+          "text_characters": 1473,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 14,
+          "text_characters": 1582,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 15,
+          "text_characters": 1418,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 16,
+          "text_characters": 1459,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 17,
+          "text_characters": 120,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 18,
+          "text_characters": 1409,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 19,
+          "text_characters": 1610,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 20,
+          "text_characters": 1259,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 21,
+          "text_characters": 1130,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 22,
+          "text_characters": 336,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 23,
+          "text_characters": 1368,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 24,
+          "text_characters": 1096,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 25,
+          "text_characters": 1300,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 26,
+          "text_characters": 861,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 27,
+          "text_characters": 1683,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 28,
+          "text_characters": 1129,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 29,
+          "text_characters": 345,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 30,
+          "text_characters": 876,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 31,
+          "text_characters": 1112,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 32,
+          "text_characters": 1186,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 33,
+          "text_characters": 1130,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 34,
+          "text_characters": 1425,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 35,
+          "text_characters": 508,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 36,
+          "text_characters": 1254,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 37,
+          "text_characters": 1065,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 38,
+          "text_characters": 1419,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 39,
+          "text_characters": 1071,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 40,
+          "text_characters": 1717,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 41,
+          "text_characters": 1380,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 42,
+          "text_characters": 192,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 43,
+          "text_characters": 1297,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 44,
+          "text_characters": 1170,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 45,
+          "text_characters": 1465,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 46,
+          "text_characters": 1049,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 47,
+          "text_characters": 1020,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 48,
+          "text_characters": 793,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 49,
+          "text_characters": 885,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 50,
+          "text_characters": 1377,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 51,
+          "text_characters": 1225,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 52,
+          "text_characters": 1033,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 53,
+          "text_characters": 1050,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 54,
+          "text_characters": 1043,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 55,
+          "text_characters": 1189,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 56,
+          "text_characters": 1179,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 57,
+          "text_characters": 924,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 58,
+          "text_characters": 1111,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 59,
+          "text_characters": 1022,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 60,
+          "text_characters": 591,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 61,
+          "text_characters": 1358,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 62,
+          "text_characters": 1472,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 63,
+          "text_characters": 1663,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 64,
+          "text_characters": 1502,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 65,
+          "text_characters": 1821,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 66,
+          "text_characters": 1398,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 67,
+          "text_characters": 572,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 68,
+          "text_characters": 1728,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 69,
+          "text_characters": 1283,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 70,
+          "text_characters": 1468,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 71,
+          "text_characters": 1313,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 72,
+          "text_characters": 1567,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 73,
+          "text_characters": 1388,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 74,
+          "text_characters": 2228,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 75,
+          "text_characters": 746,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 76,
+          "text_characters": 1528,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 77,
+          "text_characters": 1616,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 78,
+          "text_characters": 1604,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 79,
+          "text_characters": 1011,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 80,
+          "text_characters": 1825,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 81,
+          "text_characters": 2202,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 82,
+          "text_characters": 1992,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 83,
+          "text_characters": 1346,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 84,
+          "text_characters": 1550,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 85,
+          "text_characters": 1844,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 86,
+          "text_characters": 1908,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 87,
+          "text_characters": 1127,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 88,
+          "text_characters": 1536,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 89,
+          "text_characters": 1873,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 90,
+          "text_characters": 2042,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 91,
+          "text_characters": 1318,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 92,
+          "text_characters": 1528,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 93,
+          "text_characters": 2172,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 94,
+          "text_characters": 2191,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 95,
+          "text_characters": 1499,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 96,
+          "text_characters": 1475,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 97,
+          "text_characters": 1942,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 98,
+          "text_characters": 2173,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 99,
+          "text_characters": 2063,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 100,
+          "text_characters": 175,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 101,
+          "text_characters": 1556,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 102,
+          "text_characters": 1868,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 103,
+          "text_characters": 1831,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 104,
+          "text_characters": 336,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 105,
+          "text_characters": 1854,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 106,
+          "text_characters": 2064,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 107,
+          "text_characters": 1620,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 108,
+          "text_characters": 510,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 109,
+          "text_characters": 393,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 110,
+          "text_characters": 1205,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 111,
+          "text_characters": 1321,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 112,
+          "text_characters": 1782,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 113,
+          "text_characters": 1423,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 114,
+          "text_characters": 1819,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 115,
+          "text_characters": 1504,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 116,
+          "text_characters": 861,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 117,
+          "text_characters": 1189,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 118,
+          "text_characters": 1519,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 119,
+          "text_characters": 1468,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 120,
+          "text_characters": 219,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 121,
+          "text_characters": 1361,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 122,
+          "text_characters": 1751,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 123,
+          "text_characters": 931,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 124,
+          "text_characters": 1131,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 125,
+          "text_characters": 1377,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 126,
+          "text_characters": 1202,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 127,
+          "text_characters": 726,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 128,
+          "text_characters": 1668,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 129,
+          "text_characters": 1440,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 130,
+          "text_characters": 1634,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 131,
+          "text_characters": 1001,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 132,
+          "text_characters": 453,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 133,
+          "text_characters": 1198,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 134,
+          "text_characters": 2351,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 135,
+          "text_characters": 1453,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 136,
+          "text_characters": 1868,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 137,
+          "text_characters": 1705,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 138,
+          "text_characters": 1619,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 139,
+          "text_characters": 1050,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 140,
+          "text_characters": 1645,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 141,
+          "text_characters": 1755,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 142,
+          "text_characters": 1877,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 143,
+          "text_characters": 228,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 144,
+          "text_characters": 1387,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 145,
+          "text_characters": 1694,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 146,
+          "text_characters": 1695,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 147,
+          "text_characters": 1549,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 148,
+          "text_characters": 523,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 149,
+          "text_characters": 1519,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 150,
+          "text_characters": 646,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 151,
+          "text_characters": 1587,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 152,
+          "text_characters": 1322,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 153,
+          "text_characters": 1141,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 154,
+          "text_characters": 1617,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 155,
+          "text_characters": 862,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 156,
+          "text_characters": 6,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 157,
+          "text_characters": 1514,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 158,
+          "text_characters": 2075,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 159,
+          "text_characters": 2275,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 160,
+          "text_characters": 1965,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 161,
+          "text_characters": 651,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 162,
+          "text_characters": 1284,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 163,
+          "text_characters": 1318,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 164,
+          "text_characters": 101,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 165,
+          "text_characters": 1443,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 166,
+          "text_characters": 1301,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 167,
+          "text_characters": 1368,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 168,
+          "text_characters": 1962,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 169,
+          "text_characters": 2205,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 170,
+          "text_characters": 957,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 171,
+          "text_characters": 447,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 172,
+          "text_characters": 2238,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 173,
+          "text_characters": 2485,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 174,
+          "text_characters": 2531,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 175,
+          "text_characters": 2530,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 176,
+          "text_characters": 2528,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 177,
+          "text_characters": 2690,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 178,
+          "text_characters": 2437,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 179,
+          "text_characters": 2865,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 180,
+          "text_characters": 2748,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 181,
+          "text_characters": 2737,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 182,
+          "text_characters": 2204,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 183,
+          "text_characters": 2386,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 184,
+          "text_characters": 2671,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 185,
+          "text_characters": 2022,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 186,
+          "text_characters": 1990,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 187,
+          "text_characters": 1990,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 188,
+          "text_characters": 1111,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        }
+      ],
+      "passed": true
+    },
+    {
+      "file": "publishing/artifacts/executive_brief.pdf",
+      "sha256": "4686ae2c5f86b52070f0b92cad97a73c8b93c251e3f01f2a5f5aad64729febf6",
+      "bytes": 67190,
+      "page_count": 10,
+      "outline_count": 9,
+      "pages": [
+        {
+          "page": 1,
+          "text_characters": 55,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 2,
+          "text_characters": 388,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 3,
+          "text_characters": 199,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 4,
+          "text_characters": 941,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 5,
+          "text_characters": 365,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 6,
+          "text_characters": 343,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 7,
+          "text_characters": 256,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 8,
+          "text_characters": 199,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 9,
+          "text_characters": 482,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        },
+        {
+          "page": 10,
+          "text_characters": 347,
+          "empty": false,
+          "outside_page": 0,
+          "null_characters": 0,
+          "replacement_characters": 0
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "scope": "structure, stable slugs, capture bytes, PDF text/bounds; not semantic or visual proof",
+  "exit_code": 0
+}

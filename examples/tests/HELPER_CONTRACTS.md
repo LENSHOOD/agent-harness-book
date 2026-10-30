@@ -1,6 +1,6 @@
 # 当前原文控制流：helper契约与语法翻译
 
-所有测试读取当前`manuscript` fence。函数按唯一名称抽取，第1章按唯一`for step in range(max_steps):`，第20章按唯一`frontier = queue([(baseline_state, depth=0)])`抽取整个fence并加函数包装。没有复制一份旧循环、按B编号定位或把示意图硬改成代码。
+所有测试读取当前`manuscript` fence。函数按唯一名称抽取，第1章按唯一`for step in range(max_steps):`，第21章按唯一`frontier = queue([(baseline_state, depth=0)])`抽取整个fence并加函数包装。没有复制一份旧循环、按B编号定位或把示意图硬改成代码。2026-10-29插入pi-mono章后，文件slug保留，显示章号顺延。
 
 每个证据JSON保留fence路径/行号/hash、转换后的文本、替身事件、返回值与账目。断言来自期望行为，不能靠改变预期将旧坏路径变成通过。外部1000行watchdog只防测试挂死，命中就是测试失败，不算原文有预算终止保证。
 
@@ -32,7 +32,7 @@
 
 这些helper是事件与账目替身，不实现真实IAM、容器、OS进程树、远端工作区或崩溃回收器。`NOT_STARTED`是可带可选诊断的tagged result；测试用可调用str表达原文两种写法。
 
-## 第20章搜索（19场景）
+## 第21章搜索（19场景）
 
 关键前提：`propose`、`run_in_fresh_branch`、`development_checks`只构造不可变Operation描述，不做模型、工具或验证工作。`paid`先预留，`host.run_with_limits`才执行描述。原文中调用参数的语法保持原样；若实际helper改为立即执行，预算前置保证不成立，这个参考测试不为其背书。
 

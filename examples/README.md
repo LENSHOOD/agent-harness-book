@@ -25,7 +25,7 @@ examples/.venv/bin/python examples/run_examples.py
 | Evolution | 10任务×3重复的30条确定性 trial；24/30基线、18/30分母作弊、28/30候选、29/30但关键切片失败的canary | 超时保留分母及两次重试成本；不声称统计显著性、因果收益或真实模型优化 |
 | 进化门 | evaluator冻结、注册ID完整、activation、终测单次访问（SQLite持久化）、旧任务版本固定、关键切片失败回滚完整bundle | 本地治理模型，没有真实流量/模型/训练，也没有对抗性OS级评估隔离 |
 | 安全runtime | DENY零执行；持久审批暂停并重新授权；args/tenant/target绑定；回执丢失UNKNOWN；无证据/陈旧证据不重放；并发预算与执行去重；取消终态；COMMITTED需单独验收 | 目标库主键+参数比较在同一事务内提供原子幂等；仅有key或本地账本不够。无真实IAM、签名、网络、租约fencing或进程树取消 |
-| 当前稿控制流 | 按唯一函数名/语句抽取第1/6/10/11/20章及附录A，运行原文分支；包含低层PENDING→上层暂停连接、真实PolicyDecision wire→schema→adapter→控制流、三处终测反馈门 | 最小语法翻译及逐项helper前提见[测试契约](tests/HELPER_CONTRACTS.md)。不重排分支；源码hash、转换文本与结果保存。1000行事件watchdog是审计保护，不冒充正文预算逻辑 |
+| 当前稿控制流 | 按唯一函数名/语句抽取第1/6/10/11/21章及附录A，运行原文分支；包含低层PENDING→上层暂停连接、真实PolicyDecision wire→schema→adapter→控制流、三处终测反馈门 | 最小语法翻译及逐项helper前提见[测试契约](tests/HELPER_CONTRACTS.md)。不重排分支；源码hash、转换文本与结果保存。1000行事件watchdog是审计保护，不冒充正文预算逻辑 |
 
 `python publishing/scripts/check_examples.py` 独立解析全稿 JSON/YAML fence（拒绝重复key）、独立结构文件，直接校验附录E实际schema及正反实例。消息根必须显式 `$ref` Action，PolicyDecision/Observation使用同份defs的各自ref；也检查参考入口并执行当前核心函数字面控制流测试。完整入口已经跑这些测试，因此调用检查器时显式传`--skip-flow-tests`避免重复。YAML字段说明只做格式解析，不宣称证据包具有完整schema或可信签名。
 

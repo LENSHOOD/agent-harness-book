@@ -14,15 +14,18 @@
 
 对于只需要一份回答或文件的任务，完成契约可以很轻。涉及生产系统、资金或敏感数据时，再增加独立验证、审批、对账和回滚机制。组件多不等于成熟，关键是机制与任务风险相匹配。
 
-# 二、市场上五个主案例的变化
+# 二、六个主案例的架构选择
 
 | 案例 | 可借鉴的设计 | 企业要确认的边界 |
 |---|---|---|
 | Claude Code / Agent SDK | 简洁循环、上下文、工具和生命周期扩展 | 与Claude Managed Agents托管服务分开选型；hook本身也有宿主执行权 |
 | OpenAI Codex | 共享核心、App Server协议、CLI与SDK；新增Agents API托管接入 | 自管执行环境不等于自管会话存储，数据驻留与保留限制需单独核对 |
-| Cursor | IDE上下文、云端代理、自管worker、Projects协调者 | worker可在企业网络，但推理与规划仍在云端；Projects处于beta |
+| Cursor | IDE上下文、云端代理、自管worker、Projects协调者 | worker可在企业网络，但推理与规划仍在云端；子智能体、worker与协调者承担不同职责 |
 | DeepSeek Harness | 可组合插件与当前PTC进程执行 | 动态node:vm不是安全隔离；包安装、热重载和业务回滚不是同一个保证 |
 | OpenHands | 当前SDK、Agent Server与执行工作区分离 | Canvas和SDK有不同版本；旧EventStream/Runtime架构属于历史实现 |
+| pi-mono / Pi | 小循环核心、会话树与可组合扩展；v1.4.0 CLI 已内建 MCP | SDK须显式装配相关扩展；子智能体是扩展示例，运行权限和隔离由宿主承担 |
+
+第三篇在2026-10-29改按统一问题讲解六种实现：先看组件和状态归属，再看循环、上下文、工具、安全、委派与验证。pi-mono固定于v1.4.0；仓库已迁至earendil-works/pi。[Pi源码与职责](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/README.md)、[CLI与SDK装配差异](https://github.com/earendil-works/pi/blob/4a080252f06caf63a525d7873c5d94d3c23887e0/packages/coding-agent/docs/sdk.md)
 
 截至2026-09-19，dsh核验版本为0.1.6-alpha.2，Codex稳定版为0.155.1，OpenHands Canvas为1.20.0、SDK为1.49.2；这些是资料截面，不是永远适用的版本推荐。固定版本和迁移测试仍不可省略。[dsh发布](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.6-alpha.2)、[Codex发布](https://github.com/openai/codex/releases/tag/rust-v0.155.1)、[OpenHands SDK发布](https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.49.2)
 
@@ -39,11 +42,11 @@
 | 会话与证据 | 谁存原始事件、候选hash、批准与副作用记录，如何导出？ |
 | 业务权威 | 谁能改变验收标准，谁能批准提交，谁处理未知结果？ |
 
-OpenAI Agents API在9月10日进入公测，负责托管会话、编排、压缩和恢复；应用仍要选择工具与执行环境。当前文档明确自托管sandbox不使该API获得ZDR支持。Cursor的自管worker同样不把云端推理自动迁进企业网络。采购条款和数据流应据具体产品面核对。[Agents API](https://developers.openai.com/api/docs/guides/agents-api/overview)、[Cursor自管机器](https://cursor.com/blog/self-hosted-machines)
+按2026-09-19核验截面，OpenAI Agents API在9月10日进入公测，负责托管会话、编排、压缩和恢复；应用仍要选择工具与执行环境。当时文档明确自托管sandbox不使该API获得ZDR支持，本轮没有重验该服务的商业政策。Cursor的自管worker同样不把云端推理自动迁进企业网络。采购条款和数据流应据具体产品面核对。[Agents API](https://developers.openai.com/api/docs/guides/agents-api/overview)、[Cursor自管机器](https://cursor.com/blog/self-hosted-machines)
 
 # 四、安全控制从具体动作开始
 
-提示词中的“不访问生产”不是访问控制。批准应绑定动作、参数、资源、期限和契约版本，执行前再检查撤销和取消。委派默认只使用父任务已经获得的权限；如果需要领域专属身份，由有权主体独立签发，不能靠改一段子代理提示词扩权。
+提示词中的“不访问生产”不是访问控制。批准应绑定动作、参数、资源、期限和契约版本，执行前再检查撤销和取消。企业应将子任务权限显式约束在父任务已获授权的范围内，并按产品核验工具过滤、会话权限与执行身份是否真正继承；如果需要领域专属身份，由有权主体独立签发，不能靠改一段子代理提示词扩权。
 
 对结果未知的写动作，先对账。查询暂时没有记录不证明前次没生效；补偿接口存在也不意味着可以盲目重试。相同幂等键需要绑定同一操作和参数，下游的原子去重才提供相应保证。
 

@@ -1,31 +1,60 @@
-# 第十八章 产品比较：不要用一张总分表掩盖架构差异
+# 第十九章 产品比较：不要用一张总分表掩盖架构差异
 
-> 资料截面：2026-09-19。本章是架构与接入责任比较。五个主案例没有完成统一任务、模型、预算与权限条件下的实测，六轴均不填分数，也不构成产品排名。
+> 本章于2026-10-29重组。六个实现的事实版本见第十三至十八章；框架和托管产品的补充材料保留2026-09-19截面。六个主案例没有完成统一任务、模型、预算与权限条件下的实测，六轴均不填分数，也不构成产品排名。
 
 产品选择首先要确定采购或自建的是哪一部分：开发者工具、可嵌入循环、组合框架，还是托管 Harness。随后再比较谁运行循环、谁执行工具、谁保存记录。相同品牌可能同时覆盖多个层次；相同“自管”标签也可能对应完全不同的数据流。
 
-## 1. 五个主案例：公开事实与作者判断分列
+## 1. 先比较架构：相同责任被放在了哪里
 
-第二列归纳已核验的公开文档或固定源码，详情与版本见第十三至十七章；第三列是作者提出的采用条件和待测问题，没有同条件效能结论。
+第十三至十八章已经沿相同顺序拆开了六种实现。现在先回到第五章的职责边界：谁组织模型请求，谁管理上下文，谁执行工具，谁负责最终交接。下表是对各章证据的归纳；闭源产品的内部细节仍只说到公开资料能够证明的范围。
+
+| 实现 | 架构的组织中心 | 循环与上下文的主要落点（第六、七章） |
+|---|---|---|
+| [Claude Code](13_claude_code_thin_loop_thick_runtime.md) | 本地运行时围绕模型循环组合工具、会话、hooks及扩展；Agent SDK复用相关能力 | 主循环读取工具反馈继续工作；会话管理指令、历史和压缩，子智能体另有上下文 |
+| [Codex](14_openai_codex_protocolized_agent_core.md) | 可复用core承接多个前端，App Server提供客户端协议 | thread/turn与消息历史、工具事件相连；上下文组装及压缩在核心运行路径中处理 |
+| [Cursor](15_cursor_ide_native_context_and_cloud_agents.md) | 编辑器工作现场与Agent服务相连；云端路径另外连接执行环境 | 编辑器状态、仓库检索和规则参与上下文；服务组织工具反馈循环，内部持久化算法未公开 |
+| [DeepSeek Harness](16_deepseek_harness_composable_runtime.md) | 用profile与插件服务图装配运行时 | loop使用可组合的消息、上下文和工具服务；插件生命周期与一次任务生命周期分开 |
+| [OpenHands](17_openhands_agent_runtime_separation.md) | Agent、Conversation和执行workspace分工，远程路径增加Agent Server | Conversation承接运行和事件状态；Agent据历史及工具反馈继续，执行环境可以独立部署 |
+| [pi-mono](18_pi_mono_small_core_composable_session.md) | pi-ai、Agent Core、AgentSession与界面分层组合 | 低层loop组织模型和工具；SessionManager保存会话树，AgentSession补充压缩、扩展和恢复 |
+
+这几种拆法各自优化了不同接缝。Codex把客户端交互变成明确协议，OpenHands强调决策与工作区执行的分工，Pi让调用循环和管理编码会话可以分别复用。它们并不排斥彼此：一个系统完全可以同时拥有协议入口、远程工作区和可插拔上下文。选择时应检查实际接入路径，不要把这些归纳变成互斥标签。
+
+再沿第八、九、十一章比较工具、安全与委派。是否有名为“sandbox”或“subagent”的功能，不能替代下面这些机制问题：
+
+| 实现 | 工具与执行控制 | 子智能体与委派需要特别区分的边界 |
+|---|---|---|
+| Claude Code | 内建工具、MCP、hooks分别接入；权限决策和执行沙箱承担不同职责 | 子智能体拥有独立上下文；工具范围、权限模式、工作区隔离要分别配置 |
+| Codex | 工具分派、MCP连接、审批策略与操作系统执行限制分层 | 子线程控制与客户端多任务并行不是同一机制；结果、状态及取消要按原生接口回收 |
+| Cursor | IDE工具和MCP接入当前工作；本地、云端及自管worker各有执行边界 | 单任务内委派和多个云端Agent的协调要分别看；独立工作区不代表上下文完全独立 |
+| DeepSeek Harness | 工具由插件提供；PTC执行边界不覆盖所有Host插件代码 | spawn、fork及可继续子任务依赖所装配provider；子作用域的工具和权限不能假定自动继承父限制 |
+| OpenHands | 工具定义和执行实现分离，可接MCP；确认策略不等于容器隔离 | 委派工具创建子会话；上下文隔离、workspace共享和执行身份是三个问题 |
+| pi-mono | v1.4.0 CLI内建MCP扩展；SDK须装配；没有默认完整权限系统或内建OS沙箱 | subagent为可安装扩展示例；独立进程与上下文不自动缩小操作系统权限 |
+
+上表的具体版本、源码与公开文档均在对应产品章就近给出。第十、十二章还提供一条共同检验线：原生完成事件、会话转录和工具日志分别能证明什么。它们可以作为验收材料，但产品的一轮工作结束不能自动替企业确认业务目标达成。
+
+### 接入面与企业仍需承担的责任
+
+下面保留采购时常用的接入比较。技术事实按具体接口区分，第三列是作者建议验证的问题，不是厂商效果承诺。
 
 | 主案例 | 公开接入面与源码边界 | 作者的架构判断与首要验证问题 |
 |---|---|---|
 | Claude Code 及相关 Claude 接入面 | CLI、Agent SDK；Managed Agents 另管持久会话与循环。Messages API 显式压缩又是不同接口；本轮未审计托管内部源码 | 先选择自行运营或托管循环，再测扩展更新、逐调用权限与恢复缺口 |
 | OpenAI Codex | 开源 exec、TypeScript/Python SDK、App Server；Agents API 于 9 月 10 日 public beta，托管内部不由开源源码覆盖 | 双向协议适合丰富客户端；托管路线另验数据留存、工具回传和退出成本 |
-| Cursor | IDE、云端 VM、自管 worker；Projects 于 9 月 10 日进入 beta；内部循环与上下文选择实现未开放供本轮审计 | 自管执行适合贴近内部构建环境的需求，但前提是接受云端推理及相关数据流 |
-| DeepSeek Harness | profile/bundle/SDK 与可检查的插件源码；当前 0.1.6-alpha.2，PTC 使用受平台 sandbox 约束的子进程 | 适合研究配置和运行组件变体；先验证部分失败、Host 插件授权与会话迁移 |
-| OpenHands | 历史 0.62.0 Runtime；当前 Canvas 1.20.0、SDK 1.49.2、Agent Server 与执行环境分层，关键源码可定位 | 适合需要控制执行与会话实现的团队；验证事件补取、容器身份和资源回收 |
+| Cursor | IDE、云端 VM、自管 worker与Projects协调；内部循环与上下文选择实现未开放供本轮审计 | 自管执行适合贴近内部构建环境的需求，但前提是接受云端推理及相关数据流 |
+| DeepSeek Harness | profile/bundle/SDK 与可检查的插件源码；固定研究基线 0.1.6-alpha.2，PTC 使用受平台 sandbox 约束的子进程 | 适合研究配置和运行组件变体；先验证部分失败、Host 插件授权与会话迁移 |
+| OpenHands | 历史 0.62.0 Runtime；SDK研究基线1.49.2、Agent Server 与执行环境分层，关键源码可定位 | 适合需要控制执行与会话实现的团队；验证事件补取、容器身份和资源回收 |
+| pi-mono / Pi | v1.4.0：CLI、JSONL RPC、TypeScript SDK及独立Agent Core；源码可定位 | 适合希望自行装配运行能力的团队；验证资源加载、扩展执行权、持久会话与平台验收的接缝 |
 
 托管差异见 [Managed Agents 架构](https://www.anthropic.com/engineering/managed-agents)、[Agents API 概览](https://developers.openai.com/api/docs/guides/agents-api/overview)、[Cursor 自管机器](https://cursor.com/blog/self-hosted-machines)。开源边界见 [dsh 固定架构](https://github.com/deepseek-ai/deepseek-harness/blob/ddefc45fbc7f8e46dd73185e68295696d1297887/docs/architecture.md) 与 [OpenHands 固定会话工厂](https://github.com/OpenHands/software-agent-sdk/blob/d128a786ee2ee570eb23ff5862ec148b43cfad0b/openhands-sdk/openhands/sdk/conversation/conversation.py#L34)。这些一手来源可支持功能和契约描述，不能因 URL 多就计作独立效能验证。
 
 ## 2. 成品、可嵌入运行时、框架与托管服务
 
-五个主案例不覆盖全部采购对象。下面补入 Deep Agents 和 Microsoft Harness，目的是说明可组合框架仍有独立位置，不把本篇扩成品牌榜单。分类允许重叠：
+六个主案例不覆盖全部采购对象。下面补入 Deep Agents 和 Microsoft Harness，目的是说明可组合框架仍有独立位置，不把本篇扩成品牌榜单。分类允许重叠：
 
 | 层次 | 示例 | 应比较的交付责任 |
 |---|---|---|
 | 成品工具与工作入口 | Claude Code、Cursor、OpenHands Canvas | 交互、工作组织、权限管理与产物交接 |
-| 可嵌入 Agent 运行时 | Claude Agent SDK、Codex SDK/App Server、dsh、OpenHands SDK | 循环、会话、工具及进程生命周期由谁运营 |
+| 可嵌入 Agent 运行时 | Claude Agent SDK、Codex SDK/App Server、dsh、OpenHands SDK、Pi SDK/Agent Core | 循环、会话、工具及进程生命周期由谁运营 |
 | 组合框架 | Deep Agents、Microsoft Agent Framework Harness | 应用如何组合上下文、持久化、审批、委派和有界循环 |
 | 托管 Harness | Claude Managed Agents、OpenAI Agents API、Cursor 云端循环 | 服务商管理哪些运行状态，应用保留哪些执行与数据责任 |
 
@@ -35,12 +64,12 @@ Microsoft Harness 复用 Agent Framework 的 chat client、会话、上下文提
 
 ## 3. 托管与自管，要按责任拆开
 
-这里把“产生决策并管理会话的组件”称为 **Agent Runtime**，把“实际执行命令、文件与工具操作的环境”称为 **Execution Runtime**。同一系统可以拆开运营二者；“runtime”一词本身不构成安全边界。
+这里把“产生决策并管理会话的组件”称为 **Agent Runtime**，把“实际执行命令、文件与工具操作的环境”称为 **Execution Runtime**。同一系统可以拆开运营二者；“runtime”一词本身不构成安全边界。下表的托管服务政策保留2026-09-19核验截面，不构成十月采购条款确认。
 
 | 具体部署路线 | 循环与会话 | 工具执行与凭证 | 必须另查的数据边界 |
 |---|---|---|---|
 | Claude Managed Agents | 厂商披露将 Harness 与持久日志分离 | 通过执行环境/工具接口访问；工程文描述沙箱外凭证库及代理 | 按所选环境核对事件、工具输出与存储规则，不能套用 Code 本机假设 |
-| OpenAI Agents API | OpenAI 管理编排、压缩与恢复 | 可用托管或自管 sandbox，应用接入工具 | 当前仅美国数据驻留、不支持 ZDR；自管 sandbox 不改变此限制 |
+| OpenAI Agents API | OpenAI 管理编排、压缩与恢复 | 可用托管或自管 sandbox，应用接入工具 | 在上述九月截面中仅美国数据驻留、不支持 ZDR；自管 sandbox 不改变该截面的限制 |
 | Cursor 云端 Agent + 自管 worker | 循环、推理与规划仍在 Cursor 云端 | 企业机器执行工具，经出站 HTTPS 回传结果 | 代码可能随输出回传，转录可能云端处理及存储 |
 | 自行部署 Codex/dsh/OpenHands 等 | 所部署组件由组织运营，持久化依版本配置 | 组织选择执行环境与凭证控制 | 若仍调用外部模型或工具服务，相关数据仍可能出网 |
 
@@ -96,4 +125,4 @@ comparison:
        + 维护、失败重试、风险损失与双运行过渡成本
 ```
 
-单位成本若已包含重试，就不应在后项重复计入。改变任务量、人工介入率和供应商价格做敏感性分析，再预先约定质量下界、费用上限、不可接受的数据流与退出触发条件。本轮没有这组测量，故不宣布某产品最便宜，也不替所有组织指定“买或建”的结论。第二十六至二十九章将沿这些责任与条件展开参考设计。
+单位成本若已包含重试，就不应在后项重复计入。改变任务量、人工介入率和供应商价格做敏感性分析，再预先约定质量下界、费用上限、不可接受的数据流与退出触发条件。本轮没有这组测量，故不宣布某产品最便宜，也不替所有组织指定“买或建”的结论。第二十七至三十章将沿这些责任与条件展开参考设计。

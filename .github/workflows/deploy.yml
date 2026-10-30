@@ -37,6 +37,12 @@ jobs:
         if: github.event_name != 'pull_request'
       - name: Run executable reference cases and manuscript schema checks
         run: python examples/run_examples.py
+      - name: Verify publication rendering regressions
+        run: python -m pytest -q publishing/tests
+      - name: Verify Pi Agent Core examples
+        run: |
+          npm --prefix examples/pi-core ci --ignore-scripts --no-audit --no-fund
+          npm --prefix examples/pi-core test
       - name: Validate evidence ledger
         run: python publishing/scripts/audit_claim_ledger.py
       - name: Validate canonical book structure

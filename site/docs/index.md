@@ -16,8 +16,8 @@ hero:
 features:
   - title: 完整设计体系
     details: 状态机、上下文、工具、安全、验证、多 Agent、可观测性与评测。
-  - title: 五个产品案例
-    details: Claude Code、OpenAI Codex、Cursor、DeepSeek Harness 与 OpenHands。
+  - title: 六个架构案例
+    details: Claude Code、OpenAI Codex、Cursor、DeepSeek Harness、OpenHands 与 pi-mono。
   - title: 四层 Agent 进化
     details: 任务内、跨任务、Harness 与模型进化，以及可信门禁和回滚。
   - title: 企业落地路线
@@ -32,7 +32,7 @@ features:
 Agent System Capability = Model × Harness × Environment × Feedback
 ```
 
-全书共30章，资料维护至2026-09-19；快速变化的产品事实以各章声明的版本为准。这一版修订了运行控制、安全边界、实验方法与术语，并补入托管Harness、子代理上下文模式和近期自我进化研究。
+全书共31章。2026-10-29 重写第三篇，六个案例先讲整体架构，再对应第二篇解释循环、上下文、工具与 MCP、权限与沙箱、子智能体和委派。新增 pi-mono 的固定版本源码分析与本地机制实验。其余篇沿用2026-09-19资料截面，产品事实以各章声明的日期和版本为准。
 
 [运行书中的参考案例](https://github.com/LENSHOOD/agent-harness-book/tree/main/examples)：代码修复、经营分析和进化门禁均有本地入口。测试使用明确的数据与环境假设，不代表供应商端到端或生产效果认证。
 

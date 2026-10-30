@@ -2,7 +2,17 @@
 
 本目录维护来源、历史证据及经过选择的承重主张。`claims_v2.jsonl` 是核心主张子集，不能代表全书逐句覆盖；`claims_backlog.jsonl`保存deferred研究线索及needs_review，不进入书稿strict core门；`claims.jsonl` 是未改写的旧段落级存量，不参与本轮主张判定。
 
-<!-- registry-status: total=174 verified=150 unverified=24 -->
+<!-- registry-status: total=323 verified=299 unverified=24 -->
+
+<!-- architecture-20261029:start -->
+## 当前架构修订批次
+
+2026-10-29登记状态：来源323项，已核验身份/截面299项，未核验线索24项；证据372项，核心主张81项。新增原文定位和短摘位于`research/audits/architecture_revision_20261029/`；全局新增证据是有明确来源的摘要，不把短摘自动当作整项主张的证明。部分新增来源沿用先前固定commit；其余网页以本次访问截面为准。第三篇与pi-mono经过机制复核；本地Pi实验只覆盖真实Agent Core加确定性模型替身。旧主张继续绑定原历史版本，不自动升级为十月事实。
+
+新章插入后，核心账本的章节位置已更新，历史位置保留在`chapter_before_20261029`。下方九月统计、捕获完整性及整合命令仅描述旧批次，不应对当前新增材料直接重放旧写入脚本。
+<!-- architecture-20261029:end -->
+
+## 2026-09-19 批次记录（历史截面）
 
 截至2026-09-19，本次 registry 共174条来源：150条 metadata verified、24条 unverified；证据195条；核心主张71条，状态为{'supported': 71}；backlog 1条。已核验仅指来源身份、指定版次及本地捕获定位；不等于逐句事实认证、实验复现或产品端到端通过。
 

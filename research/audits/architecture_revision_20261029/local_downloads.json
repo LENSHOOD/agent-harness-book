@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-29",
+  "firstAttempt": {
+    "date": "2026-10-29",
+    "rows": [
+      {
+        "file": "agent_harness_book.pdf",
+        "status": 200,
+        "sha256": "73bacf2ab1151014681269703e99ee1e52b98d7560ff4480cd54f7943a502e4a",
+        "matchesArtifact": false
+      },
+      {
+        "file": "executive_brief.pdf",
+        "status": 200,
+        "sha256": "99d69fc7f56a3cd9b78fe46f8b941d8d1a935cc26343e766170eb46bca3c5e1a",
+        "matchesArtifact": false
+      }
+    ]
+  },
+  "correction": "Preview had started before final assets were rebuilt; first download length matched an earlier artifact. Restarted preview and retried without cache; hashes then matched. Cache versus server metadata cause was not independently isolated.",
+  "rows": [
+    {
+      "file": "agent_harness_book.pdf",
+      "status": 200,
+      "bytes": 1460096,
+      "sha256": "ded865c55d0a6999458dc6a4b6032d1b6bb9721f9f673986f5bb920b2bf0982b",
+      "matchesArtifact": true
+    },
+    {
+      "file": "executive_brief.pdf",
+      "status": 200,
+      "bytes": 67190,
+      "sha256": "4686ae2c5f86b52070f0b92cad97a73c8b93c251e3f01f2a5f5aad64729febf6",
+      "matchesArtifact": true
+    }
+  ]
+}

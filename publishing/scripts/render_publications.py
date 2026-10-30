@@ -5,6 +5,7 @@ import json
 from html import escape
 from pathlib import Path
 import re
+import unicodedata
 
 import markdown
 import reportlab
@@ -23,7 +24,7 @@ from reportlab.platypus import (
     LongTable,
     PageBreak,
     Paragraph,
-    Preformatted,
+    XPreformatted,
     SimpleDocTemplate,
     Spacer,
     TableStyle,
@@ -34,7 +35,8 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "publishing" / "artifacts"
 OUT.mkdir(exist_ok=True)
 
-SNAPSHOT = json.loads((ROOT / 'publishing/book_structure.json').read_text())['sourceCutoff']
+STRUCTURE = json.loads((ROOT / 'publishing/book_structure.json').read_text())
+SNAPSHOT = STRUCTURE.get('revisionDate', STRUCTURE['sourceCutoff'])
 # ReportLab otherwise embeds the wall-clock build time and a random document ID.
 # Invariant mode makes identical inputs produce byte-identical publication files.
 rl_config.invariant = 1
@@ -42,6 +44,10 @@ pdfmetrics.registerFont(UnicodeCIDFont("STSong-Light"))
 REPORTLAB_FONTS = Path(reportlab.__file__).resolve().parent / "fonts"
 pdfmetrics.registerFont(TTFont("VeraEmbedded", str(REPORTLAB_FONTS / "Vera.ttf")))
 pdfmetrics.registerFont(TTFont("VeraEmbedded-Bold", str(REPORTLAB_FONTS / "VeraBd.ttf")))
+pdfmetrics.registerFont(TTFont("VeraEmbedded-Italic", str(REPORTLAB_FONTS / "VeraIt.ttf")))
+pdfmetrics.registerFont(TTFont("VeraEmbedded-BoldItalic", str(REPORTLAB_FONTS / "VeraBI.ttf")))
+pdfmetrics.registerFontFamily("VeraEmbedded", normal="VeraEmbedded", bold="VeraEmbedded-Bold",
+                              italic="VeraEmbedded-Italic", boldItalic="VeraEmbedded-BoldItalic")
 
 CSS = r'''
 @page { size: A4; margin: 18mm 17mm 20mm 17mm; }
@@ -81,7 +87,7 @@ def render_html(md_path: Path, html_path: Path, title: str, subtitle: str) -> No
         f'<meta name="viewport" content="width=device-width"><title>{title}</title>'
         f"<style>{CSS}</style></head><body>"
         f'<div class="title-block"><h1>{title}</h1><div class="subtitle">{subtitle}</div>'
-        f'<div class="meta">研究修订稿<br>资料截面：{SNAPSHOT}</div></div>{html}</body></html>'
+        f'<div class="meta">研究修订稿<br>修订日期：{SNAPSHOT}；具体事实版本见各章</div></div>{html}</body></html>'
     )
     html_path.write_text(doc)
 
@@ -98,7 +104,7 @@ class BookDocTemplate(SimpleDocTemplate):
         key = flowable._bookmark_key
         self.canv.bookmarkPage(key)
         self.canv.addOutlineEntry(text, key, level=level, closed=level > 0)
-        self.notify("TOCEntry", (level, text, self.page, key))
+        self.notify("TOCEntry", (level, mixed_font_markup(escape(text)), self.page, key))
 
 
 def page_footer(canvas, doc) -> None:
@@ -122,20 +128,60 @@ def cover_page(canvas, doc) -> None:
     canvas.setFillColor(colors.HexColor("#65737e"))
     canvas.setFont("STSong-Light", 10)
     canvas.drawCentredString(centre, 78 * mm, "研究修订稿")
-    canvas.drawCentredString(centre, 64 * mm, "资料截面")
+    canvas.drawCentredString(centre, 64 * mm, "修订日期（具体事实版本见各章）")
     canvas.setFont("VeraEmbedded", 10)
     canvas.drawCentredString(centre, 58 * mm, SNAPSHOT)
     canvas.restoreState()
 
 
+def mixed_font_markup(markup: str, code_size: float | None = None) -> str:
+    """Keep CJK glyphs in the CID font, whose Latin metrics render poorly.
+
+    Courier's ASCII cell is 0.6 em. In code, a CJK glyph at 1.2 em occupies
+    exactly two cells, preserving diagrams that use display-column spacing.
+    Tags/attributes are left intact, including any CJK in link destinations.
+    """
+    cjk = r"[\u2e80-\u9fff\uff00-\uffef]+"
+    # Bitstream Vera lacks these symbols used in the book; the CJK font has them.
+    symbols = r"[\u0394\u2190-\u2194\u2500-\u257f\u25bc]+"
+
+    def fallback(match):
+        size = ''
+        if code_size is not None:
+            cells = 2 if re.fullmatch(cjk, match.group()) else 1
+            size = f' size="{code_size * 0.6 * cells}"'
+        return f'<font name="STSong-Light"{size}>{match.group()}</font>'
+
+    return ''.join(part if part.startswith('<') else re.sub(
+        cjk + '|' + symbols, fallback, part)
+        for part in re.split(r'(<[^>]*>)', markup))
+
+
+def code_markup(lines: list[str], max_columns: int, size: float) -> str:
+    wrapped = []
+    for line in lines:
+        chunk, columns = '', 0
+        for char in line.expandtabs(4):
+            width = 2 if unicodedata.east_asian_width(char) in {'W', 'F'} else 1
+            if chunk and columns + width > max_columns:
+                wrapped.append(chunk)
+                chunk, columns = '', 0
+            chunk += char
+            columns += width
+        wrapped.append(chunk)
+    return mixed_font_markup(escape('\n'.join(wrapped), quote=False), code_size=size)
+
+
 def inline_markup(text: str) -> str:
+    # A numbered heading is inline text, not a Markdown ordered list.
+    text = re.sub(r'^(\d+)\.\s', r'\1\\. ', text)
     rendered = markdown.markdown(text, extensions=["sane_lists"]).strip()
     rendered = re.sub(r"^<p>|</p>$", "", rendered)
     rendered = rendered.replace("<a href=", "<link href=").replace("</a>", "</link>")
-    rendered = rendered.replace("<code>", '<font name="STSong-Light" color="#005b82">')
+    rendered = rendered.replace("<code>", '<font name="VeraEmbedded" color="#005b82">')
     rendered = rendered.replace("</code>", "</font>")
     rendered = rendered.replace("<hr />", "")
-    return rendered
+    return mixed_font_markup(rendered)
 
 
 def styles():
@@ -143,7 +189,7 @@ def styles():
     body = ParagraphStyle(
         "Body",
         parent=base["BodyText"],
-        fontName="STSong-Light",
+        fontName="VeraEmbedded",
         fontSize=9.5,
         leading=15.5,
         textColor=colors.HexColor("#18242c"),
@@ -172,13 +218,13 @@ def styles():
         "Quote": ParagraphStyle(
             "Quote", parent=body, leftIndent=10, rightIndent=8, borderColor=colors.HexColor("#407f9b"),
             borderWidth=1, borderPadding=7, backColor=colors.HexColor("#f3f6f7"),
-            textColor=colors.HexColor("#3d4a52"), spaceBefore=5, spaceAfter=8,
+            textColor=colors.HexColor("#3d4a52"), spaceBefore=8, spaceAfter=15,
         ),
         "List": ParagraphStyle("List", parent=body, leftIndent=14, firstLineIndent=-8, bulletIndent=4),
         "Code": ParagraphStyle(
-            "Code", parent=body, fontName="STSong-Light", fontSize=7.8, leading=11,
+            "Code", parent=body, fontName="Courier", fontSize=7.8, leading=12,
             leftIndent=8, rightIndent=8, borderColor=colors.HexColor("#315d72"), borderWidth=1,
-            borderPadding=7, backColor=colors.HexColor("#f3f5f6"), spaceBefore=4, spaceAfter=9,
+            borderPadding=7, backColor=colors.HexColor("#f3f5f6"), spaceBefore=12, spaceAfter=16,
         ),
         "CodeLabel": ParagraphStyle(
             "CodeLabel", parent=body, fontSize=6.5, leading=8, textColor=colors.HexColor("#65737e"),
@@ -261,10 +307,10 @@ def parse_markdown(text: str, sheet: dict, available_width: float, base_dir: Pat
             if line.startswith("```"):
                 if code_language:
                     story.append(Paragraph(escape(code_language.upper()), sheet["CodeLabel"]))
-                # Preformatted handles XML-sensitive characters, but ReportLab does not
-                # decode &quot;/&#x27; in this flowable. Keep quotes literal so JSON/YAML
-                # remains readable while still escaping angle brackets and ampersands.
-                story.append(Preformatted(escape("\n".join(code), quote=False), sheet["Code"], maxLineLength=92))
+                # XPreformatted decodes escaped symbols and permits CJK font runs;
+                # plain Preformatted would print literal &gt; in architecture arrows.
+                columns = min(92, int((available_width - 16) / (7.8 * 0.6)))
+                story.append(XPreformatted(code_markup(code, columns, 7.8), sheet["Code"]))
                 code.clear()
                 in_code = False
                 code_language = ""
@@ -304,7 +350,7 @@ def parse_markdown(text: str, sheet: dict, available_width: float, base_dir: Pat
             figure.hAlign = "CENTER"
             story.extend([Spacer(1, 7), figure])
             if alt:
-                story.append(Paragraph(escape(alt), sheet["FigureCaption"]))
+                story.append(Paragraph(mixed_font_markup(escape(alt)), sheet["FigureCaption"]))
             index += 1
             continue
 
@@ -333,10 +379,10 @@ def parse_markdown(text: str, sheet: dict, available_width: float, base_dir: Pat
             flush_paragraph()
             toc = TableOfContents()
             toc.levelStyles = [
-                ParagraphStyle("TOC1", fontName="STSong-Light", fontSize=9, leading=14, leftIndent=0, firstLineIndent=0),
-                ParagraphStyle("TOC2", fontName="STSong-Light", fontSize=8, leading=12, leftIndent=12, firstLineIndent=0),
-                ParagraphStyle("TOC3", fontName="STSong-Light", fontSize=7, leading=10, leftIndent=24, firstLineIndent=0),
-                ParagraphStyle("TOC4", fontName="STSong-Light", fontSize=6.5, leading=9, leftIndent=36, firstLineIndent=0),
+                ParagraphStyle("TOC1", fontName="VeraEmbedded", fontSize=9, leading=14, leftIndent=0, firstLineIndent=0),
+                ParagraphStyle("TOC2", fontName="VeraEmbedded", fontSize=8, leading=12, leftIndent=12, firstLineIndent=0),
+                ParagraphStyle("TOC3", fontName="VeraEmbedded", fontSize=7, leading=10, leftIndent=24, firstLineIndent=0),
+                ParagraphStyle("TOC4", fontName="VeraEmbedded", fontSize=6.5, leading=9, leftIndent=36, firstLineIndent=0),
             ]
             story.append(toc)
             index += 1

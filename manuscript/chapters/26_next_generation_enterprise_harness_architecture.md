@@ -1,4 +1,4 @@
-# 第二十六章 下一代企业 Harness 参考架构
+# 第二十七章 下一代企业 Harness 参考架构
 
 > 证据地位：本章为作者参考设计与工程推导，案例和阈值用于说明实现逻辑，不代表跨组织验证的通用标准。
 
@@ -17,7 +17,7 @@ Evolution Plane  eval registry / mutation / experiment / release / rollback
 
 体验层收集意图，控制层持久化任务合同和权威状态。Agent运行层提出动作，执行层在授权范围内操作文件与外部系统；证据层保存产物、执行验证和对账；进化层提出并评估未来版本。进化层内部的提案者与发布者必须分权，不能因为画在同一行就共享权限。
 
-第五章的三平面按管理与数据路径划分，本章六层按功能划分，第二十四章的候选域与治理域则按信任边界划分。三种视角的对应关系如下。
+第五章的三平面按管理与数据路径划分，本章六层按功能划分，第二十五章的候选域与治理域则按信任边界划分。三种视角的对应关系如下。
 
 | 六层中的组件 | 三平面中的主要位置 | 信任与读写边界 |
 |---|---|---|
@@ -44,7 +44,7 @@ Evolution Plane  eval registry / mutation / experiment / release / rollback
 
 ## 2. 统一契约与能力协商
 
-平台按需要定义 Task、Attempt、Action、Observation、Artifact、PolicyDecision、Checkpoint、Delegation、VerificationResult 和 EvidencePackage。沿用第六章：Task是任务，Attempt是任务执行尝试，Action是一次逻辑动作，ToolTry是该工具动作的单次尝试；重试不应改变同一逻辑动作的幂等身份。适配器负责统一对象与产品协议的映射，保存原始载荷的摘要、位置与协议版本。下面是本书自定义接口草图，不能作为某个厂商 SDK 的原生方法表；字段转换示例见第二十七章。
+平台按需要定义 Task、Attempt、Action、Observation、Artifact、PolicyDecision、Checkpoint、Delegation、VerificationResult 和 EvidencePackage。沿用第六章：Task是任务，Attempt是任务执行尝试，Action是一次逻辑动作，ToolTry是该工具动作的单次尝试；重试不应改变同一逻辑动作的幂等身份。适配器负责统一对象与产品协议的映射，保存原始载荷的摘要、位置与协议版本。下面是本书自定义接口草图，不能作为某个厂商 SDK 的原生方法表；字段转换示例见第二十八章。
 
 ```text
 RuntimeAdapter {
